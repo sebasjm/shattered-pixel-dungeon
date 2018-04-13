@@ -23,6 +23,7 @@ package com.watabou.noosa
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager.NameNotFoundException
 import android.media.AudioManager
 import android.opengl.GLES20
@@ -62,7 +63,7 @@ open class Game(// New scene class
     // Current scene
     protected var scene: Scene? = null
     // New scene we are going to switch to
-    protected var requestedScene: Scene
+    protected var requestedScene: Scene? = null
     // true if scene switch is requested
     protected var requestedReset = true
     // callback to perform logic during scene change
@@ -73,7 +74,7 @@ open class Game(// New scene class
     // Milliseconds passed since previous update
     protected var step: Long = 0
 
-    protected var view: GLSurfaceView
+    protected var view: GLSurfaceView? = null
     protected var holder: SurfaceHolder? = null
 
     // Accumulated touch events
@@ -116,16 +117,16 @@ open class Game(// New scene class
         volumeControlStream = AudioManager.STREAM_MUSIC
 
         view = GLSurfaceView(this)
-        view.setEGLContextClientVersion(2)
+        view!!.setEGLContextClientVersion(2)
 
         //Older devices are forced to RGB 565 for performance reasons.
         //Otherwise try to use RGB888 for best quality, but use RGB565 if it is what's available.
-        view.setEGLConfigChooser(ScreenConfigChooser(
+        view!!.setEGLConfigChooser(ScreenConfigChooser(
                 DeviceCompat.legacyDevice(),
                 false))
 
-        view.setRenderer(this)
-        view.setOnTouchListener(this)
+        view!!.setRenderer(this)
+        view!!.setOnTouchListener(this)
         setContentView(view)
 
         //so first call to onstart/onresume calls correct logic.
@@ -178,7 +179,7 @@ open class Game(// New scene class
         if (isPaused) return
 
         isPaused = true
-        view.onPause()
+        view!!.onPause()
         Script.reset()
 
         Music.INSTANCE.pause()
@@ -190,7 +191,7 @@ open class Game(// New scene class
 
         now = 0
         isPaused = false
-        view.onResume()
+        view!!.onResume()
 
         Music.INSTANCE.resume()
         Sample.INSTANCE.resume()
@@ -371,7 +372,7 @@ open class Game(// New scene class
         // Density: mdpi=1, hdpi=1.5, xhdpi=2...
         var density = 1f
 
-        var version: String
+        var version: String? = null
         var versionCode: Int = 0
 
         var timeScale = 1f

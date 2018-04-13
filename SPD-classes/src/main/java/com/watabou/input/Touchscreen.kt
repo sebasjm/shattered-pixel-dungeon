@@ -68,17 +68,17 @@ object Touchscreen {
                     val count = e.pointerCount
                     for (j in 0 until count) {
                         if (pointers.containsKey(e.getPointerId(j))) {
-                            pointers[e.getPointerId(j)].update(e, j)
+                            pointers[e.getPointerId(j)]!!.update(e, j)
                         }
                     }
                     event.dispatch(null)
                 }
 
-                MotionEvent.ACTION_POINTER_UP -> event.dispatch(pointers.remove(e.getPointerId(e.actionIndex)).up())
+                MotionEvent.ACTION_POINTER_UP -> event.dispatch(pointers.remove(e.getPointerId(e.actionIndex))!!.up())
 
                 MotionEvent.ACTION_UP -> {
                     touched = false
-                    event.dispatch(pointers.remove(e.getPointerId(0)).up())
+                    event.dispatch(pointers.remove(e.getPointerId(0))!!.up())
                 }
             }
 

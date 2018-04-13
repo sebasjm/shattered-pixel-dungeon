@@ -21,6 +21,7 @@
 
 package com.watabou.utils
 
+import android.app.Activity
 import com.watabou.noosa.Game
 
 import java.io.File
@@ -126,7 +127,7 @@ object FileUtils {
     //only works for base path
     @Throws(IOException::class)
     fun bundleToFile(fileName: String, bundle: Bundle) {
-        bundleToStream(Game.instance!!.openFileOutput(fileName, Game.MODE_PRIVATE), bundle)
+        bundleToStream(Game.instance!!.openFileOutput(fileName, Activity.MODE_PRIVATE), bundle)
     }
 
     @Throws(IOException::class)

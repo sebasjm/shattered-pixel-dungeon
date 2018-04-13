@@ -106,15 +106,15 @@ object Random {
     }
 
     //returns a key element from chances, the probability of each key is the weight value it maps to
-    fun <K> chances(chances: HashMap<K, Float>): K? {
+    fun <K: Any> chances(chances: HashMap<K, Float>): K? {
 
         val size = chances.size
 
-        val values = chances.keys.toTypedArray()
+        val values = chances.keys.toList()
         val probs = FloatArray(size)
         var sum = 0f
         for (i in 0 until size) {
-            probs[i] = chances[values[i]]
+            probs[i] = chances[values[i]!!]!!
             sum += probs[i]
         }
 
@@ -155,7 +155,7 @@ object Random {
     fun <T> element(collection: Collection<T>): T? {
         val size = collection.size
         return if (size > 0)
-            collection.toTypedArray()[Int(size)]
+            collection.toList()[Int(size)]
         else
             null
     }

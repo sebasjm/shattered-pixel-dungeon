@@ -26,7 +26,7 @@ import java.util.LinkedList
 
 object PathFinder {
 
-    var distance: IntArray
+    var distance: IntArray? = null
     private var maxVal: IntArray? = null
 
     private var goals: BooleanArray? = null
@@ -40,14 +40,14 @@ object PathFinder {
 
     //performance-light shortcuts for some common pathfinder cases
     //they are in array-access order for increased memory performance
-    var NEIGHBOURS4: IntArray
-    var NEIGHBOURS8: IntArray
-    var NEIGHBOURS9: IntArray
+    var NEIGHBOURS4: IntArray? = null
+    var NEIGHBOURS8: IntArray? = null
+    var NEIGHBOURS9: IntArray? = null
 
     //similar to their equivalent neighbour arrays, but the order is clockwise.
     //Useful for some logic functions, but is slower due to lack of array-access order.
-    var CIRCLE4: IntArray
-    var CIRCLE8: IntArray
+    var CIRCLE4: IntArray? = null
+    var CIRCLE8: IntArray? = null
 
     fun setMapSize(width: Int, height: Int) {
 
@@ -84,14 +84,14 @@ object PathFinder {
         // From the starting position we are moving downwards,
         // until we reach the ending point
         do {
-            var minD = distance[s]
+            var minD = distance!![s]
             var mins = s
 
             for (i in dir!!.indices) {
 
                 val n = s + dir!![i]
 
-                val thisD = distance[n]
+                val thisD = distance!![n]
                 if (thisD < minD) {
                     minD = thisD
                     mins = n
@@ -111,7 +111,7 @@ object PathFinder {
         }
 
         // From the starting position we are making one step downwards
-        var minD = distance[from]
+        var minD = distance!![from]
         var best = from
 
         var step: Int
@@ -119,7 +119,9 @@ object PathFinder {
 
         for (i in dir!!.indices) {
 
-            if ((stepD = distance[step = from + dir!![i]]) < minD) {
+            step = from + dir!![i]
+            stepD = distance!![step]
+            if (stepD < minD) {
                 minD = stepD
                 best = step
             }
@@ -132,7 +134,7 @@ object PathFinder {
 
         val d = buildEscapeDistanceMap(cur, from, 2f, passable)
         for (i in 0 until size) {
-            goals[i] = distance[i] == d
+            goals!![i] = distance!![i] == d
         }
         if (!buildDistanceMap(cur, goals!!, passable)) {
             return -1
@@ -141,13 +143,13 @@ object PathFinder {
         val s = cur
 
         // From the starting position we are making one step downwards
-        var minD = distance[s]
+        var minD = distance!![s]
         var mins = s
 
         for (i in dir!!.indices) {
 
             val n = s + dir!![i]
-            val thisD = distance[n]
+            val thisD = distance!![n]
 
             if (thisD < minD) {
                 minD = thisD
@@ -172,8 +174,8 @@ object PathFinder {
         var tail = 0
 
         // Add to queue
-        queue[tail++] = to
-        distance[to] = 0
+        queue!![tail++] = to
+        distance!![to] = 0
 
         while (head < tail) {
 
@@ -183,17 +185,17 @@ object PathFinder {
                 pathFound = true
                 break
             }
-            val nextDistance = distance[step] + 1
+            val nextDistance = distance!![step] + 1
 
             val start = if (step % width == 0) 3 else 0
             val end = if ((step + 1) % width == 0) 3 else 0
             for (i in start until dirLR!!.size - end) {
 
                 val n = step + dirLR!![i]
-                if (n == from || n >= 0 && n < size && passable[n] && distance[n] > nextDistance) {
+                if (n == from || n >= 0 && n < size && passable[n] && distance!![n] > nextDistance) {
                     // Add to queue
-                    queue[tail++] = n
-                    distance[n] = nextDistance
+                    queue!![tail++] = n
+                    distance!![n] = nextDistance
                 }
 
             }
@@ -210,15 +212,15 @@ object PathFinder {
         var tail = 0
 
         // Add to queue
-        queue[tail++] = to
-        distance[to] = 0
+        queue!![tail++] = to
+        distance!![to] = 0
 
         while (head < tail) {
 
             // Remove from queue
             val step = queue!![head++]
 
-            val nextDistance = distance[step] + 1
+            val nextDistance = distance!![step] + 1
             if (nextDistance > limit) {
                 return
             }
@@ -228,10 +230,10 @@ object PathFinder {
             for (i in start until dirLR!!.size - end) {
 
                 val n = step + dirLR!![i]
-                if (n >= 0 && n < size && passable[n] && distance[n] > nextDistance) {
+                if (n >= 0 && n < size && passable[n] && distance!![n] > nextDistance) {
                     // Add to queue
-                    queue[tail++] = n
-                    distance[n] = nextDistance
+                    queue!![tail++] = n
+                    distance!![n] = nextDistance
                 }
 
             }
@@ -254,8 +256,8 @@ object PathFinder {
         // Add to queue
         for (i in 0 until size) {
             if (to[i]) {
-                queue[tail++] = i
-                distance[i] = 0
+                queue!![tail++] = i
+                distance!![i] = 0
             }
         }
 
@@ -267,17 +269,17 @@ object PathFinder {
                 pathFound = true
                 break
             }
-            val nextDistance = distance[step] + 1
+            val nextDistance = distance!![step] + 1
 
             val start = if (step % width == 0) 3 else 0
             val end = if ((step + 1) % width == 0) 3 else 0
             for (i in start until dirLR!!.size - end) {
 
                 val n = step + dirLR!![i]
-                if (n == from || n >= 0 && n < size && passable[n] && distance[n] > nextDistance) {
+                if (n == from || n >= 0 && n < size && passable[n] && distance!![n] > nextDistance) {
                     // Add to queue
-                    queue[tail++] = n
-                    distance[n] = nextDistance
+                    queue!![tail++] = n
+                    distance!![n] = nextDistance
                 }
 
             }
@@ -296,8 +298,8 @@ object PathFinder {
         var tail = 0
 
         // Add to queue
-        queue[tail++] = from
-        distance[from] = 0
+        queue!![tail++] = from
+        distance!![from] = 0
 
         var dist = 0
 
@@ -305,7 +307,7 @@ object PathFinder {
 
             // Remove from queue
             val step = queue!![head++]
-            dist = distance[step]
+            dist = distance!![step]
 
             if (dist > destDist) {
                 return destDist
@@ -322,10 +324,10 @@ object PathFinder {
             for (i in start until dirLR!!.size - end) {
 
                 val n = step + dirLR!![i]
-                if (n >= 0 && n < size && passable[n] && distance[n] > nextDistance) {
+                if (n >= 0 && n < size && passable[n] && distance!![n] > nextDistance) {
                     // Add to queue
-                    queue[tail++] = n
-                    distance[n] = nextDistance
+                    queue!![tail++] = n
+                    distance!![n] = nextDistance
                 }
 
             }
@@ -342,24 +344,24 @@ object PathFinder {
         var tail = 0
 
         // Add to queue
-        queue[tail++] = to
-        distance[to] = 0
+        queue!![tail++] = to
+        distance!![to] = 0
 
         while (head < tail) {
 
             // Remove from queue
             val step = queue!![head++]
-            val nextDistance = distance[step] + 1
+            val nextDistance = distance!![step] + 1
 
             val start = if (step % width == 0) 3 else 0
             val end = if ((step + 1) % width == 0) 3 else 0
             for (i in start until dirLR!!.size - end) {
 
                 val n = step + dirLR!![i]
-                if (n >= 0 && n < size && passable[n] && distance[n] > nextDistance) {
+                if (n >= 0 && n < size && passable[n] && distance!![n] > nextDistance) {
                     // Add to queue
-                    queue[tail++] = n
-                    distance[n] = nextDistance
+                    queue!![tail++] = n
+                    distance!![n] = nextDistance
                 }
 
             }

@@ -74,9 +74,10 @@ open class Gizmo {
 
     open fun camera(): Camera? {
         return if (camera != null) {
-            camera
+            this.camera
         } else if (parent != null) {
-            this.camera = parent!!.camera()
+            this.camera = this.parent!!.camera()
+            this.camera
         } else {
             null
         }

@@ -31,11 +31,11 @@ import com.watabou.utils.RectF
 import java.nio.FloatBuffer
 import java.util.Arrays
 
-open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0, 0) {
+open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0f, 0f, 0f, 0f) {
 
     protected var texture: SmartTexture
 
-    protected var data: IntArray
+    protected var data: IntArray? = null
     protected var mapWidth: Int = 0
     protected var mapHeight: Int = 0
     protected var size: Int = 0
@@ -44,10 +44,10 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0
     private val cellH: Float
 
     protected var vertices: FloatArray
-    protected var quads: FloatBuffer
+    protected var quads: FloatBuffer? = null
     protected var buffer: Vertexbuffer? = null
 
-    @Volatile
+    //@Volatile
     private val updated: Rect
     private var fullUpdate: Boolean = false
     private var updating: Rect? = null
@@ -137,9 +137,9 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0
 
                 bottomRightUpdating = pos + 1
 
-                quads.position(pos * 16)
+                quads!!.position(pos * 16)
 
-                uv = tileset.get(data[pos])
+                uv = tileset.get(data!![pos])
 
                 if (needsRender(pos) && uv != null) {
 
@@ -176,7 +176,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0
                     Arrays.fill(vertices, 0f)
                 }
 
-                quads.put(vertices)
+                quads!!.put(vertices)
 
                 pos++
                 x1 = x2
@@ -197,7 +197,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0
         if (!updated.isEmpty) {
             updateVertices()
             if (buffer == null)
-                buffer = Vertexbuffer(quads)
+                buffer = Vertexbuffer(quads!!)
             else {
                 if (fullUpdate) {
                     buffer!!.updateVertices(quads)
@@ -212,7 +212,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0
             updating!!.setEmpty()
         }
 
-        val c = Camera.main
+        val c = Camera.main!!
         //we treat the position of the tilemap as (0,0) here
         camX = (c.scroll.x / cellW - x / cellW).toInt()
         camY = (c.scroll.y / cellH - y / cellH).toInt()
@@ -247,7 +247,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0, 0, 0
 
         script.camera(camera)
 
-        script.drawQuadSet(buffer, length, topLeft)
+        script.drawQuadSet(buffer!!, length, topLeft)
 
     }
 

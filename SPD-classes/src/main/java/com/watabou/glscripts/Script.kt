@@ -60,7 +60,7 @@ open class Script : Program() {
                         Game.reportException(e)
                     }
 
-                    all[c] = script
+                    all[c] = script!!
                 }
 
                 if (curScript != null) {
@@ -73,7 +73,7 @@ open class Script : Program() {
 
             }
 
-            return curScript as T?
+            return curScript as T
         }
 
         fun reset() {

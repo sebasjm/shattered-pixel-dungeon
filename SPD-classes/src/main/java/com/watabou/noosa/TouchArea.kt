@@ -25,7 +25,7 @@ import com.watabou.input.Touchscreen
 import com.watabou.input.Touchscreen.Touch
 import com.watabou.utils.Signal
 
-open class TouchArea : Visual, Signal.Listener<Touchscreen.Touch> {
+open class TouchArea : Visual, Signal.Listener<Touchscreen.Touch?> {
 
     // Its target can be toucharea itself
     var target: Visual
@@ -83,7 +83,7 @@ open class TouchArea : Visual, Signal.Listener<Touchscreen.Touch> {
         } else {
 
             if (touch == null && this.touch != null) {
-                onDrag(this.touch)
+                onDrag(this.touch!!)
             } else if (this.touch != null && !touch!!.down) {
                 onTouchUp(touch)
                 this.touch = null

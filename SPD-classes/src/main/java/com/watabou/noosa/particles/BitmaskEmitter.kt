@@ -56,7 +56,7 @@ class BitmaskEmitter(target: Image) : Emitter() {
             y = Random.Float(frame.height()) * mapH
         } while (map!!.bitmap!!.getPixel((x + ofsX).toInt(), (y + ofsY).toInt()) and 0x000000FF == 0)
 
-        factory.emit(this, index,
+        factory!!.emit(this, index,
                 target!!.x + x * target!!.scale.x,
                 target!!.y + y * target!!.scale.y)
     }

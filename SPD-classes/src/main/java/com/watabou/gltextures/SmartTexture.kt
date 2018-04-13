@@ -63,7 +63,7 @@ open class SmartTexture : Texture {
 
     override fun generate() {
         super.generate()
-        bitmap(bitmap, premultiplied)
+        bitmap(bitmap!!, premultiplied)
         filter(fModeMin, fModeMax)
         wrap(wModeH, wModeV)
     }

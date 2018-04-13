@@ -91,7 +91,7 @@ class ScreenConfigChooser(vals: IntArray, prefs: IntArray, weights: IntArray) : 
 
     }
 
-    private fun chooseConfig(configs: Array<EGLConfig>): EGLConfig? {
+    private fun chooseConfig(configs: Array<EGLConfig?>): EGLConfig? {
         var bestConfig: EGLConfig? = null
         var bestConfigValue = Integer.MIN_VALUE
         for (curConfig in configs) {
@@ -99,7 +99,7 @@ class ScreenConfigChooser(vals: IntArray, prefs: IntArray, weights: IntArray) : 
             var curConfigValue = 0
 
             for (i in attribEGLconsts.indices) {
-                val `val` = findConfigAttrib(curConfig, attribEGLconsts[i])
+                val `val` = findConfigAttrib(curConfig!!, attribEGLconsts[i])
 
                 if (attribPrefs[i] == EXACTLY) {
 

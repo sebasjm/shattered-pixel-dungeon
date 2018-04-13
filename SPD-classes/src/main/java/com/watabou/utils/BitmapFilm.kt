@@ -50,10 +50,10 @@ class BitmapFilm {
     }
 
     fun add(id: Any?, rect: Rect) {
-        frames[id] = rect
+        frames[id!!] = rect
     }
 
     operator fun get(id: Any): Rect {
-        return frames[id]
+        return frames[id]!!
     }
 }

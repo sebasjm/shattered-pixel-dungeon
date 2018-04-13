@@ -43,7 +43,8 @@ open class PixelParticle : PseudoPixel() {
         this.y = y
 
         color(color)
-        size(this.size = size)
+        this.size = size
+        size(this.size)
 
         this.lifespan = lifespan
         this.left = this.lifespan
@@ -52,7 +53,8 @@ open class PixelParticle : PseudoPixel() {
     override fun update() {
         super.update()
 
-        if ((left -= Game.elapsed) <= 0) {
+        left -= Game.elapsed
+        if (left <= 0) {
             kill()
         }
     }

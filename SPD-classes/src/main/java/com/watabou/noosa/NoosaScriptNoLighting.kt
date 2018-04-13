@@ -40,7 +40,7 @@ class NoosaScriptNoLighting : NoosaScript() {
 
     companion object {
 
-        override fun get(): NoosaScriptNoLighting {
+        fun get(): NoosaScriptNoLighting {
             return Script.use(NoosaScriptNoLighting::class.java)
         }
 

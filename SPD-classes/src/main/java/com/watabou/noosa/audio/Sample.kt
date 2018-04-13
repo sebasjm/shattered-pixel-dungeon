@@ -36,6 +36,8 @@ enum class Sample : SoundPool.OnLoadCompleteListener {
 
     INSTANCE;
 
+    val MAX_STREAMS = 8
+
     protected var pool: SoundPool? = SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0)
 
     protected var ids = HashMap<Any, Int>()
@@ -105,7 +107,7 @@ enum class Sample : SoundPool.OnLoadCompleteListener {
 
         if (ids.containsKey(src)) {
 
-            pool!!.unload(ids[src])
+            pool!!.unload(ids[src]!!)
             ids.remove(src)
         }
     }
@@ -117,7 +119,7 @@ enum class Sample : SoundPool.OnLoadCompleteListener {
 
     fun play(id: Any, leftVolume: Float, rightVolume: Float, rate: Float): Int {
         return if (isEnabled && ids.containsKey(id)) {
-            pool!!.play(ids[id], leftVolume * volume, rightVolume * volume, 0, 0, rate)
+            pool!!.play(ids[id]!!, leftVolume * volume, rightVolume * volume, 0, 0, rate)
         } else {
             -1
         }
@@ -133,8 +135,4 @@ enum class Sample : SoundPool.OnLoadCompleteListener {
 
     override fun onLoadComplete(soundPool: SoundPool, sampleId: Int, status: Int) {}
 
-    companion object {
-
-        val MAX_STREAMS = 8
-    }
 }

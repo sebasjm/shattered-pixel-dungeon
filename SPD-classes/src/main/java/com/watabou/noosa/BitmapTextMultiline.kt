@@ -115,7 +115,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
                         vertices[14] = rect.left
                         vertices[15] = rect.bottom
 
-                        quads.put(vertices)
+                        quads!!.put(vertices)
                         realLength++
                     }
 
@@ -144,7 +144,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
         for (i in 0 until length) {
 
             val rect = font!!.get(word[i])
-            w += font!!.width(rect) + if (w > 0) font!!.tracking else 0
+            w += font!!.width(rect) + if (w > 0) font!!.tracking else 0f
             h = Math.max(h, font!!.height(rect))
         }
 
@@ -210,7 +210,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
 
                 x = lineWidth
 
-                lineWidth += (if (lineWidth > 0) font!!.tracking else 0) + w
+                lineWidth += (if (lineWidth > 0) font!!.tracking else 0f) + w
                 if (h > lineHeight) {
                     lineHeight = h
                 }
@@ -223,7 +223,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
             } else {
 
                 x = lineWidth
-                lineWidth += (if (lineWidth > 0) font!!.tracking else 0) + w
+                lineWidth += (if (lineWidth > 0) font!!.tracking else 0f) + w
             }
         }
 
@@ -267,7 +267,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
         }
 
         private fun append(str: String, width: Float) {
-            curLineWidth += (if (curLineWidth > 0) font!!.tracking else 0) + width
+            curLineWidth += (if (curLineWidth > 0) font!!.tracking else 0f) + width
             curLine!!.append(str)
         }
 
@@ -309,7 +309,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
                 newLine("", 0f)
             }
 
-            return lines
+            return lines!!
         }
     }
 

@@ -51,7 +51,7 @@ object TextureCache {
 
         if (all.containsKey(key)) {
 
-            return all[key]
+            return all[key]!!
 
         } else {
 
@@ -72,7 +72,7 @@ object TextureCache {
 
         if (all.containsKey(key)) {
 
-            return all[key]
+            return all[key]!!
 
         } else {
 
@@ -110,7 +110,7 @@ object TextureCache {
 
         if (all.containsKey(src)) {
 
-            return all[src]
+            return all[src]!!
 
         } else if (src is SmartTexture) {
 
@@ -118,7 +118,7 @@ object TextureCache {
 
         } else {
 
-            val tx = SmartTexture(getBitmap(src))
+            val tx = SmartTexture(getBitmap(src)!!)
             all[src] = tx
             return tx
         }

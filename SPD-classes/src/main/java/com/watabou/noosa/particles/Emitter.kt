@@ -50,7 +50,7 @@ open class Emitter : Group() {
     protected var count: Int = 0
     protected var time: Float = 0.toFloat()
 
-    protected var factory: Factory
+    protected var factory: Factory? = null
 
     fun pos(p: PointF) {
         pos(p.x, p.y, 0f, 0f)
@@ -118,20 +118,20 @@ open class Emitter : Group() {
 
     protected open fun emit(index: Int) {
         if (target == null) {
-            factory.emit(
+            factory!!.emit(
                     this,
                     index,
                     x + Random.Float(width),
                     y + Random.Float(height))
         } else {
             if (fillTarget) {
-                factory.emit(
+                factory!!.emit(
                         this,
                         index,
                         target!!.x + Random.Float(target!!.width),
                         target!!.y + Random.Float(target!!.height))
             } else {
-                factory.emit(
+                factory!!.emit(
                         this,
                         index,
                         target!!.x + x + Random.Float(width),

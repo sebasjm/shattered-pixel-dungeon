@@ -49,7 +49,7 @@ class Vertexbuffer(vertices: FloatBuffer) {
 
     //For flagging an update with a subset of data changed
     @JvmOverloads
-    fun updateVertices(vertices: FloatBuffer? = vertices, start: Int = 0, end: Int = vertices!!.limit()) {
+    fun updateVertices(vertices: FloatBuffer? = this.vertices, start: Int = 0, end: Int = vertices!!.limit()) {
         this.vertices = vertices
 
         if (updateStart == -1)

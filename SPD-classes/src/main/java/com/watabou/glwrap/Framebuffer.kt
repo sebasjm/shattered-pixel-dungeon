@@ -33,7 +33,7 @@ class Framebuffer {
         id = buffers[0]
     }
 
-    private constructor(n: Int) {
+    private constructor(n: Int): this() {
 
     }
 

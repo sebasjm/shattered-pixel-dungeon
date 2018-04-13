@@ -54,7 +54,7 @@ object BitmapCache {
             layer = Layer()
             layers[layerName] = layer
         } else {
-            layer = layers[layerName]
+            layer = layers[layerName]!!
         }
 
         return if (layer.containsKey(assetName)) {
@@ -84,11 +84,11 @@ object BitmapCache {
             layer = Layer()
             layers[layerName] = layer
         } else {
-            layer = layers[layerName]
+            layer = layers[layerName]!!
         }
 
         if (layer.containsKey(resID)) {
-            return layer[resID]
+            return layer[resID]!!
         } else {
 
             val bmp = BitmapFactory.decodeResource(context!!.resources, resID)
@@ -100,7 +100,7 @@ object BitmapCache {
 
     fun clear(layerName: String) {
         if (layers.containsKey(layerName)) {
-            layers[layerName].clear()
+            layers[layerName]!!.clear()
             layers.remove(layerName)
         }
     }

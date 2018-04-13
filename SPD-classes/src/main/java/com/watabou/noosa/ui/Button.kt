@@ -27,7 +27,7 @@ import com.watabou.noosa.TouchArea
 
 open class Button : Component() {
 
-    protected var hotArea: TouchArea
+    protected var hotArea: TouchArea? = null
 
     protected var pressed: Boolean = false
     protected var pressTime: Float = 0.toFloat()
@@ -54,20 +54,21 @@ open class Button : Component() {
                 }
             }
         }
-        add(hotArea)
+        add(hotArea!!)
     }
 
     override fun update() {
         super.update()
 
-        hotArea.active = visible
+        hotArea!!.active = visible
 
         if (pressed) {
-            if ((pressTime += Game.elapsed) >= longClick) {
+            pressTime += Game.elapsed
+            if (pressTime >= longClick) {
                 pressed = false
                 if (onLongClick()) {
 
-                    hotArea.reset()
+                    hotArea!!.reset()
                     processed = true
                     onTouchUp()
 
@@ -86,10 +87,10 @@ open class Button : Component() {
     }
 
     override fun layout() {
-        hotArea.x = x
-        hotArea.y = y
-        hotArea.width = width
-        hotArea.height = height
+        hotArea!!.x = x
+        hotArea!!.y = y
+        hotArea!!.width = width
+        hotArea!!.height = height
     }
 
     companion object {

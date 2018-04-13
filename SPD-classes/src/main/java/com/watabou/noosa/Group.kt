@@ -28,7 +28,7 @@ import java.util.ArrayList
 
 open class Group : Gizmo() {
 
-    protected var members: ArrayList<Gizmo>? = null
+    protected var members: ArrayList<Gizmo?>? = null
 
     // Accessing it is a little faster,
     // than calling members.getSize()

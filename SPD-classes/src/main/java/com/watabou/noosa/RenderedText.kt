@@ -177,7 +177,7 @@ open class RenderedText : Image {
             if (textCache.containsKey(key)) {
                 r.cache = textCache[key]
                 r.texture = r.cache!!.texture
-                r.frame(r.cache!!.rect)
+                r.frame(r.cache!!.rect!!)
                 r.cache!!.activeTexts!!.add(r)
             } else {
 
@@ -212,7 +212,7 @@ open class RenderedText : Image {
                 r.cache!!.activeTexts!!.add(r)
 
                 cachedChars += r.cache!!.length
-                textCache["text:" + r.size + " " + r.text] = r.cache
+                textCache["text:" + r.size + " " + r.text] = r.cache!!
 
                 if (cachedChars >= GC_TRIGGER) {
                     runGC()

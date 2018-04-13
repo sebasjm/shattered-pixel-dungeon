@@ -29,10 +29,10 @@ import com.watabou.utils.RectF
 
 import java.nio.FloatBuffer
 
-open class Image() : Visual(0, 0, 0, 0) {
+open class Image() : Visual(0f, 0f, 0f, 0f) {
 
     var texture: SmartTexture? = null
-    protected var frame: RectF
+    protected var frame: RectF? = null
 
     var flipHorizontal: Boolean = false
     var flipVertical: Boolean = false
@@ -81,12 +81,12 @@ open class Image() : Visual(0, 0, 0, 0) {
     }
 
     fun frame(): RectF {
-        return RectF(frame)
+        return RectF(frame!!)
     }
 
     fun copy(other: Image) {
         texture = other.texture
-        frame = RectF(other.frame)
+        frame = RectF(other.frame!!)
 
         width = other.width
         height = other.height
@@ -98,27 +98,27 @@ open class Image() : Visual(0, 0, 0, 0) {
     protected open fun updateFrame() {
 
         if (flipHorizontal) {
-            vertices[2] = frame.right
-            vertices[6] = frame.left
-            vertices[10] = frame.left
-            vertices[14] = frame.right
+            vertices[2] = frame!!.right
+            vertices[6] = frame!!.left
+            vertices[10] = frame!!.left
+            vertices[14] = frame!!.right
         } else {
-            vertices[2] = frame.left
-            vertices[6] = frame.right
-            vertices[10] = frame.right
-            vertices[14] = frame.left
+            vertices[2] = frame!!.left
+            vertices[6] = frame!!.right
+            vertices[10] = frame!!.right
+            vertices[14] = frame!!.left
         }
 
         if (flipVertical) {
-            vertices[3] = frame.bottom
-            vertices[7] = frame.bottom
-            vertices[11] = frame.top
-            vertices[15] = frame.top
+            vertices[3] = frame!!.bottom
+            vertices[7] = frame!!.bottom
+            vertices[11] = frame!!.top
+            vertices[15] = frame!!.top
         } else {
-            vertices[3] = frame.top
-            vertices[7] = frame.top
-            vertices[11] = frame.bottom
-            vertices[15] = frame.bottom
+            vertices[3] = frame!!.top
+            vertices[7] = frame!!.top
+            vertices[11] = frame!!.bottom
+            vertices[15] = frame!!.bottom
         }
 
         dirty = true
@@ -169,7 +169,7 @@ open class Image() : Visual(0, 0, 0, 0) {
                 rm, gm, bm, am,
                 ra, ga, ba, aa)
 
-        script.drawQuad(buffer)
+        script.drawQuad(buffer!!)
 
     }
 

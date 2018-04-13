@@ -22,6 +22,7 @@
 package com.watabou.noosa
 
 import com.watabou.utils.RectF
+import java.util.*
 
 open class MovieClip : Image {
 
@@ -58,13 +59,13 @@ open class MovieClip : Image {
             frameTimer += Game.elapsed
             while (frameTimer > curAnim!!.delay) {
                 frameTimer -= curAnim!!.delay
-                if (curFrame == curAnim!!.frames.size - 1) {
+                if (curFrame == curAnim!!.frames!!.size - 1) {
                     if (curAnim!!.looped) {
                         curFrame = 0
                     }
                     finished = true
                     if (listener != null) {
-                        listener!!.onComplete(curAnim)
+                        listener!!.onComplete(curAnim!!)
                         // This check can probably be removed
                         if (curAnim == null) {
                             return
@@ -77,7 +78,7 @@ open class MovieClip : Image {
             }
 
             if (curFrame != lastFrame) {
-                frame(curAnim!!.frames[curFrame])
+                frame(curAnim!!.frames!![curFrame]!!)
             }
 
         }
@@ -101,34 +102,34 @@ open class MovieClip : Image {
         frameTimer = 0f
 
         if (anim != null) {
-            frame(anim.frames[curFrame])
+            frame(anim.frames!![curFrame]!!)
         }
     }
 
     class Animation(fps: Int, var looped: Boolean) {
 
         var delay: Float = 0.toFloat()
-        var frames: Array<RectF>
+        var frames: Array<RectF?>? = null
 
         init {
             this.delay = 1f / fps
         }
 
-        fun frames(vararg frames: RectF): Animation {
-            this.frames = frames
+        fun frames(vararg frames: RectF?): Animation {
+            this.frames = frames.asList().toTypedArray()
             return this
         }
 
         fun frames(film: TextureFilm, vararg frames: Any): Animation {
             this.frames = arrayOfNulls(frames.size)
             for (i in frames.indices) {
-                this.frames[i] = film.get(frames[i])
+                this.frames!![i] = film.get(frames[i])
             }
             return this
         }
 
         fun clone(): Animation {
-            return Animation(Math.round(1 / delay), looped).frames(*frames)
+            return Animation(Math.round(1 / delay), looped).frames(*frames!!)
         }
     }
 

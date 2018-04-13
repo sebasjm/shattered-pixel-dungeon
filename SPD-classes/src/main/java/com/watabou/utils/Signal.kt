@@ -62,15 +62,15 @@ class Signal<T> @JvmOverloads constructor(private val stackMode: Boolean = false
     }
 
     @Synchronized
-    fun dispatch(t: T) {
+    fun dispatch(t: T?) {
 
-        val list = listeners.toTypedArray<Listener<*>>()
+        val list = listeners.toTypedArray()
 
         canceled = false
         for (listener in list) {
 
             if (listeners.contains(listener)) {
-                listener.onSignal(t)
+                listener.onSignal(t!!)
                 if (canceled) {
                     return
                 }
@@ -83,7 +83,7 @@ class Signal<T> @JvmOverloads constructor(private val stackMode: Boolean = false
         canceled = true
     }
 
-    interface Listener<T> {
+    interface Listener<in T> {
         fun onSignal(t: T)
     }
 }

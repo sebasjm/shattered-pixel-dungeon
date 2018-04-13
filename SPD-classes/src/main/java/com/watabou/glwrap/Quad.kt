@@ -95,7 +95,7 @@ object Quad {
             indices!!.position(0)
         }
 
-        return indices
+        return indices!!
     }
 
     fun fill(v: FloatArray,

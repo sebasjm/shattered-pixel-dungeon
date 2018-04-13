@@ -21,6 +21,7 @@
 
 package com.watabou.utils
 
+import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Build
 
@@ -33,9 +34,9 @@ open class GameSettings {
 
         private fun get(): SharedPreferences {
             if (prefs == null) {
-                prefs = Game.instance!!.getPreferences(Game.MODE_PRIVATE)
+                prefs = Game.instance!!.getPreferences(Activity.MODE_PRIVATE)
             }
-            return prefs
+            return prefs!!
         }
 
         operator fun contains(key: String): Boolean {

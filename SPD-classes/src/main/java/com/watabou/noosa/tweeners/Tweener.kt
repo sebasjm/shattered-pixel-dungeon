@@ -24,7 +24,7 @@ package com.watabou.noosa.tweeners
 import com.watabou.noosa.Game
 import com.watabou.noosa.Gizmo
 
-abstract class Tweener(var target: Gizmo, var interval: Float) : Gizmo() {
+abstract class Tweener(var target: Gizmo?, var interval: Float) : Gizmo() {
     var elapsed: Float = 0.toFloat()
 
     var listener: Listener? = null
@@ -51,7 +51,7 @@ abstract class Tweener(var target: Gizmo, var interval: Float) : Gizmo() {
     }
 
     fun stop(complete: Boolean) {
-        elapsed = if (complete) interval else -1
+        elapsed = if (complete) interval else -1f
     }
 
     protected open fun onComplete() {

@@ -29,18 +29,21 @@ open class Scene : Group() {
     private var keyListener: Signal.Listener<Keys.Key>? = null
 
     open fun create() {
-        Keys.event.add(keyListener = Signal.Listener<Keys.Key> { key ->
-            if (Game.instance != null && key.pressed) {
-                when (key.code) {
-                    Keys.BACK -> onBackPressed()
-                    Keys.MENU -> onMenuPressed()
+        keyListener = object: Signal.Listener<Keys.Key> {
+            override fun onSignal(key: Keys.Key) {
+                if (Game.instance != null && key.pressed) {
+                    when (key.code) {
+                        Keys.BACK -> onBackPressed()
+                        Keys.MENU -> onMenuPressed()
+                    }
                 }
             }
-        })
+        }
+        Keys.event.add(keyListener!!)
     }
 
     override fun destroy() {
-        Keys.event.remove(keyListener)
+        Keys.event.remove(keyListener!!)
         super.destroy()
     }
 

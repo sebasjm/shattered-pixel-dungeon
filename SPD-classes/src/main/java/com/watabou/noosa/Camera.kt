@@ -87,7 +87,8 @@ open class Camera(var x: Int, var y: Int, var width: Int, var height: Int, var z
             focusOn(target!!.x + target!!.width / 2, target!!.y + target!!.height / 2)
         }
 
-        if ((shakeTime -= Game.elapsed) > 0) {
+        shakeTime -= Game.elapsed
+        if (shakeTime > 0) {
             val damping = shakeTime / shakeDuration
             shakeX = Random.Float(-shakeMagX, +shakeMagX) * damping
             shakeY = Random.Float(-shakeMagY, +shakeMagY) * damping
@@ -170,7 +171,7 @@ open class Camera(var x: Int, var y: Int, var width: Int, var height: Int, var z
         protected var invW2: Float = 0.toFloat()
         protected var invH2: Float = 0.toFloat()
 
-        var main: Camera
+        var main: Camera? = null
 
         fun reset(): Camera {
             return reset(createFullscreen(1f))
@@ -188,7 +189,8 @@ open class Camera(var x: Int, var y: Int, var width: Int, var height: Int, var z
             }
             all.clear()
 
-            return main = add(newCamera)
+            main = add(newCamera)
+            return main!!
         }
 
         @Synchronized

@@ -71,7 +71,7 @@ class Atlas(var tx: SmartTexture) {
     }
 
     operator fun get(key: Any): RectF {
-        return namedFrames[key]
+        return namedFrames[key]!!
     }
 
     fun width(rect: RectF): Float {

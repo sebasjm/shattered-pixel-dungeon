@@ -92,7 +92,7 @@ open class TextureFilm {
     }
 
     fun add(id: Any?, rect: RectF) {
-        frames[id] = rect
+        frames[id!!] = rect
     }
 
     fun add(id: Any, left: Int, top: Int, right: Int, bottom: Int) {
@@ -100,7 +100,7 @@ open class TextureFilm {
     }
 
     operator fun get(id: Any): RectF {
-        return frames[id]
+        return frames[id]!!
     }
 
     fun width(id: Any): Float {

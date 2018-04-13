@@ -29,7 +29,7 @@ import com.watabou.utils.RectF
 
 import java.nio.FloatBuffer
 
-open class NinePatch(tx: Any, x: Int, y: Int, w: Int, h: Int, protected var marginLeft: Int, protected var marginTop: Int, protected var marginRight: Int, protected var marginBottom: Int) : Visual(0, 0, 0, 0) {
+open class NinePatch(tx: Any, x: Int, y: Int, w: Int, h: Int, protected var marginLeft: Int, protected var marginTop: Int, protected var marginRight: Int, protected var marginBottom: Int) : Visual(0f, 0f, 0f, 0f) {
 
     var texture: SmartTexture
 
@@ -205,7 +205,7 @@ open class NinePatch(tx: Any, x: Int, y: Int, w: Int, h: Int, protected var marg
                 rm, gm, bm, am,
                 ra, ga, ba, aa)
 
-        script.drawQuadSet(buffer, 9, 0)
+        script.drawQuadSet(buffer!!, 9, 0)
 
     }
 

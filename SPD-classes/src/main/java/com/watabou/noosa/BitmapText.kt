@@ -32,10 +32,10 @@ import com.watabou.utils.RectF
 
 import java.nio.FloatBuffer
 
-open class BitmapText @JvmOverloads constructor(protected var text: String? = "", protected var font: Font? = null) : Visual(0, 0, 0, 0) {
+open class BitmapText @JvmOverloads constructor(protected var text: String? = "", protected var font: Font? = null) : Visual(0f, 0f, 0f, 0f) {
 
     protected var vertices = FloatArray(16)
-    protected var quads: FloatBuffer
+    protected var quads: FloatBuffer? = null
     protected var buffer: Vertexbuffer? = null
 
     var realLength: Int = 0
@@ -58,9 +58,9 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
 
         if (dirty) {
             updateVertices()
-            quads.limit(quads.position())
+            quads!!.limit(quads!!.position())
             if (buffer == null)
-                buffer = Vertexbuffer(quads)
+                buffer = Vertexbuffer(quads!!)
             else
                 buffer!!.updateVertices(quads)
         }
@@ -75,7 +75,7 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
         script.lighting(
                 rm, gm, bm, am,
                 ra, ga, ba, aa)
-        script.drawQuadSet(buffer, realLength, 0)
+        script.drawQuadSet(buffer!!, realLength, 0)
 
     }
 
@@ -105,13 +105,13 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
             if (rect == null) {
                 rect = null
             }
-            val w = font!!.width(rect)
+            val w = font!!.width(rect!!)
             val h = font!!.height(rect)
 
             vertices[0] = width
             vertices[1] = 0f
 
-            vertices[2] = rect!!.left
+            vertices[2] = rect.left
             vertices[3] = rect.top
 
             vertices[4] = width + w
@@ -132,7 +132,7 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
             vertices[14] = rect.left
             vertices[15] = rect.bottom
 
-            quads.put(vertices)
+            quads!!.put(vertices)
             realLength++
 
             width += w + font!!.tracking
@@ -230,7 +230,8 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
             var bottom = vh
 
             for (i in 0 until length) {
-                val rect = RectF(left, top, left += uw, bottom)
+                left += uw
+                val rect = RectF(left, top, left, bottom)
                 add(chars[i], rect)
                 if (left >= 1) {
                     left = 0f
@@ -313,7 +314,7 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
                 }
             }
 
-            baseLine = height(frames[chars[0]])
+            baseLine = height(frames[chars[0]]!!)
             lineHeight = baseLine
         }
 

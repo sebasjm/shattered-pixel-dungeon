@@ -24,15 +24,15 @@ package com.watabou.noosa.tweeners
 import com.watabou.noosa.Camera
 import com.watabou.utils.PointF
 
-class CameraScrollTweener(var camera: Camera, var end: PointF, time: Float) : Tweener(camera, time) {
+class CameraScrollTweener(var camera2: Camera, var end: PointF, time: Float) : Tweener(camera2, time) {
 
     var start: PointF
 
     init {
-        start = camera.scroll
+        start = camera2.scroll
     }
 
     override fun updateValues(progress: Float) {
-        camera.scroll = PointF.inter(start, end, progress)
+        camera2.scroll = PointF.inter(start, end, progress)
     }
 }
