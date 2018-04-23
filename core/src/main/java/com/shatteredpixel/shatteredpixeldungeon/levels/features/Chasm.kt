@@ -102,12 +102,14 @@ object Chasm {
         //The lower the hero's HP, the more bleed and the less upfront damage.
         //Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
         Buff.affect<Bleeding>(hero, Bleeding::class.java)!!.set(Math.round(hero.HT / (6f + 6f * (hero.HP / hero.HT.toFloat()))))
-        hero.damage(Math.max(hero.HP / 2, Random.NormalIntRange(hero.HP / 2, hero.HT / 4)), {
-            Badges.validateDeathFromFalling()
+        hero.damage(Math.max(hero.HP / 2, Random.NormalIntRange(hero.HP / 2, hero.HT / 4)), object: Hero.Doom {
+            override fun onDeath() {
+                Badges.validateDeathFromFalling()
 
-            Dungeon.fail(Chasm::class.java)
-            GLog.n(Messages.get(Chasm::class.java, "ondeath"))
-        } as Hero.Doom )
+                Dungeon.fail(Chasm::class.java)
+                GLog.n(Messages.get(Chasm::class.java, "ondeath"))
+            }
+        } )
     }
 
     fun mobFall(mob: Mob) {

@@ -175,7 +175,7 @@ class WndStartGame(slot: Int) : Window() {
         override fun update() {
             super.update()
             if (cl != GamesInProgress.selectedClass) {
-                if (cl == HeroClass.HUNTRESS && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)) {
+                if (cl == HeroClass.HUNTRESS && (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3) and REQUIRE_BADGE_FOR_HUNTRESS)) {
                     hero!!.brightness(0f)
                 } else {
                     hero!!.brightness(0.6f)
@@ -188,7 +188,7 @@ class WndStartGame(slot: Int) : Window() {
         override fun onClick() {
             super.onClick()
 
-            if (cl == HeroClass.HUNTRESS && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)) {
+            if (cl == HeroClass.HUNTRESS && (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3) and REQUIRE_BADGE_FOR_HUNTRESS)) {
                 Game.scene()!!.add(
                         WndMessage(Messages.get(WndStartGame::class.java, "huntress_unlock")))
             } else {
@@ -335,6 +335,8 @@ class WndStartGame(slot: Int) : Window() {
         private val BTN_SIZE = 20
         private val WIDTH = 120
         private val HEIGHT = 140
+
+        val REQUIRE_BADGE_FOR_HUNTRESS = false
     }
 
 }

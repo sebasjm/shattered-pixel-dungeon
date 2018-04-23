@@ -113,7 +113,7 @@ class MagesStaff() : MeleeWeapon() {
     private val StaffParticleFactory = object : Emitter.Factory() {
         override//reimplementing this is needed as instance creation of new staff particles must be within this class.
         fun emit(emitter: Emitter, index: Int, x: Float, y: Float) {
-            var c = emitter.getFirstAvailable(StaffParticle::class.java) as StaffParticle
+            var c = emitter.getFirstAvailable(StaffParticle::class.java) as StaffParticle?
             if (c == null) {
                 c = StaffParticle()
                 emitter.add(c)
