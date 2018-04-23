@@ -45,21 +45,23 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
     private var btnItem2: ItemButton? = null
     private var btnReforge: RedButton? = null
 
-    protected var itemSelector: WndBag.Listener =  { item: Item? ->
-        if (item != null) {
-            btnPressed!!.item(item)
+    protected var itemSelector: WndBag.Listener =  object : WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            if (item != null) {
+                btnPressed!!.item(item)
 
-            if (btnItem1!!.item != null && btnItem2!!.item != null) {
-                val result = Blacksmith.verify(btnItem1!!.item!!, btnItem2!!.item!!)
-                if (result != null) {
-                    GameScene.show(WndMessage(result))
-                    btnReforge!!.enable(false)
-                } else {
-                    btnReforge!!.enable(true)
+                if (btnItem1!!.item != null && btnItem2!!.item != null) {
+                    val result = Blacksmith.verify(btnItem1!!.item!!, btnItem2!!.item!!)
+                    if (result != null) {
+                        GameScene.show(WndMessage(result))
+                        btnReforge!!.enable(false)
+                    } else {
+                        btnReforge!!.enable(true)
+                    }
                 }
             }
         }
-    } as WndBag.Listener
+    }
 
     init {
 

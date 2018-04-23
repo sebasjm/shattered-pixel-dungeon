@@ -43,11 +43,13 @@ class Stylus : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private val itemSelector = { item: Item? ->
-        if (item != null) {
-            this@Stylus.inscribe(item as Armor)
+    private val itemSelector = object: WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            if (item != null) {
+                this@Stylus.inscribe(item as Armor)
+            }
         }
-    } as WndBag.Listener
+    }
 
     init {
         image = ItemSpriteSheet.STYLUS

@@ -137,7 +137,7 @@ abstract class Actor : Bundlable {
         @Synchronized
         fun fixTime() {
 
-            if (Dungeon.hero!! != null && all.contains(Dungeon.hero!!)) {
+            if (Dungeon.hero != null && all.contains(Dungeon.hero!!)) {
                 Statistics.duration += now
             }
 
@@ -234,7 +234,7 @@ abstract class Actor : Bundlable {
                         current = null
                     } else {
                         doNext = acting!!.act()
-                        if (doNext && (Dungeon.hero!! == null || !Dungeon.hero!!.isAlive)) {
+                        if (doNext && (Dungeon.hero == null || !Dungeon.hero!!.isAlive)) {
                             doNext = false
                             current = null
                         }

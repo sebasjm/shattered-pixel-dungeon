@@ -49,32 +49,34 @@ class SandalsOfNature : Artifact() {
 
     var seeds = ArrayList<Class<*>>()
 
-    protected var itemSelector: WndBag.Listener = { item: Item? ->
-        if (item != null && item is Plant.Seed) {
-            if (seeds.contains(item.javaClass)) {
-                GLog.w(Messages.get(SandalsOfNature::class.java, "already_fed"))
-            } else {
-                seeds.add(item.javaClass)
-
-                val hero = Dungeon.hero!!
-                hero!!.sprite!!.operate(hero.pos)
-                Sample.INSTANCE.play(Assets.SND_PLANT)
-                hero.busy()
-                hero.spend(2f)
-                if (seeds.size >= 3 + level() * 3) {
-                    seeds.clear()
-                    upgrade()
-                    if (level() >= 1 && level() <= 3) {
-                        GLog.p(Messages.get(SandalsOfNature::class.java, "levelup"))
-                    }
-
+    protected var itemSelector: WndBag.Listener = object : WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            if (item != null && item is Plant.Seed) {
+                if (seeds.contains(item.javaClass)) {
+                    GLog.w(Messages.get(SandalsOfNature::class.java, "already_fed"))
                 } else {
-                    GLog.i(Messages.get(SandalsOfNature::class.java, "absorb_seed"))
+                    seeds.add(item.javaClass)
+
+                    val hero = Dungeon.hero!!
+                    hero!!.sprite!!.operate(hero.pos)
+                    Sample.INSTANCE.play(Assets.SND_PLANT)
+                    hero.busy()
+                    hero.spend(2f)
+                    if (seeds.size >= 3 + level() * 3) {
+                        seeds.clear()
+                        upgrade()
+                        if (level() >= 1 && level() <= 3) {
+                            GLog.p(Messages.get(SandalsOfNature::class.java, "levelup"))
+                        }
+
+                    } else {
+                        GLog.i(Messages.get(SandalsOfNature::class.java, "absorb_seed"))
+                    }
+                    item.detach(hero.belongings.backpack)
                 }
-                item.detach(hero.belongings.backpack)
             }
         }
-    } as WndBag.Listener
+    }
 
     init {
         image = ItemSpriteSheet.ARTIFACT_SANDALS

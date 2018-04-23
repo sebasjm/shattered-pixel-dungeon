@@ -75,7 +75,7 @@ class InterlevelScene : PixelScene() {
                 scrollSpeed = 5f
             }
             InterlevelScene.Mode.DESCEND -> {
-                if (Dungeon.hero!! == null)
+                if (Dungeon.hero == null)
                     loadingDepth = 1
                 else
                     loadingDepth = Dungeon.depth + 1
@@ -266,7 +266,7 @@ class InterlevelScene : PixelScene() {
 
         Actor.fixTime()
 
-        if (Dungeon.hero!! == null) {
+        if (Dungeon.hero == null) {
             DriedRose.clearHeldGhostHero()
             Dungeon.init()
             if (noStory) {

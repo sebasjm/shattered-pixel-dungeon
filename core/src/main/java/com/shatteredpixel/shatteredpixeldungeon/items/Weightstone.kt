@@ -46,11 +46,13 @@ class Weightstone : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private val itemSelector = { item: Item? ->
-        if (item != null) {
-            GameScene.show(WndBalance(item as Weapon))
+    private val itemSelector = object: WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            if (item != null) {
+                GameScene.show(WndBalance(item as Weapon))
+            }
         }
-    } as WndBag.Listener
+    }
 
     init {
         image = ItemSpriteSheet.WEIGHT

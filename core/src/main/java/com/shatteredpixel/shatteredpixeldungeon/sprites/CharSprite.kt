@@ -527,7 +527,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
     }
 
     override fun draw() {
-        if (texture!! == null || !dirty && buffer == null)
+        if (texture == null || !dirty && buffer == null)
             return
 
         if (renderShadow) {

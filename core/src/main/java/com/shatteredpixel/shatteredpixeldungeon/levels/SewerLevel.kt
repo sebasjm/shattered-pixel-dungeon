@@ -135,7 +135,7 @@ open class SewerLevel : RegularLevel() {
             val p = DungeonTilemap.tileCenterToWorld(pos)
             pos(p.x - 2, p.y + 3, 4f, 0f)
 
-            pour(factory!!, 0.1f)
+            pour(FACTORY, 0.1f)
         }
 
         override fun update() {
@@ -157,7 +157,7 @@ open class SewerLevel : RegularLevel() {
 
         companion object {
 
-            private val factory = object : Emitter.Factory() {
+            val FACTORY = object : Emitter.Factory() {
 
                 override fun emit(emitter: Emitter, index: Int, x: Float, y: Float) {
                     val p = emitter.recycle(WaterParticle::class.java) as WaterParticle

@@ -59,7 +59,7 @@ class SecretGardenRoom : SecretRoom() {
             level.plant(WandOfRegrowth.Dewcatcher.Seed(), plantPos(level))
         }
 
-        var light: Foliage? = level.blobs[Foliage::class.java] as Foliage
+        var light: Foliage? = level.blobs[Foliage::class.java] as Foliage?
         if (light == null) {
             light = Foliage()
         }

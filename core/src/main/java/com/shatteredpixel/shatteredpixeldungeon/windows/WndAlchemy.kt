@@ -58,23 +58,25 @@ class WndAlchemy : Window() {
 
     private val btnCombine: RedButton
 
-    protected var itemSelector: WndBag.Listener = { item: Item? ->
-        synchronized(inputs) {
-            if (item != null && inputs[0] != null) {
-                for (i in inputs.indices) {
-                    if (inputs[i]!!.item == null) {
-                        if (item is Dart) {
-                            inputs[i]!!.item(item.detachAll(Dungeon.hero!!.belongings.backpack))
-                        } else {
-                            inputs[i]!!.item(item.detach(Dungeon.hero!!.belongings.backpack))
+    protected var itemSelector: WndBag.Listener = object : WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            synchronized(inputs) {
+                if (item != null && inputs[0] != null) {
+                    for (i in inputs.indices) {
+                        if (inputs[i]!!.item == null) {
+                            if (item is Dart) {
+                                inputs[i]!!.item(item.detachAll(Dungeon.hero!!.belongings.backpack))
+                            } else {
+                                inputs[i]!!.item(item.detach(Dungeon.hero!!.belongings.backpack))
+                            }
+                            break
                         }
-                        break
                     }
+                    updateState()
                 }
-                updateState()
             }
         }
-    } as WndBag.Listener
+    }
 
     init {
 

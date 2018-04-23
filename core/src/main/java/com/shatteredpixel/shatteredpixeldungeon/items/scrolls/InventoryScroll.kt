@@ -69,30 +69,32 @@ abstract class InventoryScroll : Scroll() {
     companion object {
 
         protected var identifiedByUse = false
-        protected var itemSelector: WndBag.Listener = lambda@ { item: Item? ->
-            //FIXME this safety check shouldn't be necessary
-            //it would be better to eliminate the curItem static variable.
-            if (Item.curItem!! !is InventoryScroll) {
-                return@lambda
+        protected var itemSelector: WndBag.Listener = object: WndBag.Listener {
+            override fun onSelect(item: Item?) {
+                //FIXME this safety check shouldn't be necessary
+                //it would be better to eliminate the curItem static variable.
+                if (Item.curItem!! !is InventoryScroll) {
+                    return
+                }
+
+                if (item != null) {
+
+                    (Item.curItem!! as InventoryScroll).onItemSelected(item)
+                    (Item.curItem!! as InventoryScroll).readAnimation()
+
+                    Sample.INSTANCE.play(Assets.SND_READ)
+                    Invisibility.dispel()
+
+                } else if (identifiedByUse && !(Item.curItem!! as Scroll).ownedByBook) {
+
+                    (Item.curItem!! as InventoryScroll).confirmCancelation()
+
+                } else if (!(Item.curItem!! as Scroll).ownedByBook) {
+
+                    Item.curItem!!.collect(Item.curUser!!.belongings.backpack)
+
+                }
             }
-
-            if (item != null) {
-
-                (Item.curItem!! as InventoryScroll).onItemSelected(item)
-                (Item.curItem!! as InventoryScroll).readAnimation()
-
-                Sample.INSTANCE.play(Assets.SND_READ)
-                Invisibility.dispel()
-
-            } else if (identifiedByUse && !(Item.curItem!! as Scroll).ownedByBook) {
-
-                (Item.curItem!! as InventoryScroll).confirmCancelation()
-
-            } else if (!(Item.curItem!! as Scroll).ownedByBook) {
-
-                Item.curItem!!.collect(Item.curUser!!.belongings.backpack)
-
-            }
-        } as WndBag.Listener
+        }
     }
 }

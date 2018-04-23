@@ -71,25 +71,27 @@ abstract class InventoryStone : Runestone() {
 
         val AC_USE = "USE"
 
-        protected var itemSelector: WndBag.Listener = lambda@ { item: Item? ->
-            //FIXME this safety check shouldn't be necessary
-            //it would be better to eliminate the curItem static variable.
-            if (Item.curItem!! !is InventoryStone) {
-                return@lambda
+        protected var itemSelector: WndBag.Listener = object : WndBag.Listener {
+            override fun onSelect(item: Item?) {
+                //FIXME this safety check shouldn't be necessary
+                //it would be better to eliminate the curItem static variable.
+                if (Item.curItem!! !is InventoryStone) {
+                    return
+                }
+
+                if (item != null) {
+
+                    (Item.curItem!! as InventoryStone).onItemSelected(item)
+                    (Item.curItem!! as InventoryStone).useAnimation()
+
+                    Sample.INSTANCE.play(Assets.SND_READ)
+                    Invisibility.dispel()
+
+                } else {
+                    Item.curItem!!.collect(Item.curUser!!.belongings.backpack)
+                }
             }
-
-            if (item != null) {
-
-                (Item.curItem!! as InventoryStone).onItemSelected(item)
-                (Item.curItem!! as InventoryStone).useAnimation()
-
-                Sample.INSTANCE.play(Assets.SND_READ)
-                Invisibility.dispel()
-
-            } else {
-                Item.curItem!!.collect(Item.curUser!!.belongings.backpack)
-            }
-        } as WndBag.Listener
+        }
     }
 
 }

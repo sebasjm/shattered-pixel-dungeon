@@ -128,7 +128,7 @@ class CityLevel : RegularLevel() {
             val p = DungeonTilemap.tileCenterToWorld(pos)
             pos(p.x - 6, p.y - 4, 12f, 12f)
 
-            pour(factory!!, 0.2f)
+            pour(FACTORY, 0.2f)
         }
 
         override fun update() {
@@ -140,7 +140,7 @@ class CityLevel : RegularLevel() {
 
         companion object {
 
-            private val factory = object : Emitter.Factory() {
+            val FACTORY = object : Emitter.Factory() {
 
                 override fun emit(emitter: Emitter, index: Int, x: Float, y: Float) {
                     val p = emitter.recycle(SmokeParticle::class.java) as SmokeParticle

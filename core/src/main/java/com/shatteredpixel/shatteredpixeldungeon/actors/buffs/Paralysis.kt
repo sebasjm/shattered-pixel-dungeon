@@ -47,7 +47,7 @@ class Paralysis : FlavourBuff() {
     }
 
     fun processDamage(damage: Int) {
-        if (target!! == null) return
+        if (target == null) return
         var resist = target!!.buff<ParalysisResist>(ParalysisResist::class.java)
         if (resist == null) {
             resist = Buff.affect(target!!, ParalysisResist::class.java)

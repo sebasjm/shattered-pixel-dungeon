@@ -58,7 +58,7 @@ class GardenRoom : SpecialRoom() {
             }
         }
 
-        var light: Foliage? = level.blobs[Foliage::class.java] as Foliage
+        var light: Foliage? = level.blobs[Foliage::class.java] as Foliage?
         if (light == null) {
             light = Foliage()
         }

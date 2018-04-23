@@ -257,21 +257,23 @@ class HornOfPlenty : Artifact() {
 
         private val STORED = "stored"
 
-        protected var itemSelector: WndBag.Listener = { item: Item? ->
-            if (item != null && item is Food) {
-                if (item is Blandfruit && item.potionAttrib == null) {
-                    GLog.w(Messages.get(HornOfPlenty::class.java, "reject"))
-                } else {
-                    val hero = Dungeon.hero!!
-                    hero!!.sprite!!.operate(hero.pos)
-                    hero.busy()
-                    hero.spend(Food.TIME_TO_EAT)
+        protected var itemSelector: WndBag.Listener = object: WndBag.Listener {
+            override fun onSelect(item: Item?) {
+                if (item != null && item is Food) {
+                    if (item is Blandfruit && item.potionAttrib == null) {
+                        GLog.w(Messages.get(HornOfPlenty::class.java, "reject"))
+                    } else {
+                        val hero = Dungeon.hero!!
+                        hero!!.sprite!!.operate(hero.pos)
+                        hero.busy()
+                        hero.spend(Food.TIME_TO_EAT)
 
-                    (Item.curItem!! as HornOfPlenty).gainFoodValue(item)
-                    item.detach(hero.belongings.backpack)
+                        (Item.curItem!! as HornOfPlenty).gainFoodValue(item)
+                        item.detach(hero.belongings.backpack)
+                    }
+
                 }
-
             }
-        } as WndBag.Listener
+        }
     }
 }

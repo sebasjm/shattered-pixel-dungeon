@@ -34,7 +34,7 @@ open class TextureFilm {
 
     private var texture: SmartTexture? = null
 
-    protected var frames = HashMap<Any, RectF>()
+    protected var frames = HashMap<Any?, RectF>()
 
     constructor(tx: Any) {
 
@@ -92,7 +92,7 @@ open class TextureFilm {
     }
 
     fun add(id: Any?, rect: RectF) {
-        frames[id!!] = rect
+        frames[id] = rect
     }
 
     fun add(id: Any, left: Int, top: Int, right: Int, bottom: Int) {

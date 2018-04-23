@@ -113,22 +113,25 @@ class BrokenSeal : Item() {
         //only to be used from the quickslot, for tutorial purposes mostly.
         val AC_INFO = "INFO_WINDOW"
 
-        protected var armorSelector: WndBag.Listener = { item: Item? ->
-            if (item != null && item is Armor) {
-                val armor = item
-                if (!armor.levelKnown) {
-                    GLog.w(Messages.get(BrokenSeal::class.java, "unknown_armor"))
-                } else if (armor.cursed || armor.level() < 0) {
-                    GLog.w(Messages.get(BrokenSeal::class.java, "degraded_armor"))
-                } else {
-                    GLog.p(Messages.get(BrokenSeal::class.java, "affix"))
-                    Dungeon.hero!!.sprite!!.operate(Dungeon.hero!!.pos)
-                    Sample.INSTANCE.play(Assets.SND_UNLOCK)
-                    armor.affixSeal(Item.curItem!! as BrokenSeal)
-                    Item.curItem!!.detach(Dungeon.hero!!.belongings.backpack)
-                    Badges.validateTutorial()
+        protected var armorSelector : WndBag.Listener = object: WndBag.Listener {
+            override fun onSelect(item: Item?) {
+                if (item != null && item is Armor) {
+                    val armor = item
+                    if (!armor.levelKnown) {
+                        GLog.w(Messages.get(BrokenSeal::class.java, "unknown_armor"))
+                    } else if (armor.cursed || armor.level() < 0) {
+                        GLog.w(Messages.get(BrokenSeal::class.java, "degraded_armor"))
+                    } else {
+                        GLog.p(Messages.get(BrokenSeal::class.java, "affix"))
+                        Dungeon.hero!!.sprite!!.operate(Dungeon.hero!!.pos)
+                        Sample.INSTANCE.play(Assets.SND_UNLOCK)
+                        armor.affixSeal(Item.curItem!! as BrokenSeal)
+                        Item.curItem!!.detach(Dungeon.hero!!.belongings.backpack)
+                        Badges.validateTutorial()
+                    }
                 }
             }
-        } as WndBag.Listener
+
+        }
     }
 }

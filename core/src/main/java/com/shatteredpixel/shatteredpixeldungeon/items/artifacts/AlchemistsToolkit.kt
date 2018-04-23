@@ -53,31 +53,33 @@ class AlchemistsToolkit : Artifact() {
     protected var inventoryTitle = "Select a potion"
     protected var mode: WndBag.Mode = WndBag.Mode.POTION
 
-    protected var itemSelector: WndBag.Listener = { item: Item? ->
-        if (item != null && item is Potion && item.isIdentified) {
-            if (!curGuess.contains(convertName(item.javaClass.getSimpleName()))) {
+    protected var itemSelector: WndBag.Listener = object: WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            if (item != null && item is Potion && item.isIdentified) {
+                if (!curGuess.contains(convertName(item.javaClass.getSimpleName()))) {
 
-                val hero = Dungeon.hero!!
-                hero!!.sprite!!.operate(hero.pos)
-                hero.busy()
-                hero.spend(2f)
-                Sample.INSTANCE.play(Assets.SND_DRINK)
+                    val hero = Dungeon.hero!!
+                    hero!!.sprite!!.operate(hero.pos)
+                    hero.busy()
+                    hero.spend(2f)
+                    Sample.INSTANCE.play(Assets.SND_DRINK)
 
-                item.detach(hero.belongings.backpack)
+                    item.detach(hero.belongings.backpack)
 
-                curGuess.add(convertName(item.javaClass.getSimpleName()))
-                if (curGuess.size == 3) {
-                    guessBrew()
+                    curGuess.add(convertName(item.javaClass.getSimpleName()))
+                    if (curGuess.size == 3) {
+                        guessBrew()
+                    } else {
+                        GLog.i("You mix the " + item.name() + " into your current brew.")
+                    }
                 } else {
-                    GLog.i("You mix the " + item.name() + " into your current brew.")
+                    GLog.w("Your current brew already contains that potion.")
                 }
-            } else {
-                GLog.w("Your current brew already contains that potion.")
+            } else if (item != null) {
+                GLog.w("You need to select an identified potion.")
             }
-        } else if (item != null) {
-            GLog.w("You need to select an identified potion.")
         }
-    } as WndBag.Listener
+    }
 
     init {
         image = ItemSpriteSheet.ARTIFACT_TOOLKIT

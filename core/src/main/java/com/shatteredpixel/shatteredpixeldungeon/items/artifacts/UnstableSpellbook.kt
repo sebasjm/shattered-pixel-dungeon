@@ -53,31 +53,33 @@ class UnstableSpellbook : Artifact() {
 
     protected var mode: WndBag.Mode = WndBag.Mode.SCROLL
 
-    protected var itemSelector: WndBag.Listener = lambda@ { item: Item? ->
-        if (item != null && item is Scroll && item.isIdentified) {
-            val hero = Dungeon.hero!!
-            var i = 0
-            while (i <= 1 && i < scrolls.size) {
-                if (scrolls[i] == item.javaClass) {
-                    hero!!.sprite!!.operate(hero.pos)
-                    hero.busy()
-                    hero.spend(2f)
-                    Sample.INSTANCE.play(Assets.SND_BURNING)
-                    hero.sprite!!.emitter().burst(ElmoParticle.FACTORY, 12)
+    protected var itemSelector: WndBag.Listener = object : WndBag.Listener  {
+        override fun onSelect(item: Item?) {
+            if (item != null && item is Scroll && item.isIdentified) {
+                val hero = Dungeon.hero!!
+                var i = 0
+                while (i <= 1 && i < scrolls.size) {
+                    if (scrolls[i] == item.javaClass) {
+                        hero!!.sprite!!.operate(hero.pos)
+                        hero.busy()
+                        hero.spend(2f)
+                        Sample.INSTANCE.play(Assets.SND_BURNING)
+                        hero.sprite!!.emitter().burst(ElmoParticle.FACTORY, 12)
 
-                    scrolls.removeAt(i)
-                    item.detach(hero.belongings.backpack)
+                        scrolls.removeAt(i)
+                        item.detach(hero.belongings.backpack)
 
-                    upgrade()
-                    GLog.i(Messages.get(UnstableSpellbook::class.java, "infuse_scroll"))
-                    return@lambda
+                        upgrade()
+                        GLog.i(Messages.get(UnstableSpellbook::class.java, "infuse_scroll"))
+                        return
+                    }
+                    i++
                 }
-                i++
-            }
-            GLog.w(Messages.get(UnstableSpellbook::class.java, "unable_scroll"))
-        } else if (item is Scroll && !item.isIdentified)
-            GLog.w(Messages.get(UnstableSpellbook::class.java, "unknown_scroll"))
-    } as WndBag.Listener
+                GLog.w(Messages.get(UnstableSpellbook::class.java, "unable_scroll"))
+            } else if (item is Scroll && !item.isIdentified)
+                GLog.w(Messages.get(UnstableSpellbook::class.java, "unknown_scroll"))
+        }
+    }
 
     init {
         image = ItemSpriteSheet.ARTIFACT_SPELLBOOK

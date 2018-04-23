@@ -437,7 +437,7 @@ class GameScene : PixelScene() {
 
     @Synchronized
     override fun update() {
-        if (Dungeon.hero!! == null || scene == null) {
+        if (Dungeon.hero == null || scene == null) {
             return
         }
 
@@ -863,7 +863,7 @@ class GameScene : PixelScene() {
         }
 
         internal fun cancel(): Boolean {
-            if (Dungeon.hero!! != null && (Dungeon.hero!!.curAction != null || Dungeon.hero!!.resting)) {
+            if (Dungeon.hero != null && (Dungeon.hero!!.curAction != null || Dungeon.hero!!.resting)) {
 
                 Dungeon.hero!!.curAction = null
                 Dungeon.hero!!.resting = false

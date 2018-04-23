@@ -215,7 +215,7 @@ open class ItemSprite : MovieClip {
     }
 
     override fun draw() {
-        if (texture!! == null || !dirty && buffer == null)
+        if (texture == null || !dirty && buffer == null)
             return
 
         if (renderShadow) {
