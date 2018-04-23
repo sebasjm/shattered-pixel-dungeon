@@ -86,7 +86,7 @@ open class Window @JvmOverloads constructor(protected var width: Int = 0, protec
                 camera!!.y / camera!!.zoom,
                 chrome.width(), chrome.height)
 
-        Keys.event.add(this)
+        Keys.event.add(this as Signal.Listener<Key?>)
     }
 
     open fun resize(w: Int, h: Int) {

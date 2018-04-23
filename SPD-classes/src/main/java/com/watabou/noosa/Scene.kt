@@ -39,7 +39,7 @@ open class Scene : Group() {
                 }
             }
         }
-        Keys.event.add(keyListener!!)
+        Keys.event.add(keyListener!! as Signal.Listener<Keys.Key?>)
     }
 
     override fun destroy() {

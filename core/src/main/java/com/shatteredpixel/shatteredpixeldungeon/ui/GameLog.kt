@@ -36,7 +36,7 @@ class GameLog : Component(), Signal.Listener<String> {
     private var lastColor: Int = 0
 
     init {
-        GLog.update.replace(this)
+        GLog.update.replace(this as Signal.Listener<String?>)
 
         recreateLines()
     }

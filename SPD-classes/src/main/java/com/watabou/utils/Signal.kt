@@ -25,12 +25,12 @@ import java.util.LinkedList
 
 class Signal<T> @JvmOverloads constructor(private val stackMode: Boolean = false) {
 
-    private val listeners = LinkedList<Signal.Listener<T>>()
+    private val listeners = LinkedList<Signal.Listener<T?>>()
 
     private var canceled: Boolean = false
 
     @Synchronized
-    fun add(listener: Listener<T>) {
+    fun add(listener: Listener<T?>) {
         if (!listeners.contains(listener)) {
             if (stackMode) {
                 listeners.addFirst(listener)
@@ -51,7 +51,7 @@ class Signal<T> @JvmOverloads constructor(private val stackMode: Boolean = false
     }
 
     @Synchronized
-    fun replace(listener: Listener<T>) {
+    fun replace(listener: Listener<T?>) {
         removeAll()
         add(listener)
     }
@@ -70,7 +70,7 @@ class Signal<T> @JvmOverloads constructor(private val stackMode: Boolean = false
         for (listener in list) {
 
             if (listeners.contains(listener)) {
-                listener.onSignal(t!!)
+                listener.onSignal(t)
                 if (canceled) {
                     return
                 }
