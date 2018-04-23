@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.watabou.noosa.Camera
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class RottingFistSprite : MobSprite() {
@@ -30,7 +31,7 @@ class RottingFistSprite : MobSprite() {
 
         texture(Assets.ROTTING)
 
-        val frames = TextureFilm(texture, 24, 17)
+        val frames = TextureFilm(texture!!, 24, 17)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 0, 0, 1)
@@ -44,7 +45,7 @@ class RottingFistSprite : MobSprite() {
         die = MovieClip.Animation(10, false)
         die!!.frames(frames, 0, 2, 3, 4)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun attack(cell: Int) {
@@ -61,7 +62,7 @@ class RottingFistSprite : MobSprite() {
             acc.set(0f)
             place(ch!!.pos)
 
-            Camera.main.shake(4f, 0.2f)
+            Camera.main!!.shake(4f, 0.2f)
         }
     }
 

@@ -74,7 +74,7 @@ class ItemStatusHandler<T : Item> {
     fun save(bundle: Bundle) {
         for (i in items!!.indices) {
             val itemName = items!![i].toString()
-            bundle.put(itemName + PFX_LABEL, itemLabels!![items!![i]])
+            bundle.put(itemName + PFX_LABEL, itemLabels!![items!![i]]!!)
             bundle.put(itemName + PFX_KNOWN, known!!.contains(items!![i]))
         }
     }
@@ -82,10 +82,10 @@ class ItemStatusHandler<T : Item> {
     fun saveSelectively(bundle: Bundle, itemsToSave: ArrayList<Item>) {
         val items = Arrays.asList(*this.items!!)
         for (item in itemsToSave) {
-            if (items.contains(item.javaClass)) {
-                val cls = items[items.indexOf(item.javaClass)]
+            if (items!!.contains(item.javaClass as Class<out T>)) {
+                val cls = items[items.indexOf(item.javaClass as Class<out T>)]
                 val itemName = cls.toString()
-                bundle.put(itemName + PFX_LABEL, itemLabels!![cls])
+                bundle.put(itemName + PFX_LABEL, itemLabels!![cls]!!)
                 bundle.put(itemName + PFX_KNOWN, known!!.contains(cls))
             }
         }
@@ -133,11 +133,11 @@ class ItemStatusHandler<T : Item> {
     }
 
     fun image(item: T): Int {
-        return labelImages!![label(item)]
+        return labelImages!![label(item)]!!
     }
 
     fun label(item: T): String {
-        return itemLabels!![item.javaClass]
+        return itemLabels!![item.javaClass]!!
     }
 
     fun isKnown(item: T): Boolean {

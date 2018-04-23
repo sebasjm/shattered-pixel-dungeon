@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor
@@ -35,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions
+import com.watabou.noosa.Group
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -77,18 +79,18 @@ class TimekeepersHourglass : Artifact() {
                 if (activeBuff is timeStasis) { //do nothing
                 } else {
                     activeBuff!!.detach()
-                    GLog.i(Messages.get(this, "deactivate"))
+                    GLog.i(Messages.get(this.javaClass, "deactivate"))
                 }
             } else if (charge <= 1)
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
             else if (cursed)
-                GLog.i(Messages.get(this, "cursed"))
+                GLog.i(Messages.get(this.javaClass, "cursed"))
             else
                 GameScene.show(
-                        object : WndOptions(Messages.get(this, "name"),
-                                Messages.get(this, "prompt"),
-                                Messages.get(this, "stasis"),
-                                Messages.get(this, "freeze")) {
+                        object : WndOptions(Messages.get(this.javaClass, "name"),
+                                Messages.get(this.javaClass, "prompt"),
+                                Messages.get(this.javaClass, "stasis"),
+                                Messages.get(this.javaClass, "freeze")) {
                             override fun onSelect(index: Int) {
                                 if (index == 0) {
                                     GLog.i(Messages.get(TimekeepersHourglass::class.java, "onstasis"))
@@ -96,14 +98,14 @@ class TimekeepersHourglass : Artifact() {
                                     Sample.INSTANCE.play(Assets.SND_TELEPORT)
 
                                     activeBuff = timeStasis()
-                                    activeBuff!!.attachTo(Dungeon.hero)
+                                    activeBuff!!.attachTo(Dungeon.hero!!)
                                 } else if (index == 1) {
                                     GLog.i(Messages.get(TimekeepersHourglass::class.java, "onfreeze"))
                                     GameScene.flash(0xFFFFFF)
                                     Sample.INSTANCE.play(Assets.SND_TELEPORT)
 
                                     activeBuff = timeFreeze()
-                                    activeBuff!!.attachTo(Dungeon.hero)
+                                    activeBuff!!.attachTo(Dungeon.hero!!)
                                     (activeBuff as timeFreeze).processTime(0f)
                                 }
                             }
@@ -146,13 +148,13 @@ class TimekeepersHourglass : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             if (!cursed) {
                 if (level() < levelCap)
-                    desc += "\n\n" + Messages.get(this, "desc_hint")
+                    desc += "\n\n" + Messages.get(this.javaClass, "desc_hint")
 
             } else
-                desc += "\n\n" + Messages.get(this, "desc_cursed")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_cursed")
         }
         return desc
     }
@@ -173,7 +175,7 @@ class TimekeepersHourglass : Artifact() {
         if (bundle.contains(BUFF)) {
             val buffBundle = bundle.getBundle(BUFF)
 
-            if (buffBundle.contains(timeFreeze.PARTIALTIME))
+            if (buffBundle.contains(PARTIALTIME))
                 activeBuff = timeFreeze()
             else
                 activeBuff = timeStasis()
@@ -185,7 +187,7 @@ class TimekeepersHourglass : Artifact() {
     inner class hourglassRecharge : Artifact.ArtifactBuff() {
         override fun act(): Boolean {
 
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (90f - (chargeCap - charge) * 3f)
 
@@ -198,7 +200,7 @@ class TimekeepersHourglass : Artifact() {
                     }
                 }
             } else if (cursed && Random.Int(10) == 0)
-                (target as Hero).spend(Actor.TICK)
+                (target!! as Hero).spend(Actor.TICK)
 
             updateQuickslot()
 
@@ -244,8 +246,8 @@ class TimekeepersHourglass : Artifact() {
         }
 
         override fun detach() {
-            if (target.invisible > 0)
-                target.invisible--
+            if (target!!.invisible > 0)
+                target!!.invisible--
             super.detach()
             activeBuff = null
             Dungeon.observe()
@@ -291,14 +293,14 @@ class TimekeepersHourglass : Artifact() {
             if (Dungeon.level != null)
                 for (mob in Dungeon.level!!.mobs.toTypedArray<Mob>())
                     mob.sprite!!.add(CharSprite.State.PARALYSED)
-            GameScene.freezeEmitters = true
+            Group.freezeEmitters = true
             return super.attachTo(target)
         }
 
         override fun detach() {
             for (mob in Dungeon.level!!.mobs.toTypedArray<Mob>())
                 mob.sprite!!.remove(CharSprite.State.PARALYSED)
-            GameScene.freezeEmitters = false
+            Group.freezeEmitters = false
 
             updateQuickslot()
             super.detach()
@@ -327,11 +329,6 @@ class TimekeepersHourglass : Artifact() {
             partialTime = bundle.getFloat(PARTIALTIME)
         }
 
-        companion object {
-
-            private val PRESSES = "presses"
-            private val PARTIALTIME = "partialtime"
-        }
     }
 
     class sandBag : Item() {
@@ -346,13 +343,13 @@ class TimekeepersHourglass : Artifact() {
                 hourglass.upgrade()
                 Sample.INSTANCE.play(Assets.SND_DEWDROP)
                 if (hourglass.level() == hourglass.levelCap)
-                    GLog.p(Messages.get(this, "maxlevel"))
+                    GLog.p(Messages.get(this.javaClass, "maxlevel"))
                 else
-                    GLog.i(Messages.get(this, "levelup"))
+                    GLog.i(Messages.get(this.javaClass, "levelup"))
                 hero.spendAndNext(Item.TIME_TO_PICK_UP)
                 return true
             } else {
-                GLog.w(Messages.get(this, "no_hourglass"))
+                GLog.w(Messages.get(this.javaClass, "no_hourglass"))
                 return false
             }
         }
@@ -363,6 +360,9 @@ class TimekeepersHourglass : Artifact() {
     }
 
     companion object {
+
+        private val PRESSES = "presses"
+        private val PARTIALTIME = "partialtime"
 
         val AC_ACTIVATE = "ACTIVATE"
 

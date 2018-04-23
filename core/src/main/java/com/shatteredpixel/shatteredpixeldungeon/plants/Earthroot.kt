@@ -45,13 +45,13 @@ class Earthroot : Plant() {
     override fun activate() {
         val ch = Actor.findChar(pos)
 
-        if (ch === Dungeon.hero) {
+        if (ch === Dungeon.hero!!) {
             Buff.affect<Armor>(ch!!, Armor::class.java)!!.level(ch.HT)
         }
 
         if (Dungeon.level!!.heroFOV[pos]) {
             CellEmitter.bottom(pos).start(EarthParticle.FACTORY, 0.05f, 8)
-            Camera.main.shake(1f, 0.4f)
+            Camera.main!!.shake(1f, 0.4f)
         }
     }
 
@@ -81,7 +81,7 @@ class Earthroot : Plant() {
         }
 
         override fun act(): Boolean {
-            if (target.pos != pos) {
+            if (target!!.pos != pos) {
                 detach()
             }
             spend(STEP)
@@ -105,7 +105,7 @@ class Earthroot : Plant() {
                 level = value
                 BuffIndicator.refreshHero()
             }
-            pos = target.pos
+            pos = target!!.pos
         }
 
         override fun icon(): Int {
@@ -113,15 +113,15 @@ class Earthroot : Plant() {
         }
 
         override fun tintIcon(icon: Image) {
-            FlavourBuff.greyIcon(icon, target.HT / 4f, level.toFloat())
+            FlavourBuff.greyIcon(icon, target!!.HT / 4f, level.toFloat())
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc", blocking(), level)
+            return Messages.get(this.javaClass, "desc", blocking(), level)
         }
 
         override fun storeInBundle(bundle: Bundle) {

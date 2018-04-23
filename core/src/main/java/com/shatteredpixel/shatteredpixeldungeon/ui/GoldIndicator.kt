@@ -36,9 +36,9 @@ class GoldIndicator : Component() {
     private var time: Float = 0.toFloat()
 
     override fun createChildren() {
-        tf = BitmapText(PixelScene.pixelFont)
+        tf = BitmapText(PixelScene.pixelFont!!)
         tf!!.hardlight(0xFFFF00)
-        add(tf)
+        add(tf!!)
 
         visible = false
     }

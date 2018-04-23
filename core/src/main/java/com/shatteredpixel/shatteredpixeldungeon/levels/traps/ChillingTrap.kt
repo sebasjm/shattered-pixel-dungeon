@@ -43,9 +43,9 @@ class ChillingTrap : Trap() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
         }
 
-        for (i in PathFinder.NEIGHBOURS9) {
+        for (i in PathFinder.NEIGHBOURS9!!) {
             if (!Dungeon.level!!.solid[pos + i]) {
-                GameScene.add(Blob.seed<Freezing>(pos + i, 10, Freezing::class.java))
+                GameScene.add(Blob.seed<Freezing>(pos + i, 10, Freezing::class.java)!!)
             }
         }
     }

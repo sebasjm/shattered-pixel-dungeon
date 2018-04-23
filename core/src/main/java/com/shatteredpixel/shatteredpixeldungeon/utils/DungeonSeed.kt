@@ -70,9 +70,9 @@ object DungeonSeed {
             if (i < interrim.length) {
                 var c = interrim[i]
                 if (c <= '9')
-                    c += 17.toChar() //convert 0-9 to A-J
+                    c += 17 //convert 0-9 to A-J
                 else
-                    c -= 22.toChar() //convert a-p to K-Z
+                    c -= 22 //convert a-p to K-Z
 
                 result += c
 

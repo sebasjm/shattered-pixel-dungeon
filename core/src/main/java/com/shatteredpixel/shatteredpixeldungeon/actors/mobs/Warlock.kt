@@ -59,7 +59,7 @@ class Warlock : Mob(), Callback {
         return Random.NormalIntRange(16, 22)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 25
     }
 
@@ -93,17 +93,17 @@ class Warlock : Mob(), Callback {
     private fun zap() {
         spend(TIME_TO_ZAP)
 
-        if (Char.hit(this, enemy, true)) {
-            if (enemy === Dungeon.hero && Random.Int(2) == 0) {
-                Buff.prolong<Weakness>(enemy, Weakness::class.java, Weakness.DURATION)
+        if (Char.hit(this, enemy!!, true)) {
+            if (enemy === Dungeon.hero!! && Random.Int(2) == 0) {
+                Buff.prolong<Weakness>(enemy!!, Weakness::class.java, Weakness.DURATION)
             }
 
             val dmg = Random.Int(12, 18)
             enemy!!.damage(dmg, this)
 
-            if (!enemy!!.isAlive && enemy === Dungeon.hero) {
+            if (!enemy!!.isAlive && enemy === Dungeon.hero!!) {
                 Dungeon.fail(javaClass)
-                GLog.n(Messages.get(this, "bolt_kill"))
+                GLog.n(Messages.get(this.javaClass, "bolt_kill"))
             }
         } else {
             enemy!!.sprite!!.showStatus(CharSprite.NEUTRAL, enemy!!.defenseVerb())

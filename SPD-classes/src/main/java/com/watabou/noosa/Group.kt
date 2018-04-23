@@ -97,7 +97,8 @@ open class Group : Gizmo() {
     }
 
     @Synchronized
-    fun add(g: Gizmo): Gizmo {
+    fun add(g: Gizmo?): Gizmo {
+        g!!
 
         if (g.parent === this) {
             return g

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
@@ -52,9 +53,9 @@ class UnstableSpellbook : Artifact() {
 
     protected var mode: WndBag.Mode = WndBag.Mode.SCROLL
 
-    protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+    protected var itemSelector: WndBag.Listener = lambda@ { item: Item? ->
         if (item != null && item is Scroll && item.isIdentified) {
-            val hero = Dungeon.hero
+            val hero = Dungeon.hero!!
             var i = 0
             while (i <= 1 && i < scrolls.size) {
                 if (scrolls[i] == item.javaClass) {
@@ -69,14 +70,14 @@ class UnstableSpellbook : Artifact() {
 
                     upgrade()
                     GLog.i(Messages.get(UnstableSpellbook::class.java, "infuse_scroll"))
-                    return@Listener
+                    return@lambda
                 }
                 i++
             }
             GLog.w(Messages.get(UnstableSpellbook::class.java, "unable_scroll"))
         } else if (item is Scroll && !item.isIdentified)
             GLog.w(Messages.get(UnstableSpellbook::class.java, "unknown_scroll"))
-    }
+    } as WndBag.Listener
 
     init {
         image = ItemSpriteSheet.ARTIFACT_SPELLBOOK
@@ -93,11 +94,11 @@ class UnstableSpellbook : Artifact() {
     init {
 
         val scrollClasses = Generator.Category.SCROLL.classes
-        val probs = Generator.Category.SCROLL.probs.clone() //array of primitives, clone gives deep copy.
+        val probs = Generator.Category.SCROLL.probs!!.clone() //array of primitives, clone gives deep copy.
         var i = Random.chances(probs)
 
         while (i != -1) {
-            scrolls.add(scrollClasses[i])
+            scrolls.add(scrollClasses!![i])
             probs[i] = 0f
 
             i = Random.chances(probs)
@@ -120,13 +121,13 @@ class UnstableSpellbook : Artifact() {
         if (action == AC_READ) {
 
             if (hero.buff<Blindness>(Blindness::class.java) != null)
-                GLog.w(Messages.get(this, "blinded"))
+                GLog.w(Messages.get(this.javaClass, "blinded"))
             else if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge == 0)
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
             else if (cursed)
-                GLog.i(Messages.get(this, "cursed"))
+                GLog.i(Messages.get(this.javaClass, "cursed"))
             else {
                 charge--
 
@@ -155,7 +156,7 @@ class UnstableSpellbook : Artifact() {
             }
 
         } else if (action == AC_ADD) {
-            GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"))
+            GameScene.selectItem(itemSelector, mode, Messages.get(this.javaClass, "prompt"))
         }
     }
 
@@ -176,13 +177,13 @@ class UnstableSpellbook : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             if (cursed) {
-                desc += "\n\n" + Messages.get(this, "desc_cursed")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_cursed")
             }
 
             if (level() < levelCap && scrolls.size > 0) {
-                desc += "\n\n" + Messages.get(this, "desc_index")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_index")
                 desc += "\n" + "_" + Messages.get(scrolls[0], "name") + "_"
                 if (scrolls.size > 1)
                     desc += "\n" + "_" + Messages.get(scrolls[1], "name") + "_"
@@ -190,7 +191,7 @@ class UnstableSpellbook : Artifact() {
         }
 
         if (level() > 0) {
-            desc += "\n\n" + Messages.get(this, "desc_empowered")
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_empowered")
         }
 
         return desc
@@ -204,12 +205,12 @@ class UnstableSpellbook : Artifact() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         scrolls.clear()
-        Collections.addAll<Class>(scrolls, *bundle.getClassArray(SCROLLS)!!)
+        Collections.addAll<Class<*>>(scrolls, *bundle.getClassArray(SCROLLS)!!)
     }
 
     inner class bookRecharge : Artifact.ArtifactBuff() {
         override fun act(): Boolean {
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (160f - (chargeCap - charge) * 15f)
 

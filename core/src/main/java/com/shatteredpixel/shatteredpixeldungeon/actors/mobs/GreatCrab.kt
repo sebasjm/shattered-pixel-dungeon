@@ -66,14 +66,14 @@ class GreatCrab : Crab() {
         //crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
         //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
         if (enemySeen && state !== SLEEPING && paralysed == 0 && (src is Wand || src is Char)) {
-            GLog.n(Messages.get(this, "noticed"))
-            sprite!!.showStatus(CharSprite.NEUTRAL, Messages.get(this, "blocked"))
+            GLog.n(Messages.get(this.javaClass, "noticed"))
+            sprite!!.showStatus(CharSprite.NEUTRAL, Messages.get(this.javaClass, "blocked"))
         } else {
             super.damage(dmg, src)
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
 
         Ghost.Quest.process()

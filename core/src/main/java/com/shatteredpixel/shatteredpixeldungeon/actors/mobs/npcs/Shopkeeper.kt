@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle
@@ -87,10 +89,12 @@ open class Shopkeeper : NPC() {
             return GameScene.selectItem(itemSelector, WndBag.Mode.FOR_SALE, Messages.get(Shopkeeper::class.java, "sell"))
         }
 
-        private val itemSelector = WndBag.Listener { item ->
-            if (item != null) {
-                val parentWnd = sell()
-                GameScene.show(WndTradeItem(item, parentWnd))
+        private val itemSelector = object : WndBag.Listener {
+            override fun onSelect(item: Item?) {
+                if (item != null) {
+                    val parentWnd = sell()
+                    GameScene.show(WndTradeItem(item, parentWnd))
+                }
             }
         }
     }

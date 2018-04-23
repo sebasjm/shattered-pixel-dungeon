@@ -172,7 +172,7 @@ open class NoosaScript : Script() {
     fun camera(camera: Camera?) {
         var camera = camera
         if (camera == null) {
-            camera = Camera.main
+            camera = Camera.main!!
         }
         if (camera !== lastCamera && camera!!.matrix != null) {
             lastCamera = camera

@@ -24,11 +24,14 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
+import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite
+import com.watabou.utils.Callback
 
 import java.util.ArrayList
 
@@ -87,29 +90,29 @@ class Boomerang : MissileWeapon() {
     }
 
     public override fun rangedHit(enemy: Char, cell: Int) {
-        circleBack(cell, Item.curUser)
+        circleBack(cell, Item.curUser!!)
     }
 
     override fun rangedMiss(cell: Int) {
-        circleBack(cell, Item.curUser)
+        circleBack(cell, Item.curUser!!)
     }
 
     private fun circleBack(from: Int, owner: Hero) {
 
-        (Item.curUser.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(from, owner.sprite, Item.curItem, null)
+        (Item.curUser!!.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(from, owner.sprite!!, Item.curItem!!, {} as Callback)
 
         if (throwEquiped) {
             owner.belongings.weapon = this
             owner.spend(-KindOfWeapon.TIME_TO_EQUIP)
             Dungeon.quickslot.replacePlaceholder(this)
             updateQuickslot()
-        } else if (!collect(Item.curUser.belongings.backpack)) {
+        } else if (!collect(Item.curUser!!.belongings.backpack)) {
             Dungeon.level!!.drop(this, owner.pos).sprite!!.drop()
         }
     }
 
     override fun cast(user: Hero?, dst: Int) {
-        throwEquiped = isEquipped(user) && !cursed
+        throwEquiped = isEquipped(user!!) && !cursed
         if (throwEquiped) Dungeon.quickslot.convertToPlaceholder(this)
         super.cast(user, dst)
     }

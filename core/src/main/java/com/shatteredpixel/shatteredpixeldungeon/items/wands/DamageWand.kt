@@ -50,8 +50,8 @@ abstract class DamageWand : Wand() {
 
     override fun statsDesc(): String {
         return if (levelKnown)
-            Messages.get(this, "stats_desc", min(), max())
+            Messages.get(this.javaClass, "stats_desc", min(), max())
         else
-            Messages.get(this, "stats_desc", min(0), max(0))
+            Messages.get(this.javaClass, "stats_desc", min(0), max(0))
     }
 }

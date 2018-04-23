@@ -71,12 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage
 import com.watabou.input.Touchscreen
-import com.watabou.noosa.Camera
-import com.watabou.noosa.ColorBlock
-import com.watabou.noosa.Image
-import com.watabou.noosa.NinePatch
-import com.watabou.noosa.RenderedText
-import com.watabou.noosa.TouchArea
+import com.watabou.noosa.*
 import com.watabou.noosa.ui.Component
 
 import java.util.ArrayList
@@ -89,10 +84,10 @@ class ChangesScene : PixelScene() {
     override fun create() {
         super.create()
 
-        val w = Camera.main.width
-        val h = Camera.main.height
+        val w = Camera.main!!.width
+        val h = Camera.main!!.height
 
-        val title = PixelScene.renderText(Messages.get(this, "title"), 9)
+        val title = PixelScene.renderText(Messages.get(this.javaClass, "title"), 9)
         title.hardlight(Window.TITLE_COLOR)
         title.x = (w - title.width()) / 2f
         title.y = (16 - title.baseLine()) / 2f
@@ -100,7 +95,7 @@ class ChangesScene : PixelScene() {
         add(title)
 
         val btnExit = ExitButton()
-        btnExit.setPos(Camera.main.width - btnExit.width(), 0f)
+        btnExit.setPos(Camera.main!!.width - btnExit.width(), 0f)
         add(btnExit)
 
         val panel = Chrome.get(Chrome.Type.TOAST)
@@ -135,12 +130,12 @@ class ChangesScene : PixelScene() {
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ The dwarf king is now immune to blindness\n" +
                         "\n" +
                         "_-_ Made adjustments to sending gameplay data. Data use should be slightly reduced."))
 
-        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this.javaClass, "bugfixes"),
                 "Fixed (caused by 0.6.4):\n" +
                         "_-_ Various bugs caused by new loading animation\n" +
                         "_-_ Unique items being lost on ankh revive\n" +
@@ -150,14 +145,14 @@ class ChangesScene : PixelScene() {
                         "_-_ Rare cases where music wouldn't play\n" +
                         "_-_ Unstable enchant not being able to activate venom"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this.javaClass, "language"),
                 "Updated Translations"))
 
         changes = ChangeInfo("v0.6.4", true, "")
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
-        changes = ChangeInfo(Messages.get(this, "new"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "new"), false, null)
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
@@ -197,7 +192,7 @@ class ChangesScene : PixelScene() {
                         "\n" +
                         "The gauntlet is a tier 5 fast melee weapon, similar to the sai. Excellent for chaining combos or enchantments."))
 
-        changes = ChangeInfo(Messages.get(this, "changes"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "changes"), false, null)
         changes.hardlight(CharSprite.WARNING)
         infos.add(changes)
 
@@ -210,7 +205,7 @@ class ChangesScene : PixelScene() {
                         "\n" +
                         "_-_ Every hero now starts the game with an extra container."))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ It is now possible to back up game data using ADB backup on android 4.0+ and android auto-backup on android 6.0+. Runs in progress are not backed up to prevent cheating.\n" +
                         "\n" +
                         "_-_ Firebloom plants will no longer appear in garden rooms. Accidentally running into them is massively more harmful than any other plant.\n" +
@@ -223,7 +218,7 @@ class ChangesScene : PixelScene() {
                         "\n" +
                         "_-_ Bags are now unsellable"))
 
-        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this.javaClass, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Crashes involving corrupted mimics\n" +
                         "_-_ Various rare crash bugs\n" +
@@ -232,10 +227,10 @@ class ChangesScene : PixelScene() {
                         "_-_ Thrown weapons lost when used on sheep\n" +
                         "_-_ Warden gaining benefits from rotberry bush"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this.javaClass, "language"),
                 "Updated Translations"))
 
-        changes = ChangeInfo(Messages.get(this, "buffs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "buffs"), false, null)
         changes.hardlight(CharSprite.POSITIVE)
         infos.add(changes)
 
@@ -253,7 +248,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Charge speed increased by 20% at +0, scaling to 50% increased at +10\n" +
                         "_-_ Charge gain when discovering traps unchanged"))
 
-        changes = ChangeInfo(Messages.get(this, "nerfs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "nerfs"), false, null)
         changes.hardlight(CharSprite.NEGATIVE)
         infos.add(changes)
 
@@ -295,7 +290,7 @@ class ChangesScene : PixelScene() {
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
-        changes = ChangeInfo(Messages.get(this, "new"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "new"), false, null)
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
@@ -334,7 +329,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Now increases ranged weapon durability, instead of giving a chance to not consume them\n\n" +
                         "_-_ Now increases ranged weapon damage, scaling based on the weapon's initial damage."))
 
-        changes = ChangeInfo(Messages.get(this, "changes"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "changes"), false, null)
         changes.hardlight(CharSprite.WARNING)
         infos.add(changes)
 
@@ -354,7 +349,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Venom debuff is now corrosion debuff, functionality unchanged\n\n" +
                         "_-_ Battlemage now inflicts ooze with a staff of corrosion, instead of poison."))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Performance improvements to the fog of war & mind vision.\n\n" +
                         "_-_ Improved the consistency of how ranged traps pick targets.\n\n" +
                         "_-_ Weapons and armor can now be found upgraded and cursed. Overall curse chance unchanged.\n\n" +
@@ -362,7 +357,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Starting weapons can no longer appear in hero's remains\n\n" +
                         "_-_ The ghost hero is no longer unaffected by all buffs, and is also immune to corruption"))
 
-        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this.javaClass, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Various crash bugs\n" +
                         "_-_ Serious memory leaks on android 8.0+\n" +
@@ -375,12 +370,12 @@ class ChangesScene : PixelScene() {
                         "_-_ Items in the alchemy window rarely being lost\n" +
                         "_-_ Various minor visual bugs"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this.javaClass, "language"),
                 "In English:\n" +
                         "_-_ Fixed inconsistent text when equipping cursed artifacts\n\n" +
                         "Updated Translations"))
 
-        changes = ChangeInfo(Messages.get(this, "buffs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "buffs"), false, null)
         changes.hardlight(CharSprite.POSITIVE)
         infos.add(changes)
 
@@ -416,7 +411,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Glyph of obfuscation no longer reduces damage blocking, but is also less powerful.\n" +
                         "_-_ Glyph of entanglement now gives more herbal armor, and root duration decreases at higher armor levels."))
 
-        changes = ChangeInfo(Messages.get(this, "nerfs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "nerfs"), false, null)
         changes.hardlight(CharSprite.NEGATIVE)
         infos.add(changes)
 
@@ -442,7 +437,7 @@ class ChangesScene : PixelScene() {
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
-        changes = ChangeInfo(Messages.get(this, "new"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "new"), false, null)
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
@@ -506,7 +501,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Button background now dims as keys are collected, for added visual clarity."))
 
 
-        changes = ChangeInfo(Messages.get(this, "changes"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "changes"), false, null)
         changes.hardlight(CharSprite.WARNING)
         infos.add(changes)
 
@@ -524,7 +519,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Improved enemy emote visuals, they now appear more frequently and there is now one for losing a target.\n\n" +
                         "_-_ Enemies now always lose their target after being teleported."))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Buff icons can now be tinted, several buffs take advantage of this to better display their state.\n\n" +
                         "_-_ Wands that fire magical bolts now push on their detonation area, opening doors and trampling grass.\n\n" +
                         "_-_ Crystal chest rooms will now always have a different item type in each chest.\n\n" +
@@ -538,7 +533,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Improved older updates in the changes list.\n" +
                         "_-_ Game now mutes during phone calls on android 6.0+"))
 
-        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this.javaClass, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Various crash bugs\n" +
                         "_-_ Various exploits players could use to determine map shape\n" +
@@ -560,7 +555,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Game music not correctly pausing on android 2.2/2.3\n" +
                         "_-_ Game failing to save in rare cases"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this.javaClass, "language"),
                 "In English:\n" +
                         "_-_ Improved some common game log entries\n" +
                         "_-_ Fixed a typo when enemies die out of view\n" +
@@ -573,7 +568,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Added new language: _Turkish_\n" +
                         "_-_ New Language: _Czech_"))
 
-        changes = ChangeInfo(Messages.get(this, "buffs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "buffs"), false, null)
         changes.hardlight(CharSprite.POSITIVE)
         infos.add(changes)
 
@@ -602,7 +597,7 @@ class ChangesScene : PixelScene() {
                         "Potion of Frost buffed:\n" +
                         "_-_ Now creates a freezing field which lasts for several turns."))
 
-        changes = ChangeInfo(Messages.get(this, "nerfs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "nerfs"), false, null)
         changes.hardlight(CharSprite.NEGATIVE)
         infos.add(changes)
 
@@ -625,7 +620,7 @@ class ChangesScene : PixelScene() {
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
-        changes = ChangeInfo(Messages.get(this, "new"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "new"), false, null)
         changes.hardlight(Window.TITLE_COLOR)
         infos.add(changes)
 
@@ -661,7 +656,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Javelins\n" +
                         "_-_ Tomahawks"))
 
-        changes = ChangeInfo(Messages.get(this, "changes"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "changes"), false, null)
         changes.hardlight(CharSprite.WARNING)
         infos.add(changes)
 
@@ -690,7 +685,7 @@ class ChangesScene : PixelScene() {
                         "_-_ When drinking from the vial, the hero will now only drink as many drops as they need to reach full HP."))
         changes.addButton(ChangeButton(Image(Assets.STATUE, 0, 0, 12, 15), "AI Changes",
                 "_-_ Improvements to pathfinding. Characters are now more prone to take efficient paths to their targets, and will prefer to wait instead of taking a very inefficient path.\n\n" + "_-_ Characters will now more consistently decide who to attack based on distance and who they are being attacked by."))
-        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+        changes.addButton(ChangeButton(Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this.javaClass, "bugfixes"),
                 "Fixed:\n" +
                         "_-_ Issues with Android 7.0+ multi-window\n" +
                         "_-_ Rare stability issues on certain devices\n" +
@@ -711,7 +706,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Sleep-immune enemies being affected by magical sleep\n" +
                         "_-_ Sad Ghost being affected by corruption\n" +
                         "_-_ Switching places with the Sad Ghost over chasms causing the hero to fall"))
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Completely overhauled the changes scene (which you're currently reading!)\n" +
                         "_-_ Item and enemy spawn RNG is now more consistent. Should prevent things like finding 4 crabs on floor 3.\n" +
                         "_-_ The compass marker now points toward entrances after the amulet has been acquired.\n" +
@@ -723,7 +718,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Improved potion and scroll inventory icons\n" +
                         "_-_ Increased landscape width of some windows\n" +
                         "_-_ Un-IDed artifacts no longer display charge"))
-        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this.javaClass, "language"),
                 "Fixed in English:\n" +
                         "_-_ Missing capitalization in Prison Guard text\n" +
                         "_-_ Typo when trying a locked chest with no key\n" +
@@ -731,7 +726,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Added new Language: _Catalan_\n\n" +
                         "_-_ Various translation updates"))
 
-        changes = ChangeInfo(Messages.get(this, "buffs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "buffs"), false, null)
         changes.hardlight(CharSprite.POSITIVE)
         infos.add(changes)
 
@@ -755,7 +750,7 @@ class ChangesScene : PixelScene() {
         changes.addButton(ChangeButton(Icons.get(Icons.BACKPACK), "Inventory",
                 "_-_ Inventory space increased from 19 slots to 20 slots.\n\n" + "_-_ Gold indicator has been moved to the top-right of the inventory window to make room for the extra slot."))
 
-        changes = ChangeInfo(Messages.get(this, "nerfs"), false, null)
+        changes = ChangeInfo(Messages.get(this.javaClass, "nerfs"), false, null)
         changes.hardlight(CharSprite.NEGATIVE)
         infos.add(changes)
 
@@ -819,7 +814,7 @@ class ChangesScene : PixelScene() {
                         "_-_ self-damage no longer scales with max hp\n" +
                         "_-_ grants more charge at higher levels"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Visiting floor 21 before completing the imp quest no longer prevents his shop from spawning\n\n" +
                         "_-_ Floor 2 entry doors are now only hidden for new players\n\n" +
                         "_-_ Falling damage tweaked to be less random\n\n" +
@@ -857,7 +852,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Glyph of Antimagic magical damage resist reduced from 50% of armor to 33% of armor\n\n" +
                         "_-_ Glyph of Viscosity damage rate increased from 10% of deferred damage to 15%"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+        changes.addButton(ChangeButton(Icons.get(Icons.LANGS), Messages.get(this.javaClass, "language"),
                 "_-_ Added new Language: Esperanto\n" + "_-_ Added new Language: Indonesian\n"))
 
         //**********************
@@ -979,7 +974,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Extra reach weapons no longer penetrate\n" +
                         "_-_ Runic blade damage decreased"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Added a new journal button with key display\n" +
                         "_-_ Keys now exist in the journal, not inventory\n" +
                         "_-_ Improved donator menu button visuals\n" +
@@ -1029,7 +1024,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Upgrades now weaken curses\n" +
                         "_-_ Remove curse scrolls now affect 1 item"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "Class Balance:\n" +
                         "_-_ Huntress now starts with knuckleduster\n" +
                         "_-_ Assassin sneak bonus damage reduced\n" +
@@ -1084,7 +1079,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Combo is now easier to stack\n" +
                         "_-_ Combo now unlocks special finisher moves"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "Balance Tweaks:\n" +
                         "_-_ Spears can now reach enemies 1 tile away\n" +
                         "_-_ Wand of Blast Wave now pushes bosses less\n" +
@@ -1118,7 +1113,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Polish\n" +
                         "_-_ Spanish"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "Completely redesigned the text rendering system to support none-english characters\n\n" +
                         "New text system renders using either the default system font, or the original pixelated game font. None-latin languages must use system font.\n\n" +
                         "Balance Changes:\n" +
@@ -1146,7 +1141,7 @@ class ChangesScene : PixelScene() {
                         "- Rankings sync will come in future\n\n" +
                         "Shattered remains a 100% offline game if Google Play Games is not enabled"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "Gameplay Changes:\n" +
                         "- Tengu's maze is now different each time\n" +
                         "- Items no longer auto-pickup when enemies are near\n" +
@@ -1203,7 +1198,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Warden now heals 2 extra HP from dew \n" +
                         "_-_ Warlock completely overhauled"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Visual improvements from 1.9.1 source\n" +
                         "_-_ Improved golden UI for donators\n" +
                         "_-_ Fixed 'white line' graphical artifacts\n" +
@@ -1240,7 +1235,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Recent changes can now be viewed from the title screen\n" +
                         "_-_ Added a health bar for bosses"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "Balance changes:\n" +
                         "_-_ Ethereal chains now gain less charge the more charges they have\n" +
                         "_-_ Staff of regrowth grants more herbal healing\n" +
@@ -1293,7 +1288,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Wand recharge effects now give charge over time.\n" +
                         "_-_ Wands can now be cursed!"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "New Artifacts:\n" +
                         "_-_ Ethereal Chains (replaces wand of blink)\n" +
                         "_-_ Lloyd's Beacon (replaces wand of teleportation)\n" +
@@ -1349,7 +1344,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Added Merchant's Beacon.\n\n" +
                         "_-_ Added initials for IDed scrolls/potions."))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Going down stairs no longer increases hunger, going up still does.\n\n" +
                         "_-_ Many, many bugfixes.\n" +
                         "_-_ Some UI improvements.\n" +
@@ -1387,7 +1382,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Improved the effects of some blandfruit types\n" +
                         "_-_ Using throwing weapons now cancels stealth"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "_-_ Implemented a donation system in the Google Play version of Shattered\n\n" +
                         "_-_ Significantly increased the stability of the save system\n\n" +
                         "_-_ Increased the number of visible rankings to 11 from 6\n\n" +
@@ -1487,7 +1482,7 @@ class ChangesScene : PixelScene() {
                         "_-_ Ring of Evasion\n" +
                         "_-_ Ring of Haste"))
 
-        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+        changes.addButton(ChangeButton(Icons.get(Icons.PREFS), Messages.get(this.javaClass, "misc"),
                 "-Nerfed farming health potions from fly swarms.\n\n" +
                         "-Buffed crazed bandit and his drops.\n\n" +
                         "-Made Blandfruit more common.\n\n" +
@@ -1603,7 +1598,7 @@ class ChangesScene : PixelScene() {
         list.scrollTo(0f, 0f)
 
         val archs = Archs()
-        archs.setSize(Camera.main.width.toFloat(), Camera.main.height.toFloat())
+        archs.setSize(Camera.main!!.width.toFloat(), Camera.main!!.height.toFloat())
         addToBack(archs)
 
         fadeIn()
@@ -1613,7 +1608,7 @@ class ChangesScene : PixelScene() {
         ShatteredPixelDungeon.switchNoFade(TitleScene::class.java)
     }
 
-    private class ChangeInfo(title: String, private val major: Boolean, text: String?) : Component() {
+    private class ChangeInfo(title: String, val major: Boolean, text: String?) : Component() {
 
         protected var line: ColorBlock
 
@@ -1635,11 +1630,11 @@ class ChangesScene : PixelScene() {
                 add(line)
             }
 
-            add(this.title)
+            add(this.title!!)
 
             if (text != null && text != "") {
                 this.text = PixelScene.renderMultiline(text, 6)
-                add(this.text)
+                add(this.text!!)
             }
 
         }
@@ -1745,7 +1740,7 @@ class ChangesScene : PixelScene() {
         constructor(item: Item, message: String) : this(ItemSprite(item), item.name(), message) {}
 
         fun onClick() {
-            ShatteredPixelDungeon.scene()!!.add(ChangesWindow(Image(icon), title, message))
+            Game.scene()!!.add(ChangesWindow(Image(icon), title, message))
         }
 
         override fun layout() {

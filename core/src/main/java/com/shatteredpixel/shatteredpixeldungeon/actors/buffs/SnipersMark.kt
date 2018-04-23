@@ -45,11 +45,11 @@ class SnipersMark : FlavourBuff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     companion object {

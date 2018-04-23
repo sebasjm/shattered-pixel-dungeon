@@ -99,7 +99,7 @@ class CavesBossLevel : Level() {
 
         exit = space.left + space.width() / 2 + (space.top - 1) * width()
 
-        map[exit] = Terrain.LOCKED_EXIT
+        map!![exit] = Terrain.LOCKED_EXIT
 
         Painter.fill(this, ROOM_LEFT - 1, ROOM_TOP - 1,
                 ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL)
@@ -110,10 +110,10 @@ class CavesBossLevel : Level() {
                 ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.EMPTY_DECO)
 
         arenaDoor = Random.Int(ROOM_LEFT, ROOM_RIGHT) + (ROOM_BOTTOM + 1) * width()
-        map[arenaDoor] = Terrain.DOOR
+        map!![arenaDoor] = Terrain.DOOR
 
         entrance = Random.Int(ROOM_LEFT + 1, ROOM_RIGHT - 1) + Random.Int(ROOM_TOP + 1, ROOM_BOTTOM - 1) * width()
-        map[entrance] = Terrain.ENTRANCE
+        map!![entrance] = Terrain.ENTRANCE
 
         val patch = Patch.generate(width, height, 0.30f, 6, true)
         for (i in 0 until length()) {
@@ -124,7 +124,7 @@ class CavesBossLevel : Level() {
 
         for (i in 0 until length()) {
             if (map!![i] == Terrain.EMPTY && Random.Int(6) == 0) {
-                map[i] = Terrain.INACTIVE_TRAP
+                map!![i] = Terrain.INACTIVE_TRAP
                 val t = ToxicTrap().reveal()
                 t.active = false
                 setTrap(t, i)
@@ -147,7 +147,7 @@ class CavesBossLevel : Level() {
                     n++
                 }
                 if (Random.Int(8) <= n) {
-                    map[i] = Terrain.EMPTY_DECO
+                    map!![i] = Terrain.EMPTY_DECO
                 }
             }
         }
@@ -156,7 +156,7 @@ class CavesBossLevel : Level() {
             if (map!![i] == Terrain.WALL
                     && DungeonTileSheet.floorTile(map!![i + width()])
                     && Random.Int(3) == 0) {
-                map[i] = Terrain.WALL_DECO
+                map!![i] = Terrain.WALL_DECO
             }
         }
 
@@ -169,7 +169,7 @@ class CavesBossLevel : Level() {
 
     override fun createMobs() {}
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 
@@ -185,9 +185,9 @@ class CavesBossLevel : Level() {
     }
 
     override fun randomRespawnCell(): Int {
-        var cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
+        var cell = entrance + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         while (!passable[cell]) {
-            cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
+            cell = entrance + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         }
         return cell
     }
@@ -196,7 +196,7 @@ class CavesBossLevel : Level() {
 
         super.press(cell, hero)
 
-        if (!enteredArena && outsideEntraceRoom(cell) && hero === Dungeon.hero) {
+        if (!enteredArena && outsideEntraceRoom(cell) && hero === Dungeon.hero!!) {
 
             enteredArena = true
             seal()
@@ -224,7 +224,7 @@ class CavesBossLevel : Level() {
             Dungeon.observe()
 
             CellEmitter.get(arenaDoor).start(Speck.factory(Speck.ROCK), 0.07f, 10)
-            Camera.main.shake(3f, 0.7f)
+            Camera.main!!.shake(3f, 0.7f)
             Sample.INSTANCE.play(Assets.SND_ROCKS)
         }
     }

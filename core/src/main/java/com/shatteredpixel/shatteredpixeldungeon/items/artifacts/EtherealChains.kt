@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
@@ -54,17 +55,17 @@ class EtherealChains : Artifact() {
 
                 //chains cannot be used to go where it is impossible to walk to
                 PathFinder.buildDistanceMap(target, BArray.or(Dungeon.level!!.passable, Dungeon.level!!.avoid, null))
-                if (PathFinder.distance[Item.curUser.pos] == Integer.MAX_VALUE) {
+                if (PathFinder.distance!![Item.curUser!!.pos] == Integer.MAX_VALUE) {
                     GLog.w(Messages.get(EtherealChains::class.java, "cant_reach"))
                     return
                 }
 
-                val chain = Ballistica(Item.curUser.pos, target, Ballistica.STOP_TARGET)
+                val chain = Ballistica(Item.curUser!!.pos, target, Ballistica.STOP_TARGET)
 
                 if (Actor.findChar(chain.collisionPos!!) != null) {
-                    chainEnemy(chain, Item.curUser, Actor.findChar(chain.collisionPos!!)!!)
+                    chainEnemy(chain, Item.curUser!!, Actor.findChar(chain.collisionPos!!)!!)
                 } else {
-                    chainLocation(chain, Item.curUser)
+                    chainLocation(chain, Item.curUser!!)
                 }
 
             }
@@ -108,11 +109,11 @@ class EtherealChains : Artifact() {
                 QuickSlotButton.cancel()
 
             } else if (charge < 1) {
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
                 QuickSlotButton.cancel()
 
             } else if (cursed) {
-                GLog.w(Messages.get(this, "cursed"))
+                GLog.w(Messages.get(this.javaClass, "cursed"))
                 QuickSlotButton.cancel()
 
             } else {
@@ -126,7 +127,7 @@ class EtherealChains : Artifact() {
     private fun chainEnemy(chain: Ballistica, hero: Hero?, enemy: Char) {
 
         if (enemy.properties().contains(com.shatteredpixel.shatteredpixeldungeon.actors.Char.Property.IMMOVABLE)) {
-            GLog.w(Messages.get(this, "cant_pull"))
+            GLog.w(Messages.get(this.javaClass, "cant_pull"))
             return
         }
 
@@ -140,7 +141,7 @@ class EtherealChains : Artifact() {
         }
 
         if (bestPos == -1) {
-            GLog.i(Messages.get(this, "does_nothing"))
+            GLog.i(Messages.get(this.javaClass, "does_nothing"))
             return
         }
 
@@ -148,7 +149,7 @@ class EtherealChains : Artifact() {
 
         val chargeUse = Dungeon.level!!.distance(enemy.pos, pulledPos)
         if (chargeUse > charge) {
-            GLog.w(Messages.get(this, "no_charge"))
+            GLog.w(Messages.get(this.javaClass, "no_charge"))
             return
         } else {
             charge -= chargeUse
@@ -156,27 +157,27 @@ class EtherealChains : Artifact() {
         }
 
         hero!!.busy()
-        hero.sprite!!.parent!!.add(Chains(hero.sprite!!.center(), enemy.sprite!!.center(), Callback {
-            Actor.add(Pushing(enemy, enemy.pos, pulledPos, Callback { Dungeon.level!!.press(pulledPos, enemy, true) }))
+        hero.sprite!!.parent!!.add(Chains(hero.sprite!!.center(), enemy.sprite!!.center(), {
+            Actor.add(Pushing(enemy, enemy.pos, pulledPos, { Dungeon.level!!.press(pulledPos, enemy, true) } as Callback ))
             enemy.pos = pulledPos
             Dungeon.observe()
             GameScene.updateFog()
             hero.spendAndNext(1f)
-        }))
+        } as Callback ))
     }
 
     //pulls the hero along the chain to the collosionPos, if possible.
     private fun chainLocation(chain: Ballistica, hero: Hero?) {
 
         //don't pull if the collision spot is in a wall
-        if (Dungeon.level!!.solid[chain.collisionPos]) {
-            GLog.i(Messages.get(this, "inside_wall"))
+        if (Dungeon.level!!.solid[chain.collisionPos!!]) {
+            GLog.i(Messages.get(this.javaClass, "inside_wall"))
             return
         }
 
         //don't pull if there are no solid objects next to the pull location
         var solidFound = false
-        for (i in PathFinder.NEIGHBOURS8) {
+        for (i in PathFinder.NEIGHBOURS8!!) {
             if (Dungeon.level!!.solid[chain.collisionPos!! + i]) {
                 solidFound = true
                 break
@@ -199,13 +200,13 @@ class EtherealChains : Artifact() {
         }
 
         hero.busy()
-        hero.sprite!!.parent!!.add(Chains(hero.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), Callback {
-            Actor.add(Pushing(hero, hero.pos, newHeroPos, Callback { Dungeon.level!!.press(newHeroPos, hero) }))
+        hero.sprite!!.parent!!.add(Chains(hero.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), {
+            Actor.add(Pushing(hero, hero.pos, newHeroPos, { Dungeon.level!!.press(newHeroPos, hero) } as Callback ))
             hero.spendAndNext(1f)
             hero.pos = newHeroPos
             Dungeon.observe()
             GameScene.updateFog()
-        }))
+        } as Callback ))
     }
 
     override fun passiveBuff(): Artifact.ArtifactBuff? {
@@ -215,12 +216,12 @@ class EtherealChains : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             desc += "\n\n"
             if (cursed)
-                desc += Messages.get(this, "desc_cursed")
+                desc += Messages.get(this.javaClass, "desc_cursed")
             else
-                desc += Messages.get(this, "desc_equipped")
+                desc += Messages.get(this.javaClass, "desc_equipped")
         }
         return desc
     }
@@ -229,11 +230,11 @@ class EtherealChains : Artifact() {
 
         override fun act(): Boolean {
             val chargeTarget = 5 + level() * 2
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (40f - (chargeTarget - charge) * 2f)
             } else if (cursed && Random.Int(100) == 0) {
-                Buff.prolong<Cripple>(target, Cripple::class.java, 10f)
+                Buff.prolong<Cripple>(target!!, Cripple::class.java, 10f)
             }
 
             if (partialCharge >= 1) {
@@ -262,7 +263,7 @@ class EtherealChains : Artifact() {
 
             if (exp > 100 + level() * 50 && level() < levelCap) {
                 exp -= 100 + level() * 50
-                GLog.p(Messages.get(this, "levelup"))
+                GLog.p(Messages.get(this.javaClass, "levelup"))
                 upgrade()
             }
 

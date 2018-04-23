@@ -62,11 +62,11 @@ class QuickSlot {
         return -1
     }
 
-    fun isPlaceholder(slot: Int): Boolean? {
+    fun isPlaceholder(slot: Int): Boolean {
         return getItem(slot) != null && getItem(slot)!!.quantity() == 0
     }
 
-    fun isNonePlaceholder(slot: Int): Boolean? {
+    fun isNonePlaceholder(slot: Int): Boolean {
         return getItem(slot) != null && getItem(slot)!!.quantity() > 0
     }
 
@@ -81,7 +81,7 @@ class QuickSlot {
 
     fun replacePlaceholder(item: Item) {
         for (i in 0 until SIZE)
-            if (isPlaceholder(i)!! && item.isSimilar(getItem(i)))
+            if (isPlaceholder(i) && item.isSimilar(getItem(i)!!))
                 setSlot(i, item)
     }
 
@@ -99,7 +99,7 @@ class QuickSlot {
         val result = ArrayList<Item>()
         for (i in 0 until SIZE)
             if (getItem(i) != null && (!isPlaceholder(i))!!)
-                result.add(getItem(i))
+                result.add(getItem(i)!!)
 
         return Random.element(result)
     }
@@ -116,7 +116,7 @@ class QuickSlot {
 
         for (i in 0 until SIZE)
             if (isPlaceholder(i)!!) {
-                placeholders.add(getItem(i))
+                placeholders.add(getItem(i)!!)
                 placements[i] = true
             }
         bundle.put(PLACEHOLDERS, placeholders)

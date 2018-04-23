@@ -82,8 +82,8 @@ class Yog : Mob() {
         val fist2 = BurningFist()
 
         do {
-            fist1.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
-            fist2.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
+            fist1.pos = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
+            fist2.pos = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         } while (!Dungeon.level!!.passable[fist1.pos] || !Dungeon.level!!.passable[fist2.pos] || fist1.pos == fist2.pos)
 
         GameScene.add(fist1)
@@ -121,8 +121,8 @@ class Yog : Mob() {
 
         val spawnPoints = ArrayList<Int>()
 
-        for (i in PathFinder.NEIGHBOURS8.indices) {
-            val p = pos + PathFinder.NEIGHBOURS8[i]
+        for (i in PathFinder.NEIGHBOURS8!!.indices) {
+            val p = pos + PathFinder.NEIGHBOURS8!![i]
             if (Actor.findChar(p) == null && (Dungeon.level!!.passable[p] || Dungeon.level!!.avoid[p])) {
                 spawnPoints.add(p)
             }
@@ -147,7 +147,7 @@ class Yog : Mob() {
 
     override fun beckon(cell: Int) {}
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         for (mob in Dungeon.level!!.mobs.clone() as Iterable<Mob>) {
             if (mob is BurningFist || mob is RottingFist) {
@@ -159,13 +159,13 @@ class Yog : Mob() {
         Dungeon.level!!.drop(SkeletonKey(Dungeon.depth), pos).sprite!!.drop()
         super.die(cause)
 
-        yell(Messages.get(this, "defeated"))
+        yell(Messages.get(this.javaClass, "defeated"))
     }
 
     override fun notice() {
         super.notice()
         BossHealthBar.assignBoss(this)
-        yell(Messages.get(this, "notice"))
+        yell(Messages.get(this.javaClass, "notice"))
     }
 
     init {
@@ -204,7 +204,7 @@ class Yog : Mob() {
             properties.add(Char.Property.ACIDIC)
         }
 
-        override fun attackSkill(target: Char): Int {
+        override fun attackSkill(target: Char?): Int {
             return 36
         }
 
@@ -277,7 +277,7 @@ class Yog : Mob() {
             properties.add(Char.Property.FIERY)
         }
 
-        override fun attackSkill(target: Char): Int {
+        override fun attackSkill(target: Char?): Int {
             return 36
         }
 
@@ -306,7 +306,7 @@ class Yog : Mob() {
                     enemy.sprite!!.bloodBurstA(sprite!!.center(), dmg)
                     enemy.sprite!!.flash()
 
-                    if (!enemy.isAlive && enemy === Dungeon.hero) {
+                    if (!enemy.isAlive && enemy === Dungeon.hero!!) {
                         Dungeon.fail(javaClass)
                         GLog.n(Messages.get(Char::class.java, "kill", name))
                     }
@@ -324,8 +324,8 @@ class Yog : Mob() {
 
         public override fun act(): Boolean {
 
-            for (i in PathFinder.NEIGHBOURS9.indices) {
-                GameScene.add(Blob.seed<Fire>(pos + PathFinder.NEIGHBOURS9[i], 2, Fire::class.java))
+            for (i in PathFinder.NEIGHBOURS9!!.indices) {
+                GameScene.add(Blob.seed<Fire>(pos + PathFinder.NEIGHBOURS9!![i], 2, Fire::class.java)!!)
             }
 
             return super.act()
@@ -365,7 +365,7 @@ class Yog : Mob() {
             properties.add(Char.Property.DEMONIC)
         }
 
-        override fun attackSkill(target: Char): Int {
+        override fun attackSkill(target: Char?): Int {
             return 30
         }
 

@@ -25,14 +25,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
-import com.watabou.gltextures.SmartTexture
 import com.watabou.gltextures.TextureCache
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Image
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
 import com.watabou.utils.PointF
-import com.watabou.utils.RectF
 
 class HeroSprite : CharSprite() {
 
@@ -41,9 +40,9 @@ class HeroSprite : CharSprite() {
 
     init {
 
-        link(Dungeon.hero)
+        link(Dungeon.hero!!)
 
-        texture(Dungeon.hero!!.heroClass.spritesheet())
+        texture(Dungeon.hero!!.heroClass.spritesheet()!!)
         updateArmor()
 
         if (ch!!.isAlive)
@@ -84,7 +83,7 @@ class HeroSprite : CharSprite() {
 
     override fun place(p: Int) {
         super.place(p)
-        Camera.main.target = this
+        Camera.main!!.target = this
     }
 
     override fun move(from: Int, to: Int) {
@@ -92,7 +91,7 @@ class HeroSprite : CharSprite() {
         if (ch!!.flying) {
             play(fly)
         }
-        Camera.main.target = this
+        Camera.main!!.target = this
     }
 
     override fun jump(from: Int, to: Int, callback: Callback) {
@@ -101,10 +100,10 @@ class HeroSprite : CharSprite() {
     }
 
     fun read() {
-        animCallback = Callback {
+        animCallback =  {
             idle()
             ch!!.onOperateComplete()
-        }
+        } as Callback
         play(read)
     }
 
@@ -144,13 +143,13 @@ class HeroSprite : CharSprite() {
                 tiers = TextureFilm(texture, texture.width, FRAME_HEIGHT)
             }
 
-            return tiers
+            return tiers!!
         }
 
         fun avatar(cl: HeroClass, armorTier: Int): Image {
 
             val patch = tiers().get(armorTier)
-            val avatar = Image(cl.spritesheet())
+            val avatar = Image(cl.spritesheet()!!)
             val frame = avatar.texture!!.uvRect(1f, 0f, FRAME_WIDTH.toFloat(), FRAME_HEIGHT.toFloat())
             frame.shift(patch.left, patch.top)
             avatar.frame(frame)

@@ -24,9 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
 
@@ -38,7 +38,7 @@ class TenguSprite : MobSprite() {
 
         texture(Assets.TENGU)
 
-        val frames = TextureFilm(texture, 14, 16)
+        val frames = TextureFilm(texture!!, 14, 16)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 0, 0, 0, 1)
@@ -77,10 +77,10 @@ class TenguSprite : MobSprite() {
 
             val enemy = Actor.findChar(cell)
 
-            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, Shuriken()) {
+            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, Shuriken(),{
                 ch!!.next()
                 if (enemy != null) ch!!.attack(enemy)
-            }
+            } as Callback)
 
             play(cast)
             turnTo(ch!!.pos, cell)
@@ -98,7 +98,7 @@ class TenguSprite : MobSprite() {
                 isMoving = false
                 idle()
 
-                notifyAll()
+                (this as Object).notifyAll()
             }
         } else {
             super.onComplete(anim)

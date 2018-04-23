@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart
+import com.watabou.noosa.Game
 
 import java.util.ArrayList
 
@@ -35,9 +36,9 @@ abstract class Recipe {
     //not currently used
     abstract fun cost(ingredients: ArrayList<Item>): Int
 
-    abstract fun brew(ingredients: ArrayList<Item>): Item
+    abstract fun brew(ingredients: ArrayList<Item>): Item?
 
-    abstract fun sampleOutput(ingredients: ArrayList<Item>): Item
+    abstract fun sampleOutput(ingredients: ArrayList<Item>?): Item?
 
     //subclass for the common situation of a recipe with static inputs and outputs
     abstract class SimpleRecipe : Recipe() {
@@ -96,7 +97,7 @@ abstract class Recipe {
                 result.quantity(outQuantity)
                 return result
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 

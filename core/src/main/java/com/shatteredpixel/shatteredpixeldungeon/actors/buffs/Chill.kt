@@ -57,16 +57,16 @@ class Chill : FlavourBuff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.CHILLED)
+            target!!.sprite!!.add(CharSprite.State.CHILLED)
         else
-            target.sprite!!.remove(CharSprite.State.CHILLED)
+            target!!.sprite!!.remove(CharSprite.State.CHILLED)
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(), DecimalFormat("#.##").format(((1f - speedFactor()) * 100f).toDouble()))
+        return Messages.get(this.javaClass, "desc", dispTurns(), DecimalFormat("#.##").format(((1f - speedFactor()) * 100f).toDouble()))
     }
 }

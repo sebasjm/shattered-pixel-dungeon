@@ -33,7 +33,7 @@ class Levitation : FlavourBuff() {
     override fun attachTo(target: Char): Boolean {
         if (super.attachTo(target)) {
             target.flying = true
-            Roots.detach(target, Roots::class.java)
+            Buff.detach(target, Roots::class.java)
             return true
         } else {
             return false
@@ -41,8 +41,8 @@ class Levitation : FlavourBuff() {
     }
 
     override fun detach() {
-        target.flying = false
-        Dungeon.level!!.press(target.pos, target)
+        target!!.flying = false
+        Dungeon.level!!.press(target!!.pos, target!!)
         super.detach()
     }
 
@@ -56,17 +56,17 @@ class Levitation : FlavourBuff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.LEVITATING)
+            target!!.sprite!!.add(CharSprite.State.LEVITATING)
         else
-            target.sprite!!.remove(CharSprite.State.LEVITATING)
+            target!!.sprite!!.remove(CharSprite.State.LEVITATING)
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 
     companion object {

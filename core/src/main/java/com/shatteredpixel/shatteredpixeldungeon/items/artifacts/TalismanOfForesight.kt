@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor
@@ -67,7 +68,7 @@ class TalismanOfForesight : Artifact() {
             if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge != chargeCap)
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
             else {
                 hero.sprite!!.operate(hero.pos)
                 hero.busy()
@@ -86,7 +87,7 @@ class TalismanOfForesight : Artifact() {
                     }
                 }
 
-                GLog.p(Messages.get(this, "scry"))
+                GLog.p(Messages.get(this.javaClass, "scry"))
 
                 updateQuickslot()
 
@@ -103,12 +104,12 @@ class TalismanOfForesight : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             if (!cursed) {
-                desc += "\n\n" + Messages.get(this, "desc_worn")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_worn")
 
             } else {
-                desc += "\n\n" + Messages.get(this, "desc_cursed")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_cursed")
             }
         }
 
@@ -125,8 +126,8 @@ class TalismanOfForesight : Artifact() {
 
             val distance = 3
 
-            val cx = target.pos % Dungeon.level!!.width()
-            val cy = target.pos / Dungeon.level!!.width()
+            val cx = target!!.pos % Dungeon.level!!.width()
+            val cy = target!!.pos / Dungeon.level!!.width()
             var ax = cx - distance
             if (ax < 0) {
                 ax = 0
@@ -160,9 +161,9 @@ class TalismanOfForesight : Artifact() {
 
             if (smthFound && !cursed) {
                 if (warn == 0) {
-                    GLog.w(Messages.get(this, "uneasy"))
-                    if (target is Hero) {
-                        (target as Hero).interrupt()
+                    GLog.w(Messages.get(this.javaClass, "uneasy"))
+                    if (target!! is Hero) {
+                        (target!! as Hero).interrupt()
                     }
                 }
                 warn = 3
@@ -174,7 +175,7 @@ class TalismanOfForesight : Artifact() {
             BuffIndicator.refreshHero()
 
             //fully charges in 2000 turns at lvl=0, scaling to 667 turns at lvl = 10.
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 partialCharge += (0.05 + level() * 0.01).toFloat()
 
@@ -183,7 +184,7 @@ class TalismanOfForesight : Artifact() {
                     charge++
                 } else if (charge >= chargeCap) {
                     partialCharge = 0f
-                    GLog.p(Messages.get(this, "full_charge"))
+                    GLog.p(Messages.get(this.javaClass, "full_charge"))
                 }
             }
 
@@ -195,17 +196,17 @@ class TalismanOfForesight : Artifact() {
             exp++
             if (exp >= 4 && level() < levelCap) {
                 upgrade()
-                GLog.p(Messages.get(this, "levelup"))
+                GLog.p(Messages.get(this.javaClass, "levelup"))
                 exp -= 4
             }
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc")
+            return Messages.get(this.javaClass, "desc")
         }
 
         override fun icon(): Int {

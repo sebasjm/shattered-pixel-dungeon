@@ -34,14 +34,14 @@ class Regeneration : Buff() {
     }
 
     override fun act(): Boolean {
-        if (target.isAlive) {
+        if (target!!.isAlive) {
 
-            if (target.HP < regencap() && !(target as Hero).isStarving) {
-                val lock = target.buff<LockedFloor>(LockedFloor::class.java)
-                if (target.HP > 0 && (lock == null || lock.regenOn())) {
-                    target.HP += 1
-                    if (target.HP == regencap()) {
-                        (target as Hero).resting = false
+            if (target!!.HP < regencap() && !(target!! as Hero).isStarving) {
+                val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
+                if (target!!.HP > 0 && (lock == null || lock.regenOn())) {
+                    target!!.HP += 1
+                    if (target!!.HP == regencap()) {
+                        (target!! as Hero).resting = false
                     }
                 }
             }
@@ -66,7 +66,7 @@ class Regeneration : Buff() {
     }
 
     fun regencap(): Int {
-        return if (target.buff<Berserk>(Berserk::class.java) == null) target.HT else target.buff<Berserk>(Berserk::class.java)!!.targetHPMax()
+        return if (target!!.buff<Berserk>(Berserk::class.java) == null) target!!.HT else target!!.buff<Berserk>(Berserk::class.java)!!.targetHPMax()
     }
 
     companion object {

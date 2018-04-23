@@ -54,7 +54,8 @@ open class Halo() : Image() {
     constructor(radius: Float, color: Int, brightness: Float) : this() {
 
         hardlight(color)
-        alpha(this.brightness = brightness)
+        this.brightness = brightness
+        alpha(this.brightness)
         radius(radius)
     }
 
@@ -66,13 +67,14 @@ open class Halo() : Image() {
     }
 
     fun radius(value: Float) {
-        scale.set((this.radius = value) / RADIUS)
+        this.radius = value
+        scale.set(this.radius / RADIUS)
     }
 
     companion object {
 
         private val CACHE_KEY = Halo::class.java
 
-        protected val RADIUS = 64
+        @JvmStatic protected val RADIUS = 64
     }
 }

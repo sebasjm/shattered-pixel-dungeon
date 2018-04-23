@@ -46,17 +46,17 @@ class Drowsy : Buff() {
     }
 
     override fun act(): Boolean {
-        Buff.affect<MagicalSleep>(target, MagicalSleep::class.java)
+        Buff.affect<MagicalSleep>(target!!, MagicalSleep::class.java)
 
         detach()
         return true
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(cooldown() + 1))
+        return Messages.get(this.javaClass, "desc", dispTurns(cooldown() + 1))
     }
 }

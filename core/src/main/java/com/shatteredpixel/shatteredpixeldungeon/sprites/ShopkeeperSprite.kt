@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.particles.PixelParticle
 
@@ -32,7 +33,7 @@ class ShopkeeperSprite : MobSprite() {
     init {
 
         texture(Assets.KEEPER)
-        val film = TextureFilm(texture, 14, 14)
+        val film = TextureFilm(texture!!, 14, 14)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(film, 1, 1, 1, 1, 1, 0, 0, 0, 0)
@@ -53,7 +54,7 @@ class ShopkeeperSprite : MobSprite() {
         if (visible && anim === idle) {
             if (coin == null) {
                 coin = PixelParticle()
-                parent!!.add(coin)
+                parent!!.add(coin!!)
             }
             coin!!.reset(x + if (flipHorizontal) 0 else 13, y + 7, 0xFFFF00, 1f, 0.5f)
             coin!!.speed.y = -40f

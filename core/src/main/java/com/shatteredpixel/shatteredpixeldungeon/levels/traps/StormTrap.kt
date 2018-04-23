@@ -44,9 +44,9 @@ class StormTrap : Trap() {
         }
 
         PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.solid, null), 2)
-        for (i in PathFinder.distance.indices) {
-            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-                GameScene.add(Blob.seed<Electricity>(i, 20, Electricity::class.java))
+        for (i in PathFinder.distance!!.indices) {
+            if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
+                GameScene.add(Blob.seed<Electricity>(i, 20, Electricity::class.java)!!)
             }
         }
     }

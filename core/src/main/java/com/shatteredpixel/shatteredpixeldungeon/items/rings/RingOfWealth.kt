@@ -42,11 +42,11 @@ class RingOfWealth : Ring() {
 
     inner class Wealth : Ring.RingBuff() {
 
-        private fun triesToDrop(`val`: Float) {
+        fun triesToDrop(`val`: Float) {
             triesToDrop = `val`
         }
 
-        private fun triesToDrop(): Float {
+        fun triesToDrop(): Float {
             return triesToDrop
         }
 
@@ -95,22 +95,22 @@ class RingOfWealth : Ring() {
             if (roll < 0.6f) {
                 when (Random.Int(3)) {
                     0 -> items.add(Gold().random())
-                    1 -> items.add(Generator.random(Generator.Category.POTION))
-                    2 -> items.add(Generator.random(Generator.Category.SCROLL))
+                    1 -> items.add(Generator.random(Generator.Category.POTION)!!)
+                    2 -> items.add(Generator.random(Generator.Category.SCROLL)!!)
                 }
             } else if (roll < 0.9f) {
                 when (Random.Int(3)) {
                     0 -> {
-                        items.add(Generator.random(Generator.Category.SEED))
-                        items.add(Generator.random(Generator.Category.SEED))
-                        items.add(Generator.random(Generator.Category.SEED))
-                        items.add(Generator.random(Generator.Category.SEED))
-                        items.add(Generator.random(Generator.Category.SEED))
+                        items.add(Generator.random(Generator.Category.SEED)!!)
+                        items.add(Generator.random(Generator.Category.SEED)!!)
+                        items.add(Generator.random(Generator.Category.SEED)!!)
+                        items.add(Generator.random(Generator.Category.SEED)!!)
+                        items.add(Generator.random(Generator.Category.SEED)!!)
                     }
                     1 -> {
-                        items.add(Generator.random(if (Random.Int(2) == 0) Generator.Category.POTION else Generator.Category.SCROLL))
-                        items.add(Generator.random(if (Random.Int(2) == 0) Generator.Category.POTION else Generator.Category.SCROLL))
-                        items.add(Generator.random(if (Random.Int(2) == 0) Generator.Category.POTION else Generator.Category.SCROLL))
+                        items.add(Generator.random(if (Random.Int(2) == 0) Generator.Category.POTION else Generator.Category.SCROLL)!!)
+                        items.add(Generator.random(if (Random.Int(2) == 0) Generator.Category.POTION else Generator.Category.SCROLL)!!)
+                        items.add(Generator.random(if (Random.Int(2) == 0) Generator.Category.POTION else Generator.Category.SCROLL)!!)
                     }
                     2 -> {
                         items.add(Bomb().random())

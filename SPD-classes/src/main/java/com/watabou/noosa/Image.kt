@@ -85,7 +85,7 @@ open class Image() : Visual(0f, 0f, 0f, 0f) {
     }
 
     fun copy(other: Image) {
-        texture = other.texture
+        texture = other.texture!!
         frame = RectF(other.frame!!)
 
         width = other.width

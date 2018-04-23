@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
 import com.watabou.utils.Bundle
@@ -68,10 +69,10 @@ class LockedFloor : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
@@ -66,7 +67,7 @@ class BrokenSeal : Item() {
 
         if (action == AC_AFFIX) {
             Item.curItem = this
-            GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"))
+            GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this.javaClass, "prompt"))
         } else if (action == AC_INFO) {
             GameScene.show(WndItem(null, this, true))
         }
@@ -81,13 +82,13 @@ class BrokenSeal : Item() {
         override fun act(): Boolean {
             if (armor == null)
                 detach()
-            else if (armor!!.isEquipped(target as Hero)) {
-                if (target.SHLD < maxShield()) {
-                    partialShield += (1 / (35 * Math.pow(0.885, (maxShield() - target.SHLD - 1).toDouble()))).toFloat()
+            else if (armor!!.isEquipped(target!! as Hero)) {
+                if (target!!.SHLD < maxShield()) {
+                    partialShield += (1 / (35 * Math.pow(0.885, (maxShield() - target!!.SHLD - 1).toDouble()))).toFloat()
                 }
             }
             while (partialShield >= 1) {
-                target.SHLD++
+                target!!.SHLD++
                 partialShield--
             }
             spend(Actor.TICK)
@@ -95,7 +96,7 @@ class BrokenSeal : Item() {
         }
 
         @Synchronized
-        fun setArmor(arm: Armor) {
+        fun setArmor(arm: Armor?) {
             armor = arm
         }
 
@@ -112,7 +113,7 @@ class BrokenSeal : Item() {
         //only to be used from the quickslot, for tutorial purposes mostly.
         val AC_INFO = "INFO_WINDOW"
 
-        protected var armorSelector: WndBag.Listener = WndBag.Listener { item ->
+        protected var armorSelector: WndBag.Listener = { item: Item? ->
             if (item != null && item is Armor) {
                 val armor = item
                 if (!armor.levelKnown) {
@@ -123,11 +124,11 @@ class BrokenSeal : Item() {
                     GLog.p(Messages.get(BrokenSeal::class.java, "affix"))
                     Dungeon.hero!!.sprite!!.operate(Dungeon.hero!!.pos)
                     Sample.INSTANCE.play(Assets.SND_UNLOCK)
-                    armor.affixSeal(Item.curItem as BrokenSeal)
-                    Item.curItem.detach(Dungeon.hero!!.belongings.backpack)
+                    armor.affixSeal(Item.curItem!! as BrokenSeal)
+                    Item.curItem!!.detach(Dungeon.hero!!.belongings.backpack)
                     Badges.validateTutorial()
                 }
             }
-        }
+        } as WndBag.Listener
     }
 }

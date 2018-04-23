@@ -47,8 +47,9 @@ class CorrosiveGas : Blob() {
             for (i in area.left until area.right) {
                 for (j in area.top until area.bottom) {
                     cell = i + j * Dungeon.level!!.width()
-                    if (cur!![cell] > 0 && (ch = Actor.findChar(cell)) != null) {
-                        if (!ch!!.isImmune(this.javaClass))
+                    if (cur!![cell] > 0) {
+                        ch = Actor.findChar(cell)
+                        if (ch != null) if (!ch!!.isImmune(this.javaClass))
                             Buff.affect<Corrosion>(ch, Corrosion::class.java)!!.set(2f, strength)
                     }
                 }
@@ -78,7 +79,7 @@ class CorrosiveGas : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     companion object {

@@ -34,7 +34,7 @@ class NewbornElementalSprite : MobSprite() {
 
         val ofs = 21
 
-        val frames = TextureFilm(texture, 12, 14)
+        val frames = TextureFilm(texture!!, 12, 14)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(frames, ofs + 0, ofs + 1, ofs + 2)
@@ -48,7 +48,7 @@ class NewbornElementalSprite : MobSprite() {
         die = MovieClip.Animation(15, false)
         die!!.frames(frames, ofs + 7, ofs + 8, ofs + 9, ofs + 10, ofs + 11, ofs + 12, ofs + 13, ofs + 12)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun link(ch: Char) {

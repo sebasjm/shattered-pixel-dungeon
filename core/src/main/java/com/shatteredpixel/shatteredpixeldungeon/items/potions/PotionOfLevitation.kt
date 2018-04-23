@@ -48,13 +48,13 @@ class PotionOfLevitation : Potion() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
         }
 
-        GameScene.add(Blob.seed<ConfusionGas>(cell, 1000, ConfusionGas::class.java))
+        GameScene.add(Blob.seed<ConfusionGas>(cell, 1000, ConfusionGas::class.java)!!)
     }
 
     override fun apply(hero: Hero) {
         setKnown()
         Buff.affect<Levitation>(hero, Levitation::class.java, Levitation.DURATION)
-        GLog.i(Messages.get(this, "float"))
+        GLog.i(Messages.get(this.javaClass, "float"))
     }
 
     override fun price(): Int {

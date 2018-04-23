@@ -64,7 +64,7 @@ class RotHeart : Mob() {
     }
 
     override fun defenseProc(enemy: Char, damage: Int): Int {
-        GameScene.add(Blob.seed<ToxicGas>(pos, 20, ToxicGas::class.java))
+        GameScene.add(Blob.seed<ToxicGas>(pos, 20, ToxicGas::class.java)!!)
 
         return super.defenseProc(enemy, damage)
     }
@@ -86,7 +86,7 @@ class RotHeart : Mob() {
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Dungeon.level!!.drop(Rotberry.Seed(), pos).sprite!!.drop()
     }
@@ -99,7 +99,7 @@ class RotHeart : Mob() {
         return 0
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 0
     }
 

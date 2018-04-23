@@ -38,7 +38,7 @@ import java.util.LinkedHashMap
 open class Room : Rect, Graph.Node, Bundlable {
 
     var neigbours = ArrayList<Room>()
-    var connected = LinkedHashMap<Room, Door>()
+    var connected = LinkedHashMap<Room?, Door?>()
 
     var distance: Int = 0
     var price = 1
@@ -58,8 +58,8 @@ open class Room : Rect, Graph.Node, Bundlable {
         }
         for (r in other.connected.keys) {
             val d = other.connected[r]
-            r.connected.remove(other)
-            r.connected[this] = d
+            r!!.connected.remove(other)
+            r!!.connected[this] = d
             connected[r] = d
         }
         return this
@@ -162,7 +162,7 @@ open class Room : Rect, Graph.Node, Bundlable {
         } else {
             var total = 0
             for (r in connected.keys) {
-                val i = intersect(r)
+                val i = intersect(r!!)
                 if (direction == LEFT && i.width() == 0 && i.left == left)
                     total++
                 else if (direction == TOP && i.height() == 0 && i.top == top)
@@ -252,7 +252,7 @@ open class Room : Rect, Graph.Node, Bundlable {
         }
         neigbours.clear()
         for (r in connected.keys) {
-            r.connected.remove(this)
+            r!!.connected.remove(this)
         }
         connected.clear()
     }
@@ -334,9 +334,9 @@ open class Room : Rect, Graph.Node, Bundlable {
         for (r in connected.keys) {
             val d = connected[r]
             //for the purposes of path building, ignore all doors that are locked, blocked, or hidden
-            if (d.type == Door.Type.EMPTY || d.type == Door.Type.TUNNEL
+            if (d!!.type == Door.Type.EMPTY || d.type == Door.Type.TUNNEL
                     || d.type == Door.Type.UNLOCKED || d.type == Door.Type.REGULAR) {
-                edges.add(r)
+                edges.add(r!!)
             }
         }
         return edges

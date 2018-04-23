@@ -51,8 +51,8 @@ open class WndTitledMessage(titlebar: Component, message: String) : Window() {
 
     companion object {
 
-        protected val WIDTH_P = 120
-        protected val WIDTH_L = 160
-        protected val GAP = 2
+        @JvmStatic protected val WIDTH_P = 120
+        @JvmStatic protected val WIDTH_L = 160
+        @JvmStatic protected val GAP = 2
     }
 }

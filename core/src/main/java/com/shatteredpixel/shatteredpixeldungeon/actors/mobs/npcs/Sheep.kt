@@ -57,7 +57,7 @@ class Sheep : NPC() {
     override fun add(buff: Buff) {}
 
     override fun interact(): Boolean {
-        sprite!!.showStatus(CharSprite.NEUTRAL, Messages.get(this, Random.element(LINE_KEYS)))
+        sprite!!.showStatus(CharSprite.NEUTRAL, Messages.get(this.javaClass, Random.element(LINE_KEYS)))
         Dungeon.hero!!.spendAndNext(1f)
         return false
     }

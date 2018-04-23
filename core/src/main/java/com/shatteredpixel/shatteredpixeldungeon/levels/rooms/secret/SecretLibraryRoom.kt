@@ -36,6 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
+import com.watabou.noosa.Game
 import com.watabou.utils.Random
 
 import java.util.HashMap
@@ -79,7 +81,7 @@ class SecretLibraryRoom : SecretRoom() {
                 chances[scrollCls] = 0f
                 level.drop(scrollCls!!.newInstance(), pos)
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
             }
 
         }

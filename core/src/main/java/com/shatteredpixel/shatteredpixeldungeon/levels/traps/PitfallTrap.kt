@@ -51,7 +51,7 @@ class PitfallTrap : Trap() {
 
         val ch = Actor.findChar(pos)
 
-        if (ch === Dungeon.hero) {
+        if (ch === Dungeon.hero!!) {
             Chasm.heroFall(pos)
         } else if (ch != null) {
             Chasm.mobFall(ch as Mob)

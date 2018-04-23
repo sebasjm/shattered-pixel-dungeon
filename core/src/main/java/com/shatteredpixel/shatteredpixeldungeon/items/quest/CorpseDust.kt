@@ -61,7 +61,7 @@ class CorpseDust : Item() {
 
     override fun doPickUp(hero: Hero): Boolean {
         if (super.doPickUp(hero)) {
-            GLog.n(Messages.get(this, "chill"))
+            GLog.n(Messages.get(this.javaClass, "chill"))
             Buff.affect<DustGhostSpawner>(hero, DustGhostSpawner::class.java)
             return true
         }

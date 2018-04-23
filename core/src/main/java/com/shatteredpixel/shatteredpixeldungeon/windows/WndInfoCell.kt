@@ -50,7 +50,8 @@ class WndInfoCell(cell: Int) : Window() {
         var y = cell / Dungeon.level!!.width()
         for (i in Dungeon.level!!.customTiles) {
             if (x >= i.tileX && x < i.tileX + i.tileW && y >= i.tileY && y < i.tileY + i.tileH) {
-                if ((customImage = i.image(x - i.tileX, y - i.tileY)) != null) {
+                customImage = i.image(x - i.tileX, y - i.tileY)
+                if (customImage != null) {
                     x -= i.tileX
                     y -= i.tileY
                     customTile = i
@@ -64,7 +65,7 @@ class WndInfoCell(cell: Int) : Window() {
 
         val titlebar = IconTitle()
         if (customTile != null) {
-            titlebar.icon(customImage)
+            titlebar.icon(customImage!!)
 
             val customName = customTile.name(x, y)
             if (customName != null) {
@@ -83,7 +84,7 @@ class WndInfoCell(cell: Int) : Window() {
         } else {
 
             if (tile == Terrain.WATER) {
-                val water = Image(Dungeon.level!!.waterTex())
+                val water = Image(Dungeon.level!!.waterTex()!!)
                 water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE)
                 titlebar.icon(water)
             } else {
@@ -108,7 +109,7 @@ class WndInfoCell(cell: Int) : Window() {
             }
         }
 
-        info.text(if (desc.length == 0) Messages.get(this, "nothing") else desc)
+        info.text(if (desc.length == 0) Messages.get(this.javaClass, "nothing") else desc)
         info.maxWidth(WIDTH)
         info.setPos(titlebar.left(), titlebar.bottom() + GAP)
 

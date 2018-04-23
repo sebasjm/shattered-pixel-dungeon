@@ -41,7 +41,7 @@ open class Rat : Mob() {
         return Random.NormalIntRange(1, 4)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 8
     }
 

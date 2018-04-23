@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
@@ -50,7 +51,7 @@ class ToxicImbue : Buff() {
 
 
     override fun act(): Boolean {
-        GameScene.add(Blob.seed<ToxicGas>(target.pos, 50, ToxicGas::class.java))
+        GameScene.add(Blob.seed<ToxicGas>(target!!.pos, 50, ToxicGas::class.java)!!)
 
         spend(Actor.TICK)
         left -= Actor.TICK
@@ -72,11 +73,11 @@ class ToxicImbue : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(left))
+        return Messages.get(this.javaClass, "desc", dispTurns(left))
     }
 
     init {

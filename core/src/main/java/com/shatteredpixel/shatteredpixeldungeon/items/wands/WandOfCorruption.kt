@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
@@ -157,7 +158,7 @@ class WandOfCorruption : Wand() {
             }
         }
         for (toAssign in debuffs.keys) {
-            if (debuffs[toAssign] > 0 && enemy.isImmune(toAssign)) {
+            if (debuffs[toAssign]!! > 0 && enemy.isImmune(toAssign)) {
                 debuffs[toAssign] = 0f
             }
         }
@@ -166,7 +167,7 @@ class WandOfCorruption : Wand() {
         val debuffCls = Random.chances(debuffs) as Class<out FlavourBuff>
 
         if (debuffCls != null) {
-            Buff.append<out FlavourBuff>(enemy, debuffCls, (6 + level() * 3).toFloat())
+            Buff.append(enemy, debuffCls, (6 + level() * 3).toFloat())
         } else {
             //if no debuff can be applied (all are present), then go up one tier
             if (category === MINOR_DEBUFFS)
@@ -178,7 +179,7 @@ class WandOfCorruption : Wand() {
     private fun corruptEnemy(enemy: Mob) {
         //cannot re-corrupt or doom an enemy, so give them a major debuff instead
         if (enemy.buff<Corruption>(Corruption::class.java) != null || enemy.buff<Doom>(Doom::class.java) != null) {
-            GLog.w(Messages.get(this, "already_corrupted"))
+            GLog.w(Messages.get(this.javaClass, "already_corrupted"))
             return
         }
 
@@ -196,9 +197,9 @@ class WandOfCorruption : Wand() {
             Statistics.enemiesSlain++
             Badges.validateMonstersSlain()
             Statistics.qualifiedForNoKilling = false
-            if (enemy.EXP > 0 && Item.curUser.lvl <= enemy.maxLvl) {
-                Item.curUser.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP))
-                Item.curUser.earnExp(enemy.EXP)
+            if (enemy.EXP > 0 && Item.curUser!!.lvl <= enemy.maxLvl) {
+                Item.curUser!!.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(enemy.javaClass, "exp", enemy.EXP))
+                Item.curUser!!.earnExp(enemy.EXP)
             }
             enemy.rollToDropLoot()
         } else {
@@ -216,9 +217,9 @@ class WandOfCorruption : Wand() {
     }
 
     override fun fx(bolt: Ballistica, callback: Callback) {
-        MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+        MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.SHADOW,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.collisionPos!!,
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)
@@ -227,7 +228,7 @@ class WandOfCorruption : Wand() {
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0)
         particle.am = 0.6f
-        particle.setLifespan(2f)
+        particle.lifespan = (2f)
         particle.speed.set(0f, 5f)
         particle.setSize(0.5f, 2f)
         particle.shuffleXY(1f)

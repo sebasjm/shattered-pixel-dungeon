@@ -79,7 +79,7 @@ class Tengu : Mob() {
         return Random.NormalIntRange(6, 20)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 20
     }
 
@@ -111,7 +111,7 @@ class Tengu : Mob() {
         //phase 1 of the fight is over
         if (beforeHitHP > HT / 2 && HP <= HT / 2) {
             HP = HT / 2 - 1
-            yell(Messages.get(this, "interesting"))
+            yell(Messages.get(this.javaClass, "interesting"))
             (Dungeon.level as PrisonBossLevel).progress()
             BossHealthBar.bleed(true)
 
@@ -121,7 +121,7 @@ class Tengu : Mob() {
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         if (Dungeon.hero!!.subClass == HeroSubClass.NONE) {
             Dungeon.level!!.drop(TomeOfMastery(), pos).sprite!!.drop()
@@ -135,7 +135,7 @@ class Tengu : Mob() {
         val beacon = Dungeon.hero!!.belongings.getItem<LloydsBeacon>(LloydsBeacon::class.java)
         beacon?.upgrade()
 
-        yell(Messages.get(this, "defeated"))
+        yell(Messages.get(this.javaClass, "defeated"))
     }
 
     override fun canAttack(enemy: Char?): Boolean {
@@ -144,7 +144,7 @@ class Tengu : Mob() {
 
     //tengu's attack is always visible
     override fun doAttack(enemy: Char?): Boolean {
-        if (enemy === Dungeon.hero)
+        if (enemy === Dungeon.hero!!)
             Dungeon.hero!!.resting = false
         sprite!!.attack(enemy!!.pos)
         spend(attackDelay())
@@ -158,7 +158,7 @@ class Tengu : Mob() {
         //incase tengu hasn't had a chance to act yet
         if (fieldOfView == null || fieldOfView!!.size != Dungeon.level!!.length()) {
             fieldOfView = BooleanArray(Dungeon.level!!.length())
-            Dungeon.level!!.updateFieldOfView(this, fieldOfView)
+            Dungeon.level!!.updateFieldOfView(this, fieldOfView!!)
         }
 
         if (enemy == null) enemy = chooseEnemy()
@@ -213,9 +213,9 @@ class Tengu : Mob() {
         BossHealthBar.assignBoss(this)
         if (HP <= HT / 2) BossHealthBar.bleed(true)
         if (HP == HT) {
-            yell(Messages.get(this, "notice_mine", Dungeon.hero!!.givenName()))
+            yell(Messages.get(this.javaClass, "notice_mine", Dungeon.hero!!.givenName()))
         } else {
-            yell(Messages.get(this, "notice_face", Dungeon.hero!!.givenName()))
+            yell(Messages.get(this.javaClass, "notice_face", Dungeon.hero!!.givenName()))
         }
     }
 
@@ -235,7 +235,7 @@ class Tengu : Mob() {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             enemySeen = enemyInFOV
-            if (enemyInFOV && !isCharmedBy(enemy) && canAttack(enemy)) {
+            if (enemyInFOV && !isCharmedBy(enemy!!) && canAttack(enemy)) {
 
                 return doAttack(enemy)
 

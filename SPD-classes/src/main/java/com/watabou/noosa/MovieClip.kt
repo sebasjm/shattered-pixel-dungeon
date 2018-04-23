@@ -84,7 +84,7 @@ open class MovieClip : Image {
         }
     }
 
-    open fun play(anim: Animation) {
+    open fun play(anim: Animation?) {
         play(anim, false)
     }
 

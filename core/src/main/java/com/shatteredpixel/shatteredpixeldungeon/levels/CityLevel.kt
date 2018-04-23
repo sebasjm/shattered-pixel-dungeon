@@ -128,11 +128,12 @@ class CityLevel : RegularLevel() {
             val p = DungeonTilemap.tileCenterToWorld(pos)
             pos(p.x - 6, p.y - 4, 12f, 12f)
 
-            pour(factory, 0.2f)
+            pour(factory!!, 0.2f)
         }
 
         override fun update() {
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
                 super.update()
             }
         }

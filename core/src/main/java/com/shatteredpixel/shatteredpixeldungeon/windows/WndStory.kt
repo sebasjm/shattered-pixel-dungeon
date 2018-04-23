@@ -33,7 +33,7 @@ import com.watabou.noosa.Game
 import com.watabou.noosa.TouchArea
 import com.watabou.utils.SparseArray
 
-open class WndStory(text: String) : Window(0, 0, Chrome.get(Chrome.Type.SCROLL)) {
+open class WndStory(text: String) : Window(0, 0, Chrome.get(Chrome.Type.SCROLL)!!) {
 
     private val tf: RenderedTextMultiline
 
@@ -62,10 +62,13 @@ open class WndStory(text: String) : Window(0, 0, Chrome.get(Chrome.Type.SCROLL))
     override fun update() {
         super.update()
 
-        if (delay > 0 && (delay -= Game.elapsed) <= 0) {
-            tf.visible = true
-            chrome.visible = tf.visible
-            shadow.visible = chrome.visible
+        if (delay > 0) {
+            delay -= Game.elapsed
+            if (delay <= 0) {
+                tf.visible = true
+                chrome.visible = tf.visible
+                shadow.visible = chrome.visible
+            }
         }
     }
 
@@ -104,7 +107,8 @@ open class WndStory(text: String) : Window(0, 0, Chrome.get(Chrome.Type.SCROLL))
             val text = Messages.get(WndStory::class.java, CHAPTERS.get(id))
             if (text != null) {
                 val wnd = WndStory(text)
-                if ((wnd.delay = 0.6f) > 0) {
+                wnd.delay = 0.6f
+                if (wnd.delay > 0) {
                     wnd.tf.visible = false
                     wnd.chrome.visible = wnd.tf.visible
                     wnd.shadow.visible = wnd.chrome.visible

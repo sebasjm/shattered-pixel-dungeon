@@ -53,7 +53,7 @@ class ActionIndicator : Tag(0xFFFF4C) {
             icon!!.y = y + (height - icon!!.height()) / 2
             PixelScene.align(icon!!)
             if (!members!!.contains(icon))
-                add(icon)
+                add(icon!!)
         }
     }
 
@@ -97,12 +97,17 @@ class ActionIndicator : Tag(0xFFFF4C) {
     companion object {
 
         var action: Action? = null
+           set(value) {
+               field = value
+               updateIcon()
+           }
+
         var instance: ActionIndicator? = null
 
-        fun setAction(action: Action) {
-            ActionIndicator.action = action
-            updateIcon()
-        }
+//        fun setAction(action: Action) {
+//            ActionIndicator.action = action
+//            updateIcon()
+//        }
 
         fun clearAction(action: Action) {
             if (ActionIndicator.action === action)
@@ -111,7 +116,7 @@ class ActionIndicator : Tag(0xFFFF4C) {
 
         fun updateIcon() {
             if (instance != null) {
-                synchronized(instance) {
+                synchronized(instance!!) {
                     if (instance!!.icon != null) {
                         instance!!.icon!!.killAndErase()
                         instance!!.icon = null

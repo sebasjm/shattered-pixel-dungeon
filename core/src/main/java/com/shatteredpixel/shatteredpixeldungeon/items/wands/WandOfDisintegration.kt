@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
@@ -69,7 +70,8 @@ class WandOfDisintegration : DamageWand() {
         for (c in beam.subPath(1, maxDistance)) {
 
             val ch: Char?
-            if ((ch = Actor.findChar(c)) != null) {
+            ch = Actor.findChar(c)
+            if (ch != null) {
 
                 //we don't want to count passed terrain after the last enemy hit. That would be a lot of bonus levels.
                 //terrainPassed starts at 2, equivalent of rounding up when /3 for integer arithmetic.
@@ -117,14 +119,14 @@ class WandOfDisintegration : DamageWand() {
     override fun fx(beam: Ballistica, callback: Callback) {
 
         val cell = beam.path[Math.min(beam.dist!!, distance())]
-        Item.curUser.sprite!!.parent!!.add(Beam.DeathRay(Item.curUser.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(cell)))
+        Item.curUser!!.sprite!!.parent!!.add(Beam.DeathRay(Item.curUser!!.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(cell)))
         callback.call()
     }
 
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0x220022)
         particle.am = 0.6f
-        particle.setLifespan(1f)
+        particle.lifespan = (1f)
         particle.acc.set(10f, -10f)
         particle.setSize(0.5f, 3f)
         particle.shuffleXY(1f)

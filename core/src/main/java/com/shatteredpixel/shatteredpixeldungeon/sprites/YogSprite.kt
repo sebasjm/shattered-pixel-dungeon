@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class YogSprite : MobSprite() {
@@ -33,7 +34,7 @@ class YogSprite : MobSprite() {
 
         texture(Assets.YOG)
 
-        val frames = TextureFilm(texture, 20, 19)
+        val frames = TextureFilm(texture!!, 20, 19)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(frames, 0, 1, 2, 2, 1, 0, 3, 4, 4, 3, 0, 5, 6, 6, 5)

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 
 class AquariumRoom : StandardRoom() {
 
@@ -57,7 +58,7 @@ class AquariumRoom : StandardRoom() {
             level.mobs.add(piranha)
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 

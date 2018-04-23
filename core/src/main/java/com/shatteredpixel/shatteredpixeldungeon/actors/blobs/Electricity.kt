@@ -84,10 +84,10 @@ class Electricity : Blob() {
                         }
                     }
 
-                    off[cell] = cur!![cell] - 1
+                    off!![cell] = cur!![cell] - 1
                     volume += off!![cell]
                 } else {
-                    off[cell] = 0
+                    off!![cell] = 0
                 }
             }
         }
@@ -98,9 +98,9 @@ class Electricity : Blob() {
         if (cur!![cell] == 0) {
             area.union(cell % Dungeon.level!!.width(), cell / Dungeon.level!!.width())
         }
-        cur[cell] = Math.max(cur!![cell], power)
+        cur!![cell] = Math.max(cur!![cell], power)
 
-        for (c in PathFinder.NEIGHBOURS4) {
+        for (c in PathFinder.NEIGHBOURS4!!) {
             if (water!![cell + c] && cur!![cell + c] < power) {
                 spreadFromCell(cell + c, power)
             }
@@ -113,7 +113,7 @@ class Electricity : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
 }

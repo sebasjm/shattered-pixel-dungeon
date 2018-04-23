@@ -63,11 +63,11 @@ open class IconButton : Button {
 
     fun icon(icon: Image) {
         if (this.icon != null) {
-            remove(this.icon)
+            remove(this.icon!!)
         }
         this.icon = icon
         if (this.icon != null) {
-            add(this.icon)
+            add(this.icon!!)
             layout()
         }
     }

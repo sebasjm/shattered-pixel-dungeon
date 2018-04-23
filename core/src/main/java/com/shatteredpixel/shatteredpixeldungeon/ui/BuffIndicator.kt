@@ -47,7 +47,7 @@ class BuffIndicator(private val ch: Char) : Component() {
     private var needsRefresh: Boolean = false
 
     init {
-        if (ch === Dungeon.hero) {
+        if (ch === Dungeon.hero!!) {
             heroInstance = this
         }
     }
@@ -62,7 +62,7 @@ class BuffIndicator(private val ch: Char) : Component() {
 
     override fun createChildren() {
         texture = TextureCache.get(Assets.BUFFS_SMALL)
-        film = TextureFilm(texture, SIZE, SIZE)
+        film = TextureFilm(texture!!, SIZE, SIZE)
     }
 
     @Synchronized
@@ -86,7 +86,7 @@ class BuffIndicator(private val ch: Char) : Component() {
         //remove any icons no longer present
         for (buff in buffIcons.keys.toTypedArray<Buff>()) {
             if (!newBuffs.contains(buff)) {
-                val icon = buffIcons[buff].icon
+                val icon = buffIcons[buff]!!.icon
                 icon.origin.set((SIZE / 2).toFloat())
                 add(icon)
                 add(object : AlphaTweener(icon, 0f, 0.6f) {
@@ -100,8 +100,8 @@ class BuffIndicator(private val ch: Char) : Component() {
                     }
                 })
 
-                buffIcons[buff].destroy()
-                remove(buffIcons[buff])
+                buffIcons[buff]!!.destroy()
+                remove(buffIcons[buff]!!)
                 buffIcons.remove(buff)
             }
         }
@@ -129,8 +129,7 @@ class BuffIndicator(private val ch: Char) : Component() {
         var icon: Image
 
         init {
-
-            icon = Image(texture)
+            icon = Image(texture!!)
             icon.frame(film!!.get(buff.icon()))
             add(icon)
         }

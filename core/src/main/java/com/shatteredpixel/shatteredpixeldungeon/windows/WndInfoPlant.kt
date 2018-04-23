@@ -25,4 +25,4 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant
 import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap
 
-class WndInfoPlant(plant: Plant) : WndTitledMessage(TerrainFeaturesTilemap.tile(plant.pos, Dungeon.level!!.map!![plant.pos]), plant.plantName, plant.desc())
+class WndInfoPlant(plant: Plant) : WndTitledMessage(TerrainFeaturesTilemap.tile(plant.pos, Dungeon.level!!.map!![plant.pos])!!, plant.plantName, plant.desc())

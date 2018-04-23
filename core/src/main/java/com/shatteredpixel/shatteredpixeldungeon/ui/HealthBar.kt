@@ -36,13 +36,13 @@ open class HealthBar : Component() {
 
     override fun createChildren() {
         Bg = ColorBlock(1f, 1f, COLOR_BG)
-        add(Bg)
+        add(Bg!!)
 
         Shld = ColorBlock(1f, 1f, COLOR_SHLD)
-        add(Shld)
+        add(Shld!!)
 
         Hp = ColorBlock(1f, 1f, COLOR_HP)
-        add(Hp)
+        add(Hp!!)
 
         height = HEIGHT.toFloat()
     }

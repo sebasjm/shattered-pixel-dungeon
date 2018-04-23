@@ -77,62 +77,63 @@ class StatusPane : Component() {
     override fun createChildren() {
 
         bg = NinePatch(Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0)
-        add(bg)
+        add(bg!!)
 
         add(object : TouchArea(0f, 1f, 31f, 31f) {
             override fun onClick(touch: Touch) {
                 val sprite = Dungeon.hero!!.sprite
                 if (!sprite!!.isVisible) {
-                    Camera.main.focusOn(sprite)
+                    Camera.main!!.focusOn(sprite)
                 }
                 GameScene.show(WndHero())
             }
         })
 
         btnJournal = JournalButton()
-        add(btnJournal)
+        add(btnJournal!!)
 
         btnMenu = MenuButton()
-        add(btnMenu)
+        add(btnMenu!!)
 
         avatar = HeroSprite.avatar(Dungeon.hero!!.heroClass, lastTier)
-        add(avatar)
+        add(avatar!!)
 
         compass = Compass(if (Statistics.amuletObtained) Dungeon.level!!.entrance else Dungeon.level!!.exit)
-        add(compass)
+        add(compass!!)
 
         rawShielding = Image(Assets.SHLD_BAR)
         rawShielding!!.alpha(0.5f)
-        add(rawShielding)
+        add(rawShielding!!)
 
         shieldedHP = Image(Assets.SHLD_BAR)
-        add(shieldedHP)
+        add(shieldedHP!!)
 
         hp = Image(Assets.HP_BAR)
-        add(hp)
+        add(hp!!)
 
         exp = Image(Assets.XP_BAR)
-        add(exp)
+        add(exp!!)
 
         bossHP = BossHealthBar()
-        add(bossHP)
+        add(bossHP!!)
 
-        level = BitmapText(PixelScene.pixelFont)
+        level = BitmapText(PixelScene.pixelFont!!)
         level!!.hardlight(0xFFEBA4)
-        add(level)
+        add(level!!)
 
-        depth = BitmapText(Integer.toString(Dungeon.depth), PixelScene.pixelFont)
+        depth = BitmapText(Integer.toString(Dungeon.depth), PixelScene.pixelFont!!)
         depth!!.hardlight(0xCACFC2)
         depth!!.measure()
-        add(depth)
+        add(depth!!)
 
         danger = DangerIndicator()
-        add(danger)
+        add(danger!!)
 
-        buffs = BuffIndicator(Dungeon.hero)
-        add(buffs)
+        buffs = BuffIndicator(Dungeon.hero!!)
+        add(buffs!!)
 
-        add(pickedUp = Toolbar.PickedUpItem())
+        pickedUp = Toolbar.PickedUpItem()
+        add(pickedUp!!)
     }
 
     override fun layout() {
@@ -235,13 +236,13 @@ class StatusPane : Component() {
 
     private class JournalButton : Button() {
 
-        private var bg: Image? = null
-        private var journalIcon: Image? = null
-        private var keyIcon: KeyDisplay? = null
+        var bg: Image? = null
+        var journalIcon: Image? = null
+        var keyIcon: KeyDisplay? = null
 
-        private var flashing: Boolean = false
+        var flashing: Boolean = false
 
-        private var time: Float = 0.toFloat()
+        var time: Float = 0.toFloat()
 
         init {
 
@@ -253,13 +254,13 @@ class StatusPane : Component() {
             super.createChildren()
 
             bg = Image(Assets.MENU, 2, 2, 13, 11)
-            add(bg)
+            add(bg!!)
 
             journalIcon = Image(Assets.MENU, 31, 0, 11, 7)
-            add(journalIcon)
+            add(journalIcon!!)
 
             keyIcon = KeyDisplay()
-            add(keyIcon)
+            add(keyIcon!!)
             updateKeyDisplay()
         }
 
@@ -284,7 +285,8 @@ class StatusPane : Component() {
             super.update()
 
             if (flashing) {
-                journalIcon!!.am = Math.abs(Math.cos((3 * (time += Game.elapsed)).toDouble())).toFloat()
+                time += Game.elapsed
+                journalIcon!!.am = Math.abs(Math.cos((3 * time).toDouble())).toFloat()
                 keyIcon!!.am = journalIcon!!.am
                 if (time >= 0.333f * Math.PI) {
                     time = 0f
@@ -340,7 +342,7 @@ class StatusPane : Component() {
             super.createChildren()
 
             image = Image(Assets.MENU, 17, 2, 12, 11)
-            add(image)
+            add(image!!)
         }
 
         override fun layout() {

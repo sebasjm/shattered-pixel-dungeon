@@ -56,7 +56,7 @@ class Mimic : Mob() {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        if (items != null) bundle.put(ITEMS, items)
+        if (items != null) bundle.put(ITEMS, items!!)
         bundle.put(LEVEL, level)
     }
 
@@ -117,7 +117,7 @@ class Mimic : Mob() {
             val ch = Actor.findChar(pos)
             if (ch != null) {
                 val candidates = ArrayList<Int>()
-                for (n in PathFinder.NEIGHBOURS8) {
+                for (n in PathFinder.NEIGHBOURS8!!) {
                     val cell = pos + n
                     if ((Dungeon.level!!.passable[cell] || Dungeon.level!!.avoid[cell]) && Actor.findChar(cell) == null) {
                         candidates.add(cell)

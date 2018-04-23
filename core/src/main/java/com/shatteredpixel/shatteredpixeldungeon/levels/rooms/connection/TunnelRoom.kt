@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.GameMath
 import com.watabou.utils.Point
 import com.watabou.utils.PointF
@@ -46,7 +47,7 @@ open class TunnelRoom : ConnectionRoom() {
         get() {
             val doorCenter = PointF(0f, 0f)
 
-            for (door in connected.values) {
+            for (door in connected.values.filterNotNull()) {
                 doorCenter.x += door.x.toFloat()
                 doorCenter.y += door.y.toFloat()
             }
@@ -66,7 +67,7 @@ open class TunnelRoom : ConnectionRoom() {
 
         val c = connectionSpace
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
 
             val start: Point
             val mid: Point
@@ -113,7 +114,7 @@ open class TunnelRoom : ConnectionRoom() {
             Painter.drawLine(level, mid, end, floor)
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.TUNNEL)
         }
     }

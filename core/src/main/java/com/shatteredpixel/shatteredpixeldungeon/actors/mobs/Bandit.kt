@@ -34,7 +34,7 @@ import com.watabou.utils.Random
 
 class Bandit : Thief() {
 
-    var item: Item? = null
+//    var item: Item? = null
 
     init {
         spriteClass = BanditSprite::class.java
@@ -57,7 +57,7 @@ class Bandit : Thief() {
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Badges.validateRare(this)
     }

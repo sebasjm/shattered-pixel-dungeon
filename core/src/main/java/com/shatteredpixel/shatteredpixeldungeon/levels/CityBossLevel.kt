@@ -83,41 +83,41 @@ class CityBossLevel : Level() {
 
         var y = TOP + 1
         while (y < TOP + HALL_HEIGHT) {
-            map[y * width() + CENTER - 2] = Terrain.STATUE_SP
-            map[y * width() + CENTER + 2] = Terrain.STATUE_SP
+            map!![y * width() + CENTER - 2] = Terrain.STATUE_SP
+            map!![y * width() + CENTER + 2] = Terrain.STATUE_SP
             y += 2
         }
 
         val left = pedestal(true)
         val right = pedestal(false)
-        map[right] = Terrain.PEDESTAL
-        map[left] = map[right]
+        map!![right] = Terrain.PEDESTAL
+        map!![left] = map!![right]
         for (i in left + 1 until right) {
-            map[i] = Terrain.EMPTY_SP
+            map!![i] = Terrain.EMPTY_SP
         }
 
         exit = (TOP - 1) * width() + CENTER
-        map[exit] = Terrain.LOCKED_EXIT
+        map!![exit] = Terrain.LOCKED_EXIT
 
         arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER
-        map[arenaDoor] = Terrain.DOOR
+        map!![arenaDoor] = Terrain.DOOR
 
         Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY)
         Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 1, Terrain.BOOKSHELF)
-        map[arenaDoor + width()] = Terrain.EMPTY
+        map!![arenaDoor + width()] = Terrain.EMPTY
         Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF)
         Painter.fill(this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF)
 
         entrance = (TOP + HALL_HEIGHT + 3 + Random.Int(CHAMBER_HEIGHT - 2)) * width() + LEFT + Random.Int(HALL_WIDTH - 2)
-        map[entrance] = Terrain.ENTRANCE
+        map!![entrance] = Terrain.ENTRANCE
 
         for (i in 0 until length() - width()) {
             if (map!![i] == Terrain.EMPTY && Random.Int(10) == 0) {
-                map[i] = Terrain.EMPTY_DECO
+                map!![i] = Terrain.EMPTY_DECO
             } else if (map!![i] == Terrain.WALL
                     && DungeonTileSheet.floorTile(map!![i + width()])
                     && Random.Int(21 - Dungeon.depth) == 0) {
-                map[i] = Terrain.WALL_DECO
+                map!![i] = Terrain.WALL_DECO
             }
         }
 
@@ -138,7 +138,7 @@ class CityBossLevel : Level() {
 
     override fun createMobs() {}
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 
@@ -154,9 +154,9 @@ class CityBossLevel : Level() {
     }
 
     override fun randomRespawnCell(): Int {
-        var cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
+        var cell = entrance + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         while (!passable[cell]) {
-            cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
+            cell = entrance + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         }
         return cell
     }
@@ -165,7 +165,7 @@ class CityBossLevel : Level() {
 
         super.press(cell, hero)
 
-        if (!enteredArena && outsideEntraceRoom(cell) && hero === Dungeon.hero) {
+        if (!enteredArena && outsideEntraceRoom(cell) && hero === Dungeon.hero!!) {
 
             enteredArena = true
             seal()
@@ -192,7 +192,7 @@ class CityBossLevel : Level() {
             if (heroFOV[boss.pos]) {
                 boss.notice()
                 boss.sprite!!.alpha(0f)
-                boss.sprite!!.parent!!.add(AlphaTweener(boss.sprite, 1f, 0.1f))
+                boss.sprite!!.parent!!.add(AlphaTweener(boss.sprite!!, 1f, 0.1f))
             }
 
             Level.set(arenaDoor, Terrain.LOCKED_DOOR)

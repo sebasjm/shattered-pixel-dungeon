@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
@@ -58,23 +59,24 @@ class Bleeding : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun act(): Boolean {
-        if (target.isAlive) {
+        if (target!!.isAlive) {
 
-            if ((level = Random.NormalIntRange(level / 2, level)) > 0) {
+            level = Random.NormalIntRange(level / 2, level)
+            if (level > 0) {
 
-                target.damage(level, this)
-                if (target.sprite!!.visible) {
-                    Splash.at(target.sprite!!.center(), -PointF.PI / 2, PointF.PI / 6,
-                            target.sprite!!.blood(), Math.min(10 * level / target.HT, 10))
+                target!!.damage(level, this)
+                if (target!!.sprite!!.visible) {
+                    Splash.at(target!!.sprite!!.center(), -PointF.PI / 2, PointF.PI / 6,
+                            target!!.sprite!!.blood(), Math.min(10 * level / target!!.HT, 10))
                 }
 
-                if (target === Dungeon.hero && !target.isAlive) {
+                if (target!! === Dungeon.hero!! && !target!!.isAlive) {
                     Dungeon.fail(javaClass)
-                    GLog.n(Messages.get(this, "ondeath"))
+                    GLog.n(Messages.get(this.javaClass, "ondeath"))
                 }
 
                 spend(Actor.TICK)
@@ -92,11 +94,11 @@ class Bleeding : Buff() {
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", level)
+        return Messages.get(this.javaClass, "desc", level)
     }
 
     companion object {

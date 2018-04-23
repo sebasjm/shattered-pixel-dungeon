@@ -42,7 +42,8 @@ class CheckedCell(pos: Int) : Image(TextureCache.createSolid(-0xaa5501)) {
     }
 
     override fun update() {
-        if ((alpha -= Game.elapsed) > 0) {
+        alpha -= Game.elapsed
+        if (alpha > 0) {
             alpha(alpha)
             scale.set(DungeonTilemap.SIZE * alpha)
         } else {

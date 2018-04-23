@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
+import com.watabou.noosa.Game
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -120,9 +121,9 @@ abstract class ConnectionRoom : Room() {
 
         fun createRoom(): ConnectionRoom? {
             try {
-                return rooms[Random.chances(chances[Dungeon.depth])].newInstance()
+                return rooms[Random.chances(chances[Dungeon.depth]!!)].newInstance()
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 

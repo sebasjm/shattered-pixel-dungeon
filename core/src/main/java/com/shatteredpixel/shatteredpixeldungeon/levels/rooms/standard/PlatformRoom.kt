@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Random
 import com.watabou.utils.Rect
 
@@ -56,7 +57,7 @@ class PlatformRoom : StandardRoom() {
             Painter.fill(level, platform.left, platform.top, platform.width() + 1, platform.height() + 1, Terrain.EMPTY_SP)
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
             Painter.drawInside(level, this, door, 2, Terrain.EMPTY_SP)
         }

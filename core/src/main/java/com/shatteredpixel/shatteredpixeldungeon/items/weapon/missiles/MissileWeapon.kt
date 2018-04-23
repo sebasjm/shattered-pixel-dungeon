@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster
@@ -88,11 +89,11 @@ abstract class MissileWeapon : Weapon() {
 
     override fun onThrow(cell: Int) {
         val enemy = Actor.findChar(cell)
-        if (enemy == null || enemy === Item.curUser) {
+        if (enemy == null || enemy === Item.curUser!!) {
             parent = null
             super.onThrow(cell)
         } else {
-            if (!Item.curUser.shoot(enemy, this)) {
+            if (!Item.curUser!!.shoot(enemy, this)) {
                 rangedMiss(cell)
             } else {
 
@@ -153,7 +154,7 @@ abstract class MissileWeapon : Weapon() {
             //attempt to stick the missile weapon to the enemy, just drop it if we can't.
             if (enemy.isAlive && sticky) {
                 val p = Buff.affect<PinCushion>(enemy, PinCushion::class.java)
-                if (p!!.target === enemy) {
+                if (p!!.target!! === enemy) {
                     p!!.stick(this)
                     return
                 }
@@ -174,7 +175,7 @@ abstract class MissileWeapon : Weapon() {
             usage /= 1.5f
         else if (holster) usage /= MagicalHolster.HOLSTER_DURABILITY_FACTOR
 
-        usage /= RingOfSharpshooting.durabilityMultiplier(Dungeon.hero)
+        usage /= RingOfSharpshooting.durabilityMultiplier(Dungeon.hero!!)
 
         return usage
     }
@@ -235,8 +236,8 @@ abstract class MissileWeapon : Weapon() {
         var info = desc()
 
         info += "\n\n" + Messages.get(MissileWeapon::class.java, "stats",
-                Math.round(imbue.damageFactor(min()) * RingOfSharpshooting.damageMultiplier(Dungeon.hero)),
-                Math.round(imbue.damageFactor(max()) * RingOfSharpshooting.damageMultiplier(Dungeon.hero)),
+                Math.round(imbue.damageFactor(min()) * RingOfSharpshooting.damageMultiplier(Dungeon.hero!!)),
+                Math.round(imbue.damageFactor(max()) * RingOfSharpshooting.damageMultiplier(Dungeon.hero!!)),
                 STRReq())
 
         if (STRReq() > Dungeon.hero!!.STR()) {
@@ -247,10 +248,10 @@ abstract class MissileWeapon : Weapon() {
 
         if (enchantment != null && (cursedKnown || !enchantment!!.curse())) {
             info += "\n\n" + Messages.get(Weapon::class.java, "enchanted", enchantment!!.name())
-            info += " " + Messages.get(enchantment, "desc")
+            info += " " + Messages.get(enchantment!!.javaClass, "desc")
         }
 
-        if (cursed && isEquipped(Dungeon.hero)) {
+        if (cursed && isEquipped(Dungeon.hero!!)) {
             info += "\n\n" + Messages.get(Weapon::class.java, "cursed_worn")
         } else if (cursedKnown && cursed) {
             info += "\n\n" + Messages.get(Weapon::class.java, "cursed")
@@ -258,10 +259,10 @@ abstract class MissileWeapon : Weapon() {
 
         info += "\n\n" + Messages.get(MissileWeapon::class.java, "distance")
 
-        info += "\n\n" + Messages.get(this, "durability")
+        info += "\n\n" + Messages.get(this.javaClass, "durability")
 
         if (durabilityPerUse() > 0) {
-            info += " " + Messages.get(this, "uses_left",
+            info += " " + Messages.get(this.javaClass, "uses_left",
                     Math.ceil((durability / durabilityPerUse()).toDouble()).toInt(),
                     Math.ceil((MAX_DURABILITY / durabilityPerUse()).toDouble()).toInt())
         }

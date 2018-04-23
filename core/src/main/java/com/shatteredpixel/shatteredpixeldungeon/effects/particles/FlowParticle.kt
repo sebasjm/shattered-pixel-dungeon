@@ -78,11 +78,13 @@ class FlowParticle : PixelParticle() {
 
         override fun update() {
 
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
 
                 super.update()
 
-                if ((delay -= Game.elapsed) <= 0) {
+                delay -= Game.elapsed
+                if (delay <= 0) {
 
                     delay = Random.Float(DELAY)
 

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class SuccubusSprite : MobSprite() {
@@ -31,7 +32,7 @@ class SuccubusSprite : MobSprite() {
 
         texture(Assets.SUCCUBUS)
 
-        val frames = TextureFilm(texture, 12, 15)
+        val frames = TextureFilm(texture!!, 12, 15)
 
         idle = MovieClip.Animation(8, true)
         idle!!.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 1)

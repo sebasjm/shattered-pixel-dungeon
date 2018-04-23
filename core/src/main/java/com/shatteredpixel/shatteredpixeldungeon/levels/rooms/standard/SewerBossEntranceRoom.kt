@@ -69,7 +69,7 @@ class SewerBossEntranceRoom : EntranceRoom() {
         } while (level.findMob(level.entrance) != null)
         Painter.set(level, level.entrance, Terrain.ENTRANCE)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
 
             if (door.y == top) {

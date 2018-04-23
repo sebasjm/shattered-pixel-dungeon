@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap
+import com.watabou.noosa.Game
 import com.watabou.utils.Graph
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
@@ -142,20 +143,20 @@ abstract class RegularPainter : Painter() {
             var door: Room.Door? = r.connected[n]
             if (door == null) {
 
-                val i = r.intersect(n)
+                val i = r.intersect(n!!)
                 val doorSpots = ArrayList<Point>()
                 for (p in i.points) {
                     if (r.canConnect(p) && n.canConnect(p))
                         doorSpots.add(p)
                 }
                 if (doorSpots.isEmpty()) {
-                    ShatteredPixelDungeon.reportException(
+                    Game.reportException(
                             RuntimeException("Could not place a door! " +
                                     "r=" + r.javaClass.getSimpleName() +
                                     " n=" + n.javaClass.getSimpleName()))
                     continue
                 }
-                door = Room.Door(Random.element(doorSpots))
+                door = Room.Door(Random.element(doorSpots)!!)
 
                 r.connected[n] = door
                 n.connected[r] = door
@@ -167,11 +168,11 @@ abstract class RegularPainter : Painter() {
         for (r in rooms) {
             for (n in r.connected.keys) {
 
-                if (joinRooms(l, r, n)) {
+                if (joinRooms(l, r, n!!)) {
                     continue
                 }
 
-                val d = r.connected[n]
+                val d = r.connected[n]!!
                 val door = d.x + d.y * l.width()
 
                 if (d.type == Room.Door.Type.REGULAR) {
@@ -308,7 +309,7 @@ abstract class RegularPainter : Painter() {
             }
 
             var count = 1
-            for (n in PathFinder.NEIGHBOURS8) {
+            for (n in PathFinder.NEIGHBOURS8!!) {
                 if (grass[i + n]) {
                     count++
                 }
@@ -343,7 +344,7 @@ abstract class RegularPainter : Painter() {
         for (i in 0 until nTraps) {
 
             val trapPos = Random.element(validCells)
-            validCells.remove(trapPos) //removes the integer object, not at the index
+            validCells.remove(trapPos!!) //removes the integer object, not at the index
 
             try {
                 val trap = trapClasses!![Random.chances(trapChances!!)].newInstance().hide()

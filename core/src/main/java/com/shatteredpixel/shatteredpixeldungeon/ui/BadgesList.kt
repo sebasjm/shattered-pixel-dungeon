@@ -58,8 +58,8 @@ class BadgesList(global: Boolean) : ScrollPane(Component()) {
 
         val size = items.size
         for (i in 0 until size) {
-            items[i].setRect(0f, pos, width, ListItem.HEIGHT)
-            pos += ListItem.HEIGHT
+            items[i].setRect(0f, pos, width, HEIGHT)
+            pos += HEIGHT
         }
 
         content.setSize(width, pos)
@@ -88,10 +88,10 @@ class BadgesList(global: Boolean) : ScrollPane(Component()) {
 
         override fun createChildren() {
             icon = Image()
-            add(icon)
+            add(icon!!)
 
             label = PixelScene.renderText(6)
-            add(label)
+            add(label!!)
         }
 
         override fun layout() {
@@ -114,9 +114,9 @@ class BadgesList(global: Boolean) : ScrollPane(Component()) {
             }
         }
 
+    }
         companion object {
 
             private val HEIGHT = 20f
         }
-    }
 }

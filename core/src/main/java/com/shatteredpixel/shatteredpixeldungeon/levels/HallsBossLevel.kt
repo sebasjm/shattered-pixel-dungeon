@@ -93,12 +93,12 @@ class HallsBossLevel : Level() {
             for (j in 0..3) {
                 if (Random.Int(2) == 0) {
                     val y = Random.IntRange(top + 1, bottom - 1)
-                    map[i * 4 + j + y * width()] = Terrain.WALL_DECO
+                    map!![i * 4 + j + y * width()] = Terrain.WALL_DECO
                 }
             }
         }
 
-        map[exit] = Terrain.LOCKED_EXIT
+        map!![exit] = Terrain.LOCKED_EXIT
 
         Painter.fill(this, ROOM_LEFT - 1, ROOM_TOP - 1,
                 ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL)
@@ -106,18 +106,18 @@ class HallsBossLevel : Level() {
                 ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP + 1, Terrain.EMPTY)
 
         entrance = Random.Int(ROOM_LEFT + 1, ROOM_RIGHT - 1) + Random.Int(ROOM_TOP + 1, ROOM_BOTTOM - 1) * width()
-        map[entrance] = Terrain.ENTRANCE
+        map!![entrance] = Terrain.ENTRANCE
 
         val patch = Patch.generate(width, height, 0.30f, 6, true)
         for (i in 0 until length()) {
             if (map!![i] == Terrain.EMPTY && patch[i]) {
-                map[i] = Terrain.WATER
+                map!![i] = Terrain.WATER
             }
         }
 
         for (i in 0 until length()) {
             if (map!![i] == Terrain.EMPTY && Random.Int(10) == 0) {
-                map[i] = Terrain.EMPTY_DECO
+                map!![i] = Terrain.EMPTY_DECO
             }
         }
 
@@ -130,7 +130,7 @@ class HallsBossLevel : Level() {
 
     override fun createMobs() {}
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 
@@ -147,9 +147,9 @@ class HallsBossLevel : Level() {
 
     override fun randomRespawnCell(): Int {
         val pos = if (entrance == -1) stairs else entrance
-        var cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
+        var cell = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         while (!passable[cell]) {
-            cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
+            cell = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         }
         return cell
     }
@@ -158,7 +158,7 @@ class HallsBossLevel : Level() {
 
         super.press(cell, hero)
 
-        if (!enteredArena && hero === Dungeon.hero && cell != entrance) {
+        if (!enteredArena && hero === Dungeon.hero!! && cell != entrance) {
 
             enteredArena = true
             seal()

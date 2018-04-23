@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
@@ -82,7 +83,7 @@ class HornOfPlenty : Artifact() {
             if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge == 0)
-                GLog.i(Messages.get(this, "no_food"))
+                GLog.i(Messages.get(this.javaClass, "no_food"))
             else {
                 //consume as many
                 var chargesToUse = Math.max(1, hero.buff<Hunger>(Hunger::class.java)!!.hunger() / (Hunger.STARVING / 10).toInt())
@@ -112,7 +113,7 @@ class HornOfPlenty : Artifact() {
                 hero.busy()
                 SpellSprite.show(hero, SpellSprite.FOOD)
                 Sample.INSTANCE.play(Assets.SND_EAT)
-                GLog.i(Messages.get(this, "eat"))
+                GLog.i(Messages.get(this.javaClass, "eat"))
 
                 hero.spend(Food.TIME_TO_EAT)
 
@@ -132,7 +133,7 @@ class HornOfPlenty : Artifact() {
 
         } else if (action == AC_STORE) {
 
-            GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"))
+            GameScene.selectItem(itemSelector, mode, Messages.get(this.javaClass, "prompt"))
 
         }
     }
@@ -144,12 +145,12 @@ class HornOfPlenty : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             if (!cursed) {
                 if (level() < levelCap)
-                    desc += "\n\n" + Messages.get(this, "desc_hint")
+                    desc += "\n\n" + Messages.get(this.javaClass, "desc_hint")
             } else {
-                desc += "\n\n" + Messages.get(this, "desc_cursed")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_cursed")
             }
         }
 
@@ -178,12 +179,12 @@ class HornOfPlenty : Artifact() {
             storedFoodEnergy -= (upgrades * Hunger.HUNGRY).toInt()
             if (level() == 10) {
                 storedFoodEnergy = 0
-                GLog.p(Messages.get(this, "maxlevel"))
+                GLog.p(Messages.get(this.javaClass, "maxlevel"))
             } else {
-                GLog.p(Messages.get(this, "levelup"))
+                GLog.p(Messages.get(this.javaClass, "levelup"))
             }
         } else {
-            GLog.i(Messages.get(this, "feed"))
+            GLog.i(Messages.get(this.javaClass, "feed"))
         }
     }
 
@@ -256,21 +257,21 @@ class HornOfPlenty : Artifact() {
 
         private val STORED = "stored"
 
-        protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+        protected var itemSelector: WndBag.Listener = { item: Item? ->
             if (item != null && item is Food) {
                 if (item is Blandfruit && item.potionAttrib == null) {
                     GLog.w(Messages.get(HornOfPlenty::class.java, "reject"))
                 } else {
-                    val hero = Dungeon.hero
+                    val hero = Dungeon.hero!!
                     hero!!.sprite!!.operate(hero.pos)
                     hero.busy()
                     hero.spend(Food.TIME_TO_EAT)
 
-                    (Item.curItem as HornOfPlenty).gainFoodValue(item)
+                    (Item.curItem!! as HornOfPlenty).gainFoodValue(item)
                     item.detach(hero.belongings.backpack)
                 }
 
             }
-        }
+        } as WndBag.Listener
     }
 }

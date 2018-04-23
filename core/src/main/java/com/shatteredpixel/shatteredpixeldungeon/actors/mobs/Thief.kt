@@ -106,7 +106,7 @@ open class Thief : Mob() {
             return Gold(Random.NormalIntRange(100, 250))
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 12
     }
 
@@ -164,7 +164,7 @@ open class Thief : Mob() {
         var desc = super.description()
 
         if (item != null) {
-            desc += Messages.get(this, "carries", item!!.name())
+            desc += Messages.get(this.javaClass, "carries", item!!.name())
         }
 
         return desc

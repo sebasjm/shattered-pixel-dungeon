@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
@@ -43,7 +44,7 @@ class ScrollOfRage : Scroll() {
     override fun doRead() {
 
         for (mob in Dungeon.level!!.mobs.toTypedArray<Mob>()) {
-            mob.beckon(Item.curUser.pos)
+            mob.beckon(Item.curUser!!.pos)
             if (Dungeon.level!!.heroFOV[mob.pos]) {
                 Buff.prolong<Amok>(mob, Amok::class.java, 5f)
             }
@@ -51,18 +52,18 @@ class ScrollOfRage : Scroll() {
 
         for (heap in Dungeon.level!!.heaps.values()) {
             if (heap.type == Heap.Type.MIMIC) {
-                val m = Mimic.spawnAt(heap.pos, heap.items)
+                val m = Mimic.spawnAt(heap.pos, heap.items!!)
                 if (m != null) {
-                    m.beckon(Item.curUser.pos)
+                    m.beckon(Item.curUser!!.pos)
                     heap.destroy()
                 }
             }
         }
 
-        GLog.w(Messages.get(this, "roar"))
+        GLog.w(Messages.get(this.javaClass, "roar"))
         setKnown()
 
-        Item.curUser.sprite!!.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3)
+        Item.curUser!!.sprite!!.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3)
         Sample.INSTANCE.play(Assets.SND_CHALLENGE)
         Invisibility.dispel()
 
@@ -78,7 +79,7 @@ class ScrollOfRage : Scroll() {
 
         setKnown()
 
-        Item.curUser.sprite!!.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3)
+        Item.curUser!!.sprite!!.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3)
         Sample.INSTANCE.play(Assets.SND_READ)
         Invisibility.dispel()
 

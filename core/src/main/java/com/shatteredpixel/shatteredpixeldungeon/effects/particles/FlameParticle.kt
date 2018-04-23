@@ -49,7 +49,7 @@ class FlameParticle : PixelParticle.Shrinking() {
     override fun update() {
         super.update()
         val p = left / lifespan
-        am = if (p > 0.8f) (1 - p) * 5 else 1
+        am = if (p > 0.8f) (1 - p) * 5 else 1f
     }
 
     companion object {

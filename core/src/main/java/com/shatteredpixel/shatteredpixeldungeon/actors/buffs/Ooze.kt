@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
@@ -38,30 +39,30 @@ class Ooze : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     override fun act(): Boolean {
-        if (target.isAlive) {
+        if (target!!.isAlive) {
             if (Dungeon.depth > 4)
-                target.damage(Dungeon.depth / 5, this)
+                target!!.damage(Dungeon.depth / 5, this)
             else if (Random.Int(2) == 0)
-                target.damage(1, this)
-            if (!target.isAlive && target === Dungeon.hero) {
+                target!!.damage(1, this)
+            if (!target!!.isAlive && target!! === Dungeon.hero!!) {
                 Dungeon.fail(javaClass)
-                GLog.n(Messages.get(this, "ondeath"))
+                GLog.n(Messages.get(this.javaClass, "ondeath"))
             }
             spend(Actor.TICK)
         }
-        if (Dungeon.level!!.water[target.pos]) {
+        if (Dungeon.level!!.water[target!!.pos]) {
             detach()
         }
         return true

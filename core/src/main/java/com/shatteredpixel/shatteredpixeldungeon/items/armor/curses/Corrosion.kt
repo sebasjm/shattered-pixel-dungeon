@@ -37,7 +37,7 @@ class Corrosion : Armor.Glyph() {
 
         if (Random.Int(10) == 0) {
             val pos = defender.pos
-            for (i in PathFinder.NEIGHBOURS9) {
+            for (i in PathFinder.NEIGHBOURS9!!) {
                 Splash.at(pos + i, 0x000000, 5)
                 if (Actor.findChar(pos + i) != null)
                     Buff.affect<Ooze>(Actor.findChar(pos + i)!!, Ooze::class.java)

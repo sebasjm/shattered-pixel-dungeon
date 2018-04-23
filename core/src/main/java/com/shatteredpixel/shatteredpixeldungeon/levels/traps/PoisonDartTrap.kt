@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.PoisonDart
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
@@ -72,10 +73,10 @@ class PoisonDartTrap : Trap() {
 
                     override fun act(): Boolean {
                         val toRemove = this
-                        (ShatteredPixelDungeon.scene()!!.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, finalTarget.sprite, PoisonDart()) {
+                        (Game.scene()!!.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, finalTarget.sprite!!, PoisonDart(), {
                             val dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll()
                             finalTarget.damage(dmg, trap)
-                            if (finalTarget === Dungeon.hero && !finalTarget.isAlive) {
+                            if (finalTarget === Dungeon.hero!! && !finalTarget.isAlive) {
                                 Dungeon.fail(trap.javaClass)
                             }
                             Buff.affect<Poison>(finalTarget, Poison::class.java)!!
@@ -85,7 +86,7 @@ class PoisonDartTrap : Trap() {
                             finalTarget.sprite!!.flash()
                             Actor.remove(toRemove)
                             next()
-                        }
+                        } as Callback)
                         return false
                     }
                 })

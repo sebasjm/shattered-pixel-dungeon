@@ -34,17 +34,8 @@ import com.watabou.gltextures.TextureCache
 import com.watabou.glwrap.Matrix
 import com.watabou.glwrap.Quad
 import com.watabou.input.Touchscreen.Touch
-import com.watabou.noosa.Camera
-import com.watabou.noosa.ColorBlock
-import com.watabou.noosa.Game
-import com.watabou.noosa.Group
-import com.watabou.noosa.Image
-import com.watabou.noosa.NoosaScript
-import com.watabou.noosa.TextureFilm
-import com.watabou.noosa.TouchArea
-import com.watabou.noosa.Visual
+import com.watabou.noosa.*
 import com.watabou.noosa.audio.Music
-import com.watabou.utils.Point
 import com.watabou.utils.Random
 
 import java.nio.FloatBuffer
@@ -59,10 +50,10 @@ class SurfaceScene : PixelScene() {
 
         Music.INSTANCE.play(Assets.HAPPY, true)
 
-        PixelScene.uiCamera.visible = false
+        PixelScene.uiCamera!!.visible = false
 
-        val w = Camera.main.width
-        val h = Camera.main.height
+        val w = Camera.main!!.width
+        val h = Camera.main!!.height
 
         val archs = Archs()
         archs.reversed = true
@@ -72,9 +63,9 @@ class SurfaceScene : PixelScene() {
         val vx = PixelScene.align((w - SKY_WIDTH) / 2f)
         val vy = PixelScene.align((h - SKY_HEIGHT - BUTTON_HEIGHT) / 2f)
 
-        val s = Camera.main.cameraToScreen(vx, vy)
+        val s = Camera.main!!.cameraToScreen(vx, vy)
         viewport = Camera(s.x, s.y, SKY_WIDTH, SKY_HEIGHT, PixelScene.defaultZoom.toFloat())
-        Camera.add(viewport)
+        Camera.add(viewport!!)
 
         val window = Group()
         window.camera = viewport
@@ -155,7 +146,7 @@ class SurfaceScene : PixelScene() {
             frame.hardlight(0xDDEEFF)
         }
 
-        val gameOver = object : RedButton(Messages.get(this, "exit")) {
+        val gameOver = object : RedButton(Messages.get(this.javaClass, "exit")) {
             override fun onClick() {
                 Game.switchScene(RankingsScene::class.java)
             }
@@ -172,13 +163,13 @@ class SurfaceScene : PixelScene() {
     override fun destroy() {
         Badges.saveGlobal()
 
-        Camera.remove(viewport)
+        Camera.remove(viewport!!)
         super.destroy()
     }
 
     override fun onBackPressed() {}
 
-    private class Sky(dayTime: Boolean) : Visual(0, 0, 1, 1) {
+    private class Sky(dayTime: Boolean) : Visual(0f, 0f, 1f, 1f) {
 
         private val texture: SmartTexture
         private val verticesBuffer: FloatBuffer
@@ -295,7 +286,7 @@ class SurfaceScene : PixelScene() {
     private class Avatar(cl: HeroClass) : Image(Assets.AVATARS) {
 
         init {
-            frame(TextureFilm(texture, WIDTH, HEIGHT).get(cl.ordinal))
+            frame(TextureFilm(texture!!, WIDTH, HEIGHT).get(cl.ordinal))
         }
 
         companion object {
@@ -321,7 +312,7 @@ class SurfaceScene : PixelScene() {
     private class GrassPatch(private val tx: Float, private val ty: Float, private val forward: Boolean) : Image(Assets.SURFACE) {
 
         private var a = Random.Float(5f).toDouble()
-        private var angle: Double = 0.toDouble()
+        var angle2: Double = 0.toDouble()
 
         init {
 
@@ -331,17 +322,17 @@ class SurfaceScene : PixelScene() {
         override fun update() {
             super.update()
             a += Random.Float(Game.elapsed * 5).toDouble()
-            angle = (2 + Math.cos(a)) * if (forward) +0.2 else -0.2
+            angle2 = (2 + Math.cos(a)) * if (forward) +0.2 else -0.2
 
-            scale.y = Math.cos(angle).toFloat()
+            scale.y = Math.cos(angle2).toFloat()
 
-            x = tx + Math.tan(angle).toFloat() * width
+            x = tx + Math.tan(angle2).toFloat() * width
             y = ty - scale.y * height
         }
 
         override fun updateMatrix() {
             super.updateMatrix()
-            Matrix.skewX(matrix, (angle / Matrix.G2RAD).toFloat())
+            Matrix.skewX(matrix, (angle2 / Matrix.G2RAD).toFloat())
         }
 
         companion object {

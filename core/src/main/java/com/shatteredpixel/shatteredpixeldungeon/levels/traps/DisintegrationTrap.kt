@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 
@@ -69,14 +70,14 @@ class DisintegrationTrap : Trap() {
         if (target != null) {
             if (Dungeon.level!!.heroFOV[pos] || Dungeon.level!!.heroFOV[target.pos]) {
                 Sample.INSTANCE.play(Assets.SND_RAY)
-                ShatteredPixelDungeon.scene()!!.add(Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite!!.center()))
+                Game.scene()!!.add(Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite!!.center()))
             }
             target.damage(Math.max(target.HT / 5, Random.Int(target.HP / 2, 2 * target.HP / 3)), this)
-            if (target === Dungeon.hero) {
+            if (target === Dungeon.hero!!) {
                 val hero = target
                 if (!hero.isAlive) {
                     Dungeon.fail(javaClass)
-                    GLog.n(Messages.get(this, "ondeath"))
+                    GLog.n(Messages.get(this.javaClass, "ondeath"))
                 } else {
                     var item = hero.belongings.randomUnequipped()
                     var bag = hero.belongings.backpack
@@ -88,12 +89,12 @@ class DisintegrationTrap : Trap() {
                     if (item == null || item.level() > 0 || item.unique) return
                     if (!item.stackable) {
                         item.detachAll(bag)
-                        GLog.w(Messages.get(this, "one", item.name()))
+                        GLog.w(Messages.get(this.javaClass, "one", item.name()))
                     } else {
                         val n = Random.NormalIntRange(1, (item.quantity() + 1) / 2)
                         for (i in 1..n)
                             item.detach(bag)
-                        GLog.w(Messages.get(this, "some", item.name()))
+                        GLog.w(Messages.get(this.javaClass, "some", item.name()))
                     }
                 }
             }

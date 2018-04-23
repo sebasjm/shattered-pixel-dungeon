@@ -46,11 +46,11 @@ class Weightstone : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private val itemSelector = WndBag.Listener { item ->
+    private val itemSelector = { item: Item? ->
         if (item != null) {
             GameScene.show(WndBalance(item as Weapon))
         }
-    }
+    } as WndBag.Listener
 
     init {
         image = ItemSpriteSheet.WEIGHT
@@ -73,28 +73,28 @@ class Weightstone : Item() {
         if (action == AC_APPLY) {
 
             Item.curUser = hero
-            GameScene.selectItem(itemSelector, WndBag.Mode.WEAPON, Messages.get(this, "select"))
+            GameScene.selectItem(itemSelector, WndBag.Mode.WEAPON, Messages.get(this.javaClass, "select"))
 
         }
     }
 
     private fun apply(weapon: Weapon, forSpeed: Boolean) {
 
-        detach(Item.curUser.belongings.backpack)
+        detach(Item.curUser!!.belongings.backpack)
 
         if (forSpeed) {
             weapon.imbue = Weapon.Imbue.LIGHT
-            GLog.p(Messages.get(this, "light"))
+            GLog.p(Messages.get(this.javaClass, "light"))
         } else {
             weapon.imbue = Weapon.Imbue.HEAVY
-            GLog.p(Messages.get(this, "heavy"))
+            GLog.p(Messages.get(this.javaClass, "heavy"))
         }
 
-        Item.curUser.sprite!!.operate(Item.curUser.pos)
+        Item.curUser!!.sprite!!.operate(Item.curUser!!.pos)
         Sample.INSTANCE.play(Assets.SND_MISS)
 
-        Item.curUser.spend(TIME_TO_APPLY)
-        Item.curUser.busy()
+        Item.curUser!!.spend(TIME_TO_APPLY)
+        Item.curUser!!.busy()
     }
 
     override fun price(): Int {
@@ -109,7 +109,7 @@ class Weightstone : Item() {
             titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
             add(titlebar)
 
-            val tfMesage = PixelScene.renderMultiline(Messages.get(this, "choice"), 8)
+            val tfMesage = PixelScene.renderMultiline(Messages.get(this.javaClass, "choice"), 8)
             tfMesage.maxWidth(WIDTH - MARGIN * 2)
             tfMesage.setPos(MARGIN.toFloat(), titlebar.bottom() + MARGIN)
             add(tfMesage)
@@ -117,7 +117,7 @@ class Weightstone : Item() {
             var pos = tfMesage.top() + tfMesage.height()
 
             if (weapon.imbue != Weapon.Imbue.LIGHT) {
-                val btnSpeed = object : RedButton(Messages.get(this, "light")) {
+                val btnSpeed = object : RedButton(Messages.get(this.javaClass, "light")) {
                     override fun onClick() {
                         hide()
                         this@Weightstone.apply(weapon, true)
@@ -130,7 +130,7 @@ class Weightstone : Item() {
             }
 
             if (weapon.imbue != Weapon.Imbue.HEAVY) {
-                val btnAccuracy = object : RedButton(Messages.get(this, "heavy")) {
+                val btnAccuracy = object : RedButton(Messages.get(this.javaClass, "heavy")) {
                     override fun onClick() {
                         hide()
                         this@Weightstone.apply(weapon, false)
@@ -142,7 +142,7 @@ class Weightstone : Item() {
                 pos = btnAccuracy.bottom()
             }
 
-            val btnCancel = object : RedButton(Messages.get(this, "cancel")) {
+            val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
                 override fun onClick() {
                     hide()
                 }
@@ -155,16 +155,13 @@ class Weightstone : Item() {
 
         protected fun onSelect(index: Int) {}
 
-        companion object {
-
-            private val WIDTH = 120
-            private val MARGIN = 2
-            private val BUTTON_WIDTH = WIDTH - MARGIN * 2
-            private val BUTTON_HEIGHT = 20
-        }
     }
 
     companion object {
+        private val WIDTH = 120
+        private val MARGIN = 2
+        private val BUTTON_WIDTH = WIDTH - MARGIN * 2
+        private val BUTTON_HEIGHT = 20
 
         private val TIME_TO_APPLY = 2f
 

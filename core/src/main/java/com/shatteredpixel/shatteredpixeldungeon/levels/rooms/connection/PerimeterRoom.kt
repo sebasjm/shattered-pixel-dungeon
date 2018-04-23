@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Point
 
 import java.util.ArrayList
@@ -30,14 +31,14 @@ import java.util.ArrayList
 //tunnels along the room's perimeter
 open class PerimeterRoom : ConnectionRoom() {
 
-    private var corners: Array<Point>? = null
+    private var corners: Array<Point?>? = null
 
     override fun paint(level: Level) {
 
         val floor = level.tunnelTile()
 
         val pointsToFill = ArrayList<Point>()
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             val p = Point(door)
             if (p.y == top) {
                 p.y++
@@ -74,7 +75,7 @@ open class PerimeterRoom : ConnectionRoom() {
             pointsToFill.remove(to)
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.TUNNEL)
         }
     }
@@ -113,15 +114,15 @@ open class PerimeterRoom : ConnectionRoom() {
         //set up corners
         if (corners == null) {
             corners = arrayOfNulls(4)
-            corners[0] = Point(left + 1, top + 1)
-            corners[1] = Point(right - 1, top + 1)
-            corners[2] = Point(right - 1, bottom - 1)
-            corners[3] = Point(left + 1, bottom - 1)
+            corners!![0] = Point(left + 1, top + 1)
+            corners!![1] = Point(right - 1, top + 1)
+            corners!![2] = Point(right - 1, bottom - 1)
+            corners!![3] = Point(left + 1, bottom - 1)
         }
 
         //doors on adjacent sides
         for (c in corners!!) {
-            if ((c.x == from.x || c.y == from.y) && (c.x == to.x || c.y == to.y)) {
+            if ((c!!.x == from.x || c!!.y == from.y) && (c!!.x == to.x || c!!.y == to.y)) {
                 Painter.drawLine(level, from, c, floor)
                 Painter.drawLine(level, c, to, floor)
                 return

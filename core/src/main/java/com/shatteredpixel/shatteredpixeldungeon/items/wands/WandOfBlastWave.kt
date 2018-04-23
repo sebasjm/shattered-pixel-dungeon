@@ -25,10 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
@@ -67,12 +69,12 @@ class WandOfBlastWave : DamageWand() {
         val damage = damageRoll()
 
         //presses all tiles in the AOE first
-        for (i in PathFinder.NEIGHBOURS9) {
+        for (i in PathFinder.NEIGHBOURS9!!) {
             Dungeon.level!!.press(bolt.collisionPos!! + i, Actor.findChar(bolt.collisionPos!! + i), true)
         }
 
         //throws other chars around the center.
-        for (i in PathFinder.NEIGHBOURS8) {
+        for (i in PathFinder.NEIGHBOURS8!!) {
             val ch = Actor.findChar(bolt.collisionPos!! + i)
 
             if (ch != null) {
@@ -100,9 +102,9 @@ class WandOfBlastWave : DamageWand() {
             }
         }
 
-        if (!Item.curUser.isAlive) {
+        if (!Item.curUser!!.isAlive) {
             Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "ondeath"))
+            GLog.n(Messages.get(this.javaClass, "ondeath"))
         }
     }
 
@@ -121,9 +123,9 @@ class WandOfBlastWave : DamageWand() {
     }
 
     override fun fx(bolt: Ballistica, callback: Callback) {
-        MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+        MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.FORCE,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.collisionPos!!,
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)
@@ -132,7 +134,7 @@ class WandOfBlastWave : DamageWand() {
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0x664422)
         particle.am = 0.6f
-        particle.setLifespan(3f)
+        particle.lifespan = (3f)
         particle.speed.polar(Random.Float(PointF.PI2), 0.3f)
         particle.setSize(1f, 2f)
         particle.radiateXY(2.5f)
@@ -158,7 +160,8 @@ class WandOfBlastWave : DamageWand() {
         override fun update() {
             super.update()
 
-            if ((time -= Game.elapsed) <= 0) {
+            time -= Game.elapsed
+            if (time <= 0) {
                 kill()
             } else {
                 val p = time / TIME_TO_FADE
@@ -213,10 +216,10 @@ class WandOfBlastWave : DamageWand() {
                     ch.pos = newPos
                     if (ch.pos == trajectory.collisionPos) {
                         ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this)
-                        Paralysis.prolong<Paralysis>(ch, Paralysis::class.java, Random.NormalIntRange((finalDist + 1) / 2, finalDist).toFloat())
+                        Buff.prolong<Paralysis>(ch, Paralysis::class.java, Random.NormalIntRange((finalDist + 1) / 2, finalDist).toFloat())
                     }
                     Dungeon.level!!.press(ch.pos, ch, true)
-                    if (ch === Dungeon.hero) {
+                    if (ch === Dungeon.hero!!) {
                         Dungeon.observe()
                     }
                 }

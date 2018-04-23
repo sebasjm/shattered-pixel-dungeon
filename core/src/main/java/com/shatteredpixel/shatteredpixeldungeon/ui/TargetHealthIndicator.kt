@@ -41,7 +41,7 @@ class TargetHealthIndicator : HealthBar() {
             width = sprite!!.width
             x = sprite.x
             y = sprite.y - 3
-            level(target)
+            level(target!!)
             visible = true
         } else {
             visible = false
@@ -62,6 +62,6 @@ class TargetHealthIndicator : HealthBar() {
 
     companion object {
 
-        var instance: TargetHealthIndicator
+        var instance: TargetHealthIndicator? = null
     }
 }

@@ -45,21 +45,22 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant
+import com.watabou.noosa.Game
 import com.watabou.utils.Random
 
 class WaterOfTransmutation : WellWater() {
 
-    override fun affectItem(item: Item?): Item? {
-        var item = item
+    override fun affectItem(item: Item): Item? {
+        var item : Item? = item
 
         if (item is MagesStaff) {
             item = changeStaff((item as MagesStaff?)!!)
         } else if (item is MeleeWeapon) {
             item = changeWeapon((item as MeleeWeapon?)!!)
         } else if (item is Scroll) {
-            item = changeScroll(item as Scroll?)
+            item = changeScroll(item as Scroll)
         } else if (item is Potion) {
-            item = changePotion(item as Potion?)
+            item = changePotion(item as Potion)
         } else if (item is Ring) {
             item = changeRing((item as Ring?)!!)
         } else if (item is Wand) {
@@ -67,7 +68,7 @@ class WaterOfTransmutation : WellWater() {
         } else if (item is Plant.Seed) {
             item = changeSeed((item as Plant.Seed?)!!)
         } else if (item is Artifact) {
-            item = changeArtifact(item as Artifact?)
+            item = changeArtifact(item as Artifact)
         } else {
             item = null
         }
@@ -118,9 +119,9 @@ class WaterOfTransmutation : WellWater() {
 
         do {
             try {
-                n = c.classes[Random.chances(c.probs)].newInstance() as MeleeWeapon
+                n = c.classes!![Random.chances(c.probs!!)].newInstance() as MeleeWeapon
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 
@@ -175,7 +176,7 @@ class WaterOfTransmutation : WellWater() {
             n.transferUpgrade(a.visiblyUpgraded())
         }
 
-        return n
+        return n!!
     }
 
     private fun changeWand(w: Wand): Wand {
@@ -245,6 +246,6 @@ class WaterOfTransmutation : WellWater() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

@@ -28,8 +28,15 @@ open class PixelParticle : PseudoPixel() {
 
     protected var size: Float = 0.toFloat()
 
-    protected var lifespan: Float = 0.toFloat()
+    var lifespan: Float = 0.toFloat()
+        set(value) {
+            setLifespanListener(value)
+            field = value
+        }
+
     protected var left: Float = 0.toFloat()
+
+    protected open fun setLifespanListener(value: Float) {}
 
     init {
 

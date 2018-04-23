@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -76,7 +77,7 @@ class Ghost : NPC() {
         return super.act()
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char?): Int {
         return 1000
     }
 
@@ -107,10 +108,10 @@ class Ghost : NPC() {
                     GameScene.show(WndSadGhost(this, Quest.type))
                 } else {
                     when (Quest.type) {
-                        1 -> GameScene.show(WndQuest(this, Messages.get(this, "rat_2")))
-                        2 -> GameScene.show(WndQuest(this, Messages.get(this, "gnoll_2")))
-                        3 -> GameScene.show(WndQuest(this, Messages.get(this, "crab_2")))
-                        else -> GameScene.show(WndQuest(this, Messages.get(this, "rat_2")))
+                        1 -> GameScene.show(WndQuest(this, Messages.get(this.javaClass, "rat_2")))
+                        2 -> GameScene.show(WndQuest(this, Messages.get(this.javaClass, "gnoll_2")))
+                        3 -> GameScene.show(WndQuest(this, Messages.get(this.javaClass, "crab_2")))
+                        else -> GameScene.show(WndQuest(this, Messages.get(this.javaClass, "rat_2")))
                     }
 
                     var newPos = -1
@@ -136,19 +137,19 @@ class Ghost : NPC() {
             when (Quest.type) {
                 1 -> {
                     questBoss = FetidRat()
-                    txt_quest = Messages.get(this, "rat_1", Dungeon.hero!!.givenName())
+                    txt_quest = Messages.get(this.javaClass, "rat_1", Dungeon.hero!!.givenName())
                 }
                 2 -> {
                     questBoss = GnollTrickster()
-                    txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero!!.givenName())
+                    txt_quest = Messages.get(this.javaClass, "gnoll_1", Dungeon.hero!!.givenName())
                 }
                 3 -> {
                     questBoss = GreatCrab()
-                    txt_quest = Messages.get(this, "crab_1", Dungeon.hero!!.givenName())
+                    txt_quest = Messages.get(this.javaClass, "crab_1", Dungeon.hero!!.givenName())
                 }
                 else -> {
                     questBoss = FetidRat()
-                    txt_quest = Messages.get(this, "rat_1", Dungeon.hero!!.givenName())
+                    txt_quest = Messages.get(this.javaClass, "rat_1", Dungeon.hero!!.givenName())
                 }
             }
 
@@ -175,10 +176,10 @@ class Ghost : NPC() {
 
         private var spawned: Boolean = false
 
-        private var type: Int = 0
+        var type: Int = 0
 
-        private var given: Boolean = false
-        private var processed: Boolean = false
+        var given: Boolean = false
+        var processed: Boolean = false
 
         private var depth: Int = 0
 
@@ -227,7 +228,8 @@ class Ghost : NPC() {
 
             val node = bundle.getBundle(NODE)
 
-            if (!node.isNull && (spawned = node.getBoolean(SPAWNED))) {
+            spawned = node.getBoolean(SPAWNED)
+            if (!node.isNull && spawned) {
 
                 type = node.getInt(TYPE)
                 given = node.getBoolean(GIVEN)
@@ -280,10 +282,10 @@ class Ghost : NPC() {
 
                 try {
                     do {
-                        weapon = Generator.wepTiers[wepTier - 1].classes[Random.chances(Generator.wepTiers[wepTier - 1].probs)].newInstance() as Weapon
+                        weapon = Generator.wepTiers[wepTier - 1].classes!![Random.chances(Generator.wepTiers[wepTier - 1].probs!!)].newInstance() as Weapon
                     } while (weapon !is MeleeWeapon)
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                     weapon = Shortsword()
                 }
 

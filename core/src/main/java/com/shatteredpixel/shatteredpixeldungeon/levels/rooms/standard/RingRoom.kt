@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 
 class RingRoom : StandardRoom() {
 
@@ -47,7 +48,7 @@ class RingRoom : StandardRoom() {
         val passageWidth = Math.floor((0.25f * (minDim + 1)).toDouble()).toInt()
         Painter.fill(level, this, passageWidth + 1, Terrain.WALL)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
     }

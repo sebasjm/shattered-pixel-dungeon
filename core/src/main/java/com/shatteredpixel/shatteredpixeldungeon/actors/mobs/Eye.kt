@@ -72,7 +72,7 @@ class Eye : Mob() {
         return Random.NormalIntRange(20, 30)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 30
     }
 
@@ -123,7 +123,7 @@ class Eye : Mob() {
             spend(attackDelay())
 
             beam = Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN)
-            if (Dungeon.level!!.heroFOV[pos] || Dungeon.level!!.heroFOV[beam!!.collisionPos]) {
+            if (Dungeon.level!!.heroFOV[pos] || Dungeon.level!!.heroFOV[beam!!.collisionPos!!]) {
                 sprite!!.zap(beam!!.collisionPos!!)
                 return false
             } else {
@@ -169,9 +169,9 @@ class Eye : Mob() {
                     CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2))
                 }
 
-                if (!ch.isAlive && ch === Dungeon.hero) {
+                if (!ch.isAlive && ch === Dungeon.hero!!) {
                     Dungeon.fail(javaClass)
-                    GLog.n(Messages.get(this, "deathgaze_kill"))
+                    GLog.n(Messages.get(this.javaClass, "deathgaze_kill"))
                 }
             } else {
                 ch.sprite!!.showStatus(CharSprite.NEUTRAL, ch.defenseVerb())

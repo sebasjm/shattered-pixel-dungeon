@@ -32,8 +32,8 @@ class Displacement : Armor.Glyph() {
 
     override fun proc(armor: Armor, attacker: Char, defender: Char, damage: Int): Int {
 
-        if (defender === Dungeon.hero && Random.Int(20) == 0) {
-            ScrollOfTeleportation.teleportHero(Dungeon.hero)
+        if (defender === Dungeon.hero!! && Random.Int(20) == 0) {
+            ScrollOfTeleportation.teleportHero(Dungeon.hero!!)
             return 0
         }
 

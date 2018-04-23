@@ -50,8 +50,8 @@ class Freezing : Blob() {
 
                     if (fire != null && fire.volume > 0 && fire.cur!![cell] > 0) {
                         fire.clear(cell)
-                        cur[cell] = 0
-                        off[cell] = cur[cell]
+                        cur!![cell] = 0
+                        off!![cell] = cur!![cell]
                         continue
                     }
 
@@ -71,10 +71,10 @@ class Freezing : Blob() {
                     val heap = Dungeon.level!!.heaps.get(cell)
                     heap?.freeze()
 
-                    off[cell] = cur!![cell] - 1
+                    off!![cell] = cur!![cell] - 1
                     volume += off!![cell]
                 } else {
-                    off[cell] = 0
+                    off!![cell] = 0
                 }
             }
         }
@@ -86,7 +86,7 @@ class Freezing : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     companion object {

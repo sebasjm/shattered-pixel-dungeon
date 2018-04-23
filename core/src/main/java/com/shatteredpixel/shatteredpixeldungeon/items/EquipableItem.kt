@@ -70,7 +70,7 @@ abstract class EquipableItem : Item() {
 
     override fun cast(user: Hero?, dst: Int) {
 
-        if (isEquipped(user)) {
+        if (isEquipped(user!!)) {
             if (quantity == 1 && !this.doUnequip(user, false, false)) {
                 return
             }

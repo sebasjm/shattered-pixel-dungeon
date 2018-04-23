@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
@@ -44,7 +45,7 @@ class ScrollOfRemoveCurse : InventoryScroll() {
     }
 
     override fun empoweredRead() {
-        for (item in Item.curUser.belongings) {
+        for (item in Item.curUser!!.belongings) {
             if (item.cursed) {
                 item.cursedKnown = true
             }
@@ -55,16 +56,16 @@ class ScrollOfRemoveCurse : InventoryScroll() {
     }
 
     override fun onItemSelected(item: Item?) {
-        Flare(6, 32f).show(Item.curUser.sprite, 2f)
+        Flare(6, 32f).show(Item.curUser!!.sprite!!, 2f)
 
-        val procced = uncurse(Item.curUser, item!!)
+        val procced = uncurse(Item.curUser!!, item!!)
 
-        Weakness.detach(Item.curUser, Weakness::class.java)
+        Buff.detach(Item.curUser!!, Weakness::class.java)
 
         if (procced) {
-            GLog.p(Messages.get(this, "cleansed"))
+            GLog.p(Messages.get(this.javaClass, "cleansed"))
         } else {
-            GLog.i(Messages.get(this, "not_cleansed"))
+            GLog.i(Messages.get(this.javaClass, "not_cleansed"))
         }
     }
 
@@ -74,7 +75,7 @@ class ScrollOfRemoveCurse : InventoryScroll() {
 
     companion object {
 
-        fun uncurse(hero: Hero, vararg items: Item): Boolean {
+        fun uncurse(hero: Hero, vararg items: Item?): Boolean {
 
             var procced = false
             for (item in items) {

@@ -48,7 +48,7 @@ open class Tag(color: Int) : Button() {
 
         bg = Chrome.get(Chrome.Type.TAG)
         bg!!.hardlight(r, g, b)
-        add(bg)
+        add(bg!!)
     }
 
     override fun layout() {
@@ -72,7 +72,8 @@ open class Tag(color: Int) : Button() {
         super.update()
 
         if (visible && lightness > 0.5) {
-            if ((lightness -= Game.elapsed) > 0.5) {
+            lightness -= Game.elapsed
+            if (lightness > 0.5) {
                 bg!!.ba = 2 * lightness - 1
                 bg!!.ga = bg!!.ba
                 bg!!.ra = bg!!.ga

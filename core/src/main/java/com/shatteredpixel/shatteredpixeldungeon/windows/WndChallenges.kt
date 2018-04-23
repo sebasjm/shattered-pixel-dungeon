@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window
+import com.watabou.noosa.Game
 import com.watabou.noosa.RenderedText
 
 import java.util.ArrayList
@@ -39,7 +40,7 @@ open class WndChallenges(checked: Int, private val editable: Boolean) : Window()
 
     init {
 
-        val title = PixelScene.renderText(Messages.get(this, "title"), 9)
+        val title = PixelScene.renderText(Messages.get(this.javaClass, "title"), 9)
         title.hardlight(Window.TITLE_COLOR)
         title.x = (WIDTH - title.width()) / 2
         title.y = (TTL_HEIGHT - title.height()) / 2
@@ -68,7 +69,7 @@ open class WndChallenges(checked: Int, private val editable: Boolean) : Window()
             val info = object : IconButton(Icons.get(Icons.INFO)) {
                 override fun onClick() {
                     super.onClick()
-                    ShatteredPixelDungeon.scene()!!.add(
+                    Game.scene()!!.add(
                             WndMessage(Messages.get(Challenges::class.java, challenge + "_desc"))
                     )
                 }

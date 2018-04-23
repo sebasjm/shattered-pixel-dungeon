@@ -44,11 +44,11 @@ class WndClass(private val cl: HeroClass) : WndTabbed() {
         tab.setSize(TAB_WIDTH.toFloat(), tabHeight().toFloat())
         add(tab)
 
-        if (Badges.isUnlocked(cl.masteryBadge())) {
+        if (Badges.isUnlocked(cl.masteryBadge()!!)) {
             tabMastery = MasteryTab()
             add(tabMastery)
 
-            tab = RankingTab(Messages.get(this, "mastery"), tabMastery)
+            tab = RankingTab(Messages.get(this.javaClass, "mastery"), tabMastery)
             add(tab)
 
             resize(
@@ -115,11 +115,6 @@ class WndClass(private val cl: HeroClass) : WndTabbed() {
             height = pos + MARGIN
         }
 
-        companion object {
-
-            private val MARGIN = 4
-            private val GAP = 4
-        }
     }
 
     private inner class MasteryTab : Group() {
@@ -146,13 +141,11 @@ class WndClass(private val cl: HeroClass) : WndTabbed() {
             width = text.right() + MARGIN
         }
 
-        companion object {
-
-            private val MARGIN = 4
-        }
     }
 
     companion object {
+        private val MARGIN = 4
+        private val GAP = 4
 
         private val WIDTH = 110
 

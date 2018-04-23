@@ -87,23 +87,23 @@ abstract class Level : Bundlable {
 
     var version: Int = 0
 
-    var map: IntArray? = null
-    var visited: BooleanArray? = null
-    var mapped: BooleanArray? = null
-    var discoverable: BooleanArray
+    var map: IntArray = IntArray(0)
+    var visited: BooleanArray = BooleanArray(0)
+    var mapped: BooleanArray = BooleanArray(0)
+    var discoverable: BooleanArray = BooleanArray(0)
 
     var viewDistance = if (Dungeon.isChallenged(Challenges.DARKNESS)) 2 else 8
 
-    var heroFOV: BooleanArray
+    var heroFOV: BooleanArray = BooleanArray(0)
 
-    var passable: BooleanArray
-    var losBlocking: BooleanArray
-    var flamable: BooleanArray
-    var secret: BooleanArray
-    var solid: BooleanArray
-    var avoid: BooleanArray
-    var water: BooleanArray
-    var pit: BooleanArray
+    var passable: BooleanArray = BooleanArray(0)
+    var losBlocking: BooleanArray = BooleanArray(0)
+    var flamable: BooleanArray = BooleanArray(0)
+    var secret: BooleanArray = BooleanArray(0)
+    var solid: BooleanArray = BooleanArray(0)
+    var avoid: BooleanArray = BooleanArray(0)
+    var water: BooleanArray = BooleanArray(0)
+    var pit: BooleanArray = BooleanArray(0)
 
     var feeling = Feeling.NONE
 
@@ -113,13 +113,13 @@ abstract class Level : Bundlable {
     //when a boss level has become locked.
     var locked = false
 
-    var mobs: HashSet<Mob>
-    var heaps: SparseArray<Heap>
-    var blobs: HashMap<Class<out Blob>, Blob>
-    var plants: SparseArray<Plant>
-    var traps: SparseArray<Trap>
-    var customTiles: HashSet<CustomTiledVisual>
-    var customWalls: HashSet<CustomTiledVisual>
+    var mobs: HashSet<Mob> = HashSet()
+    var heaps: SparseArray<Heap> = SparseArray()
+    var blobs: HashMap<Class<out Blob>, Blob> = HashMap()
+    var plants: SparseArray<Plant> = SparseArray()
+    var traps: SparseArray<Trap> = SparseArray()
+    var customTiles: HashSet<CustomTiledVisual> = HashSet()
+    var customWalls: HashSet<CustomTiledVisual> = HashSet()
 
     protected var itemsToSpawn = ArrayList<Item>()
 
@@ -274,10 +274,10 @@ abstract class Level : Bundlable {
         customTiles = HashSet()
         customWalls = HashSet()
 
-        map = bundle.getIntArray(MAP)
+        map = bundle.getIntArray(MAP)!!
 
-        visited = bundle.getBooleanArray(VISITED)
-        mapped = bundle.getBooleanArray(MAPPED)
+        visited = bundle.getBooleanArray(VISITED)!!
+        mapped = bundle.getBooleanArray(MAPPED)!!
 
         entrance = bundle.getInt(ENTRANCE)
         exit = bundle.getInt(EXIT)
@@ -346,9 +346,9 @@ abstract class Level : Bundlable {
         bundle.put(VERSION, Game.versionCode)
         bundle.put(WIDTH, width)
         bundle.put(HEIGHT, height)
-        bundle.put(MAP, map)
-        bundle.put(VISITED, visited)
-        bundle.put(MAPPED, mapped)
+        bundle.put(MAP, map!!)
+        bundle.put(VISITED, visited!!)
+        bundle.put(MAPPED, mapped!!)
         bundle.put(ENTRANCE, entrance)
         bundle.put(EXIT, exit)
         bundle.put(LOCKED, locked)
@@ -388,7 +388,7 @@ abstract class Level : Bundlable {
 
     protected abstract fun build(): Boolean
 
-    abstract fun createMob(): Mob
+    abstract fun createMob(): Mob?
 
     protected abstract fun createMobs()
 
@@ -407,7 +407,7 @@ abstract class Level : Bundlable {
         }
     }
 
-    open fun addVisuals(): Group {
+    open fun addVisuals(): Group? {
         if (visuals == null || visuals!!.parent == null) {
             visuals = Group()
         } else {
@@ -421,7 +421,7 @@ abstract class Level : Bundlable {
                 }
             }
         }
-        return visuals
+        return visuals!!
     }
 
     open fun nMobs(): Int {
@@ -437,7 +437,7 @@ abstract class Level : Bundlable {
         return null
     }
 
-    open fun respawner(): Actor {
+    open fun respawner(): Actor? {
         return object : Actor() {
 
             init {
@@ -452,7 +452,7 @@ abstract class Level : Bundlable {
 
                 if (count < nMobs()) {
 
-                    val mob = createMob()
+                    val mob = createMob()!!
                     mob.state = mob.WANDERING
                     mob.pos = randomRespawnCell()
                     if (Dungeon.hero!!.isAlive && mob.pos != -1 && distance(Dungeon.hero!!.pos, mob.pos) >= 4) {
@@ -565,8 +565,8 @@ abstract class Level : Bundlable {
 
             var d = false
 
-            for (j in PathFinder.NEIGHBOURS9.indices) {
-                val n = i + PathFinder.NEIGHBOURS9[j]
+            for (j in PathFinder.NEIGHBOURS9!!.indices) {
+                val n = i + PathFinder.NEIGHBOURS9!![j]
                 if (n >= 0 && n < length() && map!![n] != Terrain.WALL && map!![n] != Terrain.WALL_DECO) {
                     d = true
                     break
@@ -585,7 +585,7 @@ abstract class Level : Bundlable {
             //effectively nullifies whatever the logic calling this wants to do, including dropping items.
             val heap = Heap()
             heap.sprite = ItemSprite()
-            val sprite = heap.sprite
+            val sprite = heap.sprite!!
             sprite.link(heap)
             return heap
 
@@ -610,7 +610,8 @@ abstract class Level : Bundlable {
 
             var n: Int
             do {
-                n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
+                val i = PathFinder.NEIGHBOURS8!![Random.Int(8)]
+                n = cell + i
             } while (!passable[n] && !avoid[n])
             return drop(item, n)
 
@@ -692,7 +693,7 @@ abstract class Level : Bundlable {
 
     //characters which are not the hero 'soft' press cells by default
     open fun press(cell: Int, ch: Char) {
-        press(cell, ch, ch === Dungeon.hero)
+        press(cell, ch, ch === Dungeon.hero!!)
     }
 
     //a 'soft' press ignores hidden traps
@@ -701,7 +702,7 @@ abstract class Level : Bundlable {
     fun press(cell: Int, ch: Char?, hard: Boolean) {
 
         if (ch != null && pit[cell] && !ch.flying) {
-            if (ch === Dungeon.hero) {
+            if (ch === Dungeon.hero!!) {
                 Chasm.heroFall(cell)
             } else if (ch is Mob) {
                 Chasm.mobFall((ch as Mob?)!!)
@@ -733,7 +734,7 @@ abstract class Level : Bundlable {
 
             if (timeFreeze == null) {
 
-                if (ch === Dungeon.hero) {
+                if (ch === Dungeon.hero!!) {
                     Dungeon.hero!!.interrupt()
                 }
 
@@ -769,7 +770,7 @@ abstract class Level : Bundlable {
 
         var sense = 1
         //Currently only the hero can get mind vision
-        if (c.isAlive && c === Dungeon.hero) {
+        if (c.isAlive && c === Dungeon.hero!!) {
             for (b in c.buffs<MindVision>(MindVision::class.java)) {
                 sense = Math.max((b as MindVision).distance, sense)
             }
@@ -793,7 +794,7 @@ abstract class Level : Bundlable {
         }
 
         //Currently only the hero can get mind vision or awareness
-        if (c.isAlive && c === Dungeon.hero) {
+        if (c.isAlive && c === Dungeon.hero!!) {
             Dungeon.hero!!.mindVisionEnemies.clear()
             if (c.buff<MindVision>(MindVision::class.java) != null) {
                 for (mob in mobs) {
@@ -817,7 +818,7 @@ abstract class Level : Bundlable {
             }
 
             for (m in Dungeon.hero!!.mindVisionEnemies) {
-                for (i in PathFinder.NEIGHBOURS9) {
+                for (i in PathFinder.NEIGHBOURS9!!) {
                     fieldOfView[m.pos + i] = true
                 }
             }
@@ -825,13 +826,13 @@ abstract class Level : Bundlable {
             if (c.buff<Awareness>(Awareness::class.java) != null) {
                 for (heap in heaps.values()) {
                     val p = heap.pos
-                    for (i in PathFinder.NEIGHBOURS9)
+                    for (i in PathFinder.NEIGHBOURS9!!)
                         fieldOfView[p + i] = true
                 }
             }
         }
 
-        if (c === Dungeon.hero) {
+        if (c === Dungeon.hero!!) {
             for (heap in heaps.values())
                 if (!heap.seen && fieldOfView[heap.pos])
                     heap.seen = true

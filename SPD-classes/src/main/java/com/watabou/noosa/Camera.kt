@@ -168,8 +168,8 @@ open class Camera(var x: Int, var y: Int, var width: Int, var height: Int, var z
 
         private val all = ArrayList<Camera>()
 
-        protected var invW2: Float = 0.toFloat()
-        protected var invH2: Float = 0.toFloat()
+        @JvmStatic protected var invW2: Float = 0.toFloat()
+        @JvmStatic protected var invH2: Float = 0.toFloat()
 
         var main: Camera? = null
 

@@ -35,7 +35,7 @@ class Stench : Armor.Glyph() {
 
         if (Random.Int(8) == 0) {
 
-            GameScene.add(Blob.seed<ToxicGas>(defender.pos, 250, ToxicGas::class.java))
+            GameScene.add(Blob.seed<ToxicGas>(defender.pos, 250, ToxicGas::class.java)!!)
 
         }
 

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
@@ -49,7 +50,7 @@ abstract class SecretRoom : SpecialRoom() {
         private val baseRegionSecrets = floatArrayOf(1.4f, 1.8f, 2.2f, 2.6f, 3.0f)
         private var regionSecretsThisRun: IntArray? = IntArray(5)
 
-        override fun initForRun() {
+        fun initForRun() {
 
             val regionChances = baseRegionSecrets.clone()
 
@@ -60,7 +61,7 @@ abstract class SecretRoom : SpecialRoom() {
             }
 
             for (i in regionSecretsThisRun!!.indices) {
-                regionSecretsThisRun[i] = regionChances[i].toInt()
+                regionSecretsThisRun!![i] = regionChances[i].toInt()
                 if (Random.Float() < regionChances[i] % 1f) {
                     regionSecretsThisRun!![i]++
                 }
@@ -91,11 +92,11 @@ abstract class SecretRoom : SpecialRoom() {
                 }
             }
 
-            regionSecretsThisRun[region] -= secrets.toInt()
+            regionSecretsThisRun!![region] -= secrets.toInt()
             return secrets.toInt()
         }
 
-        override fun createRoom(): SecretRoom {
+        fun createRoom(): SecretRoom {
 
             var r: SecretRoom? = null
             var index = runSecrets.size
@@ -106,33 +107,33 @@ abstract class SecretRoom : SpecialRoom() {
             try {
                 r = runSecrets[index].newInstance()
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
             }
 
             runSecrets.add(runSecrets.removeAt(index))
 
-            return r
+            return r!!
         }
 
         private val ROOMS = "secret_rooms"
         private val REGIONS = "region_secrets"
 
-        override fun restoreRoomsFromBundle(bundle: Bundle) {
+        fun restoreRoomsFromBundle(bundle: Bundle) {
             runSecrets.clear()
             if (bundle.contains(ROOMS)) {
                 for (type in bundle.getClassArray(ROOMS)!!) {
-                    if (type != null) runSecrets.add(type)
+                    if (type != null) runSecrets.add(type as Class<out SecretRoom>)
                 }
                 regionSecretsThisRun = bundle.getIntArray(REGIONS)
             } else {
                 initForRun()
-                ShatteredPixelDungeon.reportException(Exception("secrets array didn't exist!"))
+                Game.reportException(Exception("secrets array didn't exist!"))
             }
         }
 
-        override fun storeRoomsInBundle(bundle: Bundle) {
+        fun storeRoomsInBundle(bundle: Bundle) {
             bundle.put(ROOMS, runSecrets.toTypedArray<Class<*>>())
-            bundle.put(REGIONS, regionSecretsThisRun)
+            bundle.put(REGIONS, regionSecretsThisRun!!)
         }
     }
 

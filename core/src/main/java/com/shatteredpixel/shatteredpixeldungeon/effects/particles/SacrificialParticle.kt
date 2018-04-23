@@ -49,7 +49,7 @@ class SacrificialParticle : PixelParticle.Shrinking() {
     override fun update() {
         super.update()
         val p = left / lifespan
-        am = if (p > 0.75f) (1 - p) * 4 else 1
+        am = if (p > 0.75f) (1 - p) * 4 else 1f
     }
 
     companion object {

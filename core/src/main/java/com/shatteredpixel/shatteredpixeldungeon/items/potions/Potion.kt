@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -214,7 +215,7 @@ open class Potion : Item() {
     }
 
     override fun name(): String {
-        return if (isKnown) super.name() else Messages.get(Potion::class.java, color)
+        return if (isKnown) super.name() else Messages.get(Potion::class.java, color!!)
     }
 
     override fun info(): String {
@@ -288,7 +289,7 @@ open class Potion : Item() {
                 try {
                     result = itemClass!!.newInstance()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                     result = Generator.random(Generator.Category.POTION)
                 }
 
@@ -308,7 +309,7 @@ open class Potion : Item() {
             return result
         }
 
-        override fun sampleOutput(ingredients: ArrayList<Item>): Item {
+        override fun sampleOutput(ingredients: ArrayList<Item>?): Item? {
             return object : WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER) {
                 init {
                     name = Messages.get(RandomPotion::class.java, "name")

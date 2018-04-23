@@ -47,7 +47,7 @@ open class Crab : Mob() {
         return Random.NormalIntRange(1, 8)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 12
     }
 

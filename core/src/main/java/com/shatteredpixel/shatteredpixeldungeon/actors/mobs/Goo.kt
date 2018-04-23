@@ -75,8 +75,8 @@ class Goo : Mob() {
         if (pumpedUp > 0) {
             pumpedUp = 0
             PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.solid, null), 2)
-            for (i in PathFinder.distance.indices) {
-                if (PathFinder.distance[i] < Integer.MAX_VALUE)
+            for (i in PathFinder.distance!!.indices) {
+                if (PathFinder.distance!![i] < Integer.MAX_VALUE)
                     CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10)
             }
             Sample.INSTANCE.play(Assets.SND_BURNING)
@@ -86,15 +86,15 @@ class Goo : Mob() {
         }
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         var attack = 10
         if (HP * 2 <= HT) attack = 15
         if (pumpedUp > 0) attack *= 2
         return attack
     }
 
-    override fun defenseSkill(enemy: Char): Int {
-        return (super.defenseSkill(enemy) * if (HP * 2 <= HT) 1.5 else 1).toInt()
+    override fun defenseSkill(enemy: Char?): Int {
+        return (super.defenseSkill(enemy).toFloat() * if (HP * 2 <= HT) 1.5f else 1f).toInt()
     }
 
     override fun drRoll(): Int {
@@ -116,7 +116,7 @@ class Goo : Mob() {
     }
 
     override fun canAttack(enemy: Char?): Boolean {
-        return if (pumpedUp > 0) distance(enemy) <= 2 else super.canAttack(enemy)
+        return if (pumpedUp > 0) distance(enemy!!) <= 2 else super.canAttack(enemy)
     }
 
     override fun attackProc(enemy: Char, damage: Int): Int {
@@ -128,7 +128,7 @@ class Goo : Mob() {
         }
 
         if (pumpedUp > 0) {
-            Camera.main.shake(3f, 0.2f)
+            Camera.main!!.shake(3f, 0.2f)
         }
 
         return damage
@@ -138,9 +138,9 @@ class Goo : Mob() {
         if (pumpedUp == 1) {
             (sprite as GooSprite).pumpUp()
             PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.solid, null), 2)
-            for (i in PathFinder.distance.indices) {
-                if (PathFinder.distance[i] < Integer.MAX_VALUE)
-                    GameScene.add(Blob.seed<GooWarn>(i, 2, GooWarn::class.java))
+            for (i in PathFinder.distance!!.indices) {
+                if (PathFinder.distance!![i] < Integer.MAX_VALUE)
+                    GameScene.add(Blob.seed<GooWarn>(i, 2, GooWarn::class.java)!!)
             }
             pumpedUp++
 
@@ -170,16 +170,16 @@ class Goo : Mob() {
 
             (sprite as GooSprite).pumpUp()
 
-            for (i in PathFinder.NEIGHBOURS9.indices) {
-                val j = pos + PathFinder.NEIGHBOURS9[i]
+            for (i in PathFinder.NEIGHBOURS9!!.indices) {
+                val j = pos + PathFinder.NEIGHBOURS9!![i]
                 if (!Dungeon.level!!.solid[j]) {
-                    GameScene.add(Blob.seed<GooWarn>(j, 2, GooWarn::class.java))
+                    GameScene.add(Blob.seed<GooWarn>(j, 2, GooWarn::class.java)!!)
                 }
             }
 
             if (Dungeon.level!!.heroFOV[pos]) {
-                sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this, "!!!"))
-                GLog.n(Messages.get(this, "pumpup"))
+                sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this.javaClass, "!!!"))
+                GLog.n(Messages.get(this.javaClass, "pumpup"))
             }
 
             spend(attackDelay())
@@ -209,15 +209,15 @@ class Goo : Mob() {
         super.damage(dmg, src)
         if (HP * 2 <= HT && !bleeding) {
             BossHealthBar.bleed(true)
-            sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"))
+            sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this.javaClass, "enraged"))
             (sprite as GooSprite).spray(true)
-            yell(Messages.get(this, "gluuurp"))
+            yell(Messages.get(this.javaClass, "gluuurp"))
         }
         val lock = Dungeon.hero!!.buff<LockedFloor>(LockedFloor::class.java)
         lock?.addTime((dmg * 2).toFloat())
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         super.die(cause)
 
@@ -228,13 +228,13 @@ class Goo : Mob() {
 
         Badges.validateBossSlain()
 
-        yell(Messages.get(this, "defeated"))
+        yell(Messages.get(this.javaClass, "defeated"))
     }
 
     override fun notice() {
         super.notice()
         BossHealthBar.assignBoss(this)
-        yell(Messages.get(this, "notice"))
+        yell(Messages.get(this.javaClass, "notice"))
     }
 
     override fun storeInBundle(bundle: Bundle) {

@@ -31,7 +31,7 @@ import com.watabou.utils.Bundle
 
 abstract class Trap : Bundlable {
 
-    var name = Messages.get(this, "name")
+    var name = Messages.get(this.javaClass, "name")
 
     var color: Int = 0
     var shape: Int = 0
@@ -91,7 +91,7 @@ abstract class Trap : Bundlable {
     }
 
     fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     companion object {

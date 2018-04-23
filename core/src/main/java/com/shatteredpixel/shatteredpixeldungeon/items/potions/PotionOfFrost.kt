@@ -44,10 +44,10 @@ class PotionOfFrost : Potion() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
         }
 
-        for (offset in PathFinder.NEIGHBOURS9) {
+        for (offset in PathFinder.NEIGHBOURS9!!) {
             if (!Dungeon.level!!.solid[cell + offset]) {
 
-                GameScene.add(Blob.seed<Freezing>(cell + offset, 10, Freezing::class.java))
+                GameScene.add(Blob.seed<Freezing>(cell + offset, 10, Freezing::class.java)!!)
 
             }
         }

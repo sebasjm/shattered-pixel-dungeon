@@ -53,10 +53,10 @@ class RankingsScene : PixelScene() {
 
         Music.INSTANCE.play(Assets.THEME, true)
 
-        PixelScene.uiCamera.visible = false
+        PixelScene.uiCamera!!.visible = false
 
-        val w = Camera.main.width
-        val h = Camera.main.height
+        val w = Camera.main!!.width
+        val h = Camera.main!!.height
 
         archs = Archs()
         archs!!.setSize(w.toFloat(), h.toFloat())
@@ -64,7 +64,7 @@ class RankingsScene : PixelScene() {
 
         Rankings.INSTANCE.load()
 
-        val title = PixelScene.renderText(Messages.get(this, "title"), 9)
+        val title = PixelScene.renderText(Messages.get(this.javaClass, "title"), 9)
         title.hardlight(Window.TITLE_COLOR)
         title.x = (w - title.width()) / 2f
         title.y = (16 - title.baseLine()) / 2f
@@ -74,7 +74,7 @@ class RankingsScene : PixelScene() {
         if (Rankings.INSTANCE.records!!.size > 0) {
 
             //attempts to give each record as much space as possible, ideally as much space as portrait mode
-            val rowHeight = GameMath.gate(ROW_HEIGHT_MIN, ((PixelScene.uiCamera.height - 26) / Rankings.INSTANCE.records!!.size).toFloat(), ROW_HEIGHT_MAX)
+            val rowHeight = GameMath.gate(ROW_HEIGHT_MIN, ((PixelScene.uiCamera!!.height - 26) / Rankings.INSTANCE.records!!.size).toFloat(), ROW_HEIGHT_MAX)
 
             val left = (w - Math.min(MAX_ROW_WIDTH, w.toFloat())) / 2 + GAP
             val top = (h - rowHeight * Rankings.INSTANCE.records!!.size) / 2
@@ -97,7 +97,7 @@ class RankingsScene : PixelScene() {
             }
 
             if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
-                val label = PixelScene.renderText(Messages.get(this, "total") + " ", 8)
+                val label = PixelScene.renderText(Messages.get(this.javaClass, "total") + " ", 8)
                 label.hardlight(0xCCCCCC)
                 add(label)
 
@@ -127,7 +127,7 @@ class RankingsScene : PixelScene() {
 
         } else {
 
-            val noRec = PixelScene.renderText(Messages.get(this, "no_games"), 8)
+            val noRec = PixelScene.renderText(Messages.get(this.javaClass, "no_games"), 8)
             noRec.hardlight(0xCCCCCC)
             noRec.x = (w - noRec.width()) / 2
             noRec.y = (h - noRec.height()) / 2
@@ -137,7 +137,7 @@ class RankingsScene : PixelScene() {
         }
 
         val btnExit = ExitButton()
-        btnExit.setPos(Camera.main.width - btnExit.width(), 0f)
+        btnExit.setPos(Camera.main!!.width - btnExit.width(), 0f)
         add(btnExit)
 
         fadeIn()
@@ -149,7 +149,7 @@ class RankingsScene : PixelScene() {
 
     class Record(pos: Int, latest: Boolean, private val rec: Rankings.Record) : Button() {
 
-        protected var shield: ItemSprite
+        protected var shield: ItemSprite? = null
         private var flare: Flare? = null
         private var position: BitmapText? = null
         private var desc: RenderedTextMultiline? = null
@@ -164,7 +164,7 @@ class RankingsScene : PixelScene() {
                 flare = Flare(6, 24f)
                 flare!!.angularSpeed = 90f
                 flare!!.color(if (rec.win) FLARE_WIN else FLARE_LOSE)
-                addToBack(flare)
+                addToBack(flare!!)
             }
 
             if (pos != Rankings.TABLE_SIZE - 1) {
@@ -180,7 +180,7 @@ class RankingsScene : PixelScene() {
             val odd = pos % 2
 
             if (rec.win) {
-                shield.view(ItemSpriteSheet.AMULET, null)
+                shield!!.view(ItemSpriteSheet.AMULET, null)
                 position!!.hardlight(TEXT_WIN[odd])
                 desc!!.hardlight(TEXT_WIN[odd])
                 depth!!.hardlight(TEXT_WIN[odd])
@@ -208,7 +208,7 @@ class RankingsScene : PixelScene() {
                 add(level)
             }
 
-            classIcon!!.copy(Icons.get(rec.heroClass))
+            classIcon!!.copy(Icons.get(rec.heroClass!!)!!)
         }
 
         override fun createChildren() {
@@ -218,54 +218,54 @@ class RankingsScene : PixelScene() {
             shield = ItemSprite(ItemSpriteSheet.TOMB, null)
             add(shield)
 
-            position = BitmapText(PixelScene.pixelFont)
+            position = BitmapText(PixelScene.pixelFont!!)
             add(position)
 
             desc = PixelScene.renderMultiline(7)
             add(desc)
 
-            depth = BitmapText(PixelScene.pixelFont)
+            depth = BitmapText(PixelScene.pixelFont!!)
 
             steps = Image()
 
             classIcon = Image()
             add(classIcon)
 
-            level = BitmapText(PixelScene.pixelFont)
+            level = BitmapText(PixelScene.pixelFont!!)
         }
 
         override fun layout() {
 
             super.layout()
 
-            shield.x = x
-            shield.y = y + (height - shield.height) / 2f
-            PixelScene.align(shield)
+            shield!!.x = x
+            shield!!.y = y + (height - shield!!.height) / 2f
+            PixelScene.align(shield!!)
 
-            position!!.x = shield.x + (shield.width - position!!.width()) / 2f
-            position!!.y = shield.y + (shield.height - position!!.height()) / 2f + 1f
+            position!!.x = shield!!.x + (shield!!.width - position!!.width()) / 2f
+            position!!.y = shield!!.y + (shield!!.height - position!!.height()) / 2f + 1f
             PixelScene.align(position!!)
 
             if (flare != null) {
-                flare!!.point(shield.center())
+                flare!!.point(shield!!.center())
             }
 
             classIcon!!.x = x + width - classIcon!!.width
-            classIcon!!.y = shield.y
+            classIcon!!.y = shield!!.y
 
             level!!.x = classIcon!!.x + (classIcon!!.width - level!!.width()) / 2f
             level!!.y = classIcon!!.y + (classIcon!!.height - level!!.height()) / 2f + 1f
             PixelScene.align(level!!)
 
             steps!!.x = x + width - steps!!.width - classIcon!!.width
-            steps!!.y = shield.y
+            steps!!.y = shield!!.y
 
             depth!!.x = steps!!.x + (steps!!.width - depth!!.width()) / 2f
             depth!!.y = steps!!.y + (steps!!.height - depth!!.height()) / 2f + 1f
             PixelScene.align(depth!!)
 
-            desc!!.maxWidth((steps!!.x - (shield.x + shield.width + GAP)).toInt())
-            desc!!.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc!!.height()) / 2f + 1f)
+            desc!!.maxWidth((steps!!.x - (shield!!.x + shield!!.width + GAP)).toInt())
+            desc!!.setPos(shield!!.x + shield!!.width + GAP, shield!!.y + (shield!!.height - desc!!.height()) / 2f + 1f)
             PixelScene.align(desc!!)
         }
 

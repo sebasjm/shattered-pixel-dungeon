@@ -30,7 +30,7 @@ import com.watabou.utils.PathFinder
 //it's still up to the specific room to implement paint, but utility methods are provided
 abstract class PatchRoom : StandardRoom() {
 
-    protected var patch: BooleanArray? = null
+    protected var patch: BooleanArray = BooleanArray(0)
 
     protected fun setupPatch(level: Level, fill: Float, clustering: Int, ensurePath: Boolean) {
 
@@ -40,7 +40,7 @@ abstract class PatchRoom : StandardRoom() {
             do {
                 patch = Patch.generate(width() - 2, height() - 2, fill, clustering, true)
                 var startPoint = 0
-                for (door in connected.values) {
+                for (door in connected.values.filterNotNull()) {
                     if (door.x == left) {
                         startPoint = xyToPatchCoords(door.x + 1, door.y)
                         patch[xyToPatchCoords(door.x + 1, door.y)] = false
@@ -64,7 +64,7 @@ abstract class PatchRoom : StandardRoom() {
 
                 valid = true
                 for (i in patch!!.indices) {
-                    if (!patch!![i] && PathFinder.distance[i] == Integer.MAX_VALUE) {
+                    if (!patch!![i] && PathFinder.distance!![i] == Integer.MAX_VALUE) {
                         valid = false
                         break
                     }

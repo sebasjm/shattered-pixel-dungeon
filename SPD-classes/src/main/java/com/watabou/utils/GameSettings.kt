@@ -55,7 +55,7 @@ open class GameSettings {
                     return i
                 }
             } catch (e: ClassCastException) {
-                //ShatteredPixelDungeon.reportException(e);
+                //Game.reportException(e);
                 put(key, defValue)
                 return defValue
             }
@@ -66,7 +66,7 @@ open class GameSettings {
             try {
                 return get().getBoolean(key, defValue)
             } catch (e: ClassCastException) {
-                //ShatteredPixelDungeon.reportException(e);
+                //Game.reportException(e);
                 put(key, defValue)
                 return defValue
             }
@@ -74,7 +74,7 @@ open class GameSettings {
         }
 
         @JvmOverloads
-        fun getString(key: String, defValue: String, maxLength: Int = Integer.MAX_VALUE): String? {
+        fun getString(key: String, defValue: String?, maxLength: Int = Integer.MAX_VALUE): String? {
             try {
                 val s = get().getString(key, defValue)
                 if (s != null && s.length > maxLength) {
@@ -84,7 +84,7 @@ open class GameSettings {
                     return s
                 }
             } catch (e: ClassCastException) {
-                //ShatteredPixelDungeon.reportException(e);
+                //Game.reportException(e);
                 put(key, defValue)
                 return defValue
             }
@@ -109,7 +109,7 @@ open class GameSettings {
             }
         }
 
-        fun put(key: String, value: String) {
+        fun put(key: String, value: String?) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
                 get().edit().putString(key, value).apply()
             } else {

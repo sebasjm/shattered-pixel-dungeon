@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
@@ -55,10 +56,10 @@ class ScrollOfPsionicBlast : Scroll() {
             }
         }
 
-        Item.curUser.damage(Math.max(Item.curUser.HT / 5, Item.curUser.HP / 2), this)
-        if (Item.curUser.isAlive) {
-            Buff.prolong<Paralysis>(Item.curUser, Paralysis::class.java, Random.Int(4, 6).toFloat())
-            Buff.prolong<Blindness>(Item.curUser, Blindness::class.java, Random.Int(6, 9).toFloat())
+        Item.curUser!!.damage(Math.max(Item.curUser!!.HT / 5, Item.curUser!!.HP / 2), this)
+        if (Item.curUser!!.isAlive) {
+            Buff.prolong<Paralysis>(Item.curUser!!, Paralysis::class.java, Random.Int(4, 6).toFloat())
+            Buff.prolong<Blindness>(Item.curUser!!, Blindness::class.java, Random.Int(6, 9).toFloat())
             Dungeon.observe()
         }
 
@@ -66,9 +67,9 @@ class ScrollOfPsionicBlast : Scroll() {
 
         readAnimation()
 
-        if (!Item.curUser.isAlive) {
+        if (!Item.curUser!!.isAlive) {
             Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "ondeath"))
+            GLog.n(Messages.get(this.javaClass, "ondeath"))
         }
     }
 

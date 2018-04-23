@@ -51,8 +51,8 @@ class FlockTrap : Trap() {
 
             override fun act(): Boolean {
                 PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.solid, null), 2)
-                for (i in PathFinder.distance.indices) {
-                    if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                for (i in PathFinder.distance!!.indices) {
+                    if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
                         if (Dungeon.level!!.insideMap(i)
                                 && Actor.findChar(i) == null
                                 && !Dungeon.level!!.pit[i]) {

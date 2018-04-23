@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
 
@@ -31,7 +32,7 @@ class Fury : Buff() {
     }
 
     override fun act(): Boolean {
-        if (target.HP > target.HT * LEVEL) {
+        if (target!!.HP > target!!.HT * LEVEL) {
             detach()
         }
 
@@ -45,15 +46,15 @@ class Fury : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     companion object {

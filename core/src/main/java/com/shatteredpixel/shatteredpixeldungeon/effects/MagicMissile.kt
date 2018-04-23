@@ -44,30 +44,30 @@ class MagicMissile : Emitter() {
 
     private var sx: Float = 0.toFloat()
     private var sy: Float = 0.toFloat()
-    private var time: Float = 0.toFloat()
+    private var time2: Float = 0.toFloat()
 
-    fun reset(type: Int, from: Int, to: Int, callback: Callback) {
+    fun reset(type: Int, from: Int, to: Int, callback: Callback?) {
         reset(type,
                 DungeonTilemap.raisedTileCenterToWorld(from),
                 DungeonTilemap.raisedTileCenterToWorld(to),
                 callback)
     }
 
-    fun reset(type: Int, from: Visual, to: Visual?, callback: Callback) {
+    fun reset(type: Int, from: Visual, to: Visual?, callback: Callback?) {
         reset(type,
                 from.center(),
                 to!!.center(),
                 callback)
     }
 
-    fun reset(type: Int, from: Visual, to: Int, callback: Callback) {
+    fun reset(type: Int, from: Visual, to: Int, callback: Callback?) {
         reset(type,
                 from.center(),
                 DungeonTilemap.raisedTileCenterToWorld(to),
                 callback)
     }
 
-    fun reset(type: Int, from: PointF, to: PointF, callback: Callback) {
+    fun reset(type: Int, from: PointF, to: PointF, callback: Callback?) {
         this.callback = callback
 
         revive()
@@ -81,7 +81,7 @@ class MagicMissile : Emitter() {
         val speed = PointF(d).normalize().scale(SPEED)
         sx = speed.x
         sy = speed.y
-        time = d.length() / SPEED
+        time2 = d.length() / SPEED
 
         when (type) {
             MAGIC_MISSILE -> {
@@ -140,7 +140,8 @@ class MagicMissile : Emitter() {
             val d = Game.elapsed
             x += sx * d
             y += sy * d
-            if ((time -= d) <= 0) {
+            time2 -= d
+            if (time2 <= 0) {
                 on = false
                 if (callback != null) callback!!.call()
             }
@@ -179,7 +180,8 @@ class MagicMissile : Emitter() {
         override fun update() {
             super.update()
             // alpha: 1 -> 0; size: 1 -> 4
-            size(4 - (am = left / lifespan) * 3)
+            am = left / lifespan
+            size(4 - am * 3)
         }
 
         companion object {

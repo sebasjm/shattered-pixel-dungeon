@@ -43,7 +43,7 @@ class Speck : Image() {
 
         texture(Assets.SPECKS)
         if (film == null) {
-            film = TextureFilm(texture, SIZE, SIZE)
+            film = TextureFilm(texture!!, SIZE, SIZE)
         }
 
         origin.set(SIZE / 2f)
@@ -293,7 +293,7 @@ class Speck : Image() {
 
                 EVOKE,
 
-                HEALING -> am = if (p < 0.5f) 1 else 2 - p * 2
+                HEALING -> am = if (p < 0.5f) 1f else 2 - p * 2
 
                 RED_LIGHT, LIGHT -> am = scale.set(if (p < 0.2f) p * 5f else (1 - p) * 1.25f).x
 
@@ -311,9 +311,9 @@ class Speck : Image() {
                     scale.set(p * 7)
                 }
 
-                BONE, RATTLE -> am = if (p < 0.9f) 1 else (1 - p) * 10
+                BONE, RATTLE -> am = if (p < 0.9f) 1f else (1 - p) * 10
 
-                ROCK -> am = if (p < 0.2f) p * 5 else 1
+                ROCK -> am = if (p < 0.2f) p * 5 else 1f
 
                 NOTE -> am = 1 - p * p
 
@@ -330,7 +330,7 @@ class Speck : Image() {
                     am = 1 - p * p
                 }
 
-                BUBBLE -> am = if (p < 0.2f) p * 5 else 1
+                BUBBLE -> am = if (p < 0.2f) p * 5 else 1f
 
                 STEAM, TOXIC, PARALYSIS, CONFUSION, DUST -> {
                     am = Math.sqrt(((if (p < 0.5f) p else 1 - p) * 0.5f).toDouble()).toFloat()
@@ -357,7 +357,7 @@ class Speck : Image() {
                     bm = (Math.abs(scale.x) + 1) * 0.5f
                     gm = bm
                     rm = gm
-                    am = if (p < 0.9f) 1 else (1 - p) * 10
+                    am = if (p < 0.9f) 1f else (1 - p) * 10
                 }
             }
         }

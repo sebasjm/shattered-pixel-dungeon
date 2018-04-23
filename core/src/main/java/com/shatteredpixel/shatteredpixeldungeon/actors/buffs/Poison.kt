@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
@@ -69,15 +70,15 @@ class Poison : Buff(), Hero.Doom {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(left))
+        return Messages.get(this.javaClass, "desc", dispTurns(left))
     }
 
     override fun attachTo(target: Char): Boolean {
@@ -89,12 +90,13 @@ class Poison : Buff(), Hero.Doom {
     }
 
     override fun act(): Boolean {
-        if (target.isAlive) {
+        if (target!!.isAlive) {
 
-            target.damage((left / 3).toInt() + 1, this)
+            target!!.damage((left / 3).toInt() + 1, this)
             spend(Actor.TICK)
 
-            if ((left -= Actor.TICK) <= 0) {
+            left -= Actor.TICK
+            if (left <= 0) {
                 detach()
             }
 
@@ -111,7 +113,7 @@ class Poison : Buff(), Hero.Doom {
         Badges.validateDeathFromPoison()
 
         Dungeon.fail(javaClass)
-        GLog.n(Messages.get(this, "ondeath"))
+        GLog.n(Messages.get(this.javaClass, "ondeath"))
     }
 
     companion object {

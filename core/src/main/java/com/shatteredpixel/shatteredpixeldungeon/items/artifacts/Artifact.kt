@@ -117,7 +117,7 @@ open class Artifact : KindofMisc() {
     }
 
     override fun info(): String {
-        return if (cursed && cursedKnown && !isEquipped(Dungeon.hero)) {
+        return if (cursed && cursedKnown && !isEquipped(Dungeon.hero!!)) {
 
             desc() + "\n\n" + Messages.get(Artifact::class.java, "curse_known")
 

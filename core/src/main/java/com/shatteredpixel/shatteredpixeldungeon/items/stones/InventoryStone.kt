@@ -34,7 +34,7 @@ import java.util.ArrayList
 
 abstract class InventoryStone : Runestone() {
 
-    protected var inventoryTitle = Messages.get(this, "inv_title")
+    protected var inventoryTitle = Messages.get(this.javaClass, "inv_title")
     protected var mode: WndBag.Mode = WndBag.Mode.ALL
 
     init {
@@ -51,7 +51,7 @@ abstract class InventoryStone : Runestone() {
         super.execute(hero, action)
         if (action == AC_USE) {
             Item.curItem = detach(hero.belongings.backpack)
-            activate(Item.curUser.pos)
+            activate(Item.curUser!!.pos)
         }
     }
 
@@ -60,9 +60,9 @@ abstract class InventoryStone : Runestone() {
     }
 
     private fun useAnimation() {
-        Item.curUser.spend(1f)
-        Item.curUser.busy()
-        Item.curUser.sprite!!.operate(Item.curUser.pos)
+        Item.curUser!!.spend(1f)
+        Item.curUser!!.busy()
+        Item.curUser!!.sprite!!.operate(Item.curUser!!.pos)
     }
 
     protected abstract fun onItemSelected(item: Item?)
@@ -71,25 +71,25 @@ abstract class InventoryStone : Runestone() {
 
         val AC_USE = "USE"
 
-        protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+        protected var itemSelector: WndBag.Listener = lambda@ { item: Item? ->
             //FIXME this safety check shouldn't be necessary
             //it would be better to eliminate the curItem static variable.
-            if (Item.curItem !is InventoryStone) {
-                return@Listener
+            if (Item.curItem!! !is InventoryStone) {
+                return@lambda
             }
 
             if (item != null) {
 
-                (Item.curItem as InventoryStone).onItemSelected(item)
-                (Item.curItem as InventoryStone).useAnimation()
+                (Item.curItem!! as InventoryStone).onItemSelected(item)
+                (Item.curItem!! as InventoryStone).useAnimation()
 
                 Sample.INSTANCE.play(Assets.SND_READ)
                 Invisibility.dispel()
 
             } else {
-                Item.curItem.collect(Item.curUser.belongings.backpack)
+                Item.curItem!!.collect(Item.curUser!!.belongings.backpack)
             }
-        }
+        } as WndBag.Listener
     }
 
 }

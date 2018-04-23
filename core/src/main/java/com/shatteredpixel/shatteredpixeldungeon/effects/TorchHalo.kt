@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
 import com.watabou.glwrap.Blending
 import com.watabou.noosa.Game
 
-class TorchHalo(private val target: CharSprite) : Halo(20, 0xFFDDCC, 0.2f) {
+class TorchHalo(private val target: CharSprite) : Halo(20f, 0xFFDDCC, 0.2f) {
 
     private var phase = 0f
 
@@ -37,14 +37,16 @@ class TorchHalo(private val target: CharSprite) : Halo(20, 0xFFDDCC, 0.2f) {
         super.update()
 
         if (phase < 0) {
-            if ((phase += Game.elapsed) >= 0) {
+            phase += Game.elapsed
+            if (phase >= 0) {
                 killAndErase()
             } else {
                 scale.set((2 + phase) * radius / Halo.RADIUS)
                 am = -phase * brightness
             }
         } else if (phase < 1) {
-            if ((phase += Game.elapsed) >= 1) {
+            phase += Game.elapsed
+            if (phase >= 1) {
                 phase = 1f
             }
             scale.set(phase * radius / Halo.RADIUS)

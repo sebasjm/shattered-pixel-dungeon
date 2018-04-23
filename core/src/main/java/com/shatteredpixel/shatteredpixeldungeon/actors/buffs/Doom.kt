@@ -33,8 +33,8 @@ class Doom : Buff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.DARKENED)
-        else if (target.invisible == 0) target.sprite!!.remove(CharSprite.State.DARKENED)
+            target!!.sprite!!.add(CharSprite.State.DARKENED)
+        else if (target!!.invisible == 0) target!!.sprite!!.remove(CharSprite.State.DARKENED)
     }
 
     override fun icon(): Int {
@@ -42,10 +42,10 @@ class Doom : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

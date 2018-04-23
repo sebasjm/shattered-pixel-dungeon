@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfTransmutation
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
@@ -62,7 +63,7 @@ open class SpecialRoom : Room() {
     }
 
     open fun entrance(): Room.Door {
-        return connected.values.iterator().next()
+        return connected.values.filterNotNull().iterator().next()
     }
 
     companion object {
@@ -149,7 +150,7 @@ open class SpecialRoom : Room() {
                 try {
                     r = floorSpecials[index].newInstance()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                 }
 
                 if (r is WeakFloorRoom) {
@@ -157,7 +158,7 @@ open class SpecialRoom : Room() {
                 }
 
                 useType(r!!.javaClass)
-                return r as SpecialRoom?
+                return r as SpecialRoom
 
             }
         }
@@ -170,11 +171,11 @@ open class SpecialRoom : Room() {
             runSpecials.clear()
             if (bundle.contains(ROOMS)) {
                 for (type in bundle.getClassArray(ROOMS)!!) {
-                    if (type != null) runSpecials.add(type)
+                    if (type != null) runSpecials.add(type as Class<out Room>)
                 }
             } else {
                 initForRun()
-                ShatteredPixelDungeon.reportException(Exception("specials array didn't exist!"))
+                Game.reportException(Exception("specials array didn't exist!"))
             }
             pitNeededDepth = bundle.getInt(PIT)
             guaranteedWellDepth = bundle.getInt(WELL)

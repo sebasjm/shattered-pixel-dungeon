@@ -41,8 +41,8 @@ class Icecap : Plant() {
 
         val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire
 
-        for (i in PathFinder.distance.indices) {
-            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+        for (i in PathFinder.distance!!.indices) {
+            if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
                 Freezing.affect(i, fire)
             }
         }

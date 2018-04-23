@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
@@ -42,7 +43,7 @@ import java.util.ArrayList
 open class Food : Item() {
 
     var energy = Hunger.HUNGRY
-    var message = Messages.get(this, "eat_msg")
+    var message = Messages.get(this.javaClass, "eat_msg")
 
     override val isUpgradable: Boolean
         get() = false
@@ -71,7 +72,7 @@ open class Food : Item() {
 
             detach(hero.belongings.backpack)
 
-            hero.buff<Hunger>(Hunger::class.java).satisfy(energy)
+            hero.buff<Hunger>(Hunger::class.java)?.satisfy(energy)
             GLog.i(message)
 
             when (hero.heroClass) {

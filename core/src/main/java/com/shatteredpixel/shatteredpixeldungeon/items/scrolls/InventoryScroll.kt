@@ -32,7 +32,7 @@ import com.watabou.noosa.audio.Sample
 
 abstract class InventoryScroll : Scroll() {
 
-    protected var inventoryTitle = Messages.get(this, "inv_title")
+    protected var inventoryTitle = Messages.get(this.javaClass, "inv_title")
     protected var mode: WndBag.Mode = WndBag.Mode.ALL
 
     override fun doRead() {
@@ -48,12 +48,12 @@ abstract class InventoryScroll : Scroll() {
     }
 
     private fun confirmCancelation() {
-        GameScene.show(object : WndOptions(Messages.titleCase(name()), Messages.get(this, "warning"),
-                Messages.get(this, "yes"), Messages.get(this, "no")) {
+        GameScene.show(object : WndOptions(Messages.titleCase(name()), Messages.get(this.javaClass, "warning"),
+                Messages.get(this.javaClass, "yes"), Messages.get(this.javaClass, "no")) {
             override fun onSelect(index: Int) {
                 when (index) {
                     0 -> {
-                        Item.curUser.spendAndNext(Scroll.TIME_TO_READ)
+                        Item.curUser!!.spendAndNext(Scroll.TIME_TO_READ)
                         identifiedByUse = false
                     }
                     1 -> GameScene.selectItem(itemSelector, mode, inventoryTitle)
@@ -69,30 +69,30 @@ abstract class InventoryScroll : Scroll() {
     companion object {
 
         protected var identifiedByUse = false
-        protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+        protected var itemSelector: WndBag.Listener = lambda@ { item: Item? ->
             //FIXME this safety check shouldn't be necessary
             //it would be better to eliminate the curItem static variable.
-            if (Item.curItem !is InventoryScroll) {
-                return@Listener
+            if (Item.curItem!! !is InventoryScroll) {
+                return@lambda
             }
 
             if (item != null) {
 
-                (Item.curItem as InventoryScroll).onItemSelected(item)
-                (Item.curItem as InventoryScroll).readAnimation()
+                (Item.curItem!! as InventoryScroll).onItemSelected(item)
+                (Item.curItem!! as InventoryScroll).readAnimation()
 
                 Sample.INSTANCE.play(Assets.SND_READ)
                 Invisibility.dispel()
 
-            } else if (identifiedByUse && !(Item.curItem as Scroll).ownedByBook) {
+            } else if (identifiedByUse && !(Item.curItem!! as Scroll).ownedByBook) {
 
-                (Item.curItem as InventoryScroll).confirmCancelation()
+                (Item.curItem!! as InventoryScroll).confirmCancelation()
 
-            } else if (!(Item.curItem as Scroll).ownedByBook) {
+            } else if (!(Item.curItem!! as Scroll).ownedByBook) {
 
-                Item.curItem.collect(Item.curUser.belongings.backpack)
+                Item.curItem!!.collect(Item.curUser!!.belongings.backpack)
 
             }
-        }
+        } as WndBag.Listener
     }
 }

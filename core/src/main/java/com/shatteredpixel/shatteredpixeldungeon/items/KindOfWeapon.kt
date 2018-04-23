@@ -110,7 +110,7 @@ abstract class KindOfWeapon : EquipableItem() {
 
     companion object {
 
-        protected val TIME_TO_EQUIP = 1f
+        @JvmStatic val TIME_TO_EQUIP = 1f
     }
 
 }

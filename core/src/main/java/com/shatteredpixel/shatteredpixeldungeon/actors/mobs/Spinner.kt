@@ -54,7 +54,7 @@ class Spinner : Mob() {
         return Random.NormalIntRange(10, 25)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 20
     }
 
@@ -85,7 +85,7 @@ class Spinner : Mob() {
 
     override fun move(step: Int) {
         if (state === FLEEING) {
-            GameScene.add(Blob.seed<Web>(pos, Random.Int(5, 7), Web::class.java))
+            GameScene.add(Blob.seed<Web>(pos, Random.Int(5, 7), Web::class.java)!!)
         }
         super.move(step)
     }

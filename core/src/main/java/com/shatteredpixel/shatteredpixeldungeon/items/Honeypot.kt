@@ -99,14 +99,14 @@ class Honeypot : Item() {
             val candidates = ArrayList<Int>()
             val passable = Dungeon.level!!.passable
 
-            for (n in PathFinder.NEIGHBOURS4) {
+            for (n in PathFinder.NEIGHBOURS4!!) {
                 val c = pos + n
                 if (passable[c] && Actor.findChar(c) == null) {
                     candidates.add(c)
                 }
             }
 
-            newPos = if (candidates.size > 0) Random.element(candidates) else -1
+            newPos = if (candidates.size > 0) Random.element(candidates)!! else -1
         }
 
         if (newPos != -1) {
@@ -120,7 +120,7 @@ class Honeypot : Item() {
             Actor.addDelayed(Pushing(bee, pos, newPos), -1f)
 
             bee.sprite!!.alpha(0f)
-            bee.sprite!!.parent!!.add(AlphaTweener(bee.sprite, 1f, 0.15f))
+            bee.sprite!!.parent!!.add(AlphaTweener(bee.sprite!!, 1f, 0.15f))
 
             Sample.INSTANCE.play(Assets.SND_BEE)
             return ShatteredPot().setBee(bee)

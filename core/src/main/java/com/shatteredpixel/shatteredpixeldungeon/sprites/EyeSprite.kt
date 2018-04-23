@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.particles.Emitter
 
@@ -42,7 +43,7 @@ class EyeSprite : MobSprite() {
 
         texture(Assets.EYE)
 
-        val frames = TextureFilm(texture, 16, 18)
+        val frames = TextureFilm(texture!!, 16, 18)
 
         idle = MovieClip.Animation(8, true)
         idle!!.frames(frames, 0, 1, 2)
@@ -65,7 +66,7 @@ class EyeSprite : MobSprite() {
         die = MovieClip.Animation(8, false)
         die!!.frames(frames, 7, 8, 9)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun link(ch: Char) {

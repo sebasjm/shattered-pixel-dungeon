@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.mechanics
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
+import com.watabou.noosa.Game
 
 import java.util.ArrayList
 
@@ -41,9 +42,12 @@ class Ballistica(from: Int, to: Int, params: Int) {
         sourcePos = from
         build(from, to, params and STOP_TARGET > 0, params and STOP_CHARS > 0, params and STOP_TERRAIN > 0)
         if (collisionPos != null)
-            dist = path.indexOf(collisionPos)
-        else
-            collisionPos = path.get(dist = path.size - 1)
+            dist = path.indexOf(collisionPos!!)
+        else {
+            dist = path.size - 1
+            collisionPos = path.get(dist!!)
+        }
+
     }
 
     private fun build(from: Int, to: Int, stopTarget: Boolean, stopChars: Boolean, stopTerrain: Boolean) {
@@ -126,7 +130,7 @@ class Ballistica(from: Int, to: Int, params: Int) {
             end = Math.min(end, path.size - 1)
             return path.subList(start, end + 1)
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return ArrayList()
         }
 

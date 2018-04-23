@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Random
 
 class GrassyGraveRoom : StandardRoom() {
@@ -34,7 +35,7 @@ class GrassyGraveRoom : StandardRoom() {
     override fun paint(level: Level) {
 
         Painter.fill(level, this, Terrain.WALL)
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 

@@ -43,7 +43,7 @@ abstract class WellWater : Blob() {
             for (j in area.left - 1..area.right) {
                 cell = j + i * Dungeon.level!!.width()
                 if (Dungeon.level!!.insideMap(cell)) {
-                    off[cell] = cur!![cell]
+                    off!![cell] = cur!![cell]
                     volume += off!![cell]
                     if (off!![cell] > 0 && Dungeon.level!!.visited!![cell]) {
                         seen = true
@@ -62,50 +62,54 @@ abstract class WellWater : Blob() {
 
         val heap: Heap
 
-        if (pos == Dungeon.hero!!.pos && affectHero(Dungeon.hero)) {
+        if (pos == Dungeon.hero!!.pos && affectHero(Dungeon.hero!!)) {
 
-            cur[pos] = 0
+            cur!![pos] = 0
             return true
 
-        } else if ((heap = Dungeon.level!!.heaps.get(pos)) != null) {
+        } else {
+            heap = Dungeon.level!!.heaps.get(pos)
 
-            val oldItem = heap.peek()
-            val newItem = affectItem(oldItem)
+            if (heap != null) {
 
-            if (newItem != null) {
+                val oldItem = heap.peek()
+                val newItem = affectItem(oldItem)
 
-                if (newItem === oldItem) {
+                if (newItem != null) {
 
-                } else if (oldItem.quantity() > 1) {
+                    if (newItem === oldItem) {
 
-                    oldItem.quantity(oldItem.quantity() - 1)
-                    heap.drop(newItem)
+                    } else if (oldItem.quantity() > 1) {
+
+                        oldItem.quantity(oldItem.quantity() - 1)
+                        heap.drop(newItem)
+
+                    } else {
+                        heap.replace(oldItem, newItem)
+                    }
+
+                    heap.sprite!!.link()
+                    cur!![pos] = 0
+
+                    return true
 
                 } else {
-                    heap.replace(oldItem, newItem)
+
+                    var newPlace: Int
+                    do {
+                        newPlace = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
+                    } while (!Dungeon.level!!.passable[newPlace] && !Dungeon.level!!.avoid[newPlace])
+                    Dungeon.level!!.drop(heap.pickUp(), newPlace).sprite!!.drop(pos)
+
+                    return false
+
                 }
 
-                heap.sprite!!.link()
-                cur[pos] = 0
-
-                return true
-
             } else {
-
-                var newPlace: Int
-                do {
-                    newPlace = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
-                } while (!Dungeon.level!!.passable[newPlace] && !Dungeon.level!!.avoid[newPlace])
-                Dungeon.level!!.drop(heap.pickUp(), newPlace).sprite!!.drop(pos)
 
                 return false
 
             }
-
-        } else {
-
-            return false
-
         }
     }
 

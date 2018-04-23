@@ -89,9 +89,9 @@ object Dungeon {
     var depth: Int = 0
     var gold: Int = 0
 
-    var chapters: HashSet<Int>
+    var chapters: HashSet<Int> = HashSet()
 
-    var droppedItems: SparseArray<ArrayList<Item>>
+    var droppedItems: SparseArray<ArrayList<Item>> = SparseArray()
 
     var version: Int = 0
 
@@ -312,7 +312,7 @@ object Dungeon {
         Actor.clear()
 
         level!!.reset()
-        switchLevel(level, level!!.entrance)
+        switchLevel(level!!, level!!.entrance)
     }
 
     fun seedCurDepth(): Long {
@@ -333,7 +333,7 @@ object Dungeon {
     }
 
     @JvmOverloads
-    fun bossLevel(depth: Int = depth): Boolean {
+    fun bossLevel(depth: Int = this.depth): Boolean {
         return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25
     }
 
@@ -367,7 +367,7 @@ object Dungeon {
         try {
             saveAll()
         } catch (e: IOException) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             /*This only catches IO errors. Yes, this means things can go wrong, and they can go wrong catastrophically.
 			But when they do the user will get a nice 'report this issue' dialogue, and I can fix the bug.*/
         }
@@ -378,7 +378,8 @@ object Dungeon {
         val depth = Dungeon.depth + 1
         var dropped: ArrayList<Item>? = Dungeon.droppedItems.get(depth) as ArrayList<Item>
         if (dropped == null) {
-            Dungeon.droppedItems.put(depth, dropped = ArrayList<Item>())
+            dropped = ArrayList<Item>()
+            Dungeon.droppedItems.put(depth, dropped)
         }
         dropped!!.add(item)
     }
@@ -394,10 +395,7 @@ object Dungeon {
         var targetPOSLeft = 2 - floorThisSet / 2
         if (floorThisSet % 2 == 1 && Random.Int(2) == 0) targetPOSLeft--
 
-        return if (targetPOSLeft < posLeftThisSet)
-            true
-        else
-            false
+        return (targetPOSLeft < posLeftThisSet)
 
     }
 
@@ -482,11 +480,11 @@ object Dungeon {
             Badges.saveLocal(badges)
             bundle.put(BADGES, badges)
 
-            FileUtils.bundleToFile(GamesInProgress.gameFile(save), bundle)
+            FileUtils.bundleToFile(GamesInProgress.gameFile(save)!!, bundle)
 
         } catch (e: IOException) {
             GamesInProgress.setUnknown(save)
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }
@@ -496,7 +494,7 @@ object Dungeon {
         val bundle = Bundle()
         bundle.put(LEVEL, level)
 
-        FileUtils.bundleToFile(GamesInProgress.depthFile(save, depth), bundle)
+        FileUtils.bundleToFile(GamesInProgress.depthFile(save, depth)!!, bundle)
     }
 
     @Throws(IOException::class)
@@ -512,7 +510,7 @@ object Dungeon {
         } else if (WndResurrect.instance != null) {
 
             WndResurrect.instance!!.hide()
-            Hero.reallyDie(WndResurrect.causeOfDeath)
+            Hero.reallyDie(WndResurrect.causeOfDeath!!)
 
         }
     }
@@ -521,7 +519,7 @@ object Dungeon {
     @JvmOverloads
     fun loadGame(save: Int, fullLoad: Boolean = true) {
 
-        val bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(save))
+        val bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(save)!!)
 
         version = bundle.getInt(VERSION)
 
@@ -589,7 +587,7 @@ object Dungeon {
         hero = null
         hero = bundle.get(HERO) as Hero
 
-        WndAlchemy.restoreFromBundle(bundle, hero)
+        WndAlchemy.restoreFromBundle(bundle, hero!!)
 
         gold = bundle.getInt(GOLD)
         depth = bundle.getInt(DEPTH)
@@ -616,7 +614,7 @@ object Dungeon {
         Dungeon.level = null
         Actor.clear()
 
-        val bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(save, depth))
+        val bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(save, depth)!!)
 
         val level = bundle.get(LEVEL) as Level
 
@@ -666,7 +664,7 @@ object Dungeon {
             return
         }
 
-        level!!.updateFieldOfView(hero, level!!.heroFOV)
+        level!!.updateFieldOfView(hero!!, level!!.heroFOV)
 
         val x = hero!!.pos % level!!.width()
         val y = hero!!.pos / level!!.width()
@@ -683,7 +681,7 @@ object Dungeon {
         var pos = l + t * level!!.width()
 
         for (i in t..b) {
-            BArray.or(level!!.visited, level!!.heroFOV, pos, width, level!!.visited)
+            BArray.or(level!!.visited!!, level!!.heroFOV!!, pos, width, level!!.visited)
             pos += level!!.width()
         }
 
@@ -691,9 +689,9 @@ object Dungeon {
 
         if (hero!!.buff<MindVision>(MindVision::class.java) != null) {
             for (m in level!!.mobs.toTypedArray<Mob>()) {
-                BArray.or(level!!.visited, level!!.heroFOV, m.pos - 1 - level!!.width(), 3, level!!.visited)
-                BArray.or(level!!.visited, level!!.heroFOV, m.pos, 3, level!!.visited)
-                BArray.or(level!!.visited, level!!.heroFOV, m.pos - 1 + level!!.width(), 3, level!!.visited)
+                BArray.or(level!!.visited!!, level!!.heroFOV, m.pos - 1 - level!!.width(), 3, level!!.visited)
+                BArray.or(level!!.visited!!, level!!.heroFOV, m.pos, 3, level!!.visited)
+                BArray.or(level!!.visited!!, level!!.heroFOV, m.pos - 1 + level!!.width(), 3, level!!.visited)
                 //updates adjacent cells too
                 GameScene.updateFog(m.pos, 2)
             }
@@ -701,9 +699,9 @@ object Dungeon {
 
         if (hero!!.buff<Awareness>(Awareness::class.java) != null) {
             for (h in level!!.heaps.values()) {
-                BArray.or(level!!.visited, level!!.heroFOV, h.pos - 1 - level!!.width(), 3, level!!.visited)
-                BArray.or(level!!.visited, level!!.heroFOV, h.pos - 1, 3, level!!.visited)
-                BArray.or(level!!.visited, level!!.heroFOV, h.pos - 1 + level!!.width(), 3, level!!.visited)
+                BArray.or(level!!.visited!!, level!!.heroFOV, h.pos - 1 - level!!.width(), 3, level!!.visited)
+                BArray.or(level!!.visited!!, level!!.heroFOV, h.pos - 1, 3, level!!.visited)
+                BArray.or(level!!.visited!!, level!!.heroFOV, h.pos - 1 + level!!.width(), 3, level!!.visited)
                 GameScene.updateFog(h.pos, 2)
             }
         }
@@ -715,25 +713,25 @@ object Dungeon {
         if (passable == null || passable!!.size != Dungeon.level!!.length())
             passable = BooleanArray(Dungeon.level!!.length())
         else
-            BArray.setFalse(passable)
+            BArray.setFalse(passable!!)
     }
 
     fun findPath(ch: Char, from: Int, to: Int, pass: BooleanArray, visible: BooleanArray): PathFinder.Path? {
 
         setupPassable()
         if (ch.flying || ch.buff<Amok>(Amok::class.java) != null) {
-            BArray.or(pass, Dungeon.level!!.avoid, passable)
+            BArray.or(pass, Dungeon.level!!.avoid, passable!!)
         } else {
             System.arraycopy(pass, 0, passable!!, 0, Dungeon.level!!.length())
         }
 
         for (c in Actor.chars()) {
             if (visible[c.pos]) {
-                passable[c.pos] = false
+                passable!![c.pos] = false
             }
         }
 
-        return PathFinder.find(from, to, passable)
+        return PathFinder.find(from, to, passable!!)
 
     }
 
@@ -745,18 +743,18 @@ object Dungeon {
 
         setupPassable()
         if (ch.flying || ch.buff<Amok>(Amok::class.java) != null) {
-            BArray.or(pass, Dungeon.level!!.avoid, passable)
+            BArray.or(pass, Dungeon.level!!.avoid, passable!!)
         } else {
             System.arraycopy(pass, 0, passable!!, 0, Dungeon.level!!.length())
         }
 
         for (c in Actor.chars()) {
             if (visible[c.pos]) {
-                passable[c.pos] = false
+                passable!![c.pos] = false
             }
         }
 
-        return PathFinder.getStep(from, to, passable)
+        return PathFinder.getStep(from, to, passable!!)
 
     }
 
@@ -764,19 +762,19 @@ object Dungeon {
 
         setupPassable()
         if (ch.flying) {
-            BArray.or(pass, Dungeon.level!!.avoid, passable)
+            BArray.or(pass, Dungeon.level!!.avoid, passable!!)
         } else {
             System.arraycopy(pass, 0, passable!!, 0, Dungeon.level!!.length())
         }
 
         for (c in Actor.chars()) {
             if (visible[c.pos]) {
-                passable[c.pos] = false
+                passable!![c.pos] = false
             }
         }
-        passable[cur] = true
+        passable!![cur] = true
 
-        return PathFinder.getStepBack(cur, from, passable)
+        return PathFinder.getStepBack(cur, from, passable!!)
 
     }
 

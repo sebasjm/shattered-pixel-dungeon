@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.FileUtils
 
@@ -69,7 +70,7 @@ object Journal {
             FileUtils.bundleToFile(JOURNAL_FILE, bundle)
             saveNeeded = false
         } catch (e: IOException) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }

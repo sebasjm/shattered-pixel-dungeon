@@ -37,11 +37,11 @@ abstract class Builder {
 
     //builders take a list of rooms and returns them as a connected map
     //returns null on failure
-    abstract fun build(rooms: ArrayList<Room>): ArrayList<Room>
+    abstract fun build(rooms: ArrayList<Room>): ArrayList<Room>?
 
     companion object {
 
-        protected fun findNeighbours(rooms: ArrayList<Room>) {
+        @JvmStatic protected fun findNeighbours(rooms: ArrayList<Room>) {
             val ra = rooms.toTypedArray<Room>()
             for (i in 0 until ra.size - 1) {
                 for (j in i + 1 until ra.size) {
@@ -145,13 +145,13 @@ abstract class Builder {
         private val A = 180 / Math.PI
 
         //returns the angle in degrees made by the centerpoints of 2 rooms, with 0 being straight up.
-        protected fun angleBetweenRooms(from: Room, to: Room): Float {
+        @JvmStatic protected fun angleBetweenRooms(from: Room, to: Room): Float {
             val fromCenter = PointF((from.left + from.right) / 2f, (from.top + from.bottom) / 2f)
             val toCenter = PointF((to.left + to.right) / 2f, (to.top + to.bottom) / 2f)
             return angleBetweenPoints(fromCenter, toCenter)
         }
 
-        protected fun angleBetweenPoints(from: PointF, to: PointF): Float {
+         @JvmStatic protected fun angleBetweenPoints(from: PointF, to: PointF): Float {
             val m = ((to.y - from.y) / (to.x - from.x)).toDouble()
 
             var angle = (A * (Math.atan(m) + Math.PI / 2.0)).toFloat()
@@ -163,7 +163,7 @@ abstract class Builder {
         // and it matches the given angle ([0-360), where 0 is straight up) as closely as possible.
         //Note that getting an exactly correct angle is harder the closer that angle is to diagonal.
         //Returns the exact angle between the centerpoints of the two rooms, or -1 if placement fails.
-        protected fun placeRoom(collision: ArrayList<Room>, prev: Room, next: Room, angle: Float): Float {
+        @JvmStatic protected fun placeRoom(collision: ArrayList<Room>, prev: Room, next: Room, angle: Float): Float {
             var angle = angle
 
             //wrap angle around to always be [0-360)

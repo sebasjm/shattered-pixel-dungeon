@@ -52,7 +52,7 @@ class Bat : Mob() {
         return Random.NormalIntRange(5, 18)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 16
     }
 

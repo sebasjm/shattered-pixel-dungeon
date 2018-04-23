@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
@@ -79,7 +80,7 @@ class WandOfFireblast : DamageWand() {
 
             //only ignite cells directly near caster if they are flammable
             if (!Dungeon.level!!.adjacent(bolt.sourcePos!!, cell) || Dungeon.level!!.flamable[cell]) {
-                GameScene.add(Blob.seed<Fire>(cell, 1 + chargesPerCast(), Fire::class.java))
+                GameScene.add(Blob.seed<Fire>(cell, 1 + chargesPerCast(), Fire::class.java)!!)
             }
 
             val ch = Actor.findChar(cell)
@@ -105,9 +106,9 @@ class WandOfFireblast : DamageWand() {
             affectedCells!!.add(cell)
             if (strength >= 1.5f) {
                 visualCells!!.remove(cell)
-                spreadFlames(cell + PathFinder.CIRCLE8[left(direction)], strength - 1.5f)
-                spreadFlames(cell + PathFinder.CIRCLE8[direction], strength - 1.5f)
-                spreadFlames(cell + PathFinder.CIRCLE8[right(direction)], strength - 1.5f)
+                spreadFlames(cell + PathFinder.CIRCLE8!![left(direction)], strength - 1.5f)
+                spreadFlames(cell + PathFinder.CIRCLE8!![direction], strength - 1.5f)
+                spreadFlames(cell + PathFinder.CIRCLE8!![right(direction)], strength - 1.5f)
             } else {
                 visualCells!!.add(cell)
             }
@@ -137,8 +138,8 @@ class WandOfFireblast : DamageWand() {
         val maxDist = (4 * Math.pow(1.5, (chargesPerCast() - 1).toDouble())).toInt()
         val dist = Math.min(bolt.dist!!, maxDist)
 
-        for (i in PathFinder.CIRCLE8.indices) {
-            if (bolt.sourcePos!! + PathFinder.CIRCLE8[i] == bolt.path[1]) {
+        for (i in PathFinder.CIRCLE8!!.indices) {
+            if (bolt.sourcePos!! + PathFinder.CIRCLE8!![i] == bolt.path[1]) {
                 direction = i
                 break
             }
@@ -149,9 +150,9 @@ class WandOfFireblast : DamageWand() {
             strength-- //as we start at dist 1, not 0.
             affectedCells!!.add(c)
             if (strength > 1) {
-                spreadFlames(c + PathFinder.CIRCLE8[left(direction)], strength - 1)
-                spreadFlames(c + PathFinder.CIRCLE8[direction], strength - 1)
-                spreadFlames(c + PathFinder.CIRCLE8[right(direction)], strength - 1)
+                spreadFlames(c + PathFinder.CIRCLE8!![left(direction)], strength - 1)
+                spreadFlames(c + PathFinder.CIRCLE8!![direction], strength - 1)
+                spreadFlames(c + PathFinder.CIRCLE8!![right(direction)], strength - 1)
             } else {
                 visualCells!!.add(c)
             }
@@ -162,15 +163,15 @@ class WandOfFireblast : DamageWand() {
 
         for (cell in visualCells!!) {
             //this way we only get the cells at the tip, much better performance.
-            (Item.curUser.sprite!!.parent!!.recycle(MagicMissile::class.java) as MagicMissile).reset(
+            (Item.curUser!!.sprite!!.parent!!.recycle(MagicMissile::class.java) as MagicMissile).reset(
                     MagicMissile.FIRE_CONE,
-                    Item.curUser.sprite,
+                    Item.curUser!!.sprite!!,
                     cell, null
             )
         }
-        MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+        MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.FIRE_CONE,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.path[dist / 2],
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)
@@ -183,15 +184,15 @@ class WandOfFireblast : DamageWand() {
 
     override fun statsDesc(): String {
         return if (levelKnown)
-            Messages.get(this, "stats_desc", chargesPerCast(), min(), max())
+            Messages.get(this.javaClass, "stats_desc", chargesPerCast(), min(), max())
         else
-            Messages.get(this, "stats_desc", chargesPerCast(), min(0), max(0))
+            Messages.get(this.javaClass, "stats_desc", chargesPerCast(), min(0), max(0))
     }
 
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0xEE7722)
         particle.am = 0.5f
-        particle.setLifespan(0.6f)
+        particle.lifespan = (0.6f)
         particle.acc.set(0f, -40f)
         particle.setSize(0f, 3f)
         particle.shuffleXY(1.5f)

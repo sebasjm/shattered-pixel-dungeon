@@ -59,7 +59,8 @@ class PurpleParticle : PixelParticle() {
     override fun update() {
         super.update()
         // alpha: 1 -> 0; size: 1 -> 5
-        size(5 - (am = left / lifespan) * 4)
+        am = left / lifespan
+        size(5 - am * 4)
         // color: 0xFF0044 -> 0x220066
         color(ColorMath.interpolate(0x220066, 0xFF0044, am))
     }

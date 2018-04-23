@@ -43,7 +43,7 @@ class PotionOfParalyticGas : Potion() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
         }
 
-        GameScene.add(Blob.seed<ParalyticGas>(cell, 1000, ParalyticGas::class.java))
+        GameScene.add(Blob.seed<ParalyticGas>(cell, 1000, ParalyticGas::class.java)!!)
     }
 
     override fun price(): Int {

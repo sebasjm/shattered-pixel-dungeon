@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
@@ -47,7 +48,7 @@ class Camouflage : Armor.Glyph() {
 
         override fun act(): Boolean {
             left--
-            if (left == 0 || target.pos != pos) {
+            if (left == 0 || target!!.pos != pos) {
                 detach()
             } else {
                 spend(Actor.TICK)
@@ -57,16 +58,16 @@ class Camouflage : Armor.Glyph() {
 
         fun set(time: Int) {
             left = time
-            pos = target.pos
+            pos = target!!.pos
             Sample.INSTANCE.play(Assets.SND_MELD)
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc", dispTurns(left.toFloat()))
+            return Messages.get(this.javaClass, "desc", dispTurns(left.toFloat()))
         }
 
         override fun storeInBundle(bundle: Bundle) {

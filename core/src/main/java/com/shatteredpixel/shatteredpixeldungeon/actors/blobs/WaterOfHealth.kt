@@ -56,7 +56,7 @@ class WaterOfHealth : WellWater() {
 
         Dungeon.hero!!.interrupt()
 
-        GLog.p(Messages.get(this, "procced"))
+        GLog.p(Messages.get(this.javaClass, "procced"))
 
         return true
     }
@@ -80,6 +80,6 @@ class WaterOfHealth : WellWater() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

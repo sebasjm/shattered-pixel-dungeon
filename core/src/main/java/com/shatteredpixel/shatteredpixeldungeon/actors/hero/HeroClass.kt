@@ -56,7 +56,7 @@ enum class HeroClass private constructor(private val title: String, vararg subCl
     ROGUE("rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER),
     HUNTRESS("huntress", HeroSubClass.WARDEN, HeroSubClass.SNIPER);
 
-    private val subClasses: Array<HeroSubClass>
+    private val subClasses: Array<out HeroSubClass>
 
     init {
         this.subClasses = subClasses
@@ -95,7 +95,7 @@ enum class HeroClass private constructor(private val title: String, vararg subCl
     }
 
     fun subClasses(): Array<HeroSubClass> {
-        return subClasses
+        return subClasses as Array<HeroSubClass>
     }
 
     fun spritesheet(): String? {
@@ -142,7 +142,9 @@ enum class HeroClass private constructor(private val title: String, vararg subCl
         }
 
         private fun initWarrior(hero: Hero) {
-            (hero.belongings.weapon = WornShortsword()).identify()
+            hero.belongings.weapon = WornShortsword()
+            hero.belongings.weapon!!.identify()
+
             val stones = ThrowingStone()
             stones.identify().quantity(3).collect()
             Dungeon.quickslot.setSlot(0, stones)
@@ -161,7 +163,8 @@ enum class HeroClass private constructor(private val title: String, vararg subCl
 
             staff = MagesStaff(WandOfMagicMissile())
 
-            (hero.belongings.weapon = staff).identify()
+            hero.belongings.weapon = staff
+            hero.belongings.weapon!!.identify()
             hero.belongings.weapon!!.activate(hero)
 
             Dungeon.quickslot.setSlot(0, staff)
@@ -172,10 +175,12 @@ enum class HeroClass private constructor(private val title: String, vararg subCl
         }
 
         private fun initRogue(hero: Hero) {
-            (hero.belongings.weapon = Dagger()).identify()
+            hero.belongings.weapon = Dagger()
+            hero.belongings.weapon!!.identify()
 
             val cloak = CloakOfShadows()
-            (hero.belongings.misc1 = cloak).identify()
+            hero.belongings.misc1 = cloak
+            hero.belongings.misc1!!.identify()
             hero.belongings.misc1!!.activate(hero)
 
             val knives = ThrowingKnife()
@@ -190,8 +195,9 @@ enum class HeroClass private constructor(private val title: String, vararg subCl
         }
 
         private fun initHuntress(hero: Hero) {
+            hero.belongings.weapon = Knuckles()
+            hero.belongings.weapon!!.identify()
 
-            (hero.belongings.weapon = Knuckles()).identify()
             val boomerang = Boomerang()
             boomerang.identify().collect()
 

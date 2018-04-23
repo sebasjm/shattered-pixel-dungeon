@@ -106,7 +106,7 @@ abstract class Wand : Item() {
         if (super.collect(container)) {
             if (container.owner != null) {
                 if (container is MagicalHolster)
-                    charge(container.owner, container.HOLSTER_SCALE_FACTOR)
+                    charge(container.owner, MagicalHolster.HOLSTER_SCALE_FACTOR)
                 else
                     charge(container.owner)
             }
@@ -127,7 +127,7 @@ abstract class Wand : Item() {
 
     fun charge(owner: Char?) {
         if (charger == null) charger = Charger()
-        charger!!.attachTo(owner)
+        charger!!.attachTo(owner!!)
     }
 
     fun charge(owner: Char?, chargeScaleFactor: Float) {
@@ -136,10 +136,10 @@ abstract class Wand : Item() {
     }
 
     protected fun processSoulMark(target: Char, chargesUsed: Int) {
-        if (target !== Dungeon.hero &&
+        if (target !== Dungeon.hero!! &&
                 Dungeon.hero!!.subClass == HeroSubClass.WARLOCK &&
                 Random.Float() < .09f + level().toFloat() * chargesUsed.toFloat() * 0.06f) {
-            SoulMark.prolong<SoulMark>(target, SoulMark::class.java, SoulMark.DURATION + level())
+            Buff.prolong<SoulMark>(target, SoulMark::class.java, SoulMark.DURATION + level())
         }
     }
 
@@ -181,7 +181,7 @@ abstract class Wand : Item() {
     }
 
     open fun statsDesc(): String {
-        return Messages.get(this, "stats_desc")
+        return Messages.get(this.javaClass, "stats_desc")
     }
 
     override fun status(): String? {
@@ -230,9 +230,9 @@ abstract class Wand : Item() {
     }
 
     protected open fun fx(bolt: Ballistica, callback: Callback) {
-        MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+        MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.MAGIC_MISSILE,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.collisionPos!!,
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)
@@ -241,7 +241,7 @@ abstract class Wand : Item() {
     open fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0xFFFFFF)
         particle.am = 0.3f
-        particle.setLifespan(1f)
+        particle.lifespan = 1f
         particle.speed.polar(Random.Float(PointF.PI2), 2f)
         particle.setSize(1f, 2f)
         particle.radiateXY(0.5f)
@@ -254,11 +254,11 @@ abstract class Wand : Item() {
             identify()
             GLog.w(Messages.get(Wand::class.java, "identify", name()))
         } else {
-            if (Item.curUser.heroClass == HeroClass.MAGE) levelKnown = true
+            if (Item.curUser!!.heroClass == HeroClass.MAGE) levelKnown = true
             updateQuickslot()
         }
 
-        Item.curUser.spendAndNext(TIME_TO_ZAP)
+        Item.curUser!!.spendAndNext(TIME_TO_ZAP)
     }
 
     override fun random(): Item {
@@ -310,7 +310,8 @@ abstract class Wand : Item() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        if ((usagesToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
+        usagesToKnow = bundle.getInt(UNFAMILIRIARITY)
+        if (usagesToKnow == 0) {
             usagesToKnow = USAGES_TO_KNOW
         }
         curCharges = bundle.getInt(CUR_CHARGES)
@@ -322,8 +323,8 @@ abstract class Wand : Item() {
 
         internal var scalingFactor = NORMAL_SCALE_FACTOR
 
-        override fun attachTo(target: Char?): Boolean {
-            super.attachTo(target)
+        override fun attachTo(target: Char): Boolean {
+            super.attachTo(target!!)
 
             return true
         }
@@ -345,16 +346,16 @@ abstract class Wand : Item() {
 
         private fun recharge() {
             var missingCharges = maxCharges - curCharges
-            missingCharges += Ring.getBonus(target, RingOfEnergy.Energy::class.java)
+            missingCharges += Ring.getBonus(target!!, RingOfEnergy.Energy::class.java)
             missingCharges = Math.max(0, missingCharges)
 
             val turnsToCharge = (BASE_CHARGE_DELAY + SCALING_CHARGE_ADDITION * Math.pow(scalingFactor.toDouble(), missingCharges.toDouble())).toFloat()
 
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (lock == null || lock.regenOn())
                 partialCharge += 1f / turnsToCharge
 
-            for (bonus in target.buffs<Recharging>(Recharging::class.java)) {
+            for (bonus in target!!.buffs<Recharging>(Recharging::class.java)) {
                 if (bonus != null && bonus.remainder() > 0f) {
                     partialCharge += CHARGE_BUFF_BONUS * bonus.remainder()
                 }
@@ -371,21 +372,18 @@ abstract class Wand : Item() {
             updateQuickslot()
         }
 
-        private fun setScaleFactor(value: Float) {
+        fun setScaleFactor(value: Float) {
             this.scalingFactor = value
         }
 
-        companion object {
-
-            private val BASE_CHARGE_DELAY = 10f
-            private val SCALING_CHARGE_ADDITION = 40f
-            private val NORMAL_SCALE_FACTOR = 0.875f
-
-            private val CHARGE_BUFF_BONUS = 0.25f
-        }
     }
 
     companion object {
+        private val BASE_CHARGE_DELAY = 10f
+        private val SCALING_CHARGE_ADDITION = 40f
+        private val NORMAL_SCALE_FACTOR = 0.875f
+
+        private val CHARGE_BUFF_BONUS = 0.25f
 
         private val USAGES_TO_KNOW = 20
 
@@ -407,21 +405,21 @@ abstract class Wand : Item() {
                     //FIXME this safety check shouldn't be necessary
                     //it would be better to eliminate the curItem static variable.
                     val curWand: Wand
-                    if (Item.curItem is Wand) {
-                        curWand = Wand.curItem as Wand?
+                    if (Item.curItem!! is Wand) {
+                        curWand = Item.curItem as Wand
                     } else {
                         return
                     }
 
-                    val shot = Ballistica(Item.curUser.pos, target, curWand.collisionProperties)
+                    val shot = Ballistica(Item.curUser!!.pos, target, curWand.collisionProperties)
                     val cell = shot.collisionPos!!
 
-                    if (target == Item.curUser.pos || cell == Item.curUser.pos) {
+                    if (target == Item.curUser!!.pos || cell == Item.curUser!!.pos) {
                         GLog.i(Messages.get(Wand::class.java, "self_target"))
                         return
                     }
 
-                    Item.curUser.sprite!!.zap(cell)
+                    Item.curUser!!.sprite!!.zap(cell)
 
                     //attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
                     if (Actor.findChar(target) != null)
@@ -431,19 +429,19 @@ abstract class Wand : Item() {
 
                     if (curWand.curCharges >= (if (curWand.cursed) 1 else curWand.chargesPerCast())) {
 
-                        Item.curUser.busy()
+                        Item.curUser!!.busy()
 
                         if (curWand.cursed) {
-                            CursedWand.cursedZap(curWand, Item.curUser, Ballistica(Item.curUser.pos, target, Ballistica.MAGIC_BOLT))
+                            CursedWand.cursedZap(curWand, Item.curUser!!, Ballistica(Item.curUser!!.pos, target, Ballistica.MAGIC_BOLT))
                             if (!curWand.cursedKnown) {
                                 curWand.cursedKnown = true
                                 GLog.n(Messages.get(Wand::class.java, "curse_discover", curWand.name()))
                             }
                         } else {
-                            curWand.fx(shot, Callback {
+                            curWand.fx(shot, {
                                 curWand.onZap(shot)
                                 curWand.wandUsed()
-                            })
+                            } as Callback)
                         }
 
                         Invisibility.dispel()

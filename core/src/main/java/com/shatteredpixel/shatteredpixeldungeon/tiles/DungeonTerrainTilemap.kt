@@ -26,10 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.watabou.noosa.Image
 import com.watabou.utils.PathFinder
 
-class DungeonTerrainTilemap : DungeonTilemap(Dungeon.level!!.tilesTex()) {
+class DungeonTerrainTilemap : DungeonTilemap(Dungeon.level!!.tilesTex()!!) {
     init {
 
-        map(Dungeon.level!!.map, Dungeon.level!!.width())
+        map(Dungeon.level!!.map!!, Dungeon.level!!.width())
 
         instance = this
     }
@@ -40,10 +40,10 @@ class DungeonTerrainTilemap : DungeonTilemap(Dungeon.level!!.tilesTex()) {
 
         if (tile == Terrain.WATER) {
             return DungeonTileSheet.stitchWaterTile(
-                    map!![pos + PathFinder.CIRCLE4[0]],
-                    map!![pos + PathFinder.CIRCLE4[1]],
-                    map!![pos + PathFinder.CIRCLE4[2]],
-                    map!![pos + PathFinder.CIRCLE4[3]]
+                    map!![pos + PathFinder.CIRCLE4!![0]],
+                    map!![pos + PathFinder.CIRCLE4!![1]],
+                    map!![pos + PathFinder.CIRCLE4!![2]],
+                    map!![pos + PathFinder.CIRCLE4!![3]]
             )
 
         } else if (tile == Terrain.CHASM) {
@@ -92,11 +92,11 @@ class DungeonTerrainTilemap : DungeonTilemap(Dungeon.level!!.tilesTex()) {
 
     companion object {
 
-        internal var instance: DungeonTerrainTilemap
+        internal var instance: DungeonTerrainTilemap? = null
 
         fun tile(pos: Int, tile: Int): Image {
-            val img = Image(instance.texture)
-            img.frame(instance.tileset.get(instance.getTileVisual(pos, tile, true)))
+            val img = Image(instance!!.texture)
+            img.frame(instance!!.tileset.get(DungeonTerrainTilemap.instance!!.getTileVisual(pos, tile, true)))
             return img
         }
     }

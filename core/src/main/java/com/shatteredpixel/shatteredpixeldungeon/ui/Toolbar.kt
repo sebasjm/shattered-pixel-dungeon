@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal
 import com.watabou.noosa.Camera
@@ -46,7 +47,7 @@ class Toolbar : Component() {
     private var btnWait: Tool? = null
     private var btnSearch: Tool? = null
     private var btnInventory: Tool? = null
-    private var btnQuick: Array<QuickslotTool>? = null
+    private var btnQuick: Array<QuickslotTool?>? = null
 
     private var pickedUp: PickedUpItem? = null
 
@@ -68,7 +69,7 @@ class Toolbar : Component() {
 
     override fun createChildren() {
 
-        add(btnWait = object : Tool(24, 0, 20, 26) {
+        btnWait = object : Tool(24, 0, 20, 26) {
             override fun onClick() {
                 examining = false
                 Dungeon.hero!!.rest(false)
@@ -79,9 +80,10 @@ class Toolbar : Component() {
                 Dungeon.hero!!.rest(true)
                 return true
             }
-        })
+        }
+        add(btnWait!!)
 
-        add(btnSearch = object : Tool(44, 0, 20, 26) {
+        btnSearch = object : Tool(44, 0, 20, 26) {
             override fun onClick() {
                 if (!examining) {
                     GameScene.selectCell(informer)
@@ -96,19 +98,24 @@ class Toolbar : Component() {
                 Dungeon.hero!!.search(true)
                 return true
             }
-        })
+        }
+        add(btnSearch!!)
 
         btnQuick = arrayOfNulls(4)
 
-        add(btnQuick[3] = QuickslotTool(64, 0, 22, 24, 3))
+        btnQuick!![3] = QuickslotTool(64, 0, 22, 24, 3)
+        add(btnQuick!![3]!!)
 
-        add(btnQuick[2] = QuickslotTool(64, 0, 22, 24, 2))
+        btnQuick!![2] = QuickslotTool(64, 0, 22, 24, 2)
+        add(btnQuick!![2]!!)
 
-        add(btnQuick[1] = QuickslotTool(64, 0, 22, 24, 1))
+        btnQuick!![1] = QuickslotTool(64, 0, 22, 24, 1)
+        add(btnQuick!![1]!!)
 
-        add(btnQuick[0] = QuickslotTool(64, 0, 22, 24, 0))
+        btnQuick!![0] = QuickslotTool(64, 0, 22, 24, 0)
+        add(btnQuick!![0]!!)
 
-        add(btnInventory = object : Tool(0, 0, 24, 26) {
+        btnInventory = object : Tool(0, 0, 24, 26) {
             private var gold: GoldIndicator? = null
 
             override fun onClick() {
@@ -124,16 +131,18 @@ class Toolbar : Component() {
             override fun createChildren() {
                 super.createChildren()
                 gold = GoldIndicator()
-                add(gold)
+                add(gold!!)
             }
 
             override fun layout() {
                 super.layout()
                 gold!!.fill(this)
             }
-        })
+        }
+        add(btnInventory!!)
 
-        add(pickedUp = PickedUpItem())
+        pickedUp = PickedUpItem()
+        add(pickedUp!!)
     }
 
     override fun layout() {
@@ -145,76 +154,76 @@ class Toolbar : Component() {
             visible[i] = (if (slots > i) y + 2 else y + 25).toInt()
 
         for (i in 0..3) {
-            btnQuick!![i].active = slots > i
-            btnQuick!![i].visible = btnQuick!![i].active
+            btnQuick!![i]!!.active = slots > i
+            btnQuick!![i]!!.visible = btnQuick!![i]!!.active
             //decides on quickslot layout, depending on available screen size.
             if (slots == 4 && width < 152) {
                 if (width < 138) {
                     if (SPDSettings.flipToolbar() && i == 3 || !SPDSettings.flipToolbar() && i == 0) {
-                        btnQuick!![i].border(0, 0)
-                        btnQuick!![i].frame(88, 0, 17, 24)
+                        btnQuick!![i]!!.border(0, 0)
+                        btnQuick!![i]!!.frame(88, 0, 17, 24)
                     } else {
-                        btnQuick!![i].border(0, 1)
-                        btnQuick!![i].frame(88, 0, 18, 24)
+                        btnQuick!![i]!!.border(0, 1)
+                        btnQuick!![i]!!.frame(88, 0, 18, 24)
                     }
                 } else {
                     if (i == 0 && !SPDSettings.flipToolbar() || i == 3 && SPDSettings.flipToolbar()) {
-                        btnQuick!![i].border(0, 2)
-                        btnQuick!![i].frame(106, 0, 19, 24)
+                        btnQuick!![i]!!.border(0, 2)
+                        btnQuick!![i]!!.frame(106, 0, 19, 24)
                     } else if (i == 0 && SPDSettings.flipToolbar() || i == 3 && !SPDSettings.flipToolbar()) {
-                        btnQuick!![i].border(2, 1)
-                        btnQuick!![i].frame(86, 0, 20, 24)
+                        btnQuick!![i]!!.border(2, 1)
+                        btnQuick!![i]!!.frame(86, 0, 20, 24)
                     } else {
-                        btnQuick!![i].border(0, 1)
-                        btnQuick!![i].frame(88, 0, 18, 24)
+                        btnQuick!![i]!!.border(0, 1)
+                        btnQuick!![i]!!.frame(88, 0, 18, 24)
                     }
                 }
             } else {
-                btnQuick!![i].border(2, 2)
-                btnQuick!![i].frame(64, 0, 22, 24)
+                btnQuick!![i]!!.border(2, 2)
+                btnQuick!![i]!!.frame(64, 0, 22, 24)
             }
 
         }
 
         var right = width
-        when (Mode.valueOf(SPDSettings.toolbarMode())) {
+        when (Mode.valueOf(SPDSettings.toolbarMode()!!)) {
             Toolbar.Mode.SPLIT -> {
                 btnWait!!.setPos(x, y)
                 btnSearch!!.setPos(btnWait!!.right(), y)
 
                 btnInventory!!.setPos(right - btnInventory!!.width(), y)
 
-                btnQuick!![0].setPos(btnInventory!!.left() - btnQuick!![0].width(), visible[0].toFloat())
-                btnQuick!![1].setPos(btnQuick!![0].left() - btnQuick!![1].width(), visible[1].toFloat())
-                btnQuick!![2].setPos(btnQuick!![1].left() - btnQuick!![2].width(), visible[2].toFloat())
-                btnQuick!![3].setPos(btnQuick!![2].left() - btnQuick!![3].width(), visible[3].toFloat())
+                btnQuick!![0]!!.setPos(btnInventory!!.left() - btnQuick!![0]!!.width(), visible[0].toFloat())
+                btnQuick!![1]!!.setPos(btnQuick!![0]!!.left() - btnQuick!![1]!!.width(), visible[1].toFloat())
+                btnQuick!![2]!!.setPos(btnQuick!![1]!!.left() - btnQuick!![2]!!.width(), visible[2].toFloat())
+                btnQuick!![3]!!.setPos(btnQuick!![2]!!.left() - btnQuick!![3]!!.width(), visible[3].toFloat())
             }
 
         //center = group but.. well.. centered, so all we need to do is pre-emptively set the right side further in.
             Toolbar.Mode.CENTER -> {
                 var toolbarWidth = btnWait!!.width() + btnSearch!!.width() + btnInventory!!.width()
                 for (slot in btnQuick!!) {
-                    if (slot.visible) toolbarWidth += slot.width()
+                    if (slot!!.visible) toolbarWidth += slot!!.width()
                 }
                 right = (width + toolbarWidth) / 2
                 btnWait!!.setPos(right - btnWait!!.width(), y)
                 btnSearch!!.setPos(btnWait!!.left() - btnSearch!!.width(), y)
                 btnInventory!!.setPos(btnSearch!!.left() - btnInventory!!.width(), y)
 
-                btnQuick!![0].setPos(btnInventory!!.left() - btnQuick!![0].width(), visible[0].toFloat())
-                btnQuick!![1].setPos(btnQuick!![0].left() - btnQuick!![1].width(), visible[1].toFloat())
-                btnQuick!![2].setPos(btnQuick!![1].left() - btnQuick!![2].width(), visible[2].toFloat())
-                btnQuick!![3].setPos(btnQuick!![2].left() - btnQuick!![3].width(), visible[3].toFloat())
+                btnQuick!![0]!!.setPos(btnInventory!!.left() - btnQuick!![0]!!.width(), visible[0].toFloat())
+                btnQuick!![1]!!.setPos(btnQuick!![0]!!.left() - btnQuick!![1]!!.width(), visible[1].toFloat())
+                btnQuick!![2]!!.setPos(btnQuick!![1]!!.left() - btnQuick!![2]!!.width(), visible[2].toFloat())
+                btnQuick!![3]!!.setPos(btnQuick!![2]!!.left() - btnQuick!![3]!!.width(), visible[3].toFloat())
             }
 
             Toolbar.Mode.GROUP -> {
                 btnWait!!.setPos(right - btnWait!!.width(), y)
                 btnSearch!!.setPos(btnWait!!.left() - btnSearch!!.width(), y)
                 btnInventory!!.setPos(btnSearch!!.left() - btnInventory!!.width(), y)
-                btnQuick!![0].setPos(btnInventory!!.left() - btnQuick!![0].width(), visible[0].toFloat())
-                btnQuick!![1].setPos(btnQuick!![0].left() - btnQuick!![1].width(), visible[1].toFloat())
-                btnQuick!![2].setPos(btnQuick!![1].left() - btnQuick!![2].width(), visible[2].toFloat())
-                btnQuick!![3].setPos(btnQuick!![2].left() - btnQuick!![3].width(), visible[3].toFloat())
+                btnQuick!![0]!!.setPos(btnInventory!!.left() - btnQuick!![0]!!.width(), visible[0].toFloat())
+                btnQuick!![1]!!.setPos(btnQuick!![0]!!.left() - btnQuick!![1]!!.width(), visible[1].toFloat())
+                btnQuick!![2]!!.setPos(btnQuick!![1]!!.left() - btnQuick!![2]!!.width(), visible[2].toFloat())
+                btnQuick!![3]!!.setPos(btnQuick!![2]!!.left() - btnQuick!![3]!!.width(), visible[3].toFloat())
             }
         }
         right = width
@@ -226,7 +235,7 @@ class Toolbar : Component() {
             btnInventory!!.setPos(right - btnInventory!!.right(), y)
 
             for (i in 0..3) {
-                btnQuick!![i].setPos(right - btnQuick!![i].right(), visible[i].toFloat())
+                btnQuick!![i]!!.setPos(right - btnQuick!![i]!!.right(), visible[i].toFloat())
             }
 
         }
@@ -264,7 +273,7 @@ class Toolbar : Component() {
 
         init {
 
-            hotArea.blockWhenInactive = true
+            hotArea!!.blockWhenInactive = true
             frame(x, y, width, height)
         }
 
@@ -279,7 +288,7 @@ class Toolbar : Component() {
             super.createChildren()
 
             base = Image(Assets.TOOLBAR)
-            add(base)
+            add(base!!)
         }
 
         override fun layout() {
@@ -370,8 +379,8 @@ class Toolbar : Component() {
             visible = true
             active = visible
 
-            val tile = DungeonTerrainTilemap.raisedTileCenterToWorld(cell)
-            val screen = Camera.main.cameraToScreen(tile.x, tile.y)
+            val tile = DungeonTilemap.raisedTileCenterToWorld(cell)
+            val screen = Camera.main!!.cameraToScreen(tile.x, tile.y)
             val start = camera()!!.screenToCamera(screen.x, screen.y)
 
             this.startX = start.x - ItemSprite.SIZE / 2
@@ -383,14 +392,16 @@ class Toolbar : Component() {
             this.endY = endY - ItemSprite.SIZE / 2
             left = DURATION
 
-            scale.set(startScale = Camera.main.zoom / camera()!!.zoom)
+            startScale = Camera.main!!.zoom / camera()!!.zoom
+            scale!!.set(startScale)
 
         }
 
         override fun update() {
             super.update()
 
-            if ((left -= Game.elapsed) <= 0) {
+            left -= Game.elapsed
+            if (left <= 0) {
 
                 active = false
                 visible = active
@@ -413,7 +424,7 @@ class Toolbar : Component() {
 
     companion object {
 
-        private var instance: Toolbar?
+        private var instance: Toolbar? = null
 
         fun updateLayout() {
             if (instance != null) instance!!.layout()

@@ -41,7 +41,7 @@ class ExitRoom : StandardRoom() {
         Painter.fill(level, this, Terrain.WALL)
         Painter.fill(level, this, 1, Terrain.EMPTY)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 

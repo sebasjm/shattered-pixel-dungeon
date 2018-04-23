@@ -34,6 +34,7 @@ import com.watabou.noosa.RenderedText
 import com.watabou.noosa.audio.Music
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.DeviceCompat
+import com.watabou.utils.GameSettings
 
 import javax.microedition.khronos.opengles.GL10
 
@@ -229,23 +230,23 @@ class ShatteredPixelDungeon : Game(WelcomeScene::class.java) {
 
         if (landscape != Game.width > Game.height) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                Game.instance.requestedOrientation = if (landscape)
+                Game.instance!!.requestedOrientation = if (landscape)
                     ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 else
                     ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
             } else {
-                Game.instance.requestedOrientation = if (landscape)
+                Game.instance!!.requestedOrientation = if (landscape)
                     ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                 else
                     ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
         }
 
-        if (view.measuredWidth == 0 || view.measuredHeight == 0)
+        if (view!!.measuredWidth == 0 || view!!.measuredHeight == 0)
             return
 
-        Game.dispWidth = view.measuredWidth
-        Game.dispHeight = view.measuredHeight
+        Game.dispWidth = view!!.measuredWidth
+        Game.dispHeight = view!!.measuredHeight
 
         val dispRatio = Game.dispWidth / Game.dispHeight.toFloat()
 
@@ -254,7 +255,7 @@ class ShatteredPixelDungeon : Game(WelcomeScene::class.java) {
 
         //force power saver in this case as all devices must run at at least 2x scale.
         if (Game.dispWidth < renderWidth * 2 || Game.dispHeight < renderHeight * 2)
-            SPDSettings.put(SPDSettings.KEY_POWER_SAVER, true)
+            GameSettings.put(SPDSettings.KEY_POWER_SAVER, true)
 
         if (SPDSettings.powerSaver()) {
 
@@ -273,11 +274,11 @@ class ShatteredPixelDungeon : Game(WelcomeScene::class.java) {
             val finalH = Math.round(renderHeight)
             if (finalW != Game.width || finalH != Game.height) {
 
-                runOnUiThread { view.holder.setFixedSize(finalW, finalH) }
+                runOnUiThread { view!!.holder.setFixedSize(finalW, finalH) }
 
             }
         } else {
-            runOnUiThread { view.holder.setSizeFromLayout() }
+            runOnUiThread { view!!.holder.setSizeFromLayout() }
         }
     }
 
@@ -305,24 +306,24 @@ class ShatteredPixelDungeon : Game(WelcomeScene::class.java) {
 
         fun updateSystemUI() {
 
-            val fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !Game.instance.isInMultiWindowMode
+            val fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !Game.instance!!.isInMultiWindowMode
 
             if (fullscreen) {
-                Game.instance.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                Game.instance!!.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                         WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
             } else {
-                Game.instance.window.setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                Game.instance!!.window.setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
                         WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
             }
 
             if (DeviceCompat.supportsFullScreen()) {
                 if (fullscreen && SPDSettings.fullscreen()) {
-                    Game.instance.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    Game.instance!!.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                             View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
                             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
                             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 } else {
-                    Game.instance.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    Game.instance!!.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 }
             }
 

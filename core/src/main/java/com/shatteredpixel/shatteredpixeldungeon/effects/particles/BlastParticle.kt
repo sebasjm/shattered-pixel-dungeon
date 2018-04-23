@@ -48,7 +48,7 @@ class BlastParticle : PixelParticle.Shrinking() {
 
     override fun update() {
         super.update()
-        am = if (left > 0.8f) (1 - left) * 5 else 1
+        am = if (left > 0.8f) (1 - left) * 5 else 1f
     }
 
     companion object {

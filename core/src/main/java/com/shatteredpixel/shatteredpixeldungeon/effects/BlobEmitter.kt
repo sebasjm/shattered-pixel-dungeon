@@ -54,7 +54,7 @@ class BlobEmitter(private val blob: Blob) : Emitter() {
                         && map!![cell] > 0) {
                     val x = (i + Random.Float()) * size
                     val y = (j + Random.Float()) * size
-                    factory.emit(this, index, x, y)
+                    factory!!.emit(this, index, x, y)
                 }
             }
         }

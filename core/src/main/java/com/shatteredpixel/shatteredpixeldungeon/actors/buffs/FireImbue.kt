@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
@@ -52,9 +54,9 @@ class FireImbue : Buff() {
     }
 
     override fun act(): Boolean {
-        if (Dungeon.level!!.map!![target.pos] == Terrain.GRASS) {
-            Dungeon.level!!.set(target.pos, Terrain.EMBERS)
-            GameScene.updateMap(target.pos)
+        if (Dungeon.level!!.map!![target!!.pos] == Terrain.GRASS) {
+            Level.Companion.set(target!!.pos, Terrain.EMBERS)
+            GameScene.updateMap(target!!.pos)
         }
 
         spend(Actor.TICK)
@@ -84,11 +86,11 @@ class FireImbue : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(left))
+        return Messages.get(this.javaClass, "desc", dispTurns(left))
     }
 
     init {

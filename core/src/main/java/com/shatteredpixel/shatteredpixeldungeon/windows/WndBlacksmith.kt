@@ -41,35 +41,35 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
 
     private var btnPressed: ItemButton? = null
 
-    private val btnItem1: ItemButton
-    private val btnItem2: ItemButton
-    private val btnReforge: RedButton
+    private var btnItem1: ItemButton? = null
+    private var btnItem2: ItemButton? = null
+    private var btnReforge: RedButton? = null
 
-    protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+    protected var itemSelector: WndBag.Listener =  { item: Item? ->
         if (item != null) {
             btnPressed!!.item(item)
 
-            if (btnItem1.item != null && btnItem2.item != null) {
-                val result = Blacksmith.verify(btnItem1.item, btnItem2.item)
+            if (btnItem1!!.item != null && btnItem2!!.item != null) {
+                val result = Blacksmith.verify(btnItem1!!.item!!, btnItem2!!.item!!)
                 if (result != null) {
                     GameScene.show(WndMessage(result))
-                    btnReforge.enable(false)
+                    btnReforge!!.enable(false)
                 } else {
-                    btnReforge.enable(true)
+                    btnReforge!!.enable(true)
                 }
             }
         }
-    }
+    } as WndBag.Listener
 
     init {
 
         val titlebar = IconTitle()
-        titlebar.icon(troll.sprite())
+        titlebar.icon(troll.sprite()!!)
         titlebar.label(Messages.titleCase(troll.name))
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 
-        val message = PixelScene.renderMultiline(Messages.get(this, "prompt"), 6)
+        val message = PixelScene.renderMultiline(Messages.get(this.javaClass, "prompt"), 6)
         message.maxWidth(WIDTH)
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
@@ -80,7 +80,7 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
                 GameScene.selectItem(itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith::class.java, "select"))
             }
         }
-        btnItem1.setRect((WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
+        btnItem1!!.setRect((WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
         add(btnItem1)
 
         btnItem2 = object : ItemButton() {
@@ -89,27 +89,27 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
                 GameScene.selectItem(itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith::class.java, "select"))
             }
         }
-        btnItem2.setRect(btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
+        btnItem2!!.setRect(btnItem1!!.right() + BTN_GAP, btnItem1!!.top(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
         add(btnItem2)
 
-        btnReforge = object : RedButton(Messages.get(this, "reforge")) {
+        btnReforge = object : RedButton(Messages.get(this.javaClass, "reforge")) {
             override fun onClick() {
-                Blacksmith.upgrade(btnItem1.item!!, btnItem2.item!!)
+                Blacksmith.upgrade(btnItem1!!.item!!, btnItem2!!.item!!)
                 hide()
             }
         }
-        btnReforge.enable(false)
-        btnReforge.setRect(0f, btnItem1.bottom() + BTN_GAP, WIDTH.toFloat(), 20f)
+        btnReforge!!.enable(false)
+        btnReforge!!.setRect(0f, btnItem1!!.bottom() + BTN_GAP, WIDTH.toFloat(), 20f)
         add(btnReforge)
 
 
-        resize(WIDTH, btnReforge.bottom().toInt())
+        resize(WIDTH, btnReforge!!.bottom().toInt())
     }
 
     open class ItemButton : Component() {
 
         protected var bg: NinePatch? = null
-        var slot: ItemSlot
+        var slot: ItemSlot? = null
 
         var item: Item? = null
 
@@ -133,7 +133,7 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
                     this@ItemButton.onClick()
                 }
             }
-            slot.enable(true)
+            slot!!.enable(true)
             add(slot)
         }
 
@@ -146,11 +146,12 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
             bg!!.y = y
             bg!!.size(width, height)
 
-            slot.setRect(x + 2, y + 2, width - 4, height - 4)
+            slot!!.setRect(x + 2, y + 2, width - 4, height - 4)
         }
 
         fun item(item: Item?) {
-            slot.item(this.item = item)
+            this.item = item
+            slot!!.item(item)
         }
     }
 

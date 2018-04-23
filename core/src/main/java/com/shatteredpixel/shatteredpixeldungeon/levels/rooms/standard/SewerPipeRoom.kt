@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.GameMath
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
@@ -49,7 +50,7 @@ class SewerPipeRoom : StandardRoom() {
         get() {
             val doorCenter = PointF(0f, 0f)
 
-            for (door in connected.values) {
+            for (door in connected.values.filterNotNull()) {
                 doorCenter.x += door.x.toFloat()
                 doorCenter.y += door.y.toFloat()
             }
@@ -90,7 +91,7 @@ class SewerPipeRoom : StandardRoom() {
         val c = connectionSpace
 
         if (connected.size <= 2) {
-            for (door in connected.values) {
+            for (door in connected.values.filterNotNull()) {
 
                 val start: Point
                 val mid: Point
@@ -139,7 +140,7 @@ class SewerPipeRoom : StandardRoom() {
             }
         } else {
             val pointsToFill = ArrayList<Point>()
-            for (door in connected.values) {
+            for (door in connected.values.filterNotNull()) {
                 val p = Point(door)
                 if (p.y == top) {
                     p.y += 2
@@ -180,7 +181,7 @@ class SewerPipeRoom : StandardRoom() {
         for (p in points) {
             val cell = level.pointToCell(p)
             if (level.map!![cell] == Terrain.WATER) {
-                for (i in PathFinder.NEIGHBOURS8) {
+                for (i in PathFinder.NEIGHBOURS8!!) {
                     if (level.map!![cell + i] == Terrain.WALL) {
                         Painter.set(level, cell + i, Terrain.EMPTY)
                     }
@@ -188,7 +189,7 @@ class SewerPipeRoom : StandardRoom() {
             }
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
     }
@@ -230,11 +231,12 @@ class SewerPipeRoom : StandardRoom() {
 
         //set up corners
         if (corners == null) {
-            corners = arrayOfNulls(4)
-            corners[0] = Point(left + 2, top + 2)
-            corners[1] = Point(right - 2, top + 2)
-            corners[2] = Point(right - 2, bottom - 2)
-            corners[3] = Point(left + 2, bottom - 2)
+            corners = arrayOf(
+                    Point(left + 2, top + 2),
+                    Point(right - 2, top + 2),
+                    Point(right - 2, bottom - 2),
+                    Point(left + 2, bottom - 2)
+            )
         }
 
         //doors on adjacent sides

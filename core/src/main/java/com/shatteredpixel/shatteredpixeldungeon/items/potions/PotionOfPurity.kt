@@ -42,7 +42,7 @@ class PotionOfPurity : Potion() {
     init {
         initials = 9
 
-        affectedBlobs = ArrayList<Class>(BlobImmunity().immunities())
+        affectedBlobs = ArrayList<Class<*>>(BlobImmunity().immunities())
     }
 
     override fun shatter(cell: Int) {
@@ -58,7 +58,7 @@ class PotionOfPurity : Potion() {
         }
 
         for (i in 0 until Dungeon.level!!.length()) {
-            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+            if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
 
                 for (blob in blobs) {
 
@@ -66,7 +66,7 @@ class PotionOfPurity : Potion() {
                     if (value > 0) {
 
                         blob.clear(i)
-                        blob.cur[i] = 0
+                        blob.cur!![i] = 0
                         blob.volume -= value
 
                     }
@@ -86,13 +86,13 @@ class PotionOfPurity : Potion() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
 
             setKnown()
-            GLog.i(Messages.get(this, "freshness"))
+            GLog.i(Messages.get(this.javaClass, "freshness"))
         }
 
     }
 
     override fun apply(hero: Hero) {
-        GLog.w(Messages.get(this, "protected"))
+        GLog.w(Messages.get(this.javaClass, "protected"))
         Buff.prolong<BlobImmunity>(hero, BlobImmunity::class.java, BlobImmunity.DURATION)
         setKnown()
     }

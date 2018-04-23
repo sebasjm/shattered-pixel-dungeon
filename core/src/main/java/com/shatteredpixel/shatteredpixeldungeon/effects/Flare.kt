@@ -38,7 +38,7 @@ import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
 class Flare @SuppressLint("FloatMath")
-constructor(private val nRays: Int, radius: Float) : Visual(0, 0, 0, 0) {
+constructor(private val nRays: Int, radius: Float) : Visual(0f, 0f, 0f, 0f) {
 
     private var duration = 0f
     private var lifespan: Float = 0.toFloat()
@@ -126,7 +126,8 @@ constructor(private val nRays: Int, radius: Float) : Visual(0, 0, 0, 0) {
         super.update()
 
         if (duration > 0) {
-            if ((lifespan -= Game.elapsed) > 0) {
+            lifespan -= Game.elapsed
+            if (lifespan > 0) {
 
                 var p = 1 - lifespan / duration    // 0 -> 1
                 p = if (p < 0.25f) p * 4 else (1 - p) * 1.333f

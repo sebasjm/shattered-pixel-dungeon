@@ -36,7 +36,7 @@ class GnollTricksterSprite : MobSprite() {
 
         texture(Assets.GNOLL)
 
-        val frames = TextureFilm(texture, 12, 15)
+        val frames = TextureFilm(texture!!, 12, 15)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 21, 21, 21, 22, 21, 21, 22, 22)
@@ -52,13 +52,13 @@ class GnollTricksterSprite : MobSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 29, 30, 31)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun attack(cell: Int) {
         if (!Dungeon.level!!.adjacent(cell, ch!!.pos)) {
 
-            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, ParalyticDart()) { ch!!.onAttackComplete() }
+            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, ParalyticDart(), { ch!!.onAttackComplete() } as Callback)
 
             play(cast)
             turnTo(ch!!.pos, cell)

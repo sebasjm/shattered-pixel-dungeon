@@ -52,7 +52,7 @@ class Dreamfoil : Plant() {
             if (ch is Mob)
                 Buff.affect<MagicalSleep>(ch, MagicalSleep::class.java)
             else if (ch is Hero) {
-                GLog.i(Messages.get(this, "refreshed"))
+                GLog.i(Messages.get(this.javaClass, "refreshed"))
                 Buff.detach(ch, Poison::class.java)
                 Buff.detach(ch, Cripple::class.java)
                 Buff.detach(ch, Weakness::class.java)

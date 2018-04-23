@@ -36,6 +36,6 @@ class GuidePage : DocumentPage() {
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", document().pageTitle(page()))
+        return Messages.get(this.javaClass, "desc", document().pageTitle(page()!!))
     }
 }

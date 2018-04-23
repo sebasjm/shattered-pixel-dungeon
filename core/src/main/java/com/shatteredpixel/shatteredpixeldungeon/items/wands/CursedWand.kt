@@ -95,7 +95,7 @@ object CursedWand {
         when (Random.Int(4)) {
 
         //anti-entropy
-            0 -> cursedFX(user, bolt, Callback {
+            0 -> cursedFX(user, bolt, {
                 val target = Actor.findChar(bolt.collisionPos!!)
                 when (Random.Int(2)) {
                     0 -> {
@@ -110,20 +110,20 @@ object CursedWand {
                     }
                 }
                 wand.wandUsed()
-            })
+            } as Callback )
 
         //spawns some regrowth
-            1 -> cursedFX(user, bolt, Callback {
-                val c = Dungeon.level!!.map!![bolt.collisionPos]
+            1 -> cursedFX(user, bolt, {
+                val c = Dungeon.level!!.map!![bolt.collisionPos!!]
                 if (c == Terrain.EMPTY ||
                         c == Terrain.EMBERS ||
                         c == Terrain.EMPTY_DECO ||
                         c == Terrain.GRASS ||
                         c == Terrain.HIGH_GRASS) {
-                    GameScene.add(Blob.seed<Regrowth>(bolt.collisionPos!!, 30, Regrowth::class.java))
+                    GameScene.add(Blob.seed<Regrowth>(bolt.collisionPos!!, 30, Regrowth::class.java)!!)
                 }
                 wand.wandUsed()
-            })
+            } as Callback)
 
         //random teleportation
             2 -> when (Random.Int(2)) {
@@ -131,7 +131,7 @@ object CursedWand {
                     ScrollOfTeleportation.teleportHero(user)
                     wand.wandUsed()
                 }
-                1 -> cursedFX(user, bolt, Callback {
+                1 -> cursedFX(user, bolt, {
                     val ch = Actor.findChar(bolt.collisionPos!!)
                     if (ch === user) {
                         ScrollOfTeleportation.teleportHero(user)
@@ -155,18 +155,18 @@ object CursedWand {
                         }
                     }
                     wand.wandUsed()
-                })
+                } as Callback )
             }
 
         //random gas at location
-            3 -> cursedFX(user, bolt, Callback {
+            3 -> cursedFX(user, bolt, {
                 when (Random.Int(3)) {
-                    0 -> GameScene.add(Blob.seed<ConfusionGas>(bolt.collisionPos!!, 800, ConfusionGas::class.java))
-                    1 -> GameScene.add(Blob.seed<ToxicGas>(bolt.collisionPos!!, 500, ToxicGas::class.java))
-                    2 -> GameScene.add(Blob.seed<ParalyticGas>(bolt.collisionPos!!, 200, ParalyticGas::class.java))
+                    0 -> GameScene.add(Blob.seed<ConfusionGas>(bolt.collisionPos!!, 800, ConfusionGas::class.java)!!)
+                    1 -> GameScene.add(Blob.seed<ToxicGas>(bolt.collisionPos!!, 500, ToxicGas::class.java)!!)
+                    2 -> GameScene.add(Blob.seed<ParalyticGas>(bolt.collisionPos!!, 200, ParalyticGas::class.java)!!)
                 }
                 wand.wandUsed()
-            })
+            } as Callback )
         }
 
     }
@@ -175,10 +175,10 @@ object CursedWand {
         when (Random.Int(4)) {
 
         //Random plant
-            0 -> cursedFX(user, bolt, Callback {
+            0 -> cursedFX(user, bolt, {
                 var pos = bolt.collisionPos!!
                 //place the plant infront of an enemy so they walk into it.
-                if (Actor.findChar(pos) != null && bolt.dist > 1) {
+                if (Actor.findChar(pos) != null && bolt.dist!! > 1) {
                     pos = bolt.path[bolt.dist!! - 1]
                 }
 
@@ -190,7 +190,7 @@ object CursedWand {
                     Dungeon.level!!.plant(Generator.random(Generator.Category.SEED) as Plant.Seed, pos)
                 }
                 wand.wandUsed()
-            })
+            } as Callback )
 
         //Health transfer
             1 -> {
@@ -228,10 +228,10 @@ object CursedWand {
             }
 
         //Bomb explosion
-            2 -> cursedFX(user, bolt, Callback {
+            2 -> cursedFX(user, bolt, {
                 Bomb().explode(bolt.collisionPos!!)
                 wand.wandUsed()
-            })
+            } as Callback )
 
         //shock and recharge
             3 -> {
@@ -249,7 +249,7 @@ object CursedWand {
         when (Random.Int(4)) {
 
         //sheep transformation
-            0 -> cursedFX(user, bolt, Callback {
+            0 -> cursedFX(user, bolt, {
                 val ch = Actor.findChar(bolt.collisionPos!!)
 
                 if (ch != null && ch !== user
@@ -261,14 +261,14 @@ object CursedWand {
                     ch.destroy()
                     ch.sprite!!.killAndErase()
                     Dungeon.level!!.mobs.remove(ch)
-                    TargetHealthIndicator.instance.target(null)
+                    TargetHealthIndicator.instance!!.target(null)
                     GameScene.add(sheep)
                     CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4)
                 } else {
                     GLog.i(Messages.get(CursedWand::class.java, "nothing"))
                 }
                 wand.wandUsed()
-            })
+            } as Callback )
 
         //curses!
             1 -> {
@@ -317,13 +317,13 @@ object CursedWand {
                             c == Terrain.EMPTY_DECO ||
                             c == Terrain.GRASS ||
                             c == Terrain.HIGH_GRASS) {
-                        GameScene.add(Blob.seed<Regrowth>(i, 15, Regrowth::class.java))
+                        GameScene.add(Blob.seed<Regrowth>(i, 15, Regrowth::class.java)!!)
                     }
                 }
                 do {
-                    GameScene.add(Blob.seed<Fire>(Dungeon.level!!.randomDestination(), 10, Fire::class.java))
+                    GameScene.add(Blob.seed<Fire>(Dungeon.level!!.randomDestination(), 10, Fire::class.java)!!)
                 } while (Random.Int(5) != 0)
-                Flare(8, 32f).color(0xFFFF66, true).show(user.sprite, 2f)
+                Flare(8, 32f).color(0xFFFF66, true).show(user.sprite!!, 2f)
                 Sample.INSTANCE.play(Assets.SND_TELEPORT)
                 GLog.p(Messages.get(CursedWand::class.java, "grass"))
                 GLog.w(Messages.get(CursedWand::class.java, "fire"))
@@ -331,14 +331,14 @@ object CursedWand {
             }
 
         //superpowered mimic
-            1 -> cursedFX(user, bolt, Callback {
+            1 -> cursedFX(user, bolt, {
                 val mimic = Mimic.spawnAt(bolt.collisionPos!!, ArrayList())
                 if (mimic != null) {
                     mimic.adjustStats(Dungeon.depth + 10)
                     mimic.HP = mimic.HT
                     var reward: Item?
                     do {
-                        reward = Generator.random(Random.oneOf<Category>(Generator.Category.WEAPON, Generator.Category.ARMOR,
+                        reward = Generator.random(Random.oneOf<Generator.Category>(Generator.Category.WEAPON, Generator.Category.ARMOR,
                                 Generator.Category.RING, Generator.Category.WAND))
                     } while (reward!!.level() < 1)
                     Sample.INSTANCE.play(Assets.SND_MIMIC, 1f, 1f, 0.5f)
@@ -349,7 +349,7 @@ object CursedWand {
                 }
 
                 wand.wandUsed()
-            })
+            } as Callback)
 
         //crashes the game, yes, really.
             2 -> try {
@@ -373,7 +373,7 @@ object CursedWand {
                     )
                 }
             } catch (e: IOException) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 //oookay maybe don't kill the game if the save failed.
                 GLog.i(Messages.get(CursedWand::class.java, "nothing"))
                 wand.wandUsed()
@@ -385,7 +385,7 @@ object CursedWand {
                 wand.detach(user.belongings.backpack)
                 var result: Item?
                 do {
-                    result = Generator.random(Random.oneOf<Category>(Generator.Category.WEAPON, Generator.Category.ARMOR,
+                    result = Generator.random(Random.oneOf<Generator.Category>(Generator.Category.WEAPON, Generator.Category.ARMOR,
                             Generator.Category.RING, Generator.Category.ARTIFACT))
                 } while (result!!.cursed)
                 if (result.isUpgradable) result.upgrade()
@@ -401,7 +401,7 @@ object CursedWand {
     private fun cursedFX(user: Hero, bolt: Ballistica, callback: Callback) {
         MagicMissile.boltFromChar(user.sprite!!.parent!!,
                 MagicMissile.RAINBOW,
-                user.sprite,
+                user.sprite!!,
                 bolt.collisionPos!!,
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)

@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class UndeadSprite : MobSprite() {
@@ -31,7 +32,7 @@ class UndeadSprite : MobSprite() {
 
         texture(Assets.UNDEAD)
 
-        val frames = TextureFilm(texture, 12, 16)
+        val frames = TextureFilm(texture!!, 12, 16)
 
         idle = MovieClip.Animation(12, true)
         idle!!.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3)

@@ -22,15 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
+import com.watabou.noosa.Game
 import com.watabou.utils.Random
 
 import java.util.ArrayList
 
 abstract class StandardRoom : Room() {
 
-    var sizeCat: SizeCategory
+    var sizeCat: SizeCategory? = null
 
     enum class SizeCategory private constructor(val minDim: Int, val maxDim: Int, val roomValue: Int) {
 
@@ -45,7 +45,7 @@ abstract class StandardRoom : Room() {
     }
 
     init {
-        setSizeCat()
+        setSizeCat2()
     }
 
     //Note that if a room wishes to allow itself to be forced to a certain size category,
@@ -57,12 +57,12 @@ abstract class StandardRoom : Room() {
 
     //assumes room value is always ordinal+1
     fun setSizeCat(maxRoomValue: Int): Boolean {
-        return setSizeCat(0, maxRoomValue - 1)
+        return setSizeCat2(0, maxRoomValue - 1)
     }
 
     //returns false if size cannot be set
     @JvmOverloads
-    fun setSizeCat(minOrdinal: Int = 0, maxOrdinal: Int = SizeCategory.values().size - 1): Boolean {
+    fun setSizeCat2(minOrdinal: Int = 0, maxOrdinal: Int = SizeCategory.values().size - 1): Boolean {
         val probs = sizeCatProbs()
         val categories = SizeCategory.values()
 
@@ -82,19 +82,19 @@ abstract class StandardRoom : Room() {
     }
 
     override fun minWidth(): Int {
-        return sizeCat.minDim
+        return sizeCat!!.minDim
     }
 
     override fun maxWidth(): Int {
-        return sizeCat.maxDim
+        return sizeCat!!.maxDim
     }
 
     override fun minHeight(): Int {
-        return sizeCat.minDim
+        return sizeCat!!.minDim
     }
 
     override fun maxHeight(): Int {
-        return sizeCat.maxDim
+        return sizeCat!!.maxDim
     }
 
     override fun minConnections(direction: Int): Int {
@@ -187,9 +187,9 @@ abstract class StandardRoom : Room() {
 
         fun createRoom(): StandardRoom? {
             try {
-                return rooms[Random.chances(chances[Dungeon.depth])].newInstance()
+                return rooms[Random.chances(chances[Dungeon.depth]!!)].newInstance()
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 

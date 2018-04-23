@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal.WarriorShield
@@ -62,27 +63,27 @@ class Berserk : Buff() {
 
     override fun act(): Boolean {
         if (berserking()) {
-            if (target.HP <= 0) {
-                target.SHLD -= Math.min(target.SHLD, 2)
-                if (target.SHLD == 0) {
-                    target.die(this)
-                    if (!target.isAlive) Dungeon.fail(this.javaClass)
+            if (target!!.HP <= 0) {
+                target!!.SHLD -= Math.min(target!!.SHLD, 2)
+                if (target!!.SHLD == 0) {
+                    target!!.die(this)
+                    if (!target!!.isAlive) Dungeon.fail(this.javaClass)
                 }
             } else {
                 state = State.EXHAUSTED
                 exhaustion = EXHAUSTION_START
                 levelRecovery = LEVEL_RECOVER_START
                 BuffIndicator.refreshHero()
-                target.SHLD = 0
+                target!!.SHLD = 0
                 pastRages++
             }
         } else {
 
-            if (target.HP > targetHPMax()) {
-                target.HP = Math.max(targetHPMax(), target.HP - 1)
-                if (target is Hero) {
-                    (target as Hero).resting = false
-                    target.remove(MagicalSleep::class.java)
+            if (target!!.HP > targetHPMax()) {
+                target!!.HP = Math.max(targetHPMax(), target!!.HP - 1)
+                if (target!! is Hero) {
+                    (target!! as Hero).resting = false
+                    target!!.remove(MagicalSleep::class.java)
                 }
             }
 
@@ -106,7 +107,7 @@ class Berserk : Buff() {
         } else if (state == State.EXHAUSTED) {
             bonus = 1f - Math.sqrt(exhaustion.toDouble()).toFloat() / 10f
         } else {
-            val percentMissing = 1f - target.HP / targetHPMax().toFloat()
+            val percentMissing = 1f - target!!.HP / targetHPMax().toFloat()
             bonus = 1f + 0.5f * Math.pow(percentMissing.toDouble(), 2.0).toFloat()
         }
 
@@ -114,19 +115,19 @@ class Berserk : Buff() {
     }
 
     fun targetHPMax(): Int {
-        return Math.round(target.HT * Math.round(20 * Math.pow(0.8, pastRages.toDouble())) / 20f)
+        return Math.round(target!!.HT * Math.round(20 * Math.pow(0.8, pastRages.toDouble())) / 20f)
     }
 
     fun berserking(): Boolean {
-        if (target.HP == 0 && state == State.NORMAL) {
+        if (target!!.HP == 0 && state == State.NORMAL) {
 
-            val shield = target.buff<WarriorShield>(WarriorShield::class.java)
+            val shield = target!!.buff<WarriorShield>(WarriorShield::class.java)
             if (shield != null) {
                 state = State.BERSERK
                 BuffIndicator.refreshHero()
-                target.SHLD = shield.maxShield() * 5
+                target!!.SHLD = shield.maxShield() * 5
 
-                SpellSprite.show(target, SpellSprite.BERSERK)
+                SpellSprite.show(target!!, SpellSprite.BERSERK)
                 Sample.INSTANCE.play(Assets.SND_CHALLENGE)
                 GameScene.flash(0xFF0000)
             }
@@ -165,11 +166,11 @@ class Berserk : Buff() {
 
     override fun toString(): String {
         when (state) {
-            Berserk.State.NORMAL -> return Messages.get(this, "angered")
-            Berserk.State.BERSERK -> return Messages.get(this, "berserk")
-            Berserk.State.EXHAUSTED -> return Messages.get(this, "exhausted")
-            Berserk.State.RECOVERING -> return Messages.get(this, "recovering")
-            else -> return Messages.get(this, "angered")
+            Berserk.State.NORMAL -> return Messages.get(this.javaClass, "angered")
+            Berserk.State.BERSERK -> return Messages.get(this.javaClass, "berserk")
+            Berserk.State.EXHAUSTED -> return Messages.get(this.javaClass, "exhausted")
+            Berserk.State.RECOVERING -> return Messages.get(this.javaClass, "recovering")
+            else -> return Messages.get(this.javaClass, "angered")
         }
     }
 
@@ -177,17 +178,17 @@ class Berserk : Buff() {
         val dispDamage = damageFactor(100).toFloat()
         var text: String
         when (state) {
-            Berserk.State.NORMAL -> text = Messages.get(this, "angered_desc", dispDamage)
-            Berserk.State.BERSERK -> return Messages.get(this, "berserk_desc")
-            Berserk.State.EXHAUSTED -> text = Messages.get(this, "exhausted_desc", exhaustion, dispDamage)
-            Berserk.State.RECOVERING -> text = Messages.get(this, "recovering_desc", levelRecovery, dispDamage)
-            else -> text = Messages.get(this, "angered_desc", dispDamage)
+            Berserk.State.NORMAL -> text = Messages.get(this.javaClass, "angered_desc", dispDamage)
+            Berserk.State.BERSERK -> return Messages.get(this.javaClass, "berserk_desc")
+            Berserk.State.EXHAUSTED -> text = Messages.get(this.javaClass, "exhausted_desc", exhaustion, dispDamage)
+            Berserk.State.RECOVERING -> text = Messages.get(this.javaClass, "recovering_desc", levelRecovery, dispDamage)
+            else -> text = Messages.get(this.javaClass, "angered_desc", dispDamage)
         }
         if (pastRages == 0) {
-            text += "\n\n" + Messages.get(this, "no_rages")
+            text += "\n\n" + Messages.get(this.javaClass, "no_rages")
         } else {
-            val dispPercent = (targetHPMax() / target.HT.toFloat() * 100).toInt()
-            text += "\n\n" + Messages.get(this, "past_rages", pastRages, dispPercent)
+            val dispPercent = (targetHPMax() / target!!.HT.toFloat() * 100).toInt()
+            text += "\n\n" + Messages.get(this.javaClass, "past_rages", pastRages, dispPercent)
         }
         return text
     }

@@ -69,7 +69,7 @@ class Pushing(ch: Char, private val from: Int, private val to: Int) : Actor() {
 
     }
 
-    inner class Effect : Visual(0, 0, 0, 0) {
+    inner class Effect : Visual(0f, 0f, 0f, 0f) {
 
         private val end: PointF
 
@@ -92,7 +92,8 @@ class Pushing(ch: Char, private val from: Int, private val to: Int) : Actor() {
         override fun update() {
             super.update()
 
-            if ((delay += Game.elapsed) < DELAY) {
+            delay += Game.elapsed
+            if (delay < DELAY) {
 
                 sprite!!.x = x
                 sprite.y = y
@@ -109,10 +110,10 @@ class Pushing(ch: Char, private val from: Int, private val to: Int) : Actor() {
             }
         }
 
-        companion object {
+    }
+    companion object {
 
-            private val DELAY = 0.15f
-        }
+        private val DELAY = 0.15f
     }
 
 }

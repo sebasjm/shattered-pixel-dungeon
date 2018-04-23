@@ -149,6 +149,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
@@ -173,37 +174,37 @@ object Generator {
     private val SPAWNED_ARTIFACTS = "spawned_artifacts"
 
     enum class Category private constructor(var prob: Float, var superClass: Class<out Item>) {
-        WEAPON(6, MeleeWeapon::class.java),
-        WEP_T1(0, MeleeWeapon::class.java),
-        WEP_T2(0, MeleeWeapon::class.java),
-        WEP_T3(0, MeleeWeapon::class.java),
-        WEP_T4(0, MeleeWeapon::class.java),
-        WEP_T5(0, MeleeWeapon::class.java),
+        WEAPON(6f, MeleeWeapon::class.java),
+        WEP_T1(0f, MeleeWeapon::class.java),
+        WEP_T2(0f, MeleeWeapon::class.java),
+        WEP_T3(0f, MeleeWeapon::class.java),
+        WEP_T4(0f, MeleeWeapon::class.java),
+        WEP_T5(0f, MeleeWeapon::class.java),
 
-        ARMOR(4, Armor::class.java),
+        ARMOR(4f, Armor::class.java),
 
-        MISSILE(3, MissileWeapon::class.java),
-        MIS_T1(0, MissileWeapon::class.java),
-        MIS_T2(0, MissileWeapon::class.java),
-        MIS_T3(0, MissileWeapon::class.java),
-        MIS_T4(0, MissileWeapon::class.java),
-        MIS_T5(0, MissileWeapon::class.java),
+        MISSILE(3f, MissileWeapon::class.java),
+        MIS_T1(0f, MissileWeapon::class.java),
+        MIS_T2(0f, MissileWeapon::class.java),
+        MIS_T3(0f, MissileWeapon::class.java),
+        MIS_T4(0f, MissileWeapon::class.java),
+        MIS_T5(0f, MissileWeapon::class.java),
 
-        POTION(20, Potion::class.java),
-        SCROLL(20, Scroll::class.java),
+        POTION(20f, Potion::class.java),
+        SCROLL(20f, Scroll::class.java),
 
-        WAND(3, Wand::class.java),
-        RING(1, Ring::class.java),
-        ARTIFACT(1, Artifact::class.java),
+        WAND(3f, Wand::class.java),
+        RING(1f, Ring::class.java),
+        ARTIFACT(1f, Artifact::class.java),
 
-        SEED(0, Plant.Seed::class.java),
+        SEED(0f, Plant.Seed::class.java),
 
-        FOOD(0, Food::class.java),
+        FOOD(0f, Food::class.java),
 
-        GOLD(20, Gold::class.java);
+        GOLD(20f, Gold::class.java);
 
-        var classes: Array<Class<*>>
-        var probs: FloatArray
+        var classes: Array<Class<*>>? = null
+        var probs: FloatArray? = null
 
         companion object {
 
@@ -217,7 +218,7 @@ object Generator {
                 return if (item is Bag) Integer.MAX_VALUE else Integer.MAX_VALUE - 1
             }
 
-            private val INITIAL_ARTIFACT_PROBS = floatArrayOf(0f, 1f, 0f, 1f, 0f, 1f, 1f, 1f, 1f, 0f, 1f, 0f, 1f)
+            val INITIAL_ARTIFACT_PROBS = floatArrayOf(0f, 1f, 0f, 1f, 0f, 1f, 1f, 1f, 1f, 0f, 1f, 0f, 1f)
 
             init {
                 GOLD.classes = arrayOf(Gold::class.java)
@@ -307,7 +308,7 @@ object Generator {
             reset()
             cat = Random.chances(categoryProbs)
         }
-        categoryProbs[cat] = categoryProbs[cat] - 1
+        categoryProbs[cat!!] = categoryProbs[cat]!! - 1
         return random(cat)
     }
 
@@ -323,12 +324,12 @@ object Generator {
                     //if we're out of artifacts, return a ring instead.
                     return item ?: random(Category.RING)
                 }
-                else -> return (cat.classes[Random.chances(cat.probs)].newInstance() as Item).random()
+                else -> return (cat.classes!![Random.chances(cat.probs!!)].newInstance() as Item).random()
             }
 
         } catch (e: Exception) {
 
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
 
         }
@@ -342,7 +343,7 @@ object Generator {
 
         } catch (e: Exception) {
 
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
 
         }
@@ -356,11 +357,11 @@ object Generator {
         floorSet = GameMath.gate(0f, floorSet.toFloat(), (floorSetTierProbs.size - 1).toFloat()).toInt()
 
         try {
-            val a = Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])].newInstance() as Armor
+            val a = Category.ARMOR.classes!![Random.chances(floorSetTierProbs[floorSet])].newInstance() as Armor
             a.random()
             return a
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
         }
 
@@ -374,11 +375,11 @@ object Generator {
 
         try {
             val c = wepTiers[Random.chances(floorSetTierProbs[floorSet])]
-            val w = c.classes[Random.chances(c.probs)].newInstance() as MeleeWeapon
+            val w = c.classes!![Random.chances(c.probs!!)].newInstance() as MeleeWeapon
             w.random()
             return w
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
         }
 
@@ -392,11 +393,11 @@ object Generator {
 
         try {
             val c = misTiers[Random.chances(floorSetTierProbs[floorSet])]
-            val w = c.classes[Random.chances(c.probs)].newInstance() as MissileWeapon
+            val w = c.classes!![Random.chances(c.probs!!)].newInstance() as MissileWeapon
             w.random()
             return w
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
         }
 
@@ -407,14 +408,14 @@ object Generator {
 
         try {
             val cat = Category.ARTIFACT
-            val i = Random.chances(cat.probs)
+            val i = Random.chances(cat.probs!!)
 
             //if no artifacts are left, return null
             if (i == -1) {
                 return null
             }
 
-            val art = cat.classes[i] as Class<out Artifact>
+            val art = cat.classes!![i] as Class<out Artifact>
 
             if (removeArtifact(art)) {
                 val artifact = art.newInstance()
@@ -427,7 +428,7 @@ object Generator {
             }
 
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
         }
 
@@ -438,10 +439,10 @@ object Generator {
             return false
 
         val cat = Category.ARTIFACT
-        for (i in cat.classes.indices)
-            if (cat.classes[i] == artifact) {
-                if (cat.probs[i] == 1f) {
-                    cat.probs[i] = 0f
+        for (i in cat.classes!!.indices)
+            if (cat.classes!![i] == artifact) {
+                if (cat.probs!![i] == 1f) {
+                    cat.probs!![i] = 0f
                     spawnedArtifacts.add(artifact)
                     return true
                 } else
@@ -481,7 +482,7 @@ object Generator {
         initArtifacts()
         if (bundle.contains(SPAWNED_ARTIFACTS)) {
             for (artifact in bundle.getClassArray(SPAWNED_ARTIFACTS)!!) {
-                removeArtifact(artifact)
+                removeArtifact(artifact as Class<out Artifact>)
             }
             //pre-0.6.1 saves
         } else if (bundle.contains("artifacts")) {
@@ -489,9 +490,9 @@ object Generator {
             val cat = Category.ARTIFACT
 
             for (artifact in names!!)
-                for (i in cat.classes.indices)
-                    if (cat.classes[i].simpleName == artifact)
-                        cat.probs[i] = 0f
+                for (i in cat.classes!!.indices)
+                    if (cat.classes!![i].simpleName == artifact)
+                        cat.probs!![i] = 0f
         }
     }
 }

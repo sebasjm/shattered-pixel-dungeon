@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle
 import com.watabou.glwrap.Blending
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class GhostSprite : MobSprite() {
@@ -32,7 +33,7 @@ class GhostSprite : MobSprite() {
 
         texture(Assets.GHOST)
 
-        val frames = TextureFilm(texture, 14, 15)
+        val frames = TextureFilm(texture!!, 14, 15)
 
         idle = MovieClip.Animation(5, true)
         idle!!.frames(frames, 0, 1)
@@ -46,7 +47,7 @@ class GhostSprite : MobSprite() {
         die = MovieClip.Animation(8, false)
         die!!.frames(frames, 0, 4, 5, 6, 7)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun draw() {

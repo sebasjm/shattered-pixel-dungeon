@@ -46,19 +46,19 @@ class DeadEndLevel : Level() {
 
         for (i in 2 until SIZE) {
             for (j in 2 until SIZE) {
-                map[i * width() + j] = Terrain.EMPTY
+                map!![i * width() + j] = Terrain.EMPTY
             }
         }
 
         for (i in 1..SIZE) {
-            map[width() * i + SIZE] = Terrain.WATER
-            map[width() * i + 1] = map[width() * i + SIZE]
-            map[width() * SIZE + i] = map[width() * i + 1]
-            map[width() + i] = map[width() * SIZE + i]
+            map!![width() * i + SIZE] = Terrain.WATER
+            map!![width() * i + 1] = map!![width() * i + SIZE]
+            map!![width() * SIZE + i] = map!![width() * i + 1]
+            map!![width() + i] = map!![width() * SIZE + i]
         }
 
         entrance = SIZE * width() + SIZE / 2 + 1
-        map[entrance] = Terrain.ENTRANCE
+        map!![entrance] = Terrain.ENTRANCE
 
         exit = 0
 
@@ -71,7 +71,7 @@ class DeadEndLevel : Level() {
 
     override fun createMobs() {}
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 

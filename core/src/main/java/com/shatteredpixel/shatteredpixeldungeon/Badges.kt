@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bandit
@@ -37,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.FileUtils
@@ -156,7 +159,7 @@ object Badges {
         CHAMPION(39, true);
 
         fun desc(): String {
-            return Messages.get(this, name)
+            return Messages.get(this.javaClass, name)
         }
     }
 
@@ -174,7 +177,7 @@ object Badges {
             try {
                 badges.add(Badge.valueOf(names[i]))
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
             }
 
         }
@@ -183,12 +186,8 @@ object Badges {
     }
 
     private fun store(bundle: Bundle, badges: HashSet<Badge>) {
-        var count = 0
-        val names = arrayOfNulls<String>(badges.size)
+        val names = badges.map { it.toString() }.toTypedArray()
 
-        for (badge in badges) {
-            names[count++] = badge.toString()
-        }
         bundle.put(BADGES, names)
     }
 
@@ -223,7 +222,7 @@ object Badges {
                 FileUtils.bundleToFile(BADGES_FILE, bundle)
                 saveNeeded = false
             } catch (e: IOException) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
             }
 
         }
@@ -642,7 +641,7 @@ object Badges {
             badge = Badge.RARE_ACIDIC
         }
         if (!global!!.contains(badge)) {
-            global!!.add(badge)
+            global!!.add(badge!!)
             saveNeeded = true
         }
 

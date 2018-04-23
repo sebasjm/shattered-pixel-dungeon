@@ -38,9 +38,9 @@ class BurningTrap : Trap() {
 
     override fun activate() {
 
-        for (i in PathFinder.NEIGHBOURS9) {
+        for (i in PathFinder.NEIGHBOURS9!!) {
             if (!Dungeon.level!!.solid[pos + i]) {
-                GameScene.add(Blob.seed<Fire>(pos + i, 2, Fire::class.java))
+                GameScene.add(Blob.seed<Fire>(pos + i, 2, Fire::class.java)!!)
                 CellEmitter.get(pos + i).burst(FlameParticle.FACTORY, 5)
             }
         }

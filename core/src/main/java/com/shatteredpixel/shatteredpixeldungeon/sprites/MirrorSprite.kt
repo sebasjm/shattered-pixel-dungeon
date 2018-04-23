@@ -24,12 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class MirrorSprite : MobSprite() {
     init {
 
-        texture(Dungeon.hero!!.heroClass.spritesheet())
+        texture(Dungeon.hero!!.heroClass.spritesheet()!!)
         updateArmor(0)
         idle()
     }

@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
@@ -85,7 +86,7 @@ abstract class Mob : Char() {
     protected var lootChance = 0f
 
     init {
-        name = Messages.get(this, "name")
+        name = Messages.get(this.javaClass, "name")
         actPriority = MOB_PRIO
 
         alignment = Char.Alignment.ENEMY
@@ -96,15 +97,15 @@ abstract class Mob : Char() {
         super.storeInBundle(bundle)
 
         if (state === SLEEPING) {
-            bundle.put(STATE, Sleeping.TAG)
+            bundle.put(STATE, SLEEPING_TAG)
         } else if (state === WANDERING) {
-            bundle.put(STATE, Wandering.TAG)
+            bundle.put(STATE, WANDERING_TAG)
         } else if (state === HUNTING) {
-            bundle.put(STATE, Hunting.TAG)
+            bundle.put(STATE, HUNTING_TAG)
         } else if (state === FLEEING) {
-            bundle.put(STATE, Fleeing.TAG)
+            bundle.put(STATE, FLEEING_TAG)
         } else if (state === PASSIVE) {
-            bundle.put(STATE, Passive.TAG)
+            bundle.put(STATE, PASSIVE_TAG)
         }
         bundle.put(SEEN, enemySeen)
         bundle.put(TARGET, target)
@@ -115,15 +116,15 @@ abstract class Mob : Char() {
         super.restoreFromBundle(bundle)
 
         val state = bundle.getString(STATE)
-        if (state == Sleeping.TAG) {
+        if (state == SLEEPING_TAG) {
             this.state = SLEEPING
-        } else if (state == Wandering.TAG) {
+        } else if (state == WANDERING_TAG) {
             this.state = WANDERING
-        } else if (state == Hunting.TAG) {
+        } else if (state == HUNTING_TAG) {
             this.state = HUNTING
-        } else if (state == Fleeing.TAG) {
+        } else if (state == FLEEING_TAG) {
             this.state = FLEEING
-        } else if (state == Passive.TAG) {
+        } else if (state == PASSIVE_TAG) {
             this.state = PASSIVE
         }
 
@@ -137,7 +138,7 @@ abstract class Mob : Char() {
         try {
             sprite = spriteClass!!.newInstance()
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
         return sprite
@@ -187,7 +188,7 @@ abstract class Mob : Char() {
             newEnemy = true
         else if (alignment == Char.Alignment.ALLY && enemy!!.alignment == Char.Alignment.ALLY)
             newEnemy = true
-        else if (buff<Amok>(Amok::class.java) != null && enemy === Dungeon.hero)
+        else if (buff<Amok>(Amok::class.java) != null && enemy === Dungeon.hero!!)
             newEnemy = true//We are amoked and current enemy is the hero
         //We are an ally, and current enemy is another ally.
 
@@ -211,7 +212,7 @@ abstract class Mob : Char() {
                     if (enemies.isEmpty()) {
                         //try to find the hero third
                         if (fieldOfView!![Dungeon.hero!!.pos]) {
-                            enemies.add(Dungeon.hero)
+                            enemies.add(Dungeon.hero!!)
                         }
                     }
                 }
@@ -234,7 +235,7 @@ abstract class Mob : Char() {
 
                 //and look for the hero
                 if (fieldOfView!![Dungeon.hero!!.pos]) {
-                    enemies.add(Dungeon.hero)
+                    enemies.add(Dungeon.hero!!)
                 }
 
             }
@@ -248,7 +249,7 @@ abstract class Mob : Char() {
                 for (curr in enemies) {
                     if (closest == null
                             || Dungeon.level!!.distance(pos, curr.pos) < Dungeon.level!!.distance(pos, closest.pos)
-                            || Dungeon.level!!.distance(pos, curr.pos) == Dungeon.level!!.distance(pos, closest.pos) && curr === Dungeon.hero) {
+                            || Dungeon.level!!.distance(pos, curr.pos) == Dungeon.level!!.distance(pos, closest.pos) && curr === Dungeon.hero!!) {
                         closest = curr
                     }
                 }
@@ -286,7 +287,7 @@ abstract class Mob : Char() {
     override fun remove(buff: Buff) {
         super.remove(buff)
         if (buff is Terror) {
-            sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"))
+            sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this.javaClass, "rage"))
             state = HUNTING
         }
     }
@@ -374,7 +375,7 @@ abstract class Mob : Char() {
             if (newPath) {
                 path = Dungeon.findPath(this, pos, target,
                         Dungeon.level!!.passable,
-                        fieldOfView)
+                        fieldOfView!!)
             }
 
             //if hunting something, don't follow a path that is extremely inefficient
@@ -398,7 +399,7 @@ abstract class Mob : Char() {
     protected open fun getFurther(target: Int): Boolean {
         val step = Dungeon.flee(this, pos, target,
                 Dungeon.level!!.passable,
-                fieldOfView)
+                fieldOfView!!)
         if (step != -1) {
             move(step)
             return true
@@ -438,21 +439,20 @@ abstract class Mob : Char() {
     }
 
     override fun attackProc(enemy: Char, damage: Int): Int {
-        var damage = damage
-        damage = super.attackProc(enemy, damage)
+        var damage = super.attackProc(enemy, damage).toFloat()
         if (buff<Weakness>(Weakness::class.java) != null) {
             damage *= 0.67f
         }
-        return damage
+        return damage.toInt()
     }
 
-    override fun defenseSkill(enemy: Char): Int {
-        val seen = enemySeen || enemy === Dungeon.hero && !Dungeon.hero!!.canSurpriseAttack()
+    override fun defenseSkill(enemy: Char?): Int {
+        val seen = enemySeen || enemy === Dungeon.hero!! && !Dungeon.hero!!.canSurpriseAttack()
         if (seen
                 && paralysed == 0
-                && !(alignment == Char.Alignment.ALLY && enemy === Dungeon.hero)) {
+                && !(alignment == Char.Alignment.ALLY && enemy === Dungeon.hero!!)) {
             var defenseSkill = this.defenseSkill
-            defenseSkill *= RingOfAccuracy.enemyEvasionMultiplier(enemy).toInt()
+            defenseSkill *= RingOfAccuracy.enemyEvasionMultiplier(enemy!!).toInt()
             return defenseSkill
         } else {
             return 0
@@ -460,7 +460,7 @@ abstract class Mob : Char() {
     }
 
     override fun defenseProc(enemy: Char, damage: Int): Int {
-        if (!enemySeen && enemy === Dungeon.hero && Dungeon.hero!!.canSurpriseAttack()) {
+        if (!enemySeen && enemy === Dungeon.hero!! && Dungeon.hero!!.canSurpriseAttack()) {
             if (enemy.buff<Preparation>(Preparation::class.java) != null) {
                 Wound.hit(this)
             } else {
@@ -485,10 +485,10 @@ abstract class Mob : Char() {
     }
 
     fun surprisedBy(enemy: Char): Boolean {
-        return !enemySeen && enemy === Dungeon.hero
+        return !enemySeen && enemy === Dungeon.hero!!
     }
 
-    open fun aggro(ch: Char) {
+    open fun aggro(ch: Char?) {
         enemy = ch
         if (state !== PASSIVE) {
             state = HUNTING
@@ -525,14 +525,14 @@ abstract class Mob : Char() {
 
                 val exp = if (Dungeon.hero!!.lvl <= maxLvl) EXP else 0
                 if (exp > 0) {
-                    Dungeon.hero!!.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp))
+                    Dungeon.hero!!.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this.javaClass, "exp", exp))
                     Dungeon.hero!!.earnExp(exp)
                 }
             }
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         if (cause === Chasm::class.java) {
             //50% chance to round up, 50% to round down
@@ -547,7 +547,7 @@ abstract class Mob : Char() {
         }
 
         if (Dungeon.hero!!.isAlive && !Dungeon.level!!.heroFOV[pos]) {
-            GLog.i(Messages.get(this, "died"))
+            GLog.i(Messages.get(this.javaClass, "died"))
         }
     }
 
@@ -555,7 +555,7 @@ abstract class Mob : Char() {
         if (Dungeon.hero!!.lvl > maxLvl + 2) return
 
         var lootChance = this.lootChance
-        lootChance *= RingOfWealth.dropChanceMultiplier(Dungeon.hero)
+        lootChance *= RingOfWealth.dropChanceMultiplier(Dungeon.hero!!)
 
         if (Random.Float() < lootChance) {
             val loot = createLoot()
@@ -570,10 +570,10 @@ abstract class Mob : Char() {
             if (properties.contains(Char.Property.BOSS))
                 rolls = 15
             else if (properties.contains(Char.Property.MINIBOSS)) rolls = 5
-            val bonus = RingOfWealth.tryRareDrop(Dungeon.hero, rolls)
+            val bonus = RingOfWealth.tryRareDrop(Dungeon.hero!!, rolls)
             if (bonus != null) {
                 for (b in bonus) Dungeon.level!!.drop(b, pos).sprite!!.drop()
-                Flare(8, 32f).color(0xFFFF00, true).show(sprite, 2f)
+                Flare(8, 32f).color(0xFFFF00, true).show(sprite!!, 2f)
             }
         }
     }
@@ -582,11 +582,11 @@ abstract class Mob : Char() {
         val item: Item?
         if (loot is Generator.Category) {
 
-            item = Generator.random(loot as Generator.Category?)
+            item = Generator.random(loot as Generator.Category)
 
         } else if (loot is Class<*>) {
 
-            item = Generator.random(loot as Class<out Item>?)
+            item = Generator.random(loot as Class<out Item>)
 
         } else {
 
@@ -611,7 +611,7 @@ abstract class Mob : Char() {
     }
 
     open fun description(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     open fun notice() {
@@ -634,7 +634,7 @@ abstract class Mob : Char() {
     protected inner class Sleeping : AiState {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            if (enemyInFOV && Random.Int(distance(enemy) + enemy!!.stealth() + if (enemy!!.flying) 2 else 0) == 0) {
+            if (enemyInFOV && Random.Int(distance(enemy!!) + enemy!!.stealth() + if (enemy!!.flying) 2 else 0) == 0) {
 
                 enemySeen = true
 
@@ -662,16 +662,12 @@ abstract class Mob : Char() {
             return true
         }
 
-        companion object {
-
-            val TAG = "SLEEPING"
-        }
     }
 
     protected open inner class Wandering : AiState {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            if (enemyInFOV && (justAlerted || Random.Int(distance(enemy) / 2 + enemy!!.stealth()) == 0)) {
+            if (enemyInFOV && (justAlerted || Random.Int(distance(enemy!!) / 2 + enemy!!.stealth()) == 0)) {
 
                 enemySeen = true
 
@@ -705,17 +701,13 @@ abstract class Mob : Char() {
             return true
         }
 
-        companion object {
-
-            val TAG = "WANDERING"
-        }
     }
 
     protected open inner class Hunting : AiState {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             enemySeen = enemyInFOV
-            if (enemyInFOV && !isCharmedBy(enemy) && canAttack(enemy)) {
+            if (enemyInFOV && !isCharmedBy(enemy!!) && canAttack(enemy)) {
 
                 return doAttack(enemy)
 
@@ -747,10 +739,6 @@ abstract class Mob : Char() {
             }
         }
 
-        companion object {
-
-            val TAG = "HUNTING"
-        }
     }
 
     protected open inner class Fleeing : AiState {
@@ -783,10 +771,6 @@ abstract class Mob : Char() {
 
         protected open fun nowhereToRun() {}
 
-        companion object {
-
-            val TAG = "FLEEING"
-        }
     }
 
     protected inner class Passive : AiState {
@@ -797,10 +781,6 @@ abstract class Mob : Char() {
             return true
         }
 
-        companion object {
-
-            val TAG = "PASSIVE"
-        }
     }
 
     companion object {
@@ -813,9 +793,15 @@ abstract class Mob : Char() {
 
         protected val TIME_TO_WAKE_UP = 1f
 
-        private val STATE = "state"
-        private val SEEN = "seen"
-        private val TARGET = "target"
+        val STATE = "state"
+        val SEEN = "seen"
+        val TARGET = "target"
+
+        val PASSIVE_TAG = "PASSIVE"
+        val FLEEING_TAG = "FLEEING"
+        val HUNTING_TAG = "HUNTING"
+        val WANDERING_TAG = "WANDERING"
+        val SLEEPING_TAG = "SLEEPING"
     }
 }
 

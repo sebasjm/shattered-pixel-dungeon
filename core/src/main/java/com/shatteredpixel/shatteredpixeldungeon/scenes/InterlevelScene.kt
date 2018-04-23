@@ -75,7 +75,7 @@ class InterlevelScene : PixelScene() {
                 scrollSpeed = 5f
             }
             InterlevelScene.Mode.DESCEND -> {
-                if (Dungeon.hero == null)
+                if (Dungeon.hero!! == null)
                     loadingDepth = 1
                 else
                     loadingDepth = Dungeon.depth + 1
@@ -109,7 +109,7 @@ class InterlevelScene : PixelScene() {
         else
             loadingAsset = Assets.LOADING_HALLS
 
-        val bg = object : SkinnedBlock(Camera.main.width.toFloat(), Camera.main.height.toFloat(), loadingAsset) {
+        val bg = object : SkinnedBlock(Camera.main!!.width.toFloat(), Camera.main!!.height.toFloat(), loadingAsset) {
             override fun script(): NoosaScript {
                 return NoosaScriptNoLighting.get()
             }
@@ -140,16 +140,16 @@ class InterlevelScene : PixelScene() {
             }
         }
         im.angle = 90f
-        im.x = Camera.main.width.toFloat()
-        im.scale.x = Camera.main.height / 5f
-        im.scale.y = Camera.main.width.toFloat()
+        im.x = Camera.main!!.width.toFloat()
+        im.scale.x = Camera.main!!.height / 5f
+        im.scale.y = Camera.main!!.width.toFloat()
         add(im)
 
         val text = Messages.get(Mode::class.java, mode!!.name)
 
         message = PixelScene.renderText(text, 9)
-        message!!.x = (Camera.main.width - message!!.width()) / 2
-        message!!.y = (Camera.main.height - message!!.height()) / 2
+        message!!.x = (Camera.main!!.width - message!!.width()) / 2
+        message!!.y = (Camera.main!!.height - message!!.height()) / 2
         PixelScene.align(message!!)
         add(message)
 
@@ -204,7 +204,8 @@ class InterlevelScene : PixelScene() {
 
             InterlevelScene.Phase.FADE_IN -> {
                 message!!.alpha(1 - p)
-                if ((timeLeft -= Game.elapsed) <= 0) {
+                timeLeft -= Game.elapsed
+                if (timeLeft <= 0) {
                     if (!thread!!.isAlive && error == null) {
                         phase = Phase.FADE_OUT
                         timeLeft = TIME_TO_FADE
@@ -217,7 +218,8 @@ class InterlevelScene : PixelScene() {
             InterlevelScene.Phase.FADE_OUT -> {
                 message!!.alpha(p)
 
-                if ((timeLeft -= Game.elapsed) <= 0) {
+                timeLeft -= Game.elapsed
+                if (timeLeft <= 0) {
                     Game.switchScene(GameScene::class.java)
                     thread = null
                     error = null
@@ -227,11 +229,11 @@ class InterlevelScene : PixelScene() {
             InterlevelScene.Phase.STATIC -> if (error != null) {
                 val errorMsg: String
                 if (error is FileNotFoundException)
-                    errorMsg = Messages.get(this, "file_not_found")
+                    errorMsg = Messages.get(this.javaClass, "file_not_found")
                 else if (error is IOException)
-                    errorMsg = Messages.get(this, "io_error")
+                    errorMsg = Messages.get(this.javaClass, "io_error")
                 else if (error!!.message != null && error!!.message == "old save")
-                    errorMsg = Messages.get(this, "io_error")
+                    errorMsg = Messages.get(this.javaClass, "io_error")
                 else
                     throw RuntimeException("fatal error occured while moving between floors", error)
 
@@ -250,7 +252,7 @@ class InterlevelScene : PixelScene() {
                     s += "\n"
                     s += t.toString()
                 }
-                ShatteredPixelDungeon.reportException(
+                Game.reportException(
                         RuntimeException("waited more than 10 seconds on levelgen. " +
                                 "Seed:" + Dungeon.seed + " depth:" + Dungeon.depth + " trace:" +
                                 s)
@@ -264,7 +266,7 @@ class InterlevelScene : PixelScene() {
 
         Actor.fixTime()
 
-        if (Dungeon.hero == null) {
+        if (Dungeon.hero!! == null) {
             DriedRose.clearHeldGhostHero()
             Dungeon.init()
             if (noStory) {

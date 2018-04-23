@@ -38,13 +38,13 @@ class Lightning(private val arcs: List<Arc>, private val callback: Callback?) : 
 
     private var life: Float = 0.toFloat()
 
-    constructor(from: Int, to: Int, callback: Callback) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
+    constructor(from: Int, to: Int, callback: Callback?) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
 
-    constructor(from: PointF, to: Int, callback: Callback) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
+    constructor(from: PointF, to: Int, callback: Callback?) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
 
-    constructor(from: Int, to: PointF, callback: Callback) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
+    constructor(from: Int, to: PointF, callback: Callback?) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
 
-    constructor(from: PointF, to: PointF, callback: Callback) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
+    constructor(from: PointF, to: PointF, callback: Callback?) : this(Arrays.asList<Arc>(Arc(from, to)), callback) {}
 
     init {
         for (arc in this.arcs)
@@ -56,7 +56,8 @@ class Lightning(private val arcs: List<Arc>, private val callback: Callback?) : 
     }
 
     override fun update() {
-        if ((life -= Game.elapsed) < 0) {
+        life -= Game.elapsed
+        if (life < 0) {
 
             killAndErase()
             callback?.call()

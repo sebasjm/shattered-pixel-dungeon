@@ -41,8 +41,8 @@ class HallsPainter : RegularPainter() {
             if (map!![i] == Terrain.EMPTY) {
 
                 var count = 0
-                for (j in PathFinder.NEIGHBOURS8.indices) {
-                    if (Terrain.flags[map[i + PathFinder.NEIGHBOURS8[j]]] and Terrain.PASSABLE > 0) {
+                for (j in PathFinder.NEIGHBOURS8!!.indices) {
+                    if (Terrain.flags[map[i + PathFinder.NEIGHBOURS8!![j]]] and Terrain.PASSABLE > 0) {
                         count++
                     }
                 }

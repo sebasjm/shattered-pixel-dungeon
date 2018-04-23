@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost
@@ -51,7 +52,7 @@ class NewbornElemental : Elemental() {
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Dungeon.level!!.drop(Embers(), pos).sprite!!.drop()
     }

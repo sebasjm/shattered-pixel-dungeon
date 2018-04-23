@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
@@ -64,20 +65,20 @@ class Corrosion : Buff(), Hero.Doom {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(left), damage.toInt())
+        return Messages.get(this.javaClass, "desc", dispTurns(left), damage.toInt())
     }
 
     override fun act(): Boolean {
-        if (target.isAlive) {
-            target.damage(damage.toInt(), this)
+        if (target!!.isAlive) {
+            target!!.damage(damage.toInt(), this)
             if (damage < Dungeon.depth / 2 + 2) {
                 damage++
             } else {
@@ -85,7 +86,8 @@ class Corrosion : Buff(), Hero.Doom {
             }
 
             spend(Actor.TICK)
-            if ((left -= Actor.TICK) <= 0) {
+            left -= Actor.TICK
+            if (left <= 0) {
                 detach()
             }
         } else {
@@ -97,7 +99,7 @@ class Corrosion : Buff(), Hero.Doom {
 
     override fun onDeath() {
         Dungeon.fail(javaClass)
-        GLog.n(Messages.get(this, "ondeath"))
+        GLog.n(Messages.get(this.javaClass, "ondeath"))
     }
 
     companion object {

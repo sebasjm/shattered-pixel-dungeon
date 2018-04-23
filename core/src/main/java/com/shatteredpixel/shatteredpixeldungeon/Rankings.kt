@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.FileUtils
@@ -119,7 +120,7 @@ enum class Rankings {
             } else if (!Dungeon.quickslot.contains(item))
                 belongings.backpack.items.remove(item)
         }
-        rec.gameData!!.put(HERO, Dungeon.hero)
+        rec.gameData!!.put(HERO, Dungeon.hero!!)
 
         //save stats
         val stats = Bundle()
@@ -136,8 +137,8 @@ enum class Rankings {
         Scroll.saveSelectively(handler, belongings.backpack.items)
         Potion.saveSelectively(handler, belongings.backpack.items)
         //include worn rings
-        if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1)
-        if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2)
+        if (belongings.misc1 != null) belongings.backpack.items.add(belongings!!.misc1!!)
+        if (belongings.misc2 != null) belongings.backpack.items.add(belongings!!.misc2!!)
         Ring.saveSelectively(handler, belongings.backpack.items)
         rec.gameData!!.put(HANDLERS, handler)
 
@@ -175,7 +176,7 @@ enum class Rankings {
 
     fun save() {
         val bundle = Bundle()
-        bundle.put(RECORDS, records)
+        bundle.put(RECORDS, records!!)
         bundle.put(LATEST, lastRecord)
         bundle.put(TOTAL, totalNumber)
         bundle.put(WON, wonNumber)
@@ -183,7 +184,7 @@ enum class Rankings {
         try {
             FileUtils.bundleToFile(RANKINGS_FILE, bundle)
         } catch (e: IOException) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }
@@ -228,7 +229,7 @@ enum class Rankings {
         var cause: Class<*>? = null
         var win: Boolean = false
 
-        var heroClass: HeroClass
+        var heroClass: HeroClass? = null
         var armorTier: Int = 0
         var herolevel: Int = 0
         var depth: Int = 0
@@ -240,11 +241,11 @@ enum class Rankings {
 
         fun desc(): String {
             if (cause == null) {
-                return Messages.get(this, "something")
+                return Messages.get(this.javaClass, "something")
             } else {
                 val result = Messages.get(cause, "rankings_desc", Messages.get(cause, "name"))
                 return if (result.contains("!!!NO TEXT FOUND!!!")) {
-                    Messages.get(this, "something")
+                    Messages.get(this.javaClass, "something")
                 } else {
                     result
                 }
@@ -277,18 +278,18 @@ enum class Rankings {
 
         override fun storeInBundle(bundle: Bundle) {
 
-            if (cause != null) bundle.put(CAUSE, cause)
+            if (cause != null) bundle.put(CAUSE, cause!!)
 
             bundle.put(WIN, win)
             bundle.put(SCORE, score)
 
-            heroClass.storeInBundle(bundle)
+            heroClass!!.storeInBundle(bundle)
             bundle.put(TIER, armorTier)
             bundle.put(LEVEL, herolevel)
             bundle.put(DEPTH, depth)
 
-            if (gameData != null) bundle.put(DATA, gameData)
-            bundle.put(ID, gameID)
+            if (gameData != null) bundle.put(DATA, gameData!!)
+            bundle.put(ID, gameID!!)
         }
 
         companion object {

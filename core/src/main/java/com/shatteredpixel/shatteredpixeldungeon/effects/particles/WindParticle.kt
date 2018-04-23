@@ -35,7 +35,8 @@ class WindParticle : PixelParticle() {
     init {
 
         lifespan = Random.Float(1f, 2f)
-        scale.set(size = Random.Float(3f))
+        size = Random.Float(3f)
+        scale.set(size)
     }
 
     fun reset(x: Float, y: Float) {
@@ -79,11 +80,13 @@ class WindParticle : PixelParticle() {
 
         override fun update() {
 
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
 
                 super.update()
 
-                if ((delay -= Game.elapsed) <= 0) {
+                delay -= Game.elapsed
+                if (delay <= 0) {
 
                     delay = Random.Float(5f)
 

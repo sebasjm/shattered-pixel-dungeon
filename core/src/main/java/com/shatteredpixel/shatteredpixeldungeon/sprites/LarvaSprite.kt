@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class LarvaSprite : MobSprite() {
@@ -30,7 +31,7 @@ class LarvaSprite : MobSprite() {
 
         texture(Assets.LARVA)
 
-        val frames = TextureFilm(texture, 12, 8)
+        val frames = TextureFilm(texture!!, 12, 8)
 
         idle = MovieClip.Animation(5, true)
         idle!!.frames(frames, 4, 4, 4, 4, 4, 5, 5)
@@ -44,7 +45,7 @@ class LarvaSprite : MobSprite() {
         die = MovieClip.Animation(10, false)
         die!!.frames(frames, 8)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun blood(): Int {

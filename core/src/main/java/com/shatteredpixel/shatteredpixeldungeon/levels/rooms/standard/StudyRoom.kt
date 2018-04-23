@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -48,7 +49,7 @@ class StudyRoom : StandardRoom() {
         Painter.fill(level, this, 1, Terrain.BOOKSHELF)
         Painter.fill(level, this, 2, Terrain.EMPTY_SP)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             Painter.drawInside(level, this, door, 2, Terrain.EMPTY_SP)
             door.set(Room.Door.Type.REGULAR)
         }
@@ -79,7 +80,7 @@ class StudyRoom : StandardRoom() {
         if (prize != null) {
             level.drop(prize, center.x + center.y * level.width())
         } else {
-            level.drop(Generator.random(Random.oneOf<Category>(
+            level.drop(Generator.random(Random.oneOf<Generator.Category>(
                     Generator.Category.POTION,
                     Generator.Category.SCROLL)), center.x + center.y * level.width())
         }

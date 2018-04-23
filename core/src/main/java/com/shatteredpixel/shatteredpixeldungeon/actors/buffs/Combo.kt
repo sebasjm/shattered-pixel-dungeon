@@ -54,8 +54,8 @@ class Combo : Buff(), ActionIndicator.Action {
     override val icon: Image
         get() {
             val icon: Image
-            if ((target as Hero).belongings.weapon != null) {
-                icon = ItemSprite((target as Hero).belongings.weapon!!.image, null)
+            if ((target!! as Hero).belongings.weapon != null) {
+                icon = ItemSprite((target!! as Hero).belongings.weapon!!.image, null)
             } else {
                 icon = ItemSprite(object : Item() {
                     init {
@@ -87,11 +87,11 @@ class Combo : Buff(), ActionIndicator.Action {
             val enemy = Actor.findChar(cell)
             if (enemy == null
                     || !Dungeon.level!!.heroFOV[cell]
-                    || !(target as Hero).canAttack(enemy)
-                    || target.isCharmedBy(enemy)) {
+                    || !(target!! as Hero).canAttack(enemy)
+                    || target!!.isCharmedBy(enemy)) {
                 GLog.w(Messages.get(Combo::class.java, "bad_target"))
             } else {
-                target.sprite!!.attack(cell) {
+                target!!.sprite!!.attack(cell, {
                     if (count >= 10)
                         type = finisherType.FURY
                     else if (count >= 8)
@@ -103,15 +103,15 @@ class Combo : Buff(), ActionIndicator.Action {
                     else
                         type = finisherType.CLOBBER
                     doAttack(enemy)
-                }
+                } as Callback)
             }
         }
 
         private fun doAttack(enemy: Char?) {
 
-            AttackIndicator.target(enemy)
+            AttackIndicator.target(enemy!!)
 
-            var dmg = target.damageRoll()
+            var dmg = target!!.damageRoll()
 
             //variance in damage dealt
             when (type) {
@@ -119,14 +119,14 @@ class Combo : Buff(), ActionIndicator.Action {
                 Combo.finisherType.CLEAVE -> dmg = Math.round(dmg * 1.5f)
                 Combo.finisherType.SLAM -> {
                     //rolls 2 times, takes the highest roll
-                    var dmgReroll = target.damageRoll()
+                    var dmgReroll = target!!.damageRoll()
                     if (dmgReroll > dmg) dmg = dmgReroll
                     dmg = Math.round(dmg * 1.6f)
                 }
                 Combo.finisherType.CRUSH -> {
                     //rolls 4 times, takes the highest roll
                     for (i in 1..3) {
-                        dmgReroll = target.damageRoll()
+                        var dmgReroll = target!!.damageRoll()
                         if (dmgReroll > dmg) dmg = dmgReroll
                     }
                     dmg = Math.round(dmg * 2.5f)
@@ -135,17 +135,17 @@ class Combo : Buff(), ActionIndicator.Action {
             }
 
             dmg -= enemy!!.drRoll()
-            dmg = target.attackProc(enemy, dmg)
-            dmg = enemy.defenseProc(target, dmg)
+            dmg = target!!.attackProc(enemy, dmg)
+            dmg = enemy.defenseProc(target!!, dmg)
             enemy.damage(dmg, this)
 
             //special effects
             when (type) {
                 Combo.finisherType.CLOBBER -> if (enemy.isAlive) {
                     if (!enemy.properties().contains(com.shatteredpixel.shatteredpixeldungeon.actors.Char.Property.IMMOVABLE)) {
-                        for (i in PathFinder.NEIGHBOURS8.indices) {
-                            val ofs = PathFinder.NEIGHBOURS8[i]
-                            if (enemy.pos - target.pos == ofs) {
+                        for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                            val ofs = PathFinder.NEIGHBOURS8!![i]
+                            if (enemy.pos - target!!.pos == ofs) {
                                 val newPos = enemy.pos + ofs
                                 if ((Dungeon.level!!.passable[newPos] || Dungeon.level!!.avoid[newPos]) && Actor.findChar(newPos) == null) {
 
@@ -161,25 +161,25 @@ class Combo : Buff(), ActionIndicator.Action {
                     }
                     Buff.prolong<Vertigo>(enemy, Vertigo::class.java, Random.NormalIntRange(1, 4).toFloat())
                 }
-                Combo.finisherType.SLAM -> target.SHLD = Math.max(target.SHLD, dmg / 2)
+                Combo.finisherType.SLAM -> target!!.SHLD = Math.max(target!!.SHLD, dmg / 2)
                 else -> {
                 }
             }//nothing
 
-            if (target.buff<FireImbue>(FireImbue::class.java) != null)
-                target.buff<FireImbue>(FireImbue::class.java)!!.proc(enemy)
-            if (target.buff<EarthImbue>(EarthImbue::class.java) != null)
-                target.buff<EarthImbue>(EarthImbue::class.java)!!.proc(enemy)
+            if (target!!.buff<FireImbue>(FireImbue::class.java) != null)
+                target!!.buff<FireImbue>(FireImbue::class.java)!!.proc(enemy)
+            if (target!!.buff<EarthImbue>(EarthImbue::class.java) != null)
+                target!!.buff<EarthImbue>(EarthImbue::class.java)!!.proc(enemy)
 
             Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(0.8f, 1.25f))
-            enemy.sprite!!.bloodBurstA(target.sprite!!.center(), dmg)
+            enemy.sprite!!.bloodBurstA(target!!.sprite!!.center(), dmg)
             enemy.sprite!!.flash()
 
             if (!enemy.isAlive) {
                 GLog.i(Messages.capitalize(Messages.get(Char::class.java, "defeat", enemy.name)))
             }
 
-            val hero = target as Hero
+            val hero = target!! as Hero
 
             //Post-attack behaviour
             when (type) {
@@ -199,7 +199,7 @@ class Combo : Buff(), ActionIndicator.Action {
                     count--
                     //fury attacks as many times as you have combo count
                     if (count > 0 && enemy.isAlive) {
-                        target.sprite!!.attack(enemy.pos) { doAttack(enemy) }
+                        target!!.sprite!!.attack(enemy.pos, { doAttack(enemy) } as Callback)
                     } else {
                         detach()
                         ActionIndicator.clearAction(this@Combo)
@@ -243,7 +243,7 @@ class Combo : Buff(), ActionIndicator.Action {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     fun hit() {
@@ -255,10 +255,10 @@ class Combo : Buff(), ActionIndicator.Action {
 
         if (count >= 2) {
 
-            ActionIndicator.setAction(this)
+            ActionIndicator.action = this
             Badges.validateMasteryCombo(count)
 
-            GLog.p(Messages.get(this, "combo", count))
+            GLog.p(Messages.get(this.javaClass, "combo", count))
 
         }
 
@@ -288,17 +288,17 @@ class Combo : Buff(), ActionIndicator.Action {
     }
 
     override fun desc(): String {
-        var desc = Messages.get(this, "desc")
+        var desc = Messages.get(this.javaClass, "desc")
 
         if (count >= 10)
-            desc += "\n\n" + Messages.get(this, "fury_desc")
+            desc += "\n\n" + Messages.get(this.javaClass, "fury_desc")
         else if (count >= 8)
-            desc += "\n\n" + Messages.get(this, "crush_desc")
+            desc += "\n\n" + Messages.get(this.javaClass, "crush_desc")
         else if (count >= 6)
-            desc += "\n\n" + Messages.get(this, "slam_desc")
+            desc += "\n\n" + Messages.get(this.javaClass, "slam_desc")
         else if (count >= 4)
-            desc += "\n\n" + Messages.get(this, "cleave_desc")
-        else if (count >= 2) desc += "\n\n" + Messages.get(this, "clobber_desc")
+            desc += "\n\n" + Messages.get(this.javaClass, "cleave_desc")
+        else if (count >= 2) desc += "\n\n" + Messages.get(this.javaClass, "clobber_desc")
 
         return desc
     }
@@ -313,7 +313,7 @@ class Combo : Buff(), ActionIndicator.Action {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         count = bundle.getInt(COUNT)
-        if (count >= 2) ActionIndicator.setAction(this)
+        if (count >= 2) ActionIndicator.action = this
         comboTime = bundle.getFloat(TIME)
         misses = bundle.getInt(MISSES)
     }

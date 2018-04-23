@@ -60,7 +60,7 @@ open class Scene : Group() {
     }
 
     override fun camera(): Camera? {
-        return Camera.main
+        return Camera.main!!
     }
 
     protected open fun onBackPressed() {

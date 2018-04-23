@@ -79,45 +79,45 @@ class LastLevel : Level() {
         Painter.fill(this, mid - 3, 10, 7, 5, Terrain.EMPTY)
 
         entrance = (height - 2) * width() + mid
-        map[entrance] = Terrain.ENTRANCE
+        map!![entrance] = Terrain.ENTRANCE
 
         pedestal = 12 * width() + mid
-        map[pedestal] = Terrain.PEDESTAL
-        map[pedestal + 1 + width()] = Terrain.STATUE_SP
-        map[pedestal - 1 + width()] = map[pedestal + 1 + width()]
-        map[pedestal + 1 - width()] = map[pedestal - 1 + width()]
-        map[pedestal - 1 - width()] = map[pedestal + 1 - width()]
+        map!![pedestal] = Terrain.PEDESTAL
+        map!![pedestal + 1 + width()] = Terrain.STATUE_SP
+        map!![pedestal - 1 + width()] = map!![pedestal + 1 + width()]
+        map!![pedestal + 1 - width()] = map!![pedestal - 1 + width()]
+        map!![pedestal - 1 - width()] = map!![pedestal + 1 - width()]
 
         exit = pedestal
 
         var pos = pedestal
 
-        map[pos + 2] = Terrain.WATER
-        map[pos - 2] = map[pos + 2]
-        map[pos + 1] = map[pos - 2]
-        map[pos - 1] = map[pos + 1]
-        map[pos - width()] = map[pos - 1]
+        map!![pos + 2] = Terrain.WATER
+        map!![pos - 2] = map!![pos + 2]
+        map!![pos + 1] = map!![pos - 2]
+        map!![pos - 1] = map!![pos + 1]
+        map!![pos - width()] = map!![pos - 1]
         pos += width()
-        map[pos + 3] = Terrain.WATER
-        map[pos - 3] = map[pos + 3]
-        map[pos + 2] = map[pos - 3]
-        map[pos - 2] = map[pos + 2]
-        map[pos] = map[pos - 2]
+        map!![pos + 3] = Terrain.WATER
+        map!![pos - 3] = map!![pos + 3]
+        map!![pos + 2] = map!![pos - 3]
+        map!![pos - 2] = map!![pos + 2]
+        map!![pos] = map!![pos - 2]
         pos += width()
-        map[pos + 3] = Terrain.WATER
-        map[pos + 2] = map[pos + 3]
-        map[pos + 1] = map[pos + 2]
-        map[pos] = map[pos + 1]
-        map[pos - 1] = map[pos]
-        map[pos - 2] = map[pos - 1]
-        map[pos - 3] = map[pos - 2]
+        map!![pos + 3] = Terrain.WATER
+        map!![pos + 2] = map!![pos + 3]
+        map!![pos + 1] = map!![pos + 2]
+        map!![pos] = map!![pos + 1]
+        map!![pos - 1] = map!![pos]
+        map!![pos - 2] = map!![pos - 1]
+        map!![pos - 3] = map!![pos - 2]
         pos += width()
-        map[pos + 2] = Terrain.WATER
-        map[pos - 2] = map[pos + 2]
+        map!![pos + 2] = Terrain.WATER
+        map!![pos - 2] = map!![pos + 2]
 
         for (i in 0 until length()) {
             if (map!![i] == Terrain.EMPTY && Random.Int(10) == 0) {
-                map[i] = Terrain.EMPTY_DECO
+                map!![i] = Terrain.EMPTY_DECO
             }
         }
 
@@ -132,7 +132,7 @@ class LastLevel : Level() {
 
     override fun createMobs() {}
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 
@@ -141,9 +141,9 @@ class LastLevel : Level() {
     }
 
     override fun randomRespawnCell(): Int {
-        var cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
+        var cell = entrance + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         while (!passable[cell]) {
-            cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
+            cell = entrance + PathFinder.NEIGHBOURS8!![Random.Int(8)]
         }
         return cell
     }

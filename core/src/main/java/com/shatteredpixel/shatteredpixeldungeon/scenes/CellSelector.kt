@@ -63,7 +63,7 @@ class CellSelector(map: DungeonTilemap) : TouchArea(map) {
 
         } else {
 
-            val p = Camera.main.screenToCamera(touch.current.x.toInt(), touch.current.y.toInt())
+            val p = Camera.main!!.screenToCamera(touch.current.x.toInt(), touch.current.y.toInt())
             for (mob in Dungeon.level!!.mobs.toTypedArray<Mob>()) {
                 if (mob.sprite != null && mob.sprite!!.overlapsPoint(p.x, p.y)) {
                     select(mob.pos)
@@ -210,6 +210,6 @@ class CellSelector(map: DungeonTilemap) : TouchArea(map) {
 
     interface Listener {
         fun onSelect(cell: Int?)
-        fun prompt(): String
+        fun prompt(): String?
     }
 }

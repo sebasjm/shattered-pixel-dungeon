@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap
+import com.watabou.noosa.Game
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -53,7 +55,7 @@ class TrapsRoom : SpecialRoom() {
         val trapClass: Class<out Trap>?
         when (Random.Int(4)) {
             0 -> trapClass = null
-            else -> trapClass = Random.oneOf<Class<out Trap>>(*levelTraps[Dungeon.depth / 5])
+            else -> trapClass = Random.oneOf<Class<out Trap>>(*levelTraps[Dungeon.depth / 5] as Array<out Class<out Trap>>)
         }
 
         if (trapClass == null) {
@@ -93,7 +95,7 @@ class TrapsRoom : SpecialRoom() {
                 try {
                     level.setTrap((trapClass!!.newInstance() as Trap).reveal(), cell)
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                 }
 
             }

@@ -22,13 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class BanditSprite : MobSprite() {
     init {
 
         texture(Assets.THIEF)
-        val film = TextureFilm(texture, 12, 13)
+        val film = TextureFilm(texture!!, 12, 13)
 
         idle = MovieClip.Animation(1, true)
         idle!!.frames(film, 21, 21, 21, 22, 21, 21, 21, 21, 22)

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
@@ -41,7 +42,7 @@ class ScrollOfTerror : Scroll() {
 
     override fun doRead() {
 
-        Flare(5, 32f).color(0xFF0000, true).show(Item.curUser.sprite, 2f)
+        Flare(5, 32f).color(0xFF0000, true).show(Item.curUser!!.sprite!!, 2f)
         Sample.INSTANCE.play(Assets.SND_READ)
         Invisibility.dispel()
 
@@ -49,7 +50,7 @@ class ScrollOfTerror : Scroll() {
         var affected: Mob? = null
         for (mob in Dungeon.level!!.mobs.toTypedArray<Mob>()) {
             if (Dungeon.level!!.heroFOV[mob.pos]) {
-                Buff.affect<Terror>(mob, Terror::class.java, Terror.DURATION).`object` = Item.curUser.id()
+                Buff.affect<Terror>(mob, Terror::class.java, Terror.DURATION).`object` = Item.curUser!!.id()
 
                 if (mob.buff(Terror::class.java) != null) {
                     count++
@@ -59,9 +60,9 @@ class ScrollOfTerror : Scroll() {
         }
 
         when (count) {
-            0 -> GLog.i(Messages.get(this, "none"))
-            1 -> GLog.i(Messages.get(this, "one", affected!!.name))
-            else -> GLog.i(Messages.get(this, "many"))
+            0 -> GLog.i(Messages.get(this.javaClass, "none"))
+            1 -> GLog.i(Messages.get(this.javaClass, "one", affected!!.name))
+            else -> GLog.i(Messages.get(this.javaClass, "many"))
         }
         setKnown()
 

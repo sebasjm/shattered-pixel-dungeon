@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic
@@ -56,7 +57,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle
@@ -117,17 +117,17 @@ class DriedRose : Artifact() {
         if (action == AC_SUMMON) {
 
             if (ghost != null)
-                GLog.i(Messages.get(this, "spawned"))
+                GLog.i(Messages.get(this.javaClass, "spawned"))
             else if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge != chargeCap)
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
             else if (cursed)
-                GLog.i(Messages.get(this, "cursed"))
+                GLog.i(Messages.get(this.javaClass, "cursed"))
             else {
                 val spawnPoints = ArrayList<Int>()
-                for (i in PathFinder.NEIGHBOURS8.indices) {
-                    val p = hero.pos + PathFinder.NEIGHBOURS8[i]
+                for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                    val p = hero.pos + PathFinder.NEIGHBOURS8!![i]
                     if (Actor.findChar(p) == null && (Dungeon.level!!.passable[p] || Dungeon.level!!.avoid[p])) {
                         spawnPoints.add(p)
                     }
@@ -138,7 +138,7 @@ class DriedRose : Artifact() {
                     ghostID = ghost!!.id()
                     ghost!!.pos = Random.element(spawnPoints)!!
 
-                    GameScene.add(ghost, 1f)
+                    GameScene.add(ghost!!, 1f)
                     CellEmitter.get(ghost!!.pos).start(ShaftParticle.FACTORY, 0.3f, 4)
                     CellEmitter.get(ghost!!.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3)
 
@@ -157,7 +157,7 @@ class DriedRose : Artifact() {
                     updateQuickslot()
 
                 } else
-                    GLog.i(Messages.get(this, "no_space"))
+                    GLog.i(Messages.get(this.javaClass, "no_space"))
             }
 
         } else if (action == AC_OUTFIT) {
@@ -171,19 +171,19 @@ class DriedRose : Artifact() {
 
     override fun desc(): String {
         if (!Ghost.Quest.completed() && !isIdentified) {
-            return Messages.get(this, "desc_no_quest")
+            return Messages.get(this.javaClass, "desc_no_quest")
         }
 
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             if (!cursed) {
 
                 if (level() < levelCap)
-                    desc += "\n\n" + Messages.get(this, "desc_hint")
+                    desc += "\n\n" + Messages.get(this.javaClass, "desc_hint")
 
             } else
-                desc += "\n\n" + Messages.get(this, "desc_cursed")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_cursed")
         }
 
         return desc
@@ -253,7 +253,7 @@ class DriedRose : Artifact() {
                 return true
             }
 
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / 5f //500 turns to a full charge
                 if (partialCharge > 1) {
@@ -268,8 +268,8 @@ class DriedRose : Artifact() {
 
                 val spawnPoints = ArrayList<Int>()
 
-                for (i in PathFinder.NEIGHBOURS8.indices) {
-                    val p = target.pos + PathFinder.NEIGHBOURS8[i]
+                for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                    val p = target!!.pos + PathFinder.NEIGHBOURS8!![i]
                     if (Actor.findChar(p) == null && (Dungeon.level!!.passable[p] || Dungeon.level!!.avoid[p])) {
                         spawnPoints.add(p)
                     }
@@ -299,20 +299,20 @@ class DriedRose : Artifact() {
             val rose = hero.belongings.getItem<DriedRose>(DriedRose::class.java)
 
             if (rose == null) {
-                GLog.w(Messages.get(this, "no_rose"))
+                GLog.w(Messages.get(this.javaClass, "no_rose"))
                 return false
             }
             if (rose.level() >= rose.levelCap) {
-                GLog.i(Messages.get(this, "no_room"))
+                GLog.i(Messages.get(this.javaClass, "no_room"))
                 hero.spendAndNext(Item.TIME_TO_PICK_UP)
                 return true
             } else {
 
                 rose.upgrade()
                 if (rose.level() == rose.levelCap) {
-                    GLog.p(Messages.get(this, "maxlevel"))
+                    GLog.p(Messages.get(this.javaClass, "maxlevel"))
                 } else
-                    GLog.i(Messages.get(this, "levelup"))
+                    GLog.i(Messages.get(this.javaClass, "levelup"))
 
                 Sample.INSTANCE.play(Assets.SND_DEWDROP)
                 hero.spendAndNext(Item.TIME_TO_PICK_UP)
@@ -352,7 +352,7 @@ class DriedRose : Artifact() {
             HP = HT
         }
 
-        private fun updateRose() {
+        fun updateRose() {
             if (rose == null) {
                 rose = Dungeon.hero!!.belongings.getItem(DriedRose::class.java)
             }
@@ -366,7 +366,7 @@ class DriedRose : Artifact() {
             if (Messages.lang() != Languages.ENGLISH) return  //don't say anything if not on english
             val i = (Dungeon.depth - 1) / 5
             fieldOfView = BooleanArray(Dungeon.level!!.length())
-            Dungeon.level!!.updateFieldOfView(this, fieldOfView)
+            Dungeon.level!!.updateFieldOfView(this, fieldOfView!!)
             if (chooseEnemy() == null)
                 yell(Random.element(VOICE_AMBIENT[i]))
             else
@@ -398,7 +398,7 @@ class DriedRose : Artifact() {
 
         override fun act(): Boolean {
             updateRose()
-            if (rose == null || !rose!!.isEquipped(Dungeon.hero)) {
+            if (rose == null || !rose!!.isEquipped(Dungeon.hero!!)) {
                 damage(1, this)
             }
 
@@ -424,7 +424,7 @@ class DriedRose : Artifact() {
             }
         }
 
-        override fun attackSkill(target: Char): Int {
+        override fun attackSkill(target: Char?): Int {
             //same accuracy as the hero.
             var acc = Dungeon.hero!!.lvl + 9
 
@@ -504,7 +504,7 @@ class DriedRose : Artifact() {
             return speed
         }
 
-        override fun defenseSkill(enemy: Char): Int {
+        override fun defenseSkill(enemy: Char?): Int {
             var defense = super.defenseSkill(enemy)
 
             if (defense != 0 && rose != null && rose!!.armor != null && rose!!.armor!!.hasGlyph(Swiftness::class.java)) {
@@ -539,7 +539,7 @@ class DriedRose : Artifact() {
             updateRose()
             if (rose != null && !rose!!.talkedTo) {
                 rose!!.talkedTo = true
-                GameScene.show(WndQuest(this, Messages.get(this, "introduce")))
+                GameScene.show(WndQuest(this, Messages.get(this.javaClass, "introduce")))
                 return false
             } else if (Dungeon.level!!.passable[pos] || Dungeon.hero!!.flying) {
                 val curPos = pos
@@ -558,7 +558,7 @@ class DriedRose : Artifact() {
             }
         }
 
-        override fun die(cause: Any) {
+        override fun die(cause: Any?) {
             sayDefeated()
             super.die(cause)
         }
@@ -653,11 +653,11 @@ class DriedRose : Artifact() {
 
             val titlebar = IconTitle()
             titlebar.icon(ItemSprite(rose))
-            titlebar.label(Messages.get(this, "title"))
+            titlebar.label(Messages.get(this.javaClass, "title"))
             titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
             add(titlebar)
 
-            val message = PixelScene.renderMultiline(Messages.get(this, "desc", rose.ghostStrength()), 6)
+            val message = PixelScene.renderMultiline(Messages.get(this.javaClass, "desc", rose.ghostStrength()), 6)
             message.maxWidth(WIDTH)
             message.setPos(0f, titlebar.bottom() + GAP)
             add(message)
@@ -666,12 +666,12 @@ class DriedRose : Artifact() {
                 override fun onClick() {
                     if (rose.weapon != null) {
                         item(WndBag.Placeholder(ItemSpriteSheet.WEAPON_HOLDER))
-                        if (!rose.weapon!!.doPickUp(Dungeon.hero)) {
+                        if (!rose.weapon!!.doPickUp(Dungeon.hero!!)) {
                             Dungeon.level!!.drop(rose.weapon, Dungeon.hero!!.pos)
                         }
                         rose.weapon = null
                     } else {
-                        GameScene.selectItem({ item ->
+                        GameScene.selectItem({ item: Item? ->
                             if (!(item is MeleeWeapon || item is Boomerang)) {
                                 //do nothing, should only happen when window is cancelled
                             } else if (item.unique || item is Boomerang) {
@@ -687,15 +687,15 @@ class DriedRose : Artifact() {
                                 GLog.w(Messages.get(WndGhostHero::class.java, "cant_strength"))
                                 hide()
                             } else {
-                                if (item.isEquipped(Dungeon.hero)) {
-                                    item.doUnequip(Dungeon.hero, false, false)
+                                if (item.isEquipped(Dungeon.hero!!)) {
+                                    item.doUnequip(Dungeon.hero!!, false, false)
                                 } else {
                                     item.detach(Dungeon.hero!!.belongings.backpack)
                                 }
                                 rose.weapon = item
                                 item(rose.weapon)
                             }
-                        }, WndBag.Mode.WEAPON, Messages.get(WndGhostHero::class.java, "weapon_prompt"))
+                        } as WndBag.Listener, WndBag.Mode.WEAPON, Messages.get(WndGhostHero::class.java, "weapon_prompt"))
                     }
                 }
             }
@@ -711,12 +711,12 @@ class DriedRose : Artifact() {
                 override fun onClick() {
                     if (rose.armor != null) {
                         item(WndBag.Placeholder(ItemSpriteSheet.ARMOR_HOLDER))
-                        if (!rose.armor!!.doPickUp(Dungeon.hero)) {
+                        if (!rose.armor!!.doPickUp(Dungeon.hero!!)) {
                             Dungeon.level!!.drop(rose.armor, Dungeon.hero!!.pos)
                         }
                         rose.armor = null
                     } else {
-                        GameScene.selectItem({ item ->
+                        GameScene.selectItem({ item: Item? ->
                             if (item !is Armor) {
                                 //do nothing, should only happen when window is cancelled
                             } else if (item.unique || item.checkSeal() != null) {
@@ -732,15 +732,15 @@ class DriedRose : Artifact() {
                                 GLog.w(Messages.get(WndGhostHero::class.java, "cant_strength"))
                                 hide()
                             } else {
-                                if (item.isEquipped(Dungeon.hero)) {
-                                    item.doUnequip(Dungeon.hero, false, false)
+                                if (item.isEquipped(Dungeon.hero!!)) {
+                                    item.doUnequip(Dungeon.hero!!, false, false)
                                 } else {
                                     item.detach(Dungeon.hero!!.belongings.backpack)
                                 }
                                 rose.armor = item
                                 item(rose.armor)
                             }
-                        }, WndBag.Mode.ARMOR, Messages.get(WndGhostHero::class.java, "armor_prompt"))
+                        } as WndBag.Listener, WndBag.Mode.ARMOR, Messages.get(WndGhostHero::class.java, "armor_prompt"))
                     }
                 }
             }
@@ -794,11 +794,11 @@ class DriedRose : Artifact() {
 
         fun restoreGhostHero(level: Level, pos: Int) {
             if (heldGhost != null) {
-                level.mobs.add(heldGhost)
+                level.mobs.add(heldGhost!!)
 
                 var ghostPos: Int
                 do {
-                    ghostPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
+                    ghostPos = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
                 } while (Dungeon.level!!.solid[ghostPos] || level.findMob(ghostPos) != null)
 
                 heldGhost!!.pos = ghostPos

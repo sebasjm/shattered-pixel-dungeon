@@ -45,7 +45,7 @@ class SpellSprite : Image(Assets.SPELL_ICONS) {
     init {
 
         if (film == null) {
-            film = TextureFilm(texture, SIZE)
+            film = TextureFilm(texture!!, SIZE)
         }
     }
 
@@ -77,7 +77,8 @@ class SpellSprite : Image(Assets.SPELL_ICONS) {
             SpellSprite.Phase.FADE_OUT -> alpha(1 - passed / duration)
         }
 
-        if ((passed += Game.elapsed) > duration) {
+        passed += Game.elapsed
+        if (passed > duration) {
             when (phase) {
                 SpellSprite.Phase.FADE_IN -> {
                     phase = Phase.STATIC

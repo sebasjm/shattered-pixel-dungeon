@@ -38,7 +38,7 @@ class PotionOfInvisibility : Potion() {
     override fun apply(hero: Hero) {
         setKnown()
         Buff.affect<Invisibility>(hero, Invisibility::class.java, Invisibility.DURATION)
-        GLog.i(Messages.get(this, "invisible"))
+        GLog.i(Messages.get(this.javaClass, "invisible"))
         Sample.INSTANCE.play(Assets.SND_MELD)
     }
 

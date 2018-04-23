@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
@@ -49,7 +50,7 @@ class ScrollOfTeleportation : Scroll() {
         Sample.INSTANCE.play(Assets.SND_READ)
         Invisibility.dispel()
 
-        teleportHero(Item.curUser)
+        teleportHero(Item.curUser!!)
         setKnown()
 
         readAnimation()
@@ -58,7 +59,7 @@ class ScrollOfTeleportation : Scroll() {
     override fun empoweredRead() {
 
         if (Dungeon.bossLevel()) {
-            GLog.w(Messages.get(this, "no_tele"))
+            GLog.w(Messages.get(this.javaClass, "no_tele"))
             return
         }
 
@@ -66,8 +67,8 @@ class ScrollOfTeleportation : Scroll() {
             override fun onSelect(target: Int?) {
                 if (target != null) {
                     //time isn't spent
-                    (Item.curUser.sprite as HeroSprite).read()
-                    teleportToLocation(Item.curUser, target)
+                    (Item.curUser!!.sprite as HeroSprite).read()
+                    teleportToLocation(Item.curUser!!, target)
                 }
             }
 
@@ -85,7 +86,7 @@ class ScrollOfTeleportation : Scroll() {
 
         fun teleportToLocation(hero: Hero, pos: Int) {
             PathFinder.buildDistanceMap(pos, BArray.or(Dungeon.level!!.passable, Dungeon.level!!.avoid, null))
-            if (PathFinder.distance[hero.pos] == Integer.MAX_VALUE
+            if (PathFinder.distance!![hero.pos] == Integer.MAX_VALUE
                     || !Dungeon.level!!.passable[pos] && !Dungeon.level!!.avoid[pos]
                     || Actor.findChar(pos) != null) {
                 GLog.w(Messages.get(ScrollOfTeleportation::class.java, "cant_reach"))
@@ -136,7 +137,7 @@ class ScrollOfTeleportation : Scroll() {
 
             if (ch.invisible == 0) {
                 ch.sprite!!.alpha(0f)
-                ch.sprite!!.parent!!.add(AlphaTweener(ch.sprite, 1f, 0.4f))
+                ch.sprite!!.parent!!.add(AlphaTweener(ch.sprite!!, 1f, 0.4f))
             }
 
             ch.sprite!!.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3)

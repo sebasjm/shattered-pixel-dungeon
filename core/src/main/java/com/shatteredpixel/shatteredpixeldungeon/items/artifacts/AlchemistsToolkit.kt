@@ -53,11 +53,11 @@ class AlchemistsToolkit : Artifact() {
     protected var inventoryTitle = "Select a potion"
     protected var mode: WndBag.Mode = WndBag.Mode.POTION
 
-    protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+    protected var itemSelector: WndBag.Listener = { item: Item? ->
         if (item != null && item is Potion && item.isIdentified) {
             if (!curGuess.contains(convertName(item.javaClass.getSimpleName()))) {
 
-                val hero = Dungeon.hero
+                val hero = Dungeon.hero!!
                 hero!!.sprite!!.operate(hero.pos)
                 hero.busy()
                 hero.spend(2f)
@@ -77,7 +77,7 @@ class AlchemistsToolkit : Artifact() {
         } else if (item != null) {
             GLog.w("You need to select an identified potion.")
         }
-    }
+    } as WndBag.Listener
 
     init {
         image = ItemSpriteSheet.ARTIFACT_TOOLKIT
@@ -91,7 +91,7 @@ class AlchemistsToolkit : Artifact() {
         for (i in 1..3) {
             var potion: String
             do {
-                potion = convertName(cat.classes[Random.chances(cat.probs)].simpleName)
+                potion = convertName(cat.classes!![Random.chances(cat.probs!!)].simpleName)
                 //forcing the player to use experience potions would be completely unfair.
             } while (combination.contains(potion) || potion == "Experience")
             combination.add(potion)
@@ -185,7 +185,7 @@ class AlchemistsToolkit : Artifact() {
     override fun desc(): String {
         var result = "This toolkit contains a number of regents and herbs used to improve the process of " + "cooking potions.\n\n"
 
-        if (isEquipped(Dungeon.hero))
+        if (isEquipped(Dungeon.hero!!))
             if (cursed)
                 result += "The cursed toolkit has bound itself to your side, and refuses to let you use alchemy.\n\n"
             else

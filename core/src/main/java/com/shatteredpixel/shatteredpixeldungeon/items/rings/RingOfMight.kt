@@ -58,8 +58,8 @@ class RingOfMight : Ring() {
     }
 
     private fun updateTargetHT() {
-        if (buff != null && buff!!.target is Hero) {
-            (buff!!.target as Hero).updateHT(false)
+        if (buff != null && buff!!.target!! is Hero) {
+            (buff!!.target!! as Hero).updateHT(false)
         }
     }
 

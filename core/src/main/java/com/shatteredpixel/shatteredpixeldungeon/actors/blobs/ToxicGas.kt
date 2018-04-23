@@ -45,8 +45,9 @@ class ToxicGas : Blob(), Hero.Doom {
         for (i in area.left until area.right) {
             for (j in area.top until area.bottom) {
                 cell = i + j * Dungeon.level!!.width()
-                if (cur!![cell] > 0 && (ch = Actor.findChar(cell)) != null) {
-                    if (!ch!!.isImmune(this.javaClass)) {
+                if (cur!![cell] > 0) {
+                    ch = Actor.findChar(cell)
+                    if (ch != null) if (!ch!!.isImmune(this.javaClass)) {
 
                         var damage = (ch.HT + levelDamage) / 40
                         if (Random.Int(40) < (ch.HT + levelDamage) % 40) {
@@ -67,7 +68,7 @@ class ToxicGas : Blob(), Hero.Doom {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     override fun onDeath() {
@@ -75,6 +76,6 @@ class ToxicGas : Blob(), Hero.Doom {
         Badges.validateDeathFromGas()
 
         Dungeon.fail(javaClass)
-        GLog.n(Messages.get(this, "ondeath"))
+        GLog.n(Messages.get(this.javaClass, "ondeath"))
     }
 }

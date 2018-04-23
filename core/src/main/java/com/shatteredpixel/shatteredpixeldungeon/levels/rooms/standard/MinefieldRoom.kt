@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -37,7 +38,7 @@ class MinefieldRoom : StandardRoom() {
     override fun paint(level: Level) {
         Painter.fill(level, this, Terrain.WALL)
         Painter.fill(level, this, 1, Terrain.EMPTY)
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 
@@ -57,7 +58,7 @@ class MinefieldRoom : StandardRoom() {
 
             //randomly places some embers around the mines
             for (j in 0..7) {
-                val c = PathFinder.NEIGHBOURS8[Random.Int(8)]
+                val c = PathFinder.NEIGHBOURS8!![Random.Int(8)]
                 if (level.traps.get(pos + c) == null && level.map!![pos + c] == Terrain.EMPTY) {
                     Painter.set(level, pos + c, Terrain.EMBERS)
                 }

@@ -41,7 +41,7 @@ class Eldritch : Weapon.Enchantment() {
 
         if (Random.Int(level + 5) >= 4) {
 
-            if (defender === Dungeon.hero) {
+            if (defender === Dungeon.hero!!) {
                 Buff.affect<Vertigo>(defender, Vertigo::class.java, Vertigo.DURATION)
             } else {
                 Buff.affect<Terror>(defender, Terror::class.java, Terror.DURATION).`object` = attacker.id()

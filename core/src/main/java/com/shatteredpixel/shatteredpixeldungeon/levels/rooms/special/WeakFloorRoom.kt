@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual
 import com.watabou.utils.Point
@@ -81,11 +82,11 @@ class WeakFloorRoom : SpecialRoom() {
         }
 
         override fun name(tileX: Int, tileY: Int): String? {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(tileX: Int, tileY: Int): String? {
-            return Messages.get(this, "desc")
+            return Messages.get(this.javaClass, "desc")
         }
 
     }

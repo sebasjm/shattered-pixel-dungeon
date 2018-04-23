@@ -70,13 +70,13 @@ class WndItem @JvmOverloads constructor(owner: WndBag?, item: Item, options: Boo
 
         if (Dungeon.hero!!.isAlive && options) {
             var line = ArrayList<RedButton>()
-            for (action in item.actions(Dungeon.hero)) {
+            for (action in item.actions(Dungeon.hero!!)) {
 
-                val btn = object : RedButton(Messages.get(item, "ac_$action"), 8) {
+                val btn = object : RedButton(Messages.get(item.javaClass, "ac_$action"), 8) {
                     override fun onClick() {
                         hide()
                         if (owner != null && owner.parent != null) owner.hide()
-                        item.execute(Dungeon.hero, action)
+                        item.execute(Dungeon.hero!!, action)
                     }
                 }
                 btn.setSize(btn.reqWidth(), BUTTON_HEIGHT)
@@ -99,7 +99,7 @@ class WndItem @JvmOverloads constructor(owner: WndBag?, item: Item, options: Boo
             layoutButtons(line, width - x, y)
         }
 
-        resize(width, (y + if (x > 0) BUTTON_HEIGHT else 0).toInt())
+        resize(width, (y + if (x > 0) BUTTON_HEIGHT else 0f).toInt())
     }
 
     companion object {

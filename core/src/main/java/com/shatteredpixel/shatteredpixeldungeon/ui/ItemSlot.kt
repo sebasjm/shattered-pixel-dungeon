@@ -41,7 +41,7 @@ import com.watabou.noosa.ui.Button
 
 open class ItemSlot() : Button() {
 
-    var icon: ItemSprite
+    var icon: ItemSprite? = null
     protected var item: Item? = null
     protected var topLeft: BitmapText? = null
     protected var topRight: BitmapText? = null
@@ -50,7 +50,7 @@ open class ItemSlot() : Button() {
     protected var iconVisible = true
 
     init {
-        icon.visible(false)
+        icon!!.visible(false)
         enable(false)
     }
 
@@ -63,24 +63,24 @@ open class ItemSlot() : Button() {
         super.createChildren()
 
         icon = ItemSprite()
-        add(icon)
+        add(icon!!)
 
-        topLeft = BitmapText(PixelScene.pixelFont)
-        add(topLeft)
+        topLeft = BitmapText(PixelScene.pixelFont!!)
+        add(topLeft!!)
 
-        topRight = BitmapText(PixelScene.pixelFont)
-        add(topRight)
+        topRight = BitmapText(PixelScene.pixelFont!!)
+        add(topRight!!)
 
-        bottomRight = BitmapText(PixelScene.pixelFont)
-        add(bottomRight)
+        bottomRight = BitmapText(PixelScene.pixelFont!!)
+        add(bottomRight!!)
     }
 
     override fun layout() {
         super.layout()
 
-        icon.x = x + (width - icon.width) / 2f
-        icon.y = y + (height - icon.height) / 2f
-        PixelScene.align(icon)
+        icon!!.x = x + (width - icon!!.width) / 2f
+        icon!!.y = y + (height - icon!!.height) / 2f
+        PixelScene.align(icon!!)
 
         if (topLeft != null) {
             topLeft!!.measure()
@@ -116,8 +116,8 @@ open class ItemSlot() : Button() {
     open fun item(item: Item?) {
         if (this.item === item) {
             if (item != null) {
-                icon.frame(item.image())
-                icon.glow(item.glowing())
+                icon!!.frame(item.image())
+                icon!!.glow(item.glowing())
             }
             updateText()
             return
@@ -128,16 +128,16 @@ open class ItemSlot() : Button() {
         if (item == null) {
 
             enable(false)
-            icon.visible(false)
+            icon!!.visible(false)
 
             updateText()
 
         } else {
 
             enable(true)
-            icon.visible(true)
+            icon!!.visible(true)
 
-            icon.view(item)
+            icon!!.view(item)
             updateText()
         }
     }
@@ -145,7 +145,7 @@ open class ItemSlot() : Button() {
     private fun updateText() {
 
         if (bottomRightIcon != null) {
-            remove(bottomRightIcon)
+            remove(bottomRightIcon!!)
             bottomRightIcon = null
         }
 
@@ -160,7 +160,7 @@ open class ItemSlot() : Button() {
             topLeft!!.visible = topRight!!.visible
         }
 
-        topLeft!!.text(item!!.status())
+        topLeft!!.text(item!!.status()!!)
 
         val isArmor = item is Armor
         val isWeapon = item is Weapon
@@ -216,7 +216,7 @@ open class ItemSlot() : Button() {
                 val left = iconInt * 7
                 val top = if (item is Potion) 0 else 8
                 bottomRightIcon!!.frame(left, top, 7, 8)
-                add(bottomRightIcon)
+                add(bottomRightIcon!!)
             }
 
         } else {
@@ -231,7 +231,7 @@ open class ItemSlot() : Button() {
         active = value
 
         val alpha = if (value) ENABLED else DISABLED
-        icon.alpha(alpha)
+        icon!!.alpha(alpha)
         topLeft!!.alpha(alpha)
         topRight!!.alpha(alpha)
         bottomRight!!.alpha(alpha)
@@ -240,19 +240,19 @@ open class ItemSlot() : Button() {
 
     fun showParams(TL: Boolean, TR: Boolean, BR: Boolean) {
         if (TL)
-            add(topLeft)
+            add(topLeft!!)
         else
-            remove(topLeft)
+            remove(topLeft!!)
 
         if (TR)
-            add(topRight)
+            add(topRight!!)
         else
-            remove(topRight)
+            remove(topRight!!)
 
         if (BR)
-            add(bottomRight)
+            add(bottomRight!!)
         else
-            remove(bottomRight)
+            remove(bottomRight!!)
         iconVisible = BR
     }
 

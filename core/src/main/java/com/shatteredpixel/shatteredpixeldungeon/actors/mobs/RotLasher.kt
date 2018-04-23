@@ -91,7 +91,7 @@ class RotLasher : Mob() {
         return Random.NormalIntRange(8, 15)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 15
     }
 

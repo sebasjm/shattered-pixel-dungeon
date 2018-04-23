@@ -45,7 +45,7 @@ class Entanglement : Glyph() {
             Buff.prolong<Roots>(defender, Roots::class.java, (3 - level / 5).toFloat())
             Buff.affect<Earthroot.Armor>(defender, Earthroot.Armor::class.java)!!.level(4 + 4 * level)
             CellEmitter.bottom(defender.pos).start(EarthParticle.FACTORY, 0.05f, 8)
-            Camera.main.shake(1f, 0.4f)
+            Camera.main!!.shake(1f, 0.4f)
 
         }
 

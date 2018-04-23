@@ -28,10 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap
+import com.watabou.noosa.Game
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -73,7 +75,7 @@ class SecretHoardRoom : SecretRoom() {
                     level.setTrap(trapClass.newInstance().reveal(), level.pointToCell(p))
                     Painter.set(level, p, Terrain.TRAP)
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                 }
 
             }

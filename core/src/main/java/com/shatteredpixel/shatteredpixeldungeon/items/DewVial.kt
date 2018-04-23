@@ -96,7 +96,7 @@ class DewVial : Item() {
                 if (effect > 0) {
                     hero.HP += effect
                     hero.sprite!!.emitter().burst(Speck.factory(Speck.HEALING), 1 + dropsNeeded / 5)
-                    hero.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", effect))
+                    hero.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this.javaClass, "value", effect))
                 }
 
                 volume -= dropsNeeded
@@ -111,7 +111,7 @@ class DewVial : Item() {
 
 
             } else {
-                GLog.w(Messages.get(this, "empty"))
+                GLog.w(Messages.get(this.javaClass, "empty"))
             }
 
         }
@@ -124,11 +124,11 @@ class DewVial : Item() {
 
     fun collectDew(dew: Dewdrop) {
 
-        GLog.i(Messages.get(this, "collected"))
+        GLog.i(Messages.get(this.javaClass, "collected"))
         volume += dew.quantity
         if (volume >= MAX_VOLUME) {
             volume = MAX_VOLUME
-            GLog.p(Messages.get(this, "full"))
+            GLog.p(Messages.get(this.javaClass, "full"))
         }
 
         updateQuickslot()

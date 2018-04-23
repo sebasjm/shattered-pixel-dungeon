@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Random
 
@@ -33,7 +34,7 @@ class SeniorSprite : MobSprite() {
 
         texture(Assets.MONK)
 
-        val frames = TextureFilm(texture, 15, 14)
+        val frames = TextureFilm(texture!!, 15, 14)
 
         idle = MovieClip.Animation(6, true)
         idle!!.frames(frames, 18, 17, 18, 19)
@@ -61,6 +62,6 @@ class SeniorSprite : MobSprite() {
     }
 
     override fun onComplete(anim: MovieClip.Animation) {
-        super.onComplete(if (anim === kick) attack else anim)
+        super.onComplete(if (anim === kick) attack!! else anim)
     }
 }

@@ -52,10 +52,10 @@ class Compass(private val cell: Int) : Image() {
         }
 
         if (visible) {
-            val scroll = Camera.main.scroll
+            val scroll = Camera.main!!.scroll
             if (scroll != lastScroll) {
                 lastScroll.set(scroll)
-                val center = Camera.main.center().offset(scroll)
+                val center = Camera.main!!.center().offset(scroll)
                 angle = Math.atan2((cellCenter.x - center.x).toDouble(), (center.y - cellCenter.y).toDouble()).toFloat() * RAD_2_G
             }
         }

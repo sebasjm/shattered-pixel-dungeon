@@ -38,7 +38,7 @@ class RotHeartSprite : MobSprite() {
 
         texture(Assets.ROT_HEART)
 
-        val frames = TextureFilm(texture, 16, 16)
+        val frames = TextureFilm(texture!!, 16, 16)
 
         idle = MovieClip.Animation(1, true)
         idle!!.frames(frames, 0)

@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -106,7 +107,8 @@ abstract class Weapon : KindOfWeapon() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        if ((hitsToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
+        hitsToKnow = bundle.getInt(UNFAMILIRIARITY)
+        if (hitsToKnow == 0) {
             hitsToKnow = HITS_TO_KNOW
         }
         enchantment = bundle.get(ENCHANTMENT) as Enchantment
@@ -238,17 +240,17 @@ abstract class Weapon : KindOfWeapon() {
 
         fun name(): String {
             return if (!curse())
-                name(Messages.get(this, "enchant"))
+                name(Messages.get(this.javaClass, "enchant"))
             else
                 name(Messages.get(Item::class.java, "curse"))
         }
 
         fun name(weaponName: String): String {
-            return Messages.get(this, "name", weaponName)
+            return Messages.get(this.javaClass, "name", weaponName)
         }
 
         fun desc(): String {
-            return Messages.get(this, "desc")
+            return Messages.get(this.javaClass, "desc")
         }
 
         open fun curse(): Boolean {
@@ -272,7 +274,7 @@ abstract class Weapon : KindOfWeapon() {
                 try {
                     return (enchants[Random.chances(chances)] as Class<Enchantment>).newInstance()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                     return null
                 }
 
@@ -282,7 +284,7 @@ abstract class Weapon : KindOfWeapon() {
                 try {
                     return (Random.oneOf(*curses) as Class<Enchantment>).newInstance()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                     return null
                 }
 

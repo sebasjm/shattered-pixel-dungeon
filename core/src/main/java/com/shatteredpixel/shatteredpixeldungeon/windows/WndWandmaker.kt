@@ -48,11 +48,11 @@ class WndWandmaker(wandmaker: Wandmaker, item: Item) : Window() {
 
         var msg = ""
         if (item is CorpseDust) {
-            msg = Messages.get(this, "dust")
+            msg = Messages.get(this.javaClass, "dust")
         } else if (item is Embers) {
-            msg = Messages.get(this, "ember")
+            msg = Messages.get(this.javaClass, "ember")
         } else if (item is Rotberry.Seed) {
-            msg = Messages.get(this, "berry")
+            msg = Messages.get(this.javaClass, "berry")
         }
 
         val message = PixelScene.renderMultiline(msg, 6)
@@ -86,13 +86,13 @@ class WndWandmaker(wandmaker: Wandmaker, item: Item) : Window() {
         item.detach(Dungeon.hero!!.belongings.backpack)
 
         reward.identify()
-        if (reward.doPickUp(Dungeon.hero)) {
-            GLog.i(Messages.get(Dungeon.hero!!, "you_now_have", reward.name()))
+        if (reward.doPickUp(Dungeon.hero!!)) {
+            GLog.i(Messages.get(Dungeon.hero!!.javaClass, "you_now_have", reward.name()))
         } else {
             Dungeon.level!!.drop(reward, wandmaker.pos).sprite!!.drop()
         }
 
-        wandmaker.yell(Messages.get(this, "farewell", Dungeon.hero!!.givenName()))
+        wandmaker.yell(Messages.get(this.javaClass, "farewell", Dungeon.hero!!.givenName()))
         wandmaker.destroy()
 
         wandmaker.sprite!!.die()

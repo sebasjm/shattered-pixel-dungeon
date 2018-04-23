@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class AlbinoSprite : MobSprite() {
@@ -29,7 +30,7 @@ class AlbinoSprite : MobSprite() {
 
         texture(Assets.RAT)
 
-        val frames = TextureFilm(texture, 16, 15)
+        val frames = TextureFilm(texture!!, 16, 15)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 16, 16, 16, 17)
@@ -43,6 +44,6 @@ class AlbinoSprite : MobSprite() {
         die = MovieClip.Animation(10, false)
         die!!.frames(frames, 27, 28, 29, 30)
 
-        play(idle)
+        play(idle!!)
     }
 }

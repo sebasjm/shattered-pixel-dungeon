@@ -47,7 +47,7 @@ open class EntranceRoom : StandardRoom() {
         Painter.fill(level, this, Terrain.WALL)
         Painter.fill(level, this, 1, Terrain.EMPTY)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 
@@ -70,7 +70,7 @@ open class EntranceRoom : StandardRoom() {
 
         if (Dungeon.depth == 2) {
             if (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)) {
-                for (door in connected.values) {
+                for (door in connected.values.filterNotNull()) {
                     door.set(Room.Door.Type.HIDDEN)
                 }
             }

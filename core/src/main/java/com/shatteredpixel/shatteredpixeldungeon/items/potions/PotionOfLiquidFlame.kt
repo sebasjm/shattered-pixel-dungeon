@@ -44,10 +44,10 @@ class PotionOfLiquidFlame : Potion() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
         }
 
-        for (offset in PathFinder.NEIGHBOURS9) {
+        for (offset in PathFinder.NEIGHBOURS9!!) {
             if (!Dungeon.level!!.solid[cell + offset]) {
 
-                GameScene.add(Blob.seed<Fire>(cell + offset, 2, Fire::class.java))
+                GameScene.add(Blob.seed<Fire>(cell + offset, 2, Fire::class.java)!!)
 
             }
         }

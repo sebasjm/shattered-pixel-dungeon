@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class ElementalSprite : MobSprite() {
@@ -30,7 +31,7 @@ class ElementalSprite : MobSprite() {
 
         texture(Assets.ELEMENTAL)
 
-        val frames = TextureFilm(texture, 12, 14)
+        val frames = TextureFilm(texture!!, 12, 14)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(frames, 0, 1, 2)
@@ -44,7 +45,7 @@ class ElementalSprite : MobSprite() {
         die = MovieClip.Animation(15, false)
         die!!.frames(frames, 7, 8, 9, 10, 11, 12, 13, 12)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun link(ch: Char) {

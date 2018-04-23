@@ -71,7 +71,7 @@ open class Dart : MissileWeapon() {
     override fun proc(attacker: Char, defender: Char, damage: Int): Int {
         var damage = damage
         if (bow != null && bow!!.enchantment != null) {
-            damage = bow!!.enchantment!!.proc(bow, attacker, defender, damage)
+            damage = bow!!.enchantment!!.proc(bow!!, attacker, defender, damage)
         }
         return super.proc(attacker, defender, damage)
     }

@@ -73,7 +73,7 @@ class Frost : FlavourBuff() {
                             Dungeon.level!!.drop(carpaccio, target.pos).sprite!!.drop()
                         }
                     }
-                    GLog.w(Messages.get(this, "freezes", toFreeze!!.toString()))
+                    GLog.w(Messages.get(this.javaClass, "freezes", toFreeze!!.toString()))
                 }
 
             } else if (target is Thief) {
@@ -97,10 +97,10 @@ class Frost : FlavourBuff() {
 
     override fun detach() {
         super.detach()
-        if (target.paralysed > 0)
-            target.paralysed--
-        if (Dungeon.level!!.water[target.pos])
-            Buff.prolong<Chill>(target, Chill::class.java, 4f)
+        if (target!!.paralysed > 0)
+            target!!.paralysed--
+        if (Dungeon.level!!.water[target!!.pos])
+            Buff.prolong<Chill>(target!!, Chill::class.java, 4f)
     }
 
     override fun icon(): Int {
@@ -109,17 +109,17 @@ class Frost : FlavourBuff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.FROZEN)
+            target!!.sprite!!.add(CharSprite.State.FROZEN)
         else
-            target.sprite!!.remove(CharSprite.State.FROZEN)
+            target!!.sprite!!.remove(CharSprite.State.FROZEN)
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 
     companion object {

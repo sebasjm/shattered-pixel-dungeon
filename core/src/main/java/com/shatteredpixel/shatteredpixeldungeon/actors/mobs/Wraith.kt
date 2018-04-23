@@ -92,7 +92,7 @@ class Wraith : Mob() {
         private val LEVEL = "level"
 
         fun spawnAround(pos: Int) {
-            for (n in PathFinder.NEIGHBOURS4) {
+            for (n in PathFinder.NEIGHBOURS4!!) {
                 val cell = pos + n
                 if (Dungeon.level!!.passable[cell] && Actor.findChar(cell) == null) {
                     spawnAt(cell)
@@ -110,7 +110,7 @@ class Wraith : Mob() {
                 GameScene.add(w, SPAWN_DELAY)
 
                 w.sprite!!.alpha(0f)
-                w.sprite!!.parent!!.add(AlphaTweener(w.sprite, 1f, 0.5f))
+                w.sprite!!.parent!!.add(AlphaTweener(w.sprite!!, 1f, 0.5f))
 
                 w.sprite!!.emitter().burst(ShadowParticle.CURSE, 5)
 

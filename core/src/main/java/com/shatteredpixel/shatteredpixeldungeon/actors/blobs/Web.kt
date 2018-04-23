@@ -39,7 +39,7 @@ class Web : Blob() {
         for (i in area.left until area.right) {
             for (j in area.top until area.bottom) {
                 cell = i + j * Dungeon.level!!.width()
-                off[cell] = if (cur!![cell] > 0) cur!![cell] - 1 else 0
+                off!![cell] = if (cur!![cell] > 0) cur!![cell] - 1 else 0
 
                 if (off!![cell] > 0) {
 
@@ -61,6 +61,6 @@ class Web : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

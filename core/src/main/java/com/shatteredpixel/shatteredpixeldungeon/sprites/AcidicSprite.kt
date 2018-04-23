@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class AcidicSprite : ScorpioSprite() {
@@ -29,7 +30,7 @@ class AcidicSprite : ScorpioSprite() {
 
         texture(Assets.SCORPIO)
 
-        val frames = TextureFilm(texture, 18, 17)
+        val frames = TextureFilm(texture!!, 18, 17)
 
         idle = MovieClip.Animation(12, true)
         idle!!.frames(frames, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 16, 15, 16)
@@ -45,7 +46,7 @@ class AcidicSprite : ScorpioSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 14, 21, 22, 23, 24)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun blood(): Int {

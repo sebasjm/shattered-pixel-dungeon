@@ -71,8 +71,8 @@ class RockfallTrap : Trap() {
             //if we don't have rooms, then just do 5x5
         } else {
             PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.solid, null), 2)
-            for (i in PathFinder.distance.indices) {
-                if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+            for (i in PathFinder.distance!!.indices) {
+                if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
                     rockCells.add(i)
                 }
             }
@@ -95,15 +95,15 @@ class RockfallTrap : Trap() {
 
                 Buff.prolong<Paralysis>(ch, Paralysis::class.java, Paralysis.DURATION)
 
-                if (!ch.isAlive && ch === Dungeon.hero) {
+                if (!ch.isAlive && ch === Dungeon.hero!!) {
                     Dungeon.fail(javaClass)
-                    GLog.n(Messages.get(this, "ondeath"))
+                    GLog.n(Messages.get(this.javaClass, "ondeath"))
                 }
             }
         }
 
         if (seen) {
-            Camera.main.shake(3f, 0.7f)
+            Camera.main!!.shake(3f, 0.7f)
             Sample.INSTANCE.play(Assets.SND_ROCKS)
         }
 

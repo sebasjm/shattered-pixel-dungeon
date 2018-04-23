@@ -97,7 +97,7 @@ class CeremonialCandle : Item() {
                     val ch = Actor.findChar(ritualPos)
                     if (ch != null) {
                         val candidates = ArrayList<Int>()
-                        for (n in PathFinder.NEIGHBOURS8) {
+                        for (n in PathFinder.NEIGHBOURS8!!) {
                             val cell = ritualPos + n
                             if ((Dungeon.level!!.passable[cell] || Dungeon.level!!.avoid[cell]) && Actor.findChar(cell) == null) {
                                 candidates.add(cell)
@@ -114,7 +114,7 @@ class CeremonialCandle : Item() {
                     elemental.state = elemental.HUNTING
                     GameScene.add(elemental, 1f)
 
-                    for (i in PathFinder.NEIGHBOURS9) {
+                    for (i in PathFinder.NEIGHBOURS9!!) {
                         CellEmitter.get(ritualPos + i).burst(ElmoParticle.FACTORY, 10)
                     }
                     Sample.INSTANCE.play(Assets.SND_BURNING)

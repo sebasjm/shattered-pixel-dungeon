@@ -85,22 +85,23 @@ open class Bomb : Item() {
 
     override fun onThrow(cell: Int) {
         if (!Dungeon.level!!.pit[cell] && lightingFuse) {
-            Actor.addDelayed(fuse = Fuse().ignite(this), 2f)
+            fuse = Fuse().ignite(this)
+            Actor.addDelayed(fuse!!, 2f)
         }
         if (Actor.findChar(cell) != null && Actor.findChar(cell) !is Hero) {
             val candidates = ArrayList<Int>()
-            for (i in PathFinder.NEIGHBOURS8)
+            for (i in PathFinder.NEIGHBOURS8!!)
                 if (Dungeon.level!!.passable[cell + i])
                     candidates.add(cell + i)
             val newCell = if (candidates.isEmpty()) cell else Random.element(candidates)
-            Dungeon.level!!.drop(this, newCell).sprite!!.drop(cell)
+            Dungeon.level!!.drop(this, newCell!!).sprite!!.drop(cell)
         } else
             super.onThrow(cell)
     }
 
     override fun doPickUp(hero: Hero): Boolean {
         if (fuse != null) {
-            GLog.w(Messages.get(this, "snuff_fuse"))
+            GLog.w(Messages.get(this.javaClass, "snuff_fuse"))
             fuse = null
         }
         return super.doPickUp(hero)
@@ -117,7 +118,7 @@ open class Bomb : Item() {
         }
 
         var terrainAffected = false
-        for (n in PathFinder.NEIGHBOURS9) {
+        for (n in PathFinder.NEIGHBOURS9!!) {
             val c = cell + n
             if (c >= 0 && c < Dungeon.level!!.length()) {
                 if (Dungeon.level!!.heroFOV[c]) {
@@ -145,7 +146,7 @@ open class Bomb : Item() {
                         ch.damage(dmg, this)
                     }
 
-                    if (ch === Dungeon.hero && !ch.isAlive)
+                    if (ch === Dungeon.hero!! && !ch.isAlive)
                         Dungeon.fail(javaClass)
                 }
             }
@@ -176,7 +177,7 @@ open class Bomb : Item() {
         return if (fuse == null)
             super.desc()
         else
-            Messages.get(this, "desc_burning")
+            Messages.get(this.javaClass, "desc_burning")
     }
 
     override fun storeInBundle(bundle: Bundle) {
@@ -187,7 +188,8 @@ open class Bomb : Item() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         if (bundle.contains(FUSE))
-            Actor.add(fuse = (bundle.get(FUSE) as Fuse).ignite(this))
+            fuse = (bundle.get(FUSE) as Fuse)
+            Actor.add(fuse!!.ignite(this))
     }
 
 
@@ -214,8 +216,8 @@ open class Bomb : Item() {
 
             //look for our bomb, remove it from its heap, and blow it up.
             for (heap in Dungeon.level!!.heaps.values()) {
-                if (heap.items!!.contains(bomb)) {
-                    heap.items!!.remove(bomb)
+                if (heap.items!!.contains(bomb!!)) {
+                    heap.items!!.remove(bomb!!)
 
                     bomb!!.explode(heap.pos)
 
@@ -244,7 +246,7 @@ open class Bomb : Item() {
             bomb.quantity(2)
             if (bomb.doPickUp(hero)) {
                 //isaaaaac.... (don't bother doing this when not in english)
-                if (Messages.get(this, "name") == "two bombs")
+                if (Messages.get(this.javaClass, "name") == "two bombs")
                     hero.sprite!!.showStatus(CharSprite.NEUTRAL, "1+1 free!")
                 return true
             }

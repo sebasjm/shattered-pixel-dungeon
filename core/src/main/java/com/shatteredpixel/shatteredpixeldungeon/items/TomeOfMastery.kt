@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite
@@ -99,22 +100,22 @@ class TomeOfMastery : Item() {
 
     fun choose(way: HeroSubClass) {
 
-        detach(Item.curUser.belongings.backpack)
+        detach(Item.curUser!!.belongings.backpack)
 
-        Item.curUser.spend(TomeOfMastery.TIME_TO_READ)
-        Item.curUser.busy()
+        Item.curUser!!.spend(TomeOfMastery.TIME_TO_READ)
+        Item.curUser!!.busy()
 
-        Item.curUser.subClass = way
+        Item.curUser!!.subClass = way
 
-        Item.curUser.sprite!!.operate(Item.curUser.pos)
+        Item.curUser!!.sprite!!.operate(Item.curUser!!.pos)
         Sample.INSTANCE.play(Assets.SND_MASTERY)
 
-        SpellSprite.show(Item.curUser, SpellSprite.MASTERY)
-        Item.curUser.sprite!!.emitter().burst(Speck.factory(Speck.MASTERY), 12)
-        GLog.w(Messages.get(this, "way", way.title()))
+        SpellSprite.show(Item.curUser!!, SpellSprite.MASTERY)
+        Item.curUser!!.sprite!!.emitter().burst(Speck.factory(Speck.MASTERY), 12)
+        GLog.w(Messages.get(this.javaClass, "way", way.title()))
 
         if (way == HeroSubClass.BERSERKER) {
-            Buff.affect<Berserk>(Item.curUser, Berserk::class.java)
+            Buff.affect<Berserk>(Item.curUser!!, Berserk::class.java)
         }
     }
 

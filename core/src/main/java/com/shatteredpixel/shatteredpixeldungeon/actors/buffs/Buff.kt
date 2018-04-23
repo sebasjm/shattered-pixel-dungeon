@@ -21,10 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
+import com.watabou.noosa.Game
 import com.watabou.noosa.Image
 
 import java.text.DecimalFormat
@@ -32,7 +32,7 @@ import java.util.HashSet
 
 open class Buff : Actor() {
 
-    var target: Char
+    var target: Char? = null
     var type = buffType.SILENT
 
     protected var resistances = HashSet<Class<*>>()
@@ -50,11 +50,11 @@ open class Buff : Actor() {
     }
 
     fun resistances(): HashSet<Class<*>> {
-        return HashSet<Class>(resistances)
+        return HashSet(resistances)
     }
 
     fun immunities(): HashSet<Class<*>> {
-        return HashSet<Class>(immunities)
+        return HashSet(immunities)
     }
 
     open fun attachTo(target: Char): Boolean {
@@ -74,8 +74,8 @@ open class Buff : Actor() {
     }
 
     open fun detach() {
-        if (target.sprite != null) fx(false)
-        target.remove(this)
+        if (target!!.sprite != null) fx(false)
+        target!!.remove(this)
     }
 
     public override fun act(): Boolean {
@@ -117,7 +117,7 @@ open class Buff : Actor() {
                 buff.attachTo(target)
                 return buff
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 
@@ -153,7 +153,7 @@ open class Buff : Actor() {
         }
 
         fun detach(target: Char, cl: Class<out Buff>) {
-            detach(target.buff<out Buff>(cl))
+            detach(target.buff(cl as Class<Buff>))
         }
     }
 }

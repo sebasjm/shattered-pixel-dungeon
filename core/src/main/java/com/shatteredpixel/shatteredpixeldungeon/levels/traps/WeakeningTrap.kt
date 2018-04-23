@@ -42,7 +42,7 @@ class WeakeningTrap : Trap() {
         }
 
         val ch = Actor.findChar(pos)
-        if (ch === Dungeon.hero) {
+        if (ch === Dungeon.hero!!) {
             Buff.prolong<Weakness>(ch, Weakness::class.java, Weakness.DURATION * 2f)
         }
     }

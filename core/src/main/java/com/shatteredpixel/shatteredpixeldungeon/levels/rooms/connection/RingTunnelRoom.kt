@@ -45,7 +45,7 @@ open class RingTunnelRoom : TunnelRoom() {
                 connSpace = Rect(c.x - 1, c.y - 1, c.x + 1, c.y + 1)
             }
 
-            return connSpace
+            return connSpace!!
         }
 
     override fun minWidth(): Int {

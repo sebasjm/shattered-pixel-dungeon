@@ -24,8 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
@@ -65,58 +63,58 @@ class LloydsBeacon : Artifact() {
             charge -= if (Dungeon.depth > 20) 2 else 1
             updateQuickslot()
 
-            if (Actor.findChar(target) === Item.curUser) {
-                ScrollOfTeleportation.teleportHero(Item.curUser)
-                Item.curUser.spendAndNext(1f)
+            if (Actor.findChar(target) === Item.curUser!!) {
+                ScrollOfTeleportation.teleportHero(Item.curUser!!)
+                Item.curUser!!.spendAndNext(1f)
             } else {
-                val bolt = Ballistica(Item.curUser.pos, target, Ballistica.MAGIC_BOLT)
+                val bolt = Ballistica(Item.curUser!!.pos, target, Ballistica.MAGIC_BOLT)
                 val ch = Actor.findChar(bolt.collisionPos!!)
 
-                if (ch === Item.curUser) {
-                    ScrollOfTeleportation.teleportHero(Item.curUser)
-                    Item.curUser.spendAndNext(1f)
+                if (ch === Item.curUser!!) {
+                    ScrollOfTeleportation.teleportHero(Item.curUser!!)
+                    Item.curUser!!.spendAndNext(1f)
                 } else {
                     Sample.INSTANCE.play(Assets.SND_ZAP)
-                    Item.curUser.sprite!!.zap(bolt.collisionPos!!)
-                    Item.curUser.busy()
+                    Item.curUser!!.sprite!!.zap(bolt.collisionPos!!)
+                    Item.curUser!!.busy()
 
-                    MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+                    MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                             MagicMissile.BEACON,
-                            Item.curUser.sprite,
-                            bolt.collisionPos!!
-                    ) {
-                        if (ch != null) {
+                            Item.curUser!!.sprite!!,
+                            bolt.collisionPos!!, {
+                                if (ch != null) {
 
-                            var count = 10
-                            var pos: Int
-                            do {
-                                pos = Dungeon.level!!.randomRespawnCell()
-                                if (count-- <= 0) {
-                                    break
+                                    var count = 10
+                                    var pos: Int
+                                    do {
+                                        pos = Dungeon.level!!.randomRespawnCell()
+                                        if (count-- <= 0) {
+                                            break
+                                        }
+                                    } while (pos == -1)
+
+                                    if (pos == -1 || Dungeon.bossLevel()) {
+
+                                        GLog.w(Messages.get(ScrollOfTeleportation::class.java, "no_tele"))
+
+                                    } else if (ch.properties().contains(com.shatteredpixel.shatteredpixeldungeon.actors.Char.Property.IMMOVABLE)) {
+
+                                        GLog.w(Messages.get(LloydsBeacon::class.java, "tele_fail"))
+
+                                    } else {
+
+                                        ch.pos = pos
+                                        if (ch is Mob && ch.state === ch.HUNTING) {
+                                            ch.state = ch.WANDERING
+                                        }
+                                        ch.sprite!!.place(ch.pos)
+                                        ch.sprite!!.visible = Dungeon.level!!.heroFOV[pos]
+
+                                    }
                                 }
-                            } while (pos == -1)
-
-                            if (pos == -1 || Dungeon.bossLevel()) {
-
-                                GLog.w(Messages.get(ScrollOfTeleportation::class.java, "no_tele"))
-
-                            } else if (ch.properties().contains(com.shatteredpixel.shatteredpixeldungeon.actors.Char.Property.IMMOVABLE)) {
-
-                                GLog.w(Messages.get(LloydsBeacon::class.java, "tele_fail"))
-
-                            } else {
-
-                                ch.pos = pos
-                                if (ch is Mob && ch.state === ch.HUNTING) {
-                                    ch.state = ch.WANDERING
-                                }
-                                ch.sprite!!.place(ch.pos)
-                                ch.sprite!!.visible = Dungeon.level!!.heroFOV[pos]
-
-                            }
-                        }
-                        Item.curUser.spendAndNext(1f)
-                    }
+                                Item.curUser!!.spendAndNext(1f)
+                            } as Callback
+                    )
 
                 }
 
@@ -174,14 +172,14 @@ class LloydsBeacon : Artifact() {
 
             if (Dungeon.bossLevel()) {
                 hero.spend(LloydsBeacon.TIME_TO_USE)
-                GLog.w(Messages.get(this, "preventing"))
+                GLog.w(Messages.get(this.javaClass, "preventing"))
                 return
             }
 
-            for (i in PathFinder.NEIGHBOURS8.indices) {
-                val ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i])
+            for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                val ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8!![i])
                 if (ch != null && ch.alignment == com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ENEMY) {
-                    GLog.w(Messages.get(this, "creatures"))
+                    GLog.w(Messages.get(this.javaClass, "creatures"))
                     return
                 }
             }
@@ -197,7 +195,7 @@ class LloydsBeacon : Artifact() {
                 QuickSlotButton.cancel()
 
             } else if (charge < chargesToUse) {
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
                 QuickSlotButton.cancel()
 
             } else {
@@ -215,7 +213,7 @@ class LloydsBeacon : Artifact() {
             hero.sprite!!.operate(hero.pos)
             Sample.INSTANCE.play(Assets.SND_BEACON)
 
-            GLog.i(Messages.get(this, "return"))
+            GLog.i(Messages.get(this.javaClass, "return"))
 
         } else if (action === AC_RETURN) {
 
@@ -246,14 +244,14 @@ class LloydsBeacon : Artifact() {
     override fun upgrade(): Item {
         if (level() == levelCap) return this
         chargeCap++
-        GLog.p(Messages.get(this, "levelup"))
+        GLog.p(Messages.get(this.javaClass, "levelup"))
         return super.upgrade()
     }
 
     override fun desc(): String {
         var desc = super.desc()
         if (returnDepth != -1) {
-            desc += "\n\n" + Messages.get(this, "desc_set", returnDepth)
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_set", returnDepth)
         }
         return desc
     }
@@ -264,7 +262,7 @@ class LloydsBeacon : Artifact() {
 
     inner class beaconRecharge : Artifact.ArtifactBuff() {
         override fun act(): Boolean {
-            val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+            val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
                 partialCharge += 1 / (100f - (chargeCap - charge) * 10f)
 

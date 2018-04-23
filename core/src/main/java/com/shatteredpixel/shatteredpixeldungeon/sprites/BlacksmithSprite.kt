@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.particles.Emitter
@@ -37,7 +38,7 @@ class BlacksmithSprite : MobSprite() {
 
         texture(Assets.TROLL)
 
-        val frames = TextureFilm(texture, 13, 16)
+        val frames = TextureFilm(texture!!, 13, 16)
 
         idle = MovieClip.Animation(15, true)
         idle!!.frames(frames, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3)
@@ -48,7 +49,7 @@ class BlacksmithSprite : MobSprite() {
         die = MovieClip.Animation(20, false)
         die!!.frames(frames, 0)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun link(ch: Char) {
@@ -57,7 +58,7 @@ class BlacksmithSprite : MobSprite() {
         emitter = Emitter()
         emitter!!.autoKill = false
         emitter!!.pos(x + 7, y + 12)
-        parent!!.add(emitter)
+        parent!!.add(emitter!!)
     }
 
     override fun update() {

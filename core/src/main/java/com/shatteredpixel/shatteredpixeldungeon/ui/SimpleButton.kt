@@ -39,9 +39,9 @@ open class SimpleButton(image: Image) : Component() {
 
     override fun createChildren() {
         image = Image()
-        add(image)
+        add(image!!)
 
-        add(object : TouchArea(image) {
+        add(object : TouchArea(image!!) {
             override fun onTouchDown(touch: Touch) {
                 image!!.brightness(1.2f)
             }

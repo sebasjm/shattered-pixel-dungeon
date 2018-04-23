@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
@@ -74,7 +75,7 @@ open class Ring : KindofMisc() {
     override fun doUnequip(hero: Hero?, collect: Boolean, single: Boolean): Boolean {
         if (super.doUnequip(hero, collect, single)) {
 
-            hero!!.remove(buff)
+            hero!!.remove(buff!!)
             buff = null
 
             return true
@@ -97,14 +98,14 @@ open class Ring : KindofMisc() {
     }
 
     override fun name(): String {
-        return if (isKnown) super.name() else Messages.get(Ring::class.java, gem)
+        return if (isKnown) super.name() else Messages.get(Ring::class.java, gem!!)
     }
 
     override fun info(): String {
 
-        var desc = if (isKnown) desc() else Messages.get(this, "unknown_desc")
+        var desc = if (isKnown) desc() else Messages.get(this.javaClass, "unknown_desc")
 
-        if (cursed && isEquipped(Dungeon.hero)) {
+        if (cursed && isEquipped(Dungeon.hero!!)) {
 
             desc += "\n\n" + Messages.get(Ring::class.java, "cursed_worn")
 
@@ -182,7 +183,8 @@ open class Ring : KindofMisc() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        if ((ticksToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
+        ticksToKnow = bundle.getInt(UNFAMILIRIARITY)
+        if (ticksToKnow == 0) {
             ticksToKnow = TICKS_TO_KNOW
         }
 
@@ -272,7 +274,7 @@ open class Ring : KindofMisc() {
 
         fun getBonus(target: Char, type: Class<out RingBuff>): Int {
             var bonus = 0
-            for (buff in target.buffs<out RingBuff>(type)) {
+            for (buff in target.buffs(type)) {
                 bonus += buff.level()
             }
             return bonus

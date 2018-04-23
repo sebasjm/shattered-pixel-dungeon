@@ -37,8 +37,8 @@ class PotionOfStrength : Potion() {
         setKnown()
 
         hero.STR++
-        hero.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this, "msg_1"))
-        GLog.p(Messages.get(this, "msg_2"))
+        hero.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this.javaClass, "msg_1"))
+        GLog.p(Messages.get(this.javaClass, "msg_2"))
 
         Badges.validateStrengthAttained()
     }

@@ -40,14 +40,14 @@ open class RedButton @JvmOverloads constructor(label: String, size: Int = 9) : B
 
         text = PixelScene.renderText(size)
         text!!.text(label)
-        add(text)
+        add(text!!)
     }
 
     override fun createChildren() {
         super.createChildren()
 
         bg = Chrome.get(Chrome.Type.BUTTON)
-        add(bg)
+        add(bg!!)
     }
 
     override fun layout() {
@@ -105,11 +105,11 @@ open class RedButton @JvmOverloads constructor(label: String, size: Int = 9) : B
 
     fun icon(icon: Image) {
         if (this.icon != null) {
-            remove(this.icon)
+            remove(this.icon!!)
         }
         this.icon = icon
         if (this.icon != null) {
-            add(this.icon)
+            add(this.icon!!)
             layout()
         }
     }

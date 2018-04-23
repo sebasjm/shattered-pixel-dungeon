@@ -51,7 +51,7 @@ class LootIndicator : Tag(0x1F75CC) {
             }
         }
         slot!!.showParams(true, false, false)
-        add(slot)
+        add(slot!!)
     }
 
     override fun layout() {

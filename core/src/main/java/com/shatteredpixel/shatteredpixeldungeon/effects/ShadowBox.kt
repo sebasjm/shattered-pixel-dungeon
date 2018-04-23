@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.watabou.gltextures.SmartTexture
+import com.watabou.glwrap.Texture
 import com.watabou.noosa.NinePatch
 
 class ShadowBox : NinePatch(Assets.SHADOW, 1) {
@@ -30,7 +31,7 @@ class ShadowBox : NinePatch(Assets.SHADOW, 1) {
 
         //If this is the first time the texture is generated, set the filtering
         if (texture.id == -1)
-            texture.filter(SmartTexture.LINEAR, SmartTexture.LINEAR)
+            texture.filter(Texture.LINEAR, Texture.LINEAR)
 
         scale.set(SIZE, SIZE)
     }

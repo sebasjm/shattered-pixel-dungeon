@@ -36,7 +36,7 @@ class Recharging : FlavourBuff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     //want to process partial turns for this buff, and not count it when it's expiring.
@@ -49,6 +49,6 @@ class Recharging : FlavourBuff() {
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 }

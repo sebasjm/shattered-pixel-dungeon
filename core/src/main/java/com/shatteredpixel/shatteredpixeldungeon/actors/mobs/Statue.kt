@@ -81,7 +81,7 @@ open class Statue : Mob() {
         return weapon.damageRoll(this)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return ((9 + Dungeon.depth) * weapon.accuracyFactor(this)).toInt()
     }
 
@@ -116,7 +116,7 @@ open class Statue : Mob() {
         // Do nothing
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         weapon.identify()
         Dungeon.level!!.drop(weapon, pos).sprite!!.drop()
         super.die(cause)
@@ -133,7 +133,7 @@ open class Statue : Mob() {
     }
 
     override fun description(): String {
-        return Messages.get(this, "desc", weapon.name())
+        return Messages.get(this.javaClass, "desc", weapon.name())
     }
 
     init {

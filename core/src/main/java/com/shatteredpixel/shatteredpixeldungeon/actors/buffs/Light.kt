@@ -43,7 +43,7 @@ class Light : FlavourBuff() {
     }
 
     override fun detach() {
-        target.viewDistance = Dungeon.level!!.viewDistance
+        target!!.viewDistance = Dungeon.level!!.viewDistance
         Dungeon.observe(DISTANCE + 1)
         super.detach()
     }
@@ -58,17 +58,17 @@ class Light : FlavourBuff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.ILLUMINATED)
+            target!!.sprite!!.add(CharSprite.State.ILLUMINATED)
         else
-            target.sprite!!.remove(CharSprite.State.ILLUMINATED)
+            target!!.sprite!!.remove(CharSprite.State.ILLUMINATED)
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 
     companion object {

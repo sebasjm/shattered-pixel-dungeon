@@ -36,12 +36,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline
-import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane
+import com.shatteredpixel.shatteredpixeldungeon.ui.*
 import com.watabou.noosa.BitmapText
 import com.watabou.noosa.ColorBlock
+import com.watabou.noosa.Game
 import com.watabou.noosa.Image
 import com.watabou.noosa.ui.Component
 
@@ -79,21 +77,21 @@ class WndJournal : WndTabbed() {
         catalogTab.setRect(0f, 0f, width.toFloat(), height.toFloat())
         catalogTab.updateList()
 
-        val tabs = arrayOf<WndTabbed.Tab>(object : WndTabbed.LabeledTab(Messages.get(this, "guide")) {
+        val tabs = arrayOf<WndTabbed.Tab>(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "guide")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 guideTab.visible = value
                 guideTab.active = guideTab.visible
                 if (value) last_index = 0
             }
-        }, object : WndTabbed.LabeledTab(Messages.get(this, "notes")) {
+        }, object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "notes")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 notesTab.visible = value
                 notesTab.active = notesTab.visible
                 if (value) last_index = 1
             }
-        }, object : WndTabbed.LabeledTab(Messages.get(this, "items")) {
+        }, object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "items")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 catalogTab.visible = value
@@ -113,24 +111,24 @@ class WndJournal : WndTabbed() {
 
     private open class ListItem @JvmOverloads constructor(icon: Image, text: String, d: Int = -1) : Component() {
 
-        protected var label: RenderedTextMultiline
-        protected var depth: BitmapText
-        protected var line: ColorBlock
-        protected var icon: Image
+        protected var label: RenderedTextMultiline? = null
+        protected var depth: BitmapText? = null
+        protected var line: ColorBlock? = null
+        protected var icon: Image? = null
 
         init {
 
-            this.icon.copy(icon)
+            this.icon!!.copy(icon)
 
-            label.text(text)
+            label!!.text(text)
 
             if (d >= 0) {
-                depth.text(Integer.toString(d))
-                depth.measure()
+                depth!!.text(Integer.toString(d))
+                depth!!.measure()
 
                 if (d == Dungeon.depth) {
-                    label.hardlight(Window.TITLE_COLOR)
-                    depth.hardlight(Window.TITLE_COLOR)
+                    label!!.hardlight(Window.TITLE_COLOR)
+                    depth!!.hardlight(Window.TITLE_COLOR)
                 }
             }
         }
@@ -142,7 +140,7 @@ class WndJournal : WndTabbed() {
             icon = Image()
             add(icon)
 
-            depth = BitmapText(PixelScene.pixelFont)
+            depth = BitmapText(PixelScene.pixelFont!!)
             add(depth)
 
             line = ColorBlock(1f, 1f, -0xddddde)
@@ -152,20 +150,20 @@ class WndJournal : WndTabbed() {
 
         override fun layout() {
 
-            icon.y = y + 1f + (height() - 1f - icon.height()) / 2f
-            PixelScene.align(icon)
+            icon!!.y = y + 1f + (height() - 1f - icon!!.height()) / 2f
+            PixelScene.align(icon!!)
 
-            depth.x = icon.x + (icon.width - depth.width()) / 2f
-            depth.y = icon.y + (icon.height - depth.height()) / 2f + 1f
-            PixelScene.align(depth)
+            depth!!.x = icon!!.x + (icon!!.width - depth!!.width()) / 2f
+            depth!!.y = icon!!.y + (icon!!.height - depth!!.height()) / 2f + 1f
+            PixelScene.align(depth!!)
 
-            line.size(width, 1f)
-            line.x = 0f
-            line.y = y
+            line!!.size(width, 1f)
+            line!!.x = 0f
+            line!!.y = y
 
-            label.maxWidth((width - icon.width() - 8f - 1f).toInt())
-            label.setPos(icon.x + icon.width() + 1f, y + 1f + (height() - label.height()) / 2f)
-            PixelScene.align(label)
+            label!!.maxWidth((width - icon!!.width() - 8f - 1f).toInt())
+            label!!.setPos(icon!!.x + icon!!.width() + 1f, y + 1f + (height() - label!!.height()) / 2f)
+            PixelScene.align(label!!)
         }
     }
 
@@ -193,7 +191,7 @@ class WndJournal : WndTabbed() {
             list!!.setRect(0f, 0f, width, height)
         }
 
-        private fun updateList() {
+        fun updateList() {
             val content = list!!.content()
 
             var pos = 0f
@@ -233,9 +231,9 @@ class WndJournal : WndTabbed() {
                 found = Document.ADVENTURERS_GUIDE.hasPage(page)
 
                 if (!found) {
-                    icon.hardlight(0.5f, 0.5f, 0.5f)
-                    label.text(Messages.titleCase(Messages.get(this, "missing")))
-                    label.hardlight(0x999999)
+                    icon!!.hardlight(0.5f, 0.5f, 0.5f)
+                    label!!.text(Messages.titleCase(Messages.get(this.javaClass, "missing")))
+                    label!!.hardlight(0x999999)
                 }
 
             }
@@ -267,7 +265,7 @@ class WndJournal : WndTabbed() {
             list!!.setRect(0f, 0f, width, height)
         }
 
-        private fun updateList() {
+        fun updateList() {
             val content = list!!.content()
 
             var pos = 0f
@@ -279,7 +277,7 @@ class WndJournal : WndTabbed() {
                 line.y = pos
                 content.add(line)
 
-                val title = PixelScene.renderMultiline(Messages.get(this, "keys"), 9)
+                val title = PixelScene.renderMultiline(Messages.get(this.javaClass, "keys"), 9)
                 title.hardlight(Window.TITLE_COLOR)
                 title.maxWidth(width().toInt() - 2)
                 title.setPos((width() - title.width()) / 2f, pos + 1f + (ITEM_HEIGHT - title.height()) / 2f)
@@ -304,7 +302,7 @@ class WndJournal : WndTabbed() {
                 line.y = pos
                 content.add(line)
 
-                val title = PixelScene.renderMultiline(Messages.get(this, "landmarks"), 9)
+                val title = PixelScene.renderMultiline(Messages.get(this.javaClass, "landmarks"), 9)
                 title.hardlight(Window.TITLE_COLOR)
                 title.maxWidth(width().toInt() - 2)
                 title.setPos((width() - title.width()) / 2f, pos + 1f + (ITEM_HEIGHT - title.height()) / 2f)
@@ -337,18 +335,29 @@ class WndJournal : WndTabbed() {
         private val items = ArrayList<CatalogItem>()
 
         override fun createChildren() {
-            itemButtons = arrayOfNulls(NUM_BUTTONS)
-            for (i in 0 until NUM_BUTTONS) {
-                val idx = i
-                itemButtons[i] = object : RedButton("") {
+            itemButtons = arrayOfNulls<RedButton>(NUM_BUTTONS).mapIndexed { idx, item ->
+                val rb = object : RedButton("") {
                     override fun onClick() {
                         currentItemIdx = idx
                         updateList()
                     }
                 }
-                itemButtons!![i].icon(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + i, null))
-                add(itemButtons!![i])
-            }
+                rb.icon(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + idx, null))
+                add(rb)
+                rb
+            }.toTypedArray()
+//            itemButtons = arrayOfNulls(NUM_BUTTONS)
+//            for (i in 0 until NUM_BUTTONS) {
+//                val idx = i
+//                itemButtons!![i] = object : RedButton("") {
+//                    override fun onClick() {
+//                        currentItemIdx = idx
+//                        updateList()
+//                    }
+//                }
+//                itemButtons!![i].icon(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + i, null))
+//                add(itemButtons!![i])
+//            }
 
             list = object : ScrollPane(Component()) {
                 override fun onClick(x: Float, y: Float) {
@@ -379,7 +388,7 @@ class WndJournal : WndTabbed() {
                     height - itemButtons!![NUM_BUTTONS - 1].bottom() - 1f)
         }
 
-        private fun updateList() {
+        fun updateList() {
 
             items.clear()
 
@@ -422,29 +431,31 @@ class WndJournal : WndTabbed() {
                 itemClasses = ArrayList()
             }
 
-            Collections.sort(itemClasses) { a, b ->
+            Collections.sort(itemClasses, { a, b ->
                 var result = 0
 
                 //specifically known items appear first, then seen items, then unknown items.
-                if (known[a] && Catalog.isSeen(a)) result -= 2
-                if (known[b] && Catalog.isSeen(b)) result += 2
+                if (known!![a]!! && Catalog.isSeen(a)) result -= 2
+                if (known!![b]!! && Catalog.isSeen(b)) result += 2
                 if (Catalog.isSeen(a)) result--
                 if (Catalog.isSeen(b)) result++
 
                 result
-            }
+            })
+
+                    //asd
 
             var pos = 0f
             for (itemClass in itemClasses) {
                 try {
-                    val item = CatalogItem(itemClass.newInstance(), known[itemClass], Catalog.isSeen(itemClass))
+                    val item = CatalogItem(itemClass.newInstance(), known!![itemClass]!!, Catalog.isSeen(itemClass))
                     item.setRect(0f, pos, width, ITEM_HEIGHT.toFloat())
                     content.add(item)
                     items.add(item)
 
                     pos += item.height()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                 }
 
             }
@@ -458,19 +469,19 @@ class WndJournal : WndTabbed() {
             init {
 
                 if (!seen) {
-                    icon.copy(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null))
-                    label.text("???")
-                    label.hardlight(0x999999)
+                    icon!!.copy(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null))
+                    label!!.text("???")
+                    label!!.hardlight(0x999999)
                 } else if (!IDed) {
-                    icon.copy(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null))
-                    label.hardlight(0xCCCCCC)
+                    icon!!.copy(ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null))
+                    label!!.hardlight(0xCCCCCC)
                 }
 
             }
 
             fun onClick(x: Float, y: Float): Boolean {
                 if (inside(x, y) && seen) {
-                    GameScene.show(WndTitledMessage(Image(icon),
+                    GameScene.show(WndTitledMessage(Image(icon!!),
                             Messages.titleCase(item.trueName()), item.desc()))
                     return true
                 } else {

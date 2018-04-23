@@ -28,7 +28,7 @@ import com.watabou.utils.Random
 
 class MasterThievesArmband : Artifact() {
 
-    private var exp = 0
+   var exp2 = 0
 
     init {
         image = ItemSpriteSheet.ARTIFACT_ARMBAND
@@ -45,8 +45,8 @@ class MasterThievesArmband : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero))
-            desc += "\n\n" + Messages.get(this, "desc_worn")
+        if (isEquipped(Dungeon.hero!!))
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_worn")
 
         return desc
     }
@@ -57,14 +57,14 @@ class MasterThievesArmband : Artifact() {
         }
 
         override fun detach() {
-            charge *= 0.95
+            charge = (charge * 0.95f).toInt()
             super.detach()
         }
 
         fun steal(value: Int): Boolean {
             if (value <= charge) {
                 charge -= value
-                exp += value
+                exp2 += value
             } else {
                 val chance = stealChance(value)
                 if (Random.Float() > chance)
@@ -75,11 +75,11 @@ class MasterThievesArmband : Artifact() {
                     else
                     //removes the charge it took you to reach 100%
                         charge -= (charge / chance).toInt()
-                    exp += value
+                    exp2 += value
                 }
             }
-            while (exp >= 250 + 50 * level() && level() < levelCap) {
-                exp -= 250 + 50 * level()
+            while (exp2 >= 250 + 50 * level() && level() < levelCap) {
+                exp2 -= 250 + 50 * level()
                 upgrade()
             }
             return true

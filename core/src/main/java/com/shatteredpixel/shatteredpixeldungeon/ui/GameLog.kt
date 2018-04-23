@@ -44,9 +44,10 @@ class GameLog : Component(), Signal.Listener<String> {
     @Synchronized
     private fun recreateLines() {
         for (entry in entries) {
-            lastEntry = PixelScene.renderMultiline(entry.text, 6)
-            lastEntry!!.hardlight(lastColor = entry.color)
-            add(lastEntry)
+            lastEntry = PixelScene.renderMultiline(entry.text!!, 6)
+            lastColor = entry.color
+            lastEntry!!.hardlight(lastColor)
+            add(lastEntry!!)
         }
     }
 
@@ -91,7 +92,7 @@ class GameLog : Component(), Signal.Listener<String> {
             lastEntry = PixelScene.renderMultiline(text, 6)
             lastEntry!!.hardlight(color)
             lastColor = color
-            add(lastEntry)
+            add(lastEntry!!)
 
             entries.add(Entry(text, color))
 

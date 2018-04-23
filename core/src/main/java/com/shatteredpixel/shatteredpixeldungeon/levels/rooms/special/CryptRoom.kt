@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Point
 
 class CryptRoom : SpecialRoom() {
@@ -76,7 +77,7 @@ class CryptRoom : SpecialRoom() {
         //1 floor set higher than normal
         val prize = Generator.randomArmor(Dungeon.depth / 5 + 1)
 
-        if (Challenges.isItemBlocked(prize)) {
+        if (Challenges.isItemBlocked(prize!!)) {
             return Gold().random()
         }
 

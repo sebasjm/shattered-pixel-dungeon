@@ -41,7 +41,7 @@ class ResumeIndicator : Tag(0xCDD5C0) {
         super.createChildren()
 
         icon = Icons.get(Icons.RESUME)
-        add(icon)
+        add(icon!!)
     }
 
     override fun layout() {

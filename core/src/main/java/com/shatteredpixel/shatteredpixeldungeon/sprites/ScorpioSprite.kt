@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
 
@@ -35,7 +36,7 @@ open class ScorpioSprite : MobSprite() {
 
         texture(Assets.SCORPIO)
 
-        val frames = TextureFilm(texture, 18, 17)
+        val frames = TextureFilm(texture!!, 18, 17)
 
         idle = MovieClip.Animation(12, true)
         idle!!.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2)
@@ -51,7 +52,7 @@ open class ScorpioSprite : MobSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 0, 7, 8, 9, 10)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun blood(): Int {
@@ -76,7 +77,7 @@ open class ScorpioSprite : MobSprite() {
         if (anim === zap) {
             idle()
 
-            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cellToAttack, Dart()) { ch!!.onAttackComplete() }
+            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cellToAttack, Dart(), { ch!!.onAttackComplete() } as Callback)
         } else {
             super.onComplete(anim)
         }

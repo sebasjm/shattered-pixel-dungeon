@@ -44,23 +44,23 @@ class WndSadGhost(ghost: Ghost, type: Int) : Window() {
         when (type) {
             1 -> {
                 titlebar.icon(FetidRatSprite())
-                titlebar.label(Messages.get(this, "rat_title"))
-                message = PixelScene.renderMultiline(Messages.get(this, "rat") + Messages.get(this, "give_item"), 6)
+                titlebar.label(Messages.get(this.javaClass, "rat_title"))
+                message = PixelScene.renderMultiline(Messages.get(this.javaClass, "rat") + Messages.get(this.javaClass, "give_item"), 6)
             }
             2 -> {
                 titlebar.icon(GnollTricksterSprite())
-                titlebar.label(Messages.get(this, "gnoll_title"))
-                message = PixelScene.renderMultiline(Messages.get(this, "gnoll") + Messages.get(this, "give_item"), 6)
+                titlebar.label(Messages.get(this.javaClass, "gnoll_title"))
+                message = PixelScene.renderMultiline(Messages.get(this.javaClass, "gnoll") + Messages.get(this.javaClass, "give_item"), 6)
             }
             3 -> {
                 titlebar.icon(GreatCrabSprite())
-                titlebar.label(Messages.get(this, "crab_title"))
-                message = PixelScene.renderMultiline(Messages.get(this, "crab") + Messages.get(this, "give_item"), 6)
+                titlebar.label(Messages.get(this.javaClass, "crab_title"))
+                message = PixelScene.renderMultiline(Messages.get(this.javaClass, "crab") + Messages.get(this.javaClass, "give_item"), 6)
             }
             else -> {
                 titlebar.icon(FetidRatSprite())
-                titlebar.label(Messages.get(this, "rat_title"))
-                message = PixelScene.renderMultiline(Messages.get(this, "rat") + Messages.get(this, "give_item"), 6)
+                titlebar.label(Messages.get(this.javaClass, "rat_title"))
+                message = PixelScene.renderMultiline(Messages.get(this.javaClass, "rat") + Messages.get(this.javaClass, "give_item"), 6)
             }
         }
 
@@ -71,7 +71,7 @@ class WndSadGhost(ghost: Ghost, type: Int) : Window() {
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnWeapon = object : RedButton(Messages.get(this, "weapon")) {
+        val btnWeapon = object : RedButton(Messages.get(this.javaClass, "weapon")) {
             override fun onClick() {
                 selectReward(ghost, Ghost.Quest.weapon)
             }
@@ -80,7 +80,7 @@ class WndSadGhost(ghost: Ghost, type: Int) : Window() {
         add(btnWeapon)
 
         if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
-            val btnArmor = object : RedButton(Messages.get(this, "armor")) {
+            val btnArmor = object : RedButton(Messages.get(this.javaClass, "armor")) {
                 override fun onClick() {
                     selectReward(ghost, Ghost.Quest.armor)
                 }
@@ -101,13 +101,13 @@ class WndSadGhost(ghost: Ghost, type: Int) : Window() {
         if (reward == null) return
 
         reward.identify()
-        if (reward.doPickUp(Dungeon.hero)) {
-            GLog.i(Messages.get(Dungeon.hero!!, "you_now_have", reward.name()))
+        if (reward.doPickUp(Dungeon.hero!!)) {
+            GLog.i(Messages.get(Dungeon.hero!!.javaClass, "you_now_have", reward.name()))
         } else {
             Dungeon.level!!.drop(reward, ghost.pos).sprite!!.drop()
         }
 
-        ghost.yell(Messages.get(this, "farewell"))
+        ghost.yell(Messages.get(this.javaClass, "farewell"))
         ghost.die(null)
 
         Ghost.Quest.complete()

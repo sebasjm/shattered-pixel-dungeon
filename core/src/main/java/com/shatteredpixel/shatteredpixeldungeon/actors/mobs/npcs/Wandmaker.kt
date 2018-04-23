@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle
@@ -60,7 +61,7 @@ class Wandmaker : NPC() {
         return super.act()
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char?): Int {
         return 1000
     }
 
@@ -90,9 +91,9 @@ class Wandmaker : NPC() {
             } else {
                 var msg = ""
                 when (Quest.type) {
-                    1 -> msg = Messages.get(this, "reminder_dust", Dungeon.hero!!.givenName())
-                    2 -> msg = Messages.get(this, "reminder_ember", Dungeon.hero!!.givenName())
-                    3 -> msg = Messages.get(this, "reminder_berry", Dungeon.hero!!.givenName())
+                    1 -> msg = Messages.get(this.javaClass, "reminder_dust", Dungeon.hero!!.givenName())
+                    2 -> msg = Messages.get(this.javaClass, "reminder_ember", Dungeon.hero!!.givenName())
+                    3 -> msg = Messages.get(this.javaClass, "reminder_berry", Dungeon.hero!!.givenName())
                 }
                 GameScene.show(WndQuest(this, msg))
             }
@@ -102,21 +103,21 @@ class Wandmaker : NPC() {
             var msg1 = ""
             var msg2 = ""
             when (Dungeon.hero!!.heroClass) {
-                HeroClass.WARRIOR -> msg1 += Messages.get(this, "intro_warrior")
-                HeroClass.ROGUE -> msg1 += Messages.get(this, "intro_rogue")
-                HeroClass.MAGE -> msg1 += Messages.get(this, "intro_mage", Dungeon.hero!!.givenName())
-                HeroClass.HUNTRESS -> msg1 += Messages.get(this, "intro_huntress")
+                HeroClass.WARRIOR -> msg1 += Messages.get(this.javaClass, "intro_warrior")
+                HeroClass.ROGUE -> msg1 += Messages.get(this.javaClass, "intro_rogue")
+                HeroClass.MAGE -> msg1 += Messages.get(this.javaClass, "intro_mage", Dungeon.hero!!.givenName())
+                HeroClass.HUNTRESS -> msg1 += Messages.get(this.javaClass, "intro_huntress")
             }
 
-            msg1 += Messages.get(this, "intro_1")
+            msg1 += Messages.get(this.javaClass, "intro_1")
 
             when (Quest.type) {
-                1 -> msg2 += Messages.get(this, "intro_dust")
-                2 -> msg2 += Messages.get(this, "intro_ember")
-                3 -> msg2 += Messages.get(this, "intro_berry")
+                1 -> msg2 += Messages.get(this.javaClass, "intro_dust")
+                2 -> msg2 += Messages.get(this.javaClass, "intro_ember")
+                3 -> msg2 += Messages.get(this.javaClass, "intro_berry")
             }
 
-            msg2 += Messages.get(this, "intro_2")
+            msg2 += Messages.get(this.javaClass, "intro_2")
             val msg2final = msg2
             val wandmaker = this
 
@@ -136,14 +137,14 @@ class Wandmaker : NPC() {
 
     object Quest {
 
-        private var type: Int = 0
+        var type: Int = 0
         // 1 = corpse dust quest
         // 2 = elemental embers quest
         // 3 = rotberry quest
 
-        private var spawned: Boolean = false
+        var spawned: Boolean = false
 
-        private var given: Boolean = false
+        var given: Boolean = false
 
         var wand1: Wand? = null
         var wand2: Wand? = null
@@ -196,21 +197,23 @@ class Wandmaker : NPC() {
 
             val node = bundle.getBundle(NODE)
 
-            if (!node.isNull && (spawned = node.getBoolean(SPAWNED))) {
+            if (!node.isNull) {
+                spawned = node.getBoolean(SPAWNED)
+                if (spawned) {
+                    type = node.getInt(TYPE)
 
-                type = node.getInt(TYPE)
+                    given = node.getBoolean(GIVEN)
 
-                given = node.getBoolean(GIVEN)
+                    wand1 = node.get(WAND1) as Wand
+                    wand2 = node.get(WAND2) as Wand
 
-                wand1 = node.get(WAND1) as Wand
-                wand2 = node.get(WAND2) as Wand
+                    if (type == 2) {
+                        CeremonialCandle.ritualPos = node.getInt(RITUALPOS)
+                    }
 
-                if (type == 2) {
-                    CeremonialCandle.ritualPos = node.getInt(RITUALPOS)
+                } else {
+                    reset()
                 }
-
-            } else {
-                reset()
             }
         }
 

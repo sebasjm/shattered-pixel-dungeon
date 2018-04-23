@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -66,7 +67,7 @@ class PitRoom : SpecialRoom() {
             when (Random.Int(3)) {
                 0 -> mainLoot = Generator.random(Generator.Category.RING)
                 1 -> mainLoot = Generator.random(Generator.Category.ARTIFACT)
-                2 -> mainLoot = Generator.random(Random.oneOf<Category>(
+                2 -> mainLoot = Generator.random(Random.oneOf(
                         Generator.Category.WEAPON,
                         Generator.Category.ARMOR))
             }
@@ -87,7 +88,7 @@ class PitRoom : SpecialRoom() {
                 return prize
         }
 
-        return Generator.random(Random.oneOf<Category>(
+        return Generator.random(Random.oneOf<Generator.Category>(
                 Generator.Category.POTION,
                 Generator.Category.SCROLL,
                 Generator.Category.FOOD,

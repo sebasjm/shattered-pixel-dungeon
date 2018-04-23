@@ -35,7 +35,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0f, 0f,
 
     protected var texture: SmartTexture
 
-    protected var data: IntArray? = null
+    protected var data: IntArray = IntArray(0)
     protected var mapWidth: Int = 0
     protected var mapHeight: Int = 0
     protected var size: Int = 0
@@ -139,7 +139,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0f, 0f,
 
                 quads!!.position(pos * 16)
 
-                uv = tileset.get(data!![pos])
+                uv = tileset.get(data[pos])
 
                 if (needsRender(pos) && uv != null) {
 

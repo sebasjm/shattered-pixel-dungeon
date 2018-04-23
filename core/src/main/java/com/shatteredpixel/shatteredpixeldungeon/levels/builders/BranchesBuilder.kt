@@ -41,15 +41,15 @@ class BranchesBuilder : RegularBuilder() {
 
         entrance!!.setSize()
         entrance!!.setPos(0, 0)
-        branchable.add(entrance)
+        branchable.add(entrance!!)
 
         if (shop != null) {
-            Builder.placeRoom(branchable, entrance, shop, Random.Float(360f))
+            Builder.placeRoom(branchable, entrance!!, shop!!, Random.Float(360f))
         }
 
         val roomsToBranch = ArrayList<Room>()
         roomsToBranch.addAll(multiConnections)
-        if (exit != null) roomsToBranch.add(exit)
+        if (exit != null) roomsToBranch.add(exit!!)
         roomsToBranch.addAll(singleConnections)
         createBranches(rooms, branchable, roomsToBranch, branchTunnelChances)
 

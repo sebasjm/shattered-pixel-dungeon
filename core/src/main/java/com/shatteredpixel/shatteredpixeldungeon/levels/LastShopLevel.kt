@@ -61,7 +61,7 @@ class LastShopLevel : RegularLevel() {
 
             for (i in 0 until length()) {
                 if (map!![i] == Terrain.SECRET_DOOR) {
-                    map[i] = Terrain.DOOR
+                    map!![i] = Terrain.DOOR
                 }
             }
 
@@ -74,9 +74,11 @@ class LastShopLevel : RegularLevel() {
     override fun initRooms(): ArrayList<Room> {
         val rooms = ArrayList<Room>()
 
-        rooms.add(roomEntrance = EntranceRoom())
+        roomEntrance = EntranceRoom()
+        rooms.add(roomEntrance!!)
         rooms.add(ImpShopRoom())
-        rooms.add(roomExit = ExitRoom())
+        roomExit = ExitRoom()
+        rooms.add(roomExit!!)
 
         return rooms
     }
@@ -100,7 +102,7 @@ class LastShopLevel : RegularLevel() {
 
     override fun createMobs() {}
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 
@@ -109,14 +111,14 @@ class LastShopLevel : RegularLevel() {
         if (item != null) {
             var pos: Int
             do {
-                pos = pointToCell(roomEntrance.random())
+                pos = pointToCell(roomEntrance!!.random())
             } while (pos == entrance)
             drop(item, pos).type = Heap.Type.REMAINS
         }
     }
 
     override fun randomRespawnCell(): Int {
-        return pointToCell(roomEntrance.random())
+        return pointToCell(roomEntrance!!.random())
     }
 
     override fun tileName(tile: Int): String {

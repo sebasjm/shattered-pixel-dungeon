@@ -93,7 +93,7 @@ class Amulet : Item() {
             AmuletScene.noText = !showText
             Game.switchScene(AmuletScene::class.java)
         } catch (e: IOException) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }

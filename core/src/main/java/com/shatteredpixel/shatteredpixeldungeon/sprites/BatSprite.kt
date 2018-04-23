@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class BatSprite : MobSprite() {
@@ -29,7 +30,7 @@ class BatSprite : MobSprite() {
 
         texture(Assets.BAT)
 
-        val frames = TextureFilm(texture, 15, 15)
+        val frames = TextureFilm(texture!!, 15, 15)
 
         idle = MovieClip.Animation(8, true)
         idle!!.frames(frames, 0, 1)
@@ -43,6 +44,6 @@ class BatSprite : MobSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 4, 5, 6)
 
-        play(idle)
+        play(idle!!)
     }
 }

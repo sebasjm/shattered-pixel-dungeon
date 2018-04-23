@@ -46,15 +46,15 @@ class AmuletScene : PixelScene() {
 
         var text: RenderedTextMultiline? = null
         if (!noText) {
-            text = PixelScene.renderMultiline(Messages.get(this, "text"), 8)
+            text = PixelScene.renderMultiline(Messages.get(this.javaClass, "text"), 8)
             text!!.maxWidth(WIDTH)
             add(text)
         }
 
         amulet = Image(Assets.AMULET)
-        add(amulet)
+        add(amulet!!)
 
-        val btnExit = object : RedButton(Messages.get(this, "exit")) {
+        val btnExit = object : RedButton(Messages.get(this.javaClass, "exit")) {
             override fun onClick() {
                 Dungeon.win(Amulet::class.java)
                 Dungeon.deleteGame(GamesInProgress.curSlot, true)
@@ -64,7 +64,7 @@ class AmuletScene : PixelScene() {
         btnExit.setSize(WIDTH.toFloat(), BTN_HEIGHT.toFloat())
         add(btnExit)
 
-        val btnStay = object : RedButton(Messages.get(this, "stay")) {
+        val btnStay = object : RedButton(Messages.get(this.javaClass, "stay")) {
             override fun onClick() {
                 onBackPressed()
             }
@@ -76,28 +76,28 @@ class AmuletScene : PixelScene() {
         if (noText) {
             height = amulet!!.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height()
 
-            amulet!!.x = (Camera.main.width - amulet!!.width) / 2
-            amulet!!.y = (Camera.main.height - height) / 2
+            amulet!!.x = (Camera.main!!.width - amulet!!.width) / 2
+            amulet!!.y = (Camera.main!!.height - height) / 2
             PixelScene.align(amulet!!)
 
-            btnExit.setPos((Camera.main.width - btnExit.width()) / 2, amulet!!.y + amulet!!.height + LARGE_GAP)
+            btnExit.setPos((Camera.main!!.width - btnExit.width()) / 2, amulet!!.y + amulet!!.height + LARGE_GAP)
             btnStay.setPos(btnExit.left(), btnExit.bottom() + SMALL_GAP)
 
         } else {
             height = amulet!!.height + LARGE_GAP + text!!.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height()
 
-            amulet!!.x = (Camera.main.width - amulet!!.width) / 2
-            amulet!!.y = (Camera.main.height - height) / 2
+            amulet!!.x = (Camera.main!!.width - amulet!!.width) / 2
+            amulet!!.y = (Camera.main!!.height - height) / 2
             PixelScene.align(amulet!!)
 
-            text.setPos((Camera.main.width - text.width()) / 2, amulet!!.y + amulet!!.height + LARGE_GAP)
+            text.setPos((Camera.main!!.width - text.width()) / 2, amulet!!.y + amulet!!.height + LARGE_GAP)
             PixelScene.align(text)
 
-            btnExit.setPos((Camera.main.width - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP)
+            btnExit.setPos((Camera.main!!.width - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP)
             btnStay.setPos(btnExit.left(), btnExit.bottom() + SMALL_GAP)
         }
 
-        Flare(8, 48f).color(0xFFDDBB, true).show(amulet, 0f).angularSpeed = +30f
+        Flare(8, 48f).color(0xFFDDBB, true).show(amulet!!, 0f).angularSpeed = +30f
 
         fadeIn()
     }
@@ -110,7 +110,8 @@ class AmuletScene : PixelScene() {
     override fun update() {
         super.update()
 
-        if ((timer -= Game.elapsed) < 0) {
+        timer -= Game.elapsed
+        if (timer < 0) {
             timer = Random.Float(0.5f, 5f)
 
             val star = recycle(Speck::class.java) as Speck

@@ -206,7 +206,7 @@ open class RenderedText : Image {
 
                 r.cache = CachedText()
                 r.cache!!.rect = rect
-                r.cache!!.texture = r.texture
+                r.cache!!.texture = r.texture!!
                 r.cache!!.length = r.text!!.length
                 r.cache!!.activeTexts = HashSet()
                 r.cache!!.activeTexts!!.add(r)

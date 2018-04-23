@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 
@@ -39,8 +40,8 @@ class IncendiaryDart : TippedDart() {
 
     override fun onThrow(cell: Int) {
         val enemy = Actor.findChar(cell)
-        if ((enemy == null || enemy === Item.curUser) && Dungeon.level!!.flamable[cell]) {
-            GameScene.add(Blob.seed<Fire>(cell, 4, Fire::class.java))
+        if ((enemy == null || enemy === Item.curUser!!) && Dungeon.level!!.flamable[cell]) {
+            GameScene.add(Blob.seed<Fire>(cell, 4, Fire::class.java)!!)
             Dungeon.level!!.drop(Dart(), cell).sprite!!.drop()
         } else {
             super.onThrow(cell)

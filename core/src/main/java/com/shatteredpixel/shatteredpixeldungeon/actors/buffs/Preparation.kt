@@ -76,7 +76,7 @@ class Preparation : Buff(), ActionIndicator.Action {
 
                 val passable = Dungeon.level!!.passable.clone()
                 PathFinder.buildDistanceMap(Dungeon.hero!!.pos, passable, lvl.blinkDistance + 1)
-                if (PathFinder.distance[cell] == Integer.MAX_VALUE) {
+                if (PathFinder.distance!![cell] == Integer.MAX_VALUE) {
                     GLog.w(Messages.get(Preparation::class.java, "out_of_reach"))
                     return
                 }
@@ -84,7 +84,7 @@ class Preparation : Buff(), ActionIndicator.Action {
                 //we can move through enemies when determining blink distance,
                 // but not when actually jumping to a location
                 for (ch in Actor.chars()) {
-                    if (ch !== Dungeon.hero) passable[ch.pos] = false
+                    if (ch !== Dungeon.hero!!) passable[ch.pos] = false
                 }
 
                 val path = PathFinder.find(Dungeon.hero!!.pos, cell, passable)
@@ -96,7 +96,7 @@ class Preparation : Buff(), ActionIndicator.Action {
                 }
 
                 Dungeon.hero!!.pos = attackPos
-                Dungeon.level!!.press(Dungeon.hero!!.pos, Dungeon.hero)
+                Dungeon.level!!.press(Dungeon.hero!!.pos, Dungeon.hero!!)
                 //prevents the hero from being interrupted by seeing new enemies
                 Dungeon.observe()
                 Dungeon.hero!!.checkVisibleMobs()
@@ -161,10 +161,10 @@ class Preparation : Buff(), ActionIndicator.Action {
     }
 
     override fun act(): Boolean {
-        if (target.invisible > 0) {
+        if (target!!.invisible > 0) {
             turnsInvis++
-            if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0 && target === Dungeon.hero) {
-                ActionIndicator.setAction(this)
+            if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0 && target!! === Dungeon.hero!!) {
+                ActionIndicator.action  = this
             }
             BuffIndicator.refreshHero()
             spend(Actor.TICK)
@@ -206,39 +206,39 @@ class Preparation : Buff(), ActionIndicator.Action {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        var desc = Messages.get(this, "desc")
+        var desc = Messages.get(this.javaClass, "desc")
 
         val lvl = AttackLevel.getLvl(turnsInvis)
 
         if (lvl.canInstakill(Rat())) {
-            desc += "\n\n" + Messages.get(this, "desc_dmg_instakill",
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_dmg_instakill",
                     (lvl.baseDmgBonus * 100).toInt(),
                     (lvl.baseDmgBonus * 100 + lvl.missingHPBonus * 100).toInt())
         } else if (lvl.missingHPBonus > 0) {
-            desc += "\n\n" + Messages.get(this, "desc_dmg_scale",
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_dmg_scale",
                     (lvl.baseDmgBonus * 100).toInt(),
                     (lvl.baseDmgBonus * 100 + lvl.missingHPBonus * 100).toInt())
         } else {
-            desc += "\n\n" + Messages.get(this, "desc_dmg", (lvl.baseDmgBonus * 100).toInt())
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_dmg", (lvl.baseDmgBonus * 100).toInt())
         }
 
         if (lvl.damageRolls > 1) {
-            desc += " " + Messages.get(this, "desc_dmg_likely")
+            desc += " " + Messages.get(this.javaClass, "desc_dmg_likely")
         }
 
         if (lvl.blinkDistance > 0) {
-            desc += "\n\n" + Messages.get(this, "desc_blink", lvl.blinkDistance)
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_blink", lvl.blinkDistance)
         }
 
-        desc += "\n\n" + Messages.get(this, "desc_invis_time", turnsInvis)
+        desc += "\n\n" + Messages.get(this.javaClass, "desc_invis_time", turnsInvis)
 
         if (lvl.ordinal != AttackLevel.values().size - 1) {
             val next = AttackLevel.values()[lvl.ordinal + 1]
-            desc += "\n" + Messages.get(this, "desc_invis_next", next.turnsReq)
+            desc += "\n" + Messages.get(this.javaClass, "desc_invis_next", next.turnsReq)
         }
 
         return desc
@@ -248,7 +248,7 @@ class Preparation : Buff(), ActionIndicator.Action {
         super.restoreFromBundle(bundle)
         turnsInvis = bundle.getInt(TURNS)
         if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0) {
-            ActionIndicator.setAction(this)
+            ActionIndicator.action = this
         }
     }
 

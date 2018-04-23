@@ -54,8 +54,8 @@ class SummoningTrap : Trap() {
 
         val candidates = ArrayList<Int>()
 
-        for (i in PathFinder.NEIGHBOURS8.indices) {
-            val p = pos + PathFinder.NEIGHBOURS8[i]
+        for (i in PathFinder.NEIGHBOURS8!!.indices) {
+            val p = pos + PathFinder.NEIGHBOURS8!![i]
             if (Actor.findChar(p) == null && (Dungeon.level!!.passable[p] || Dungeon.level!!.avoid[p])) {
                 candidates.add(p)
             }

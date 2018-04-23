@@ -80,15 +80,13 @@ object Notes {
         IMP;
 
         fun desc(): String {
-            return Messages.get(this, name)
+            return Messages.get(this.javaClass, name)
         }
     }
 
     class LandmarkRecord : Record {
 
         protected var landmark: Landmark
-
-        constructor() {}
 
         constructor(landmark: Landmark, depth: Int) {
             this.landmark = landmark
@@ -124,8 +122,6 @@ object Notes {
     class KeyRecord : Record {
 
         protected var key: Key
-
-        constructor() {}
 
         constructor(key: Key) {
             this.key = key
@@ -176,7 +172,7 @@ object Notes {
     }
 
     fun storeInBundle(bundle: Bundle) {
-        bundle.put(RECORDS, records)
+        bundle.put(RECORDS, records!!)
     }
 
     fun restoreFromBundle(bundle: Bundle) {

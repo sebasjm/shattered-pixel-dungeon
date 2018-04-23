@@ -44,10 +44,13 @@ class ArmorKit : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private val itemSelector = WndBag.Listener { item ->
-        if (item != null) {
-            this@ArmorKit.upgrade(item as Armor)
+    private val itemSelector = object: WndBag.Listener {
+        override fun onSelect(item: Item?) {
+            if (item != null) {
+                this@ArmorKit.upgrade(item as Armor)
+            }
         }
+
     }
 
     init {
@@ -69,36 +72,36 @@ class ArmorKit : Item() {
         if (action === AC_APPLY) {
 
             Item.curUser = hero
-            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"))
+            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get(this.javaClass, "prompt"))
 
         }
     }
 
     private fun upgrade(armor: Armor) {
 
-        detach(Item.curUser.belongings.backpack)
+        detach(Item.curUser!!.belongings.backpack)
 
-        Item.curUser.sprite!!.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 10)
-        Item.curUser.spend(TIME_TO_UPGRADE)
-        Item.curUser.busy()
+        Item.curUser!!.sprite!!.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 10)
+        Item.curUser!!.spend(TIME_TO_UPGRADE)
+        Item.curUser!!.busy()
 
-        GLog.w(Messages.get(this, "upgraded", armor.name()))
+        GLog.w(Messages.get(this.javaClass, "upgraded", armor.name()))
 
-        val classArmor = ClassArmor.upgrade(Item.curUser, armor)
-        if (Item.curUser.belongings.armor === armor) {
+        val classArmor = ClassArmor.upgrade(Item.curUser!!, armor)
+        if (Item.curUser!!.belongings.armor === armor) {
 
-            Item.curUser.belongings.armor = classArmor
-            (Item.curUser.sprite as HeroSprite).updateArmor()
-            classArmor.activate(Item.curUser)
+            Item.curUser!!.belongings.armor = classArmor
+            (Item.curUser!!.sprite as HeroSprite).updateArmor()
+            classArmor.activate(Item.curUser!!)
 
         } else {
 
-            armor.detach(Item.curUser.belongings.backpack)
-            classArmor.collect(Item.curUser.belongings.backpack)
+            armor.detach(Item.curUser!!.belongings.backpack)
+            classArmor.collect(Item.curUser!!.belongings.backpack)
 
         }
 
-        Item.curUser.sprite!!.operate(Item.curUser.pos)
+        Item.curUser!!.sprite!!.operate(Item.curUser!!.pos)
         Sample.INSTANCE.play(Assets.SND_EVOKE)
     }
 

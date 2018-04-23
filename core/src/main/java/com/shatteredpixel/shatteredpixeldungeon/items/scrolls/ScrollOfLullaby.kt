@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
@@ -40,7 +41,7 @@ class ScrollOfLullaby : Scroll() {
 
     override fun doRead() {
 
-        Item.curUser.sprite!!.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5)
+        Item.curUser!!.sprite!!.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5)
         Sample.INSTANCE.play(Assets.SND_LULLABY)
         Invisibility.dispel()
 
@@ -51,9 +52,9 @@ class ScrollOfLullaby : Scroll() {
             }
         }
 
-        Buff.affect<Drowsy>(Item.curUser, Drowsy::class.java)
+        Buff.affect<Drowsy>(Item.curUser!!, Drowsy::class.java)
 
-        GLog.i(Messages.get(this, "sooth"))
+        GLog.i(Messages.get(this.javaClass, "sooth"))
 
         setKnown()
 

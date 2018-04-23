@@ -40,7 +40,7 @@ object GamesInProgress {
     val MAX_SLOTS = 4
 
     //null means we have loaded info and it is empty, no entry means unknown.
-    private val slotStates = HashMap<Int, Info>()
+    private val slotStates = HashMap<Int, Info?>()
     var curSlot: Int = 0
 
     var selectedClass: HeroClass? = null
@@ -64,11 +64,11 @@ object GamesInProgress {
     }
 
     fun gameFile(slot: Int): File? {
-        return FileUtils.getFile(gameFolder(slot), GAME_FILE)
+        return FileUtils.getFile(gameFolder(slot)!!, GAME_FILE)
     }
 
     fun depthFile(slot: Int, depth: Int): File? {
-        return FileUtils.getFile(gameFolder(slot), Messages.format(DEPTH_FILE, depth))
+        return FileUtils.getFile(gameFolder(slot)!!, Messages.format(DEPTH_FILE, depth))
     }
 
     fun firstEmpty(): Int {
@@ -104,7 +104,7 @@ object GamesInProgress {
             var info: Info?
             try {
 
-                val bundle = FileUtils.bundleFromFile(gameFile(slot))
+                val bundle = FileUtils.bundleFromFile(gameFile(slot)!!)
                 info = Info()
                 info.slot = slot
                 Dungeon.preview(info, bundle)

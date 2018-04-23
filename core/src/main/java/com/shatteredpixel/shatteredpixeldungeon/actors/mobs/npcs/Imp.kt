@@ -55,7 +55,7 @@ class Imp : NPC() {
 
         if (!Quest.given && Dungeon.level!!.heroFOV[pos]) {
             if (!seenBefore) {
-                yell(Messages.get(this, "hey", Dungeon.hero!!.givenName()))
+                yell(Messages.get(this.javaClass, "hey", Dungeon.hero!!.givenName()))
             }
             seenBefore = true
         } else {
@@ -67,7 +67,7 @@ class Imp : NPC() {
         return super.act()
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char?): Int {
         return 1000
     }
 
@@ -89,13 +89,13 @@ class Imp : NPC() {
                 GameScene.show(WndImp(this, tokens))
             } else {
                 tell(if (Quest.alternative)
-                    Messages.get(this, "monks_2", Dungeon.hero!!.givenName())
+                    Messages.get(this.javaClass, "monks_2", Dungeon.hero!!.givenName())
                 else
-                    Messages.get(this, "golems_2", Dungeon.hero!!.givenName()))
+                    Messages.get(this.javaClass, "golems_2", Dungeon.hero!!.givenName()))
             }
 
         } else {
-            tell(if (Quest.alternative) Messages.get(this, "monks_1") else Messages.get(this, "golems_1"))
+            tell(if (Quest.alternative) Messages.get(this.javaClass, "monks_1") else Messages.get(this.javaClass, "golems_1"))
             Quest.given = true
             Quest.isCompleted = false
 
@@ -112,7 +112,7 @@ class Imp : NPC() {
 
     fun flee() {
 
-        yell(Messages.get(this, "cya", Dungeon.hero!!.givenName()))
+        yell(Messages.get(this.javaClass, "cya", Dungeon.hero!!.givenName()))
 
         destroy()
         sprite!!.die()
@@ -120,12 +120,11 @@ class Imp : NPC() {
 
     object Quest {
 
-        private var alternative: Boolean = false
+        var alternative: Boolean = false
 
-        private var spawned: Boolean = false
-        private var given: Boolean = false
+        var spawned: Boolean = false
+        var given: Boolean = false
         var isCompleted: Boolean = false
-            private set
 
         var reward: Ring? = null
 
@@ -164,12 +163,15 @@ class Imp : NPC() {
 
             val node = bundle.getBundle(NODE)
 
-            if (!node.isNull && (spawned = node.getBoolean(SPAWNED))) {
-                alternative = node.getBoolean(ALTERNATIVE)
+            if (!node.isNull) {
+                spawned = node.getBoolean(SPAWNED)
+                if (spawned) {
+                    alternative = node.getBoolean(ALTERNATIVE)
 
-                given = node.getBoolean(GIVEN)
-                isCompleted = node.getBoolean(COMPLETED)
-                reward = node.get(REWARD) as Ring
+                    given = node.getBoolean(GIVEN)
+                    isCompleted = node.getBoolean(COMPLETED)
+                    reward = node.get(REWARD) as Ring
+                }
             }
         }
 
@@ -183,8 +185,8 @@ class Imp : NPC() {
                         level.heaps.get(npc.pos) != null ||
                         level.findMob(npc.pos) != null ||
                         //The imp doesn't move, so he cannot obstruct a passageway
-                        !(level.passable[npc.pos + PathFinder.CIRCLE4[0]] && level.passable[npc.pos + PathFinder.CIRCLE4[2]]) ||
-                        !(level.passable[npc.pos + PathFinder.CIRCLE4[1]] && level.passable[npc.pos + PathFinder.CIRCLE4[3]]))
+                        !(level.passable[npc.pos + PathFinder.CIRCLE4!![0]] && level.passable[npc.pos + PathFinder.CIRCLE4!![2]]) ||
+                        !(level.passable[npc.pos + PathFinder.CIRCLE4!![1]] && level.passable[npc.pos + PathFinder.CIRCLE4!![3]]))
                 level.mobs.add(npc)
 
                 spawned = true

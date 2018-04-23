@@ -56,7 +56,7 @@ class DisplacingDart : TippedDart() {
                         if (positions[dist] == null) {
                             positions[dist] = ArrayList()
                         }
-                        positions[dist].add(pos)
+                        positions[dist]!!.add(pos)
                     }
 
                 }
@@ -73,7 +73,7 @@ class DisplacingDart : TippedDart() {
             val chosenDist = Random.chances(probs)
 
             if (chosenDist != -1) {
-                val pos = positions[chosenDist].get(Random.index(positions[chosenDist]))
+                val pos = positions[chosenDist]!!.get(Random.index(positions[chosenDist]!!))
                 ScrollOfTeleportation.appear(defender, pos)
                 Dungeon.level!!.press(pos, defender)
             }

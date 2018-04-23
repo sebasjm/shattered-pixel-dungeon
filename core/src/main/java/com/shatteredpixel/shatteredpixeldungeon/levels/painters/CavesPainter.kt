@@ -87,7 +87,7 @@ class CavesPainter : RegularPainter() {
 
             for (n in room.connected.keys) {
                 if ((n is StandardRoom || n is ConnectionRoom) && Random.Int(3) == 0) {
-                    Painter.set(level, room.connected[n], Terrain.EMPTY_DECO)
+                    Painter.set(level, room.connected[n]!!, Terrain.EMPTY_DECO)
                 }
             }
         }

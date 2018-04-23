@@ -50,8 +50,9 @@ class SewerBossLevel : SewerLevel() {
 
     override fun initRooms(): ArrayList<Room> {
         val initRooms = ArrayList<Room>()
-        initRooms.add(roomExit = SewerBossEntranceRoom()
-                roomEntrance = roomExit)
+        roomExit = SewerBossEntranceRoom()
+        roomEntrance = roomExit
+        initRooms.add(roomEntrance!!)
 
         val standards = standardRooms()
         for (i in 0 until standards) {
@@ -103,7 +104,7 @@ class SewerBossLevel : SewerLevel() {
         mobs.add(boss)
     }
 
-    override fun respawner(): Actor {
+    override fun respawner(): Actor? {
         return null
     }
 
@@ -112,7 +113,7 @@ class SewerBossLevel : SewerLevel() {
         if (item != null) {
             var pos: Int
             do {
-                pos = pointToCell(roomEntrance.random())
+                pos = pointToCell(roomEntrance!!.random())
             } while (pos == entrance || solid[pos])
             drop(item, pos).type = Heap.Type.REMAINS
         }
@@ -121,7 +122,7 @@ class SewerBossLevel : SewerLevel() {
     override fun randomRespawnCell(): Int {
         var pos: Int
         do {
-            pos = pointToCell(roomEntrance.random())
+            pos = pointToCell(roomEntrance!!.random())
         } while (pos == entrance || solid[pos])
         return pos
     }

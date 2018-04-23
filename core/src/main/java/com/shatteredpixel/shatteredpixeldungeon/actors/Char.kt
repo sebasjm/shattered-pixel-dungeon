@@ -104,7 +104,7 @@ abstract class Char : Actor() {
 
     private val buffs = HashSet<Buff>()
 
-    val isAlive: Boolean
+    open val isAlive: Boolean
         get() = HP > 0
 
     protected val resistances = HashSet<Class<*>>()
@@ -124,7 +124,7 @@ abstract class Char : Actor() {
         if (fieldOfView == null || fieldOfView!!.size != Dungeon.level!!.length()) {
             fieldOfView = BooleanArray(Dungeon.level!!.length())
         }
-        Dungeon.level!!.updateFieldOfView(this, fieldOfView)
+        Dungeon.level!!.updateFieldOfView(this, fieldOfView!!)
         return false
     }
 
@@ -196,11 +196,11 @@ abstract class Char : Actor() {
 
             //TODO: consider revisiting this and shaking in more cases.
             var shake = 0f
-            if (enemy === Dungeon.hero)
+            if (enemy === Dungeon.hero!!)
                 shake = (effectiveDamage / (enemy.HT / 4)).toFloat()
 
             if (shake > 1f)
-                Camera.main.shake(GameMath.gate(1f, shake, 5f), 0.3f)
+                Camera.main!!.shake(GameMath.gate(1f, shake, 5f), 0.3f)
 
             enemy.damage(effectiveDamage, this)
 
@@ -213,12 +213,12 @@ abstract class Char : Actor() {
             enemy.sprite!!.flash()
 
             if (!enemy.isAlive && visibleFight) {
-                if (enemy === Dungeon.hero) {
+                if (enemy === Dungeon.hero!!) {
 
                     Dungeon.fail(javaClass)
                     GLog.n(Messages.capitalize(Messages.get(Char::class.java, "kill", name)))
 
-                } else if (this === Dungeon.hero) {
+                } else if (this === Dungeon.hero!!) {
                     GLog.i(Messages.capitalize(Messages.get(Char::class.java, "defeat", enemy.name)))
                 }
             }
@@ -239,16 +239,16 @@ abstract class Char : Actor() {
         }
     }
 
-    open fun attackSkill(target: Char): Int {
+    open fun attackSkill(target: Char?): Int {
         return 0
     }
 
-    open fun defenseSkill(enemy: Char): Int {
+    open fun defenseSkill(enemy: Char?): Int {
         return 0
     }
 
     fun defenseVerb(): String {
-        return Messages.get(this, "def_verb")
+        return Messages.get(this.javaClass, "def_verb")
     }
 
     open fun drRoll(): Int {
@@ -326,7 +326,7 @@ abstract class Char : Actor() {
         Actor.remove(this)
     }
 
-    open fun die(src: Any) {
+    open fun die(src: Any?) {
         destroy()
         if (src !== Chasm::class.java) sprite!!.die()
     }
@@ -413,7 +413,7 @@ abstract class Char : Actor() {
 
     @Synchronized
     fun remove(buffClass: Class<out Buff>) {
-        for (buff in buffs<out Buff>(buffClass)) {
+        for (buff in buffs(buffClass)) {
             remove(buff)
         }
     }
@@ -441,7 +441,7 @@ abstract class Char : Actor() {
 
         if (Dungeon.level!!.adjacent(step, pos) && buff<Vertigo>(Vertigo::class.java) != null) {
             sprite!!.interruptMotion()
-            val newPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
+            val newPos = pos + PathFinder.NEIGHBOURS8!![Random.Int(8)]
             if (!(Dungeon.level!!.passable[newPos] || Dungeon.level!!.avoid[newPos]) || Actor.findChar(newPos) != null)
                 return
             else {
@@ -460,7 +460,7 @@ abstract class Char : Actor() {
             Door.enter(pos)
         }
 
-        if (this !== Dungeon.hero) {
+        if (this !== Dungeon.hero!!) {
             sprite!!.visible = Dungeon.level!!.heroFOV[pos]
         }
 
@@ -490,7 +490,7 @@ abstract class Char : Actor() {
     //returns percent effectiveness after resistances
     //TODO currently resistances reduce effectiveness by a static 50%, and do not stack.
     fun resist(effect: Class<*>): Float {
-        val resists = HashSet<Class>(resistances)
+        val resists = HashSet<Class<*>>(resistances)
         for (p in properties()) {
             resists.addAll(p.resistances())
         }
@@ -508,7 +508,7 @@ abstract class Char : Actor() {
     }
 
     fun isImmune(effect: Class<*>): Boolean {
-        val immunes = HashSet<Class>(immunities)
+        val immunes = HashSet<Class<*>>(immunities)
         for (p in properties()) {
             immunes.addAll(p.immunities())
         }
@@ -548,21 +548,21 @@ abstract class Char : Actor() {
         IMMOVABLE;
 
         fun resistances(): HashSet<Class<*>> {
-            return HashSet<Class>(resistances)
+            return HashSet<Class<*>>(resistances)
         }
 
         fun immunities(): HashSet<Class<*>> {
-            return HashSet<Class>(immunities)
+            return HashSet<Class<*>>(immunities)
         }
     }
 
     companion object {
 
-        protected val POS = "pos"
-        protected val TAG_HP = "HP"
-        protected val TAG_HT = "HT"
-        protected val TAG_SHLD = "SHLD"
-        protected val BUFFS = "buffs"
+        @JvmStatic protected val POS = "pos"
+        @JvmStatic protected val TAG_HP = "HP"
+        @JvmStatic protected val TAG_HT = "HT"
+        @JvmStatic protected val TAG_SHLD = "SHLD"
+        @JvmStatic protected val BUFFS = "buffs"
 
         fun hit(attacker: Char, defender: Char, magic: Boolean): Boolean {
             var acuRoll = Random.Float(attacker.attackSkill(defender).toFloat())

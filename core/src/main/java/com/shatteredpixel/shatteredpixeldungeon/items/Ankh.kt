@@ -56,7 +56,7 @@ class Ankh : Item() {
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
         val vial = hero.belongings.getItem<DewVial>(DewVial::class.java)
-        if (vial != null && vial.isFull && (!isBlessed)!!)
+        if (vial != null && vial.isFull && (!isBlessed!!))
             actions.add(AC_BLESS)
         return actions
     }
@@ -71,7 +71,7 @@ class Ankh : Item() {
             if (vial != null) {
                 isBlessed = true
                 vial.empty()
-                GLog.p(Messages.get(this, "bless"))
+                GLog.p(Messages.get(this.javaClass, "bless"))
                 hero.spend(1f)
                 hero.busy()
 
@@ -85,13 +85,13 @@ class Ankh : Item() {
 
     override fun desc(): String {
         return if (isBlessed!!)
-            Messages.get(this, "desc_blessed")
+            Messages.get(this.javaClass, "desc_blessed")
         else
             super.desc()
     }
 
     override fun glowing(): Glowing? {
-        return if (isBlessed) WHITE else null
+        return if (isBlessed!!) WHITE else null
     }
 
     override fun storeInBundle(bundle: Bundle) {

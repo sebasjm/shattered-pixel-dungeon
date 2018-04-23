@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
@@ -44,13 +45,13 @@ class Corruption : Buff() {
     }
 
     override fun act(): Boolean {
-        buildToDamage += target.HT / 200f
+        buildToDamage += target!!.HT / 200f
 
         val damage = buildToDamage.toInt()
         buildToDamage -= damage.toFloat()
 
         if (damage > 0)
-            target.damage(damage, this)
+            target!!.damage(damage, this)
 
         spend(Actor.TICK)
 
@@ -59,8 +60,8 @@ class Corruption : Buff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.DARKENED)
-        else if (target.invisible == 0) target.sprite!!.remove(CharSprite.State.DARKENED)
+            target!!.sprite!!.add(CharSprite.State.DARKENED)
+        else if (target!!.invisible == 0) target!!.sprite!!.remove(CharSprite.State.DARKENED)
     }
 
     override fun icon(): Int {
@@ -68,10 +69,10 @@ class Corruption : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

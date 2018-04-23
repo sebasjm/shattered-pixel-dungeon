@@ -44,7 +44,7 @@ class ScrollOfUpgrade : InventoryScroll() {
 
     override fun onItemSelected(item: Item?) {
 
-        upgrade(Item.curUser)
+        upgrade(Item.curUser!!)
 
         //logic for telling the user when item properties change from upgrades
         //...yes this is rather messy

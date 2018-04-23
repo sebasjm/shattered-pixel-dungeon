@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
@@ -40,14 +41,14 @@ class ScrollOfRecharging : Scroll() {
 
     override fun doRead() {
 
-        Buff.affect<Recharging>(Item.curUser, Recharging::class.java, BUFF_DURATION)
-        charge(Item.curUser)
+        Buff.affect<Recharging>(Item.curUser!!, Recharging::class.java, BUFF_DURATION)
+        charge(Item.curUser!!)
 
         Sample.INSTANCE.play(Assets.SND_READ)
         Invisibility.dispel()
 
-        GLog.i(Messages.get(this, "surge"))
-        SpellSprite.show(Item.curUser, SpellSprite.CHARGE)
+        GLog.i(Messages.get(this.javaClass, "surge"))
+        SpellSprite.show(Item.curUser!!, SpellSprite.CHARGE)
         setKnown()
 
         readAnimation()
@@ -55,7 +56,7 @@ class ScrollOfRecharging : Scroll() {
 
     override fun empoweredRead() {
         doRead()
-        Buff.append<Recharging>(Item.curUser, Recharging::class.java, BUFF_DURATION / 3f)
+        Buff.append<Recharging>(Item.curUser!!, Recharging::class.java, BUFF_DURATION / 3f)
     }
 
     override fun price(): Int {

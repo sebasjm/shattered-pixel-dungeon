@@ -56,7 +56,7 @@ open class Scorpio : Mob() {
         return Random.NormalIntRange(26, 36)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 36
     }
 

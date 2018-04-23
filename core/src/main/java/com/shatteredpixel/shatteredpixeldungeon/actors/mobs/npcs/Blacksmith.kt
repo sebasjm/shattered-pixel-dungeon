@@ -67,8 +67,8 @@ class Blacksmith : NPC() {
 
         if (!Quest.given) {
 
-            GameScene.show(object : WndQuest(this,
-                    if (Quest.alternative) Messages.get(this, "blood_1") else Messages.get(this, "gold_1")) {
+            GameScene.show(object : WndQuest(this@Blacksmith,
+                    if (Quest.alternative) Messages.get(this.javaClass, "blood_1") else Messages.get(this.javaClass, "gold_1")) {
 
                 override fun onBackPressed() {
                     super.onBackPressed()
@@ -77,8 +77,8 @@ class Blacksmith : NPC() {
                     Quest.completed = false
 
                     val pick = Pickaxe()
-                    if (pick.doPickUp(Dungeon.hero)) {
-                        GLog.i(Messages.get(Dungeon.hero!!, "you_now_have", pick.name()))
+                    if (pick.doPickUp(Dungeon.hero!!)) {
+                        GLog.i(Messages.get(Dungeon.hero!!.javaClass, "you_now_have", pick.name()))
                     } else {
                         Dungeon.level!!.drop(pick, Dungeon.hero!!.pos).sprite!!.drop()
                     }
@@ -92,15 +92,15 @@ class Blacksmith : NPC() {
 
                 val pick = Dungeon.hero!!.belongings.getItem<Pickaxe>(Pickaxe::class.java)
                 if (pick == null) {
-                    tell(Messages.get(this, "lost_pick"))
+                    tell(Messages.get(this.javaClass, "lost_pick"))
                 } else if (!pick.bloodStained) {
-                    tell(Messages.get(this, "blood_2"))
+                    tell(Messages.get(this.javaClass, "blood_2"))
                 } else {
-                    if (pick.isEquipped(Dungeon.hero)) {
-                        pick.doUnequip(Dungeon.hero, false)
+                    if (pick.isEquipped(Dungeon.hero!!)) {
+                        pick.doUnequip(Dungeon.hero!!, false)
                     }
                     pick.detach(Dungeon.hero!!.belongings.backpack)
-                    tell(Messages.get(this, "completed"))
+                    tell(Messages.get(this.javaClass, "completed"))
 
                     Quest.completed = true
                     Quest.reforged = false
@@ -111,16 +111,16 @@ class Blacksmith : NPC() {
                 val pick = Dungeon.hero!!.belongings.getItem<Pickaxe>(Pickaxe::class.java)
                 val gold = Dungeon.hero!!.belongings.getItem<DarkGold>(DarkGold::class.java)
                 if (pick == null) {
-                    tell(Messages.get(this, "lost_pick"))
+                    tell(Messages.get(this.javaClass, "lost_pick"))
                 } else if (gold == null || gold.quantity() < 15) {
-                    tell(Messages.get(this, "gold_2"))
+                    tell(Messages.get(this.javaClass, "gold_2"))
                 } else {
-                    if (pick.isEquipped(Dungeon.hero)) {
-                        pick.doUnequip(Dungeon.hero, false)
+                    if (pick.isEquipped(Dungeon.hero!!)) {
+                        pick.doUnequip(Dungeon.hero!!, false)
                     }
                     pick.detach(Dungeon.hero!!.belongings.backpack)
                     gold.detachAll(Dungeon.hero!!.belongings.backpack)
-                    tell(Messages.get(this, "completed"))
+                    tell(Messages.get(this.javaClass, "completed"))
 
                     Quest.completed = true
                     Quest.reforged = false
@@ -129,11 +129,11 @@ class Blacksmith : NPC() {
             }
         } else if (!Quest.reforged) {
 
-            GameScene.show(WndBlacksmith(this, Dungeon.hero))
+            GameScene.show(WndBlacksmith(this, Dungeon.hero!!))
 
         } else {
 
-            tell(Messages.get(this, "get_lost"))
+            tell(Messages.get(this.javaClass, "get_lost"))
 
         }
 
@@ -144,7 +144,7 @@ class Blacksmith : NPC() {
         GameScene.show(WndQuest(this, text))
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char?): Int {
         return 1000
     }
 
@@ -158,12 +158,12 @@ class Blacksmith : NPC() {
 
     object Quest {
 
-        private var spawned: Boolean = false
+        var spawned: Boolean = false
 
-        private var alternative: Boolean = false
-        private var given: Boolean = false
-        private var completed: Boolean = false
-        private var reforged: Boolean = false
+        var alternative: Boolean = false
+        var given: Boolean = false
+        var completed: Boolean = false
+        var reforged: Boolean = false
 
         private val NODE = "blacksmith"
 
@@ -200,11 +200,14 @@ class Blacksmith : NPC() {
 
             val node = bundle.getBundle(NODE)
 
-            if (!node.isNull && (spawned = node.getBoolean(SPAWNED))) {
-                alternative = node.getBoolean(ALTERNATIVE)
-                given = node.getBoolean(GIVEN)
-                completed = node.getBoolean(COMPLETED)
-                reforged = node.getBoolean(REFORGED)
+            if (!node.isNull) {
+                spawned = node.getBoolean(SPAWNED)
+                if (spawned) {
+                    alternative = node.getBoolean(ALTERNATIVE)
+                    given = node.getBoolean(GIVEN)
+                    completed = node.getBoolean(COMPLETED)
+                    reforged = node.getBoolean(REFORGED)
+                }
             } else {
                 reset()
             }
@@ -270,15 +273,15 @@ class Blacksmith : NPC() {
             ScrollOfUpgrade.upgrade(Dungeon.hero!!)
             Item.evoke(Dungeon.hero!!)
 
-            if (first.isEquipped(Dungeon.hero)) {
-                (first as EquipableItem).doUnequip(Dungeon.hero, true)
+            if (first.isEquipped(Dungeon.hero!!)) {
+                (first as EquipableItem).doUnequip(Dungeon.hero!!, true)
             }
             first.level(first.level() + 1) //prevents on-upgrade effects like enchant/glyph removal
             Dungeon.hero!!.spendAndNext(2f)
             Badges.validateItemLevelAquired(first)
 
-            if (second.isEquipped(Dungeon.hero)) {
-                (second as EquipableItem).doUnequip(Dungeon.hero, false)
+            if (second.isEquipped(Dungeon.hero!!)) {
+                (second as EquipableItem).doUnequip(Dungeon.hero!!, false)
             }
             second.detachAll(Dungeon.hero!!.belongings.backpack)
 

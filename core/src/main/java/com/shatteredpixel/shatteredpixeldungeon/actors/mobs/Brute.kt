@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold
@@ -61,7 +62,7 @@ open class Brute : Mob() {
             Random.NormalIntRange(6, 26)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 20
     }
 
@@ -76,7 +77,7 @@ open class Brute : Mob() {
             enraged = true
             spend(Actor.TICK)
             if (Dungeon.level!!.heroFOV[pos]) {
-                sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"))
+                sprite!!.showStatus(CharSprite.NEGATIVE, Messages.get(this.javaClass, "enraged"))
             }
         }
     }

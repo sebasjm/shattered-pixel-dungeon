@@ -76,13 +76,13 @@ open class PixelScene : Scene() {
 
         val uiZoom = defaultZoom.toFloat()
         uiCamera = Camera.createFullscreen(uiZoom)
-        Camera.add(uiCamera)
+        Camera.add(uiCamera!!)
 
         if (pixelFont == null) {
 
             // 3x5 (6)
             pixelFont = Font.colorMarked(
-                    BitmapCache.get(Assets.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL)
+                    BitmapCache.get(Assets.PIXELFONT)!!, 0x00000000, BitmapText.Font.LATIN_FULL)
             pixelFont!!.baseLine = 6f
             pixelFont!!.tracking = -1f
 
@@ -122,7 +122,7 @@ open class PixelScene : Scene() {
         add(Fader(color, light))
     }
 
-    protected class Fader(color: Int, private val light: Boolean) : ColorBlock(uiCamera.width, uiCamera.height, color) {
+    protected class Fader(color: Int, private val light: Boolean) : ColorBlock(uiCamera!!.width.toFloat(), uiCamera!!.height.toFloat(), color) {
 
         private var time: Float = 0.toFloat()
 
@@ -138,7 +138,8 @@ open class PixelScene : Scene() {
 
             super.update()
 
-            if ((time -= Game.elapsed) <= 0) {
+            time -= Game.elapsed
+            if (time <= 0) {
                 alpha(0f)
                 parent!!.remove(this)
             } else {
@@ -197,7 +198,7 @@ open class PixelScene : Scene() {
         var minZoom: Float = 0.toFloat()
         var maxZoom: Float = 0.toFloat()
 
-        var uiCamera: Camera
+        var uiCamera: Camera? = null
 
         //stylized pixel font
         var pixelFont: BitmapText.Font? = null
@@ -253,7 +254,7 @@ open class PixelScene : Scene() {
 
             chooseFont(size)
 
-            val result = BitmapTextMultiline(text, font)
+            val result = BitmapTextMultiline(text!!, font!!)
             result.scale.set(scale)
 
             return result

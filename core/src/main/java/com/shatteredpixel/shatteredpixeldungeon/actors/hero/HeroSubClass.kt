@@ -26,7 +26,7 @@ import com.watabou.utils.Bundle
 
 enum class HeroSubClass private constructor(private val title: String) {
 
-    NONE(null),
+    NONE(""),
 
     GLADIATOR("gladiator"),
     BERSERKER("berserker"),
@@ -41,11 +41,11 @@ enum class HeroSubClass private constructor(private val title: String) {
     WARDEN("warden");
 
     fun title(): String {
-        return Messages.get(this, title)
+        return Messages.get(this.javaClass, title)
     }
 
     fun desc(): String {
-        return Messages.get(this, title + "_desc")
+        return Messages.get(this.javaClass, title + "_desc")
     }
 
     fun storeInBundle(bundle: Bundle) {

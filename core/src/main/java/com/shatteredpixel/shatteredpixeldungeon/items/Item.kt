@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundlable
@@ -56,7 +57,7 @@ open class Item : Bundlable {
     var defaultAction: String? = null
     var usesTargeting: Boolean = false
 
-    protected var name = Messages.get(this, "name")
+    protected var name: String? = Messages.get(this.javaClass, "name")
     var image = 0
 
     var stackable = false
@@ -109,7 +110,7 @@ open class Item : Bundlable {
     //resets an item's properties, to ensure consistency between runs
     open fun reset() {
         //resets the name incase the language has changed.
-        name = Messages.get(this, "name")
+        name = Messages.get(this.javaClass, "name")
     }
 
     open fun doThrow(hero: Hero) {
@@ -181,7 +182,7 @@ open class Item : Bundlable {
 
         if (items.size < container.size) {
 
-            if (Dungeon.hero != null && Dungeon.hero!!.isAlive) {
+            if (Dungeon.hero!! != null && Dungeon.hero!!.isAlive) {
                 Badges.validateItemLevelAquired(this)
             }
 
@@ -220,7 +221,7 @@ open class Item : Bundlable {
 
                 split
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 null
             }
 
@@ -337,7 +338,7 @@ open class Item : Bundlable {
         levelKnown = true
         cursedKnown = true
 
-        if (Dungeon.hero != null && Dungeon.hero!!.isAlive) {
+        if (Dungeon.hero!! != null && Dungeon.hero!!.isAlive) {
             Catalog.setSeen(javaClass)
         }
 
@@ -359,11 +360,11 @@ open class Item : Bundlable {
     }
 
     open fun name(): String {
-        return name
+        return name!!
     }
 
     fun trueName(): String {
-        return name
+        return name!!
     }
 
     open fun image(): Int {
@@ -383,7 +384,7 @@ open class Item : Bundlable {
     }
 
     open fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     fun quantity(): Int {
@@ -437,7 +438,7 @@ open class Item : Bundlable {
         cursed = bundle.getBoolean(CURSED)
 
         //only want to populate slot on first load.
-        if (Dungeon.hero == null) {
+        if (Dungeon.hero!! == null) {
             if (bundle.contains(QUICKSLOT)) {
                 Dungeon.quickslot.setSlot(bundle.getInt(QUICKSLOT), this)
             }
@@ -462,21 +463,21 @@ open class Item : Bundlable {
         val delay = castDelay(user, dst)
 
         if (enemy != null) {
-            (user.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(user.sprite,
-                    enemy.sprite,
-                    this
-            ) {
-                this@Item.detach(user.belongings.backpack)!!.onThrow(cell)
-                user.spendAndNext(delay)
-            }
+            (user.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(user.sprite!!,
+                    enemy.sprite!!,
+                    this,{
+                        this@Item.detach(user.belongings.backpack)!!.onThrow(cell)
+                        user.spendAndNext(delay)
+                    } as Callback
+            )
         } else {
-            (user.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(user.sprite,
+            (user.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(user.sprite!!,
                     cell,
-                    this
-            ) {
-                this@Item.detach(user.belongings.backpack)!!.onThrow(cell)
-                user.spendAndNext(delay)
-            }
+                    this,{
+                        this@Item.detach(user.belongings.backpack)!!.onThrow(cell)
+                        user.spendAndNext(delay)
+                    } as Callback
+            )
         }
     }
 
@@ -490,7 +491,7 @@ open class Item : Bundlable {
         protected val TXT_TO_STRING_X = "%s x%d"
 
         protected val TIME_TO_THROW = 1.0f
-        protected val TIME_TO_PICK_UP = 1.0f
+        @JvmStatic protected val TIME_TO_PICK_UP = 1.0f
         protected val TIME_TO_DROP = 0.5f
 
         val AC_DROP = "DROP"
@@ -510,7 +511,7 @@ open class Item : Bundlable {
                 return item
 
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 
@@ -523,9 +524,9 @@ open class Item : Bundlable {
         private val CURSED_KNOWN = "cursedKnown"
         private val QUICKSLOT = "quickslotpos"
 
-        protected var curUser: Hero? = null
-        protected var curItem: Item? = null
-        protected var thrower: CellSelector.Listener = object : CellSelector.Listener {
+        @JvmStatic var curUser: Hero? = null
+        @JvmStatic var curItem: Item? = null
+        @JvmStatic protected var thrower: CellSelector.Listener = object : CellSelector.Listener {
             override fun onSelect(target: Int?) {
                 if (target != null) {
                     curItem!!.cast(curUser, target)

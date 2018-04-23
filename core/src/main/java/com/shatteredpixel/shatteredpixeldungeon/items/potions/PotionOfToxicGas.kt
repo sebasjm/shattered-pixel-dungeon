@@ -43,7 +43,7 @@ class PotionOfToxicGas : Potion() {
             Sample.INSTANCE.play(Assets.SND_SHATTER)
         }
 
-        GameScene.add(Blob.seed<ToxicGas>(cell, 1000, ToxicGas::class.java))
+        GameScene.add(Blob.seed<ToxicGas>(cell, 1000, ToxicGas::class.java)!!)
     }
 
     override fun price(): Int {

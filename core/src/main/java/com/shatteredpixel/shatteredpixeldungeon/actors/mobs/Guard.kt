@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs
 
+import android.telecom.Call
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing
@@ -92,27 +94,27 @@ class Guard : Mob() {
             } else {
                 val newPosFinal = newPos
                 this.target = newPos
-                yell(Messages.get(this, "scorpion"))
-                sprite!!.parent!!.add(Chains(sprite!!.center(), enemy!!.sprite!!.center(), Callback {
-                    Actor.addDelayed(Pushing(enemy, enemy!!.pos, newPosFinal, Callback {
+                yell(Messages.get(this.javaClass, "scorpion"))
+                sprite!!.parent!!.add(Chains(sprite!!.center(), enemy!!.sprite!!.center(), {
+                    Actor.addDelayed(Pushing(enemy!!, enemy!!.pos, newPosFinal, {
                         enemy!!.pos = newPosFinal
                         Dungeon.level!!.press(newPosFinal, enemy, true)
-                        Cripple.prolong<Cripple>(enemy, Cripple::class.java, 4f)
-                        if (enemy === Dungeon.hero) {
+                        Buff.prolong<Cripple>(enemy!!, Cripple::class.java, 4f)
+                        if (enemy === Dungeon.hero!!) {
                             Dungeon.hero!!.interrupt()
                             Dungeon.observe()
                             GameScene.updateFog()
                         }
-                    }), -1f)
+                    } as Callback), -1f)
                     next()
-                }))
+                } as Callback))
             }
         }
         chainsUsed = true
         return true
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 14
     }
 
@@ -158,7 +160,7 @@ class Guard : Mob() {
 
             return if (!chainsUsed
                     && enemyInFOV
-                    && !isCharmedBy(enemy)
+                    && !isCharmedBy(enemy!!)
                     && !canAttack(enemy)
                     && Dungeon.level!!.distance(pos, enemy!!.pos) < 5
                     && Random.Int(3) == 0

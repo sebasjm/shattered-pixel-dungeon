@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
@@ -73,12 +74,12 @@ class ScrollOfMagicMapping : Scroll() {
         }
         GameScene.updateFog()
 
-        GLog.i(Messages.get(this, "layout"))
+        GLog.i(Messages.get(this.javaClass, "layout"))
         if (noticed) {
             Sample.INSTANCE.play(Assets.SND_SECRET)
         }
 
-        SpellSprite.show(Item.curUser, SpellSprite.MAP)
+        SpellSprite.show(Item.curUser!!, SpellSprite.MAP)
         Sample.INSTANCE.play(Assets.SND_READ)
         Invisibility.dispel()
 
@@ -89,8 +90,8 @@ class ScrollOfMagicMapping : Scroll() {
 
     override fun empoweredRead() {
         doRead()
-        Buff.affect<MindVision>(Item.curUser, MindVision::class.java, MindVision.DURATION)
-        Buff.affect<Awareness>(Item.curUser, Awareness::class.java, Awareness.DURATION)
+        Buff.affect<MindVision>(Item.curUser!!, MindVision::class.java, MindVision.DURATION)
+        Buff.affect<Awareness>(Item.curUser!!, Awareness::class.java, Awareness.DURATION)
         Dungeon.observe()
     }
 

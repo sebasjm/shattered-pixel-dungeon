@@ -25,15 +25,16 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
+import com.watabou.noosa.Game
 import com.watabou.utils.Random
 
 class Unstable : Weapon.Enchantment() {
 
     override fun proc(weapon: Weapon, attacker: Char, defender: Char, damage: Int): Int {
         try {
-            return Random.oneOf<Class<out Enchantment>>(*randomEnchants).newInstance().proc(weapon, attacker, defender, damage)
+            return Random.oneOf<Class<out Weapon.Enchantment>>(*randomEnchants as Array<out Class<out Weapon.Enchantment>>).newInstance().proc(weapon, attacker, defender, damage)
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return damage
         }
 

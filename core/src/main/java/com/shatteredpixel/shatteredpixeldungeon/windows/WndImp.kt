@@ -43,12 +43,12 @@ class WndImp(imp: Imp, tokens: DwarfToken) : Window() {
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 
-        val message = PixelScene.renderMultiline(Messages.get(this, "message"), 6)
+        val message = PixelScene.renderMultiline(Messages.get(this.javaClass, "message"), 6)
         message.maxWidth(WIDTH)
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnReward = object : RedButton(Messages.get(this, "reward")) {
+        val btnReward = object : RedButton(Messages.get(this.javaClass, "reward")) {
             override fun onClick() {
                 takeReward(imp, tokens, Imp.Quest.reward)
             }
@@ -67,8 +67,8 @@ class WndImp(imp: Imp, tokens: DwarfToken) : Window() {
         if (reward == null) return
 
         reward.identify()
-        if (reward.doPickUp(Dungeon.hero)) {
-            GLog.i(Messages.get(Dungeon.hero!!, "you_now_have", reward.name()))
+        if (reward.doPickUp(Dungeon.hero!!)) {
+            GLog.i(Messages.get(Dungeon.hero!!.javaClass, "you_now_have", reward.name()))
         } else {
             Dungeon.level!!.drop(reward, imp.pos).sprite!!.drop()
         }

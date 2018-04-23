@@ -23,7 +23,13 @@ package com.shatteredpixel.shatteredpixeldungeon.messages
 
 import java.util.Locale
 
-enum class Languages private constructor(private val name: String, private val code: String, private val status: Status, private val reviewers: Array<String>?, private val translators: Array<String>?) {
+enum class Languages private constructor (
+        private val nativeName: String,
+        private val code: String,
+        private val status: Status,
+        private val reviewers: Array<String>?,
+        private val translators: Array<String>?
+    ) {
     ENGLISH("english", "", Status.REVIEWED, null, null),
 
     CHINESE("中文", "zh", Status.REVIEWED, arrayOf<String>("Jinkeloid(zdx00793)"), arrayOf<String>("931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "hmdzl001", "tempest102")),
@@ -53,7 +59,7 @@ enum class Languages private constructor(private val name: String, private val c
     }
 
     fun nativeName(): String {
-        return name
+        return nativeName
     }
 
     fun code(): String {

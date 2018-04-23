@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning
@@ -46,7 +47,7 @@ class Brimstone : Armor.Glyph() {
         private var lastShield = -1
 
         override fun act(): Boolean {
-            val hero = target as Hero
+            val hero = target!! as Hero
 
             //make sure any shielding lost through combat is accounted for
             if (lastShield != -1 && lastShield > hero.SHLD)

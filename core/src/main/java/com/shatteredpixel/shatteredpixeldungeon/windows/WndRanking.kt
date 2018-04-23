@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.Rankings
 import com.shatteredpixel.shatteredpixeldungeon.Statistics
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
@@ -35,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton
-import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.watabou.noosa.ColorBlock
 import com.watabou.noosa.Game
@@ -88,14 +86,14 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
                 createControls()
             } else {
                 hide()
-                Game.scene()!!.add(WndError(error))
+                Game.scene()!!.add(WndError(error!!))
             }
         }
     }
 
     private fun createControls() {
 
-        val labels = arrayOf(Messages.get(this, "stats"), Messages.get(this, "items"), Messages.get(this, "badges"))
+        val labels = arrayOf(Messages.get(this.javaClass, "stats"), Messages.get(this.javaClass, "items"), Messages.get(this.javaClass, "badges"))
         val pages = arrayOf(StatsTab(), ItemsTab(), BadgesTab())
 
         for (i in pages.indices) {
@@ -134,7 +132,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
 
             val title = IconTitle()
             title.icon(HeroSprite.avatar(Dungeon.hero!!.heroClass, Dungeon.hero!!.tier()))
-            title.label(Messages.get(this, "title", Dungeon.hero!!.lvl, heroClass).toUpperCase(Locale.ENGLISH))
+            title.label(Messages.get(this.javaClass, "title", Dungeon.hero!!.lvl, heroClass).toUpperCase(Locale.ENGLISH))
             title.color(Window.SHPX_COLOR)
             title.setRect(0f, 0f, WIDTH.toFloat(), 0f)
             add(title)
@@ -142,7 +140,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
             var pos = title.bottom()
 
             if (Dungeon.challenges > 0) {
-                val btnChallenges = object : RedButton(Messages.get(this, "challenges")) {
+                val btnChallenges = object : RedButton(Messages.get(this.javaClass, "challenges")) {
                     override fun onClick() {
                         Game.scene()!!.add(WndChallenges(Dungeon.challenges, false))
                     }
@@ -156,24 +154,24 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
 
             pos += (GAP + GAP).toFloat()
 
-            pos = statSlot(this, Messages.get(this, "str"), Integer.toString(Dungeon.hero!!.STR), pos)
-            pos = statSlot(this, Messages.get(this, "health"), Integer.toString(Dungeon.hero!!.HT), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "str"), Integer.toString(Dungeon.hero!!.STR), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "health"), Integer.toString(Dungeon.hero!!.HT), pos)
 
             pos += GAP.toFloat()
 
-            pos = statSlot(this, Messages.get(this, "duration"), Integer.toString(Statistics.duration.toInt()), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "duration"), Integer.toString(Statistics.duration.toInt()), pos)
 
             pos += GAP.toFloat()
 
-            pos = statSlot(this, Messages.get(this, "depth"), Integer.toString(Statistics.deepestFloor), pos)
-            pos = statSlot(this, Messages.get(this, "enemies"), Integer.toString(Statistics.enemiesSlain), pos)
-            pos = statSlot(this, Messages.get(this, "gold"), Integer.toString(Statistics.goldCollected), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "depth"), Integer.toString(Statistics.deepestFloor), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "enemies"), Integer.toString(Statistics.enemiesSlain), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "gold"), Integer.toString(Statistics.goldCollected), pos)
 
             pos += GAP.toFloat()
 
-            pos = statSlot(this, Messages.get(this, "food"), Integer.toString(Statistics.foodEaten), pos)
-            pos = statSlot(this, Messages.get(this, "alchemy"), Integer.toString(Statistics.potionsCooked), pos)
-            pos = statSlot(this, Messages.get(this, "ankhs"), Integer.toString(Statistics.ankhsUsed), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "food"), Integer.toString(Statistics.foodEaten), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "alchemy"), Integer.toString(Statistics.potionsCooked), pos)
+            pos = statSlot(this, Messages.get(this.javaClass, "ankhs"), Integer.toString(Statistics.ankhsUsed), pos)
         }
 
         private fun statSlot(parent: Group, label: String, value: String, pos: Float): Float {
@@ -215,7 +213,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
             pos = 0f
             for (i in 0..3) {
                 if (Dungeon.quickslot.getItem(i) != null) {
-                    val slot = QuickSlotButton(Dungeon.quickslot.getItem(i))
+                    val slot = QuickSlotButton(Dungeon.quickslot.getItem(i)!!)
 
                     slot.setRect(pos, 116f, 28f, 28f)
 
@@ -232,8 +230,8 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
         }
 
         private fun addItem(item: Item?) {
-            val slot = ItemButton(item)
-            slot.setRect(0f, pos, width.toFloat(), ItemButton.HEIGHT.toFloat())
+            val slot = ItemButton(item!!)
+            slot.setRect(0f, pos, width.toFloat(), BUTTON_HEIGHT.toFloat())
             add(slot)
 
             pos += slot.height() + 1
@@ -272,7 +270,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
 
         override fun createChildren() {
 
-            bg = ColorBlock(HEIGHT.toFloat(), HEIGHT.toFloat(), -0x66aca9b3)
+            bg = ColorBlock(HEIGHT.toFloat(), BUTTON_HEIGHT.toFloat(), -0x66aca9b3)
             add(bg)
 
             slot = ItemSlot()
@@ -288,7 +286,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
             bg!!.x = x
             bg!!.y = y
 
-            slot!!.setRect(x, y, HEIGHT.toFloat(), HEIGHT.toFloat())
+            slot!!.setRect(x, y, BUTTON_HEIGHT.toFloat(), BUTTON_HEIGHT.toFloat())
             PixelScene.align(slot!!)
 
             name!!.x = slot!!.right() + 2
@@ -320,17 +318,13 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
             Game.scene()!!.add(WndItem(null, item))
         }
 
-        companion object {
-
-            val HEIGHT = 28
-        }
     }
 
-    private inner class QuickSlotButton internal constructor(private val item: Item) : ItemSlot(item) {
+    private inner class QuickSlotButton internal constructor(private val item2: Item) : ItemSlot(item2) {
         private var bg: ColorBlock? = null
 
         override fun createChildren() {
-            bg = ColorBlock(HEIGHT.toFloat(), HEIGHT.toFloat(), -0x66aca9b3)
+            bg = ColorBlock(BUTTON_HEIGHT.toFloat(), BUTTON_HEIGHT.toFloat(), -0x66aca9b3)
             add(bg)
 
             super.createChildren()
@@ -353,17 +347,14 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
         }
 
         override fun onClick() {
-            Game.scene()!!.add(WndItem(null, item))
+            Game.scene()!!.add(WndItem(null, item2))
         }
 
-        companion object {
-
-            val HEIGHT = 28
-        }
     }
 
     companion object {
 
+        val BUTTON_HEIGHT = 28
         private val WIDTH = 115
         private val HEIGHT = 144
     }

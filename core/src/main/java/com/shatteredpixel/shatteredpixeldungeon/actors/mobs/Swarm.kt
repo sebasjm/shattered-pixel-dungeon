@@ -109,7 +109,7 @@ class Swarm : Mob() {
         return super.defenseProc(enemy, damage)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 10
     }
 

@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
-import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.watabou.utils.Bundle
 
@@ -44,7 +43,7 @@ class PinCushion : Buff() {
 
     override fun detach() {
         for (item in items)
-            Dungeon.level!!.drop(item, target.pos).sprite!!.drop()
+            Dungeon.level!!.drop(item, target!!.pos).sprite!!.drop()
         super.detach()
     }
 

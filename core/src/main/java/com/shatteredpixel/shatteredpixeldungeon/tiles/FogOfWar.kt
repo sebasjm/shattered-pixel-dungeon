@@ -53,7 +53,7 @@ class FogOfWar
     @Volatile
     private var updating: ArrayList<Rect>? = null
 
-    private var visible: BooleanArray? = null
+    private var visible2: BooleanArray? = null
     private var visited: BooleanArray? = null
     private var mapped: BooleanArray? = null
     private var brightness: Int = 0
@@ -135,7 +135,7 @@ class FogOfWar
     }
 
     private fun updateTexture(visible: BooleanArray, visited: BooleanArray?, mapped: BooleanArray?) {
-        this.visible = visible
+        this.visible2 = visible
         this.visited = visited
         this.mapped = mapped
         this.brightness = SPDSettings.brightness() + 2
@@ -150,7 +150,7 @@ class FogOfWar
             }
         }
 
-        val fog = texture as BufferTexture
+        val fog = texture!! as BufferTexture
 
         var cell: Int
 
@@ -254,7 +254,7 @@ class FogOfWar
 
     private fun getCellFog(cell: Int): Int {
 
-        return if (visible!![cell]) {
+        return if (visible2!![cell]) {
             VISIBLE
         } else if (visited!![cell]) {
             VISITED
@@ -307,7 +307,7 @@ class FogOfWar
 
     override fun destroy() {
         super.destroy()
-        if (texture != null) {
+        if (texture!! != null) {
             TextureCache.remove(FogOfWar::class.java)
         }
     }

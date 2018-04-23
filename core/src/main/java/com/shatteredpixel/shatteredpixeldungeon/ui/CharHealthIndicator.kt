@@ -44,7 +44,7 @@ class CharHealthIndicator(private var target: Char?) : HealthBar() {
             width = sprite!!.width() * (4 / 6f)
             x = sprite.x + sprite.width() / 6f
             y = sprite.y - 2
-            level(target)
+            level(target!!)
             visible = target!!.HP < target!!.HT
         } else {
             visible = false

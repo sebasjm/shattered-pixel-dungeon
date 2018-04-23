@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.particles.Emitter
 
@@ -35,7 +36,7 @@ class FetidRatSprite : MobSprite() {
 
         texture(Assets.RAT)
 
-        val frames = TextureFilm(texture, 16, 15)
+        val frames = TextureFilm(texture!!, 16, 15)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 32, 32, 32, 33)

@@ -70,7 +70,7 @@ class WndTextInput(title: String, initialValue: String, maxLength: Int,
             width = WIDTH
         }
 
-        ShatteredPixelDungeon.instance!!.runOnUiThread {
+        Game.instance!!.runOnUiThread {
             val txtTitle = PixelScene.renderMultiline(title, 9)
             txtTitle.maxWidth(width)
             txtTitle.hardlight(Window.TITLE_COLOR)
@@ -79,7 +79,7 @@ class WndTextInput(title: String, initialValue: String, maxLength: Int,
 
             var pos = txtTitle.bottom() + MARGIN
 
-            textInput = EditText(ShatteredPixelDungeon.instance)
+            textInput = EditText(Game.instance)
             textInput!!.setText(initialValue)
             textInput!!.typeface = RenderedText.font
             textInput!!.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
@@ -103,7 +103,7 @@ class WndTextInput(title: String, initialValue: String, maxLength: Int,
 
                 //sets to single line and changes enter key input to be the same as the positive button
                 textInput!!.setSingleLine()
-                textInput!!.setOnEditorActionListener(object : EditText.OnEditorActionListener {
+                textInput!!.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
                         onSelect(true)
                         hide()
@@ -165,7 +165,7 @@ class WndTextInput(title: String, initialValue: String, maxLength: Int,
                     (inputHeight * scaledZoom).toInt(),
                     Gravity.CENTER_HORIZONTAL)
             layout.setMargins(0, inputTop, 0, 0)
-            ShatteredPixelDungeon.instance!!.addContentView(textInput, layout)
+            Game.instance!!.addContentView(textInput, layout)
         }
     }
 
@@ -174,12 +174,11 @@ class WndTextInput(title: String, initialValue: String, maxLength: Int,
     override fun destroy() {
         super.destroy()
         if (textInput != null) {
-            ShatteredPixelDungeon.instance!!.runOnUiThread {
+            Game.instance!!.runOnUiThread {
                 //make sure we remove the edit text and soft keyboard
                 (textInput!!.parent as ViewGroup).removeView(textInput)
 
-                val imm = ShatteredPixelDungeon
-                        .instance!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm = Game.instance!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(textInput!!.windowToken, 0)
 
                 //Soft keyboard sometimes triggers software buttons, so make sure to reassert immersive

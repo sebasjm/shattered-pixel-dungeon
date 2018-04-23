@@ -48,7 +48,7 @@ class FetidRat : Rat() {
         properties.add(Char.Property.DEMONIC)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 12
     }
 
@@ -68,12 +68,12 @@ class FetidRat : Rat() {
 
     override fun defenseProc(enemy: Char, damage: Int): Int {
 
-        GameScene.add(Blob.seed<StenchGas>(pos, 20, StenchGas::class.java))
+        GameScene.add(Blob.seed<StenchGas>(pos, 20, StenchGas::class.java)!!)
 
         return super.defenseProc(enemy, damage)
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
 
         Ghost.Quest.process()

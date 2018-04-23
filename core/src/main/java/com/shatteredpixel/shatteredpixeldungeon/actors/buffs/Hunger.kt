@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
@@ -58,16 +57,16 @@ class Hunger : Buff(), Hero.Doom {
             return true
         }
 
-        if (target.isAlive) {
+        if (target!!.isAlive) {
 
-            val hero = target as Hero
+            val hero = target!! as Hero
 
             if (isStarving) {
 
-                partialDamage += STEP * target.HT / 1000f
+                partialDamage += STEP * target!!.HT / 1000f
 
                 if (partialDamage > 1) {
-                    target.damage(partialDamage.toInt(), this)
+                    target!!.damage(partialDamage.toInt(), this)
                     partialDamage -= partialDamage.toInt().toFloat()
                 }
 
@@ -77,7 +76,7 @@ class Hunger : Buff(), Hero.Doom {
                 var statusUpdated = false
                 if (newLevel >= STARVING) {
 
-                    GLog.n(Messages.get(this, "onstarving"))
+                    GLog.n(Messages.get(this.javaClass, "onstarving"))
                     hero.resting = false
                     hero.damage(1, this)
                     statusUpdated = true
@@ -86,7 +85,7 @@ class Hunger : Buff(), Hero.Doom {
 
                 } else if (newLevel >= HUNGRY && level < HUNGRY) {
 
-                    GLog.w(Messages.get(this, "onhungry"))
+                    GLog.w(Messages.get(this.javaClass, "onhungry"))
                     statusUpdated = true
 
                 }
@@ -98,7 +97,7 @@ class Hunger : Buff(), Hero.Doom {
 
             }
 
-            spend(if (target.buff<Shadows>(Shadows::class.java) == null) STEP else STEP * 1.5f)
+            spend(if (target!!.buff<Shadows>(Shadows::class.java) == null) STEP else STEP * 1.5f)
 
         } else {
 
@@ -112,10 +111,10 @@ class Hunger : Buff(), Hero.Doom {
     fun satisfy(energy: Float) {
         var energy = energy
 
-        val buff = target.buff<HornOfPlenty.hornRecharge>(HornOfPlenty.hornRecharge::class.java)
+        val buff = target!!.buff<HornOfPlenty.hornRecharge>(HornOfPlenty.hornRecharge::class.java)
         if (buff != null && buff.isCursed) {
             energy *= 0.67f
-            GLog.n(Messages.get(this, "cursedhorn"))
+            GLog.n(Messages.get(this.javaClass, "cursedhorn"))
         }
 
         reduceHunger(energy)
@@ -130,7 +129,7 @@ class Hunger : Buff(), Hero.Doom {
         } else if (level > STARVING) {
             val excess = level - STARVING
             level = STARVING
-            partialDamage += excess * (target.HT / 1000f)
+            partialDamage += excess * (target!!.HT / 1000f)
         }
 
         BuffIndicator.refreshHero()
@@ -152,21 +151,21 @@ class Hunger : Buff(), Hero.Doom {
 
     override fun toString(): String {
         return if (level < STARVING) {
-            Messages.get(this, "hungry")
+            Messages.get(this.javaClass, "hungry")
         } else {
-            Messages.get(this, "starving")
+            Messages.get(this.javaClass, "starving")
         }
     }
 
     override fun desc(): String {
         var result: String
         if (level < STARVING) {
-            result = Messages.get(this, "desc_intro_hungry")
+            result = Messages.get(this.javaClass, "desc_intro_hungry")
         } else {
-            result = Messages.get(this, "desc_intro_starving")
+            result = Messages.get(this.javaClass, "desc_intro_starving")
         }
 
-        result += Messages.get(this, "desc")
+        result += Messages.get(this.javaClass, "desc")
 
         return result
     }
@@ -176,7 +175,7 @@ class Hunger : Buff(), Hero.Doom {
         Badges.validateDeathFromHunger()
 
         Dungeon.fail(javaClass)
-        GLog.n(Messages.get(this, "ondeath"))
+        GLog.n(Messages.get(this.javaClass, "ondeath"))
     }
 
     companion object {

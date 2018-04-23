@@ -42,7 +42,7 @@ class WndGame : Window() {
 
     init {
 
-        addButton(object : RedButton(Messages.get(this, "settings")) {
+        addButton(object : RedButton(Messages.get(this.javaClass, "settings")) {
             override fun onClick() {
                 hide()
                 GameScene.show(WndSettings())
@@ -51,7 +51,7 @@ class WndGame : Window() {
 
         // Challenges window
         if (Dungeon.challenges > 0) {
-            addButton(object : RedButton(Messages.get(this, "challenges")) {
+            addButton(object : RedButton(Messages.get(this.javaClass, "challenges")) {
                 override fun onClick() {
                     hide()
                     GameScene.show(WndChallenges(Dungeon.challenges, false))
@@ -63,16 +63,17 @@ class WndGame : Window() {
         if (!Dungeon.hero!!.isAlive) {
 
             val btnStart: RedButton
-            addButton(btnStart = object : RedButton(Messages.get(this, "start")) {
+            btnStart = object : RedButton(Messages.get(this.javaClass, "start")) {
                 override fun onClick() {
                     GamesInProgress.selectedClass = Dungeon.hero!!.heroClass
                     InterlevelScene.noStory = true
                     GameScene.show(WndStartGame(GamesInProgress.firstEmpty()))
                 }
-            })
+            }
+            addButton(btnStart)
             btnStart.textColor(Window.TITLE_COLOR)
 
-            addButton(object : RedButton(Messages.get(this, "rankings")) {
+            addButton(object : RedButton(Messages.get(this.javaClass, "rankings")) {
                 override fun onClick() {
                     InterlevelScene.mode = InterlevelScene.Mode.DESCEND
                     Game.switchScene(RankingsScene::class.java)
@@ -82,24 +83,24 @@ class WndGame : Window() {
 
         addButtons(
                 // Main menu
-                object : RedButton(Messages.get(this, "menu")) {
+                object : RedButton(Messages.get(this.javaClass, "menu")) {
                     override fun onClick() {
                         try {
                             Dungeon.saveAll()
                         } catch (e: IOException) {
-                            ShatteredPixelDungeon.reportException(e)
+                            Game.reportException(e)
                         }
 
                         Game.switchScene(TitleScene::class.java)
                     }
                 },
                 // Quit
-                object : RedButton(Messages.get(this, "exit")) {
+                object : RedButton(Messages.get(this.javaClass, "exit")) {
                     override fun onClick() {
                         try {
                             Dungeon.saveAll()
                         } catch (e: IOException) {
-                            ShatteredPixelDungeon.reportException(e)
+                            Game.reportException(e)
                         }
 
                         Game.instance!!.finish()
@@ -108,7 +109,7 @@ class WndGame : Window() {
         )
 
         // Cancel
-        addButton(object : RedButton(Messages.get(this, "return")) {
+        addButton(object : RedButton(Messages.get(this.javaClass, "return")) {
             override fun onClick() {
                 hide()
             }
@@ -119,13 +120,13 @@ class WndGame : Window() {
 
     private fun addButton(btn: RedButton) {
         add(btn)
-        btn.setRect(0f, (if (pos > 0) pos += GAP else 0).toFloat(), WIDTH.toFloat(), BTN_HEIGHT.toFloat())
+        btn.setRect(0f, (if (pos > 0) {pos += GAP; pos} else 0).toFloat(), WIDTH.toFloat(), BTN_HEIGHT.toFloat())
         pos += BTN_HEIGHT
     }
 
     private fun addButtons(btn1: RedButton, btn2: RedButton) {
         add(btn1)
-        btn1.setRect(0f, (if (pos > 0) pos += GAP else 0).toFloat(), ((WIDTH - GAP) / 2).toFloat(), BTN_HEIGHT.toFloat())
+        btn1.setRect(0f, (if (pos > 0) {pos += GAP; pos} else 0).toFloat(), ((WIDTH - GAP) / 2).toFloat(), BTN_HEIGHT.toFloat())
         add(btn2)
         btn2.setRect(btn1.right() + GAP, btn1.top(), WIDTH.toFloat() - btn1.right() - GAP.toFloat(), BTN_HEIGHT.toFloat())
         pos += BTN_HEIGHT

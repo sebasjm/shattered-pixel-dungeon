@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class ImpSprite : MobSprite() {
@@ -32,7 +33,7 @@ class ImpSprite : MobSprite() {
 
         texture(Assets.IMP)
 
-        val frames = TextureFilm(texture, 12, 14)
+        val frames = TextureFilm(texture!!, 12, 14)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(frames,
@@ -45,7 +46,7 @@ class ImpSprite : MobSprite() {
         die = MovieClip.Animation(10, false)
         die!!.frames(frames, 0, 3, 2, 1, 0, 3, 2, 1, 0)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun link(ch: Char) {

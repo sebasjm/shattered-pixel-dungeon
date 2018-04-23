@@ -24,4 +24,4 @@ package com.shatteredpixel.shatteredpixeldungeon.windows
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 
-open class WndQuest(questgiver: NPC, text: String) : WndTitledMessage(questgiver.sprite(), Messages.titleCase(questgiver.name), text)
+open class WndQuest(questgiver: NPC, text: String) : WndTitledMessage(questgiver.sprite()!!, Messages.titleCase(questgiver.name), text)

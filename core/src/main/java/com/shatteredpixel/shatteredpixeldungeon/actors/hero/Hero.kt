@@ -190,7 +190,7 @@ class Hero : Char() {
     }
 
     init {
-        name = Messages.get(this, "name")
+        name = Messages.get(this.javaClass, "name")
 
         HT = 20
         HP = HT
@@ -268,7 +268,7 @@ class Hero : Char() {
     }
 
     fun givenName(): String {
-        return if (name == Messages.get(this, "name")) className() else name
+        return if (name == Messages.get(this.javaClass, "name")) className() else name
     }
 
     fun live() {
@@ -294,12 +294,12 @@ class Hero : Char() {
         return result
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         val wep = belongings.weapon
 
         var accuracy = 1f
         if (wep is MissileWeapon && rangedAttack
-                && Dungeon.level!!.distance(pos, target.pos) == 1) {
+                && Dungeon.level!!.distance(pos, target!!.pos) == 1) {
             accuracy *= 0.5f
         }
 
@@ -310,7 +310,7 @@ class Hero : Char() {
         }
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char?): Int {
 
         var multiplier = 1f * RingOfEvasion.evasionMultiplier(this)
 
@@ -425,7 +425,7 @@ class Hero : Char() {
 
             PathFinder.buildDistanceMap(enemy.pos, passable, wep.reachFactor(this))
 
-            return PathFinder.distance[pos] <= wep.reachFactor(this)
+            return PathFinder.distance!![pos] <= wep.reachFactor(this)
 
         } else {
             return false
@@ -473,7 +473,7 @@ class Hero : Char() {
                 Dungeon.observe()
             } else {
                 //otherwise just directly re-calculate FOV
-                Dungeon.level!!.updateFieldOfView(this, fieldOfView)
+                Dungeon.level!!.updateFieldOfView(this, fieldOfView!!)
             }
         }
 
@@ -679,9 +679,9 @@ class Hero : Char() {
 
                         val important = (item is ScrollOfUpgrade || item is ScrollOfMagicalInfusion) && (item as Scroll).isKnown || (item is PotionOfStrength || item is PotionOfMight) && (item as Potion).isKnown
                         if (important) {
-                            GLog.p(Messages.get(this, "you_now_have", item.name()))
+                            GLog.p(Messages.get(this.javaClass, "you_now_have", item.name()))
                         } else {
-                            GLog.i(Messages.get(this, "you_now_have", item.name()))
+                            GLog.i(Messages.get(this.javaClass, "you_now_have", item.name()))
                         }
                     }
 
@@ -715,7 +715,7 @@ class Hero : Char() {
 
                 if (heap.type == Type.LOCKED_CHEST && Notes.keyCount(GoldenKey(Dungeon.depth)) < 1 || heap.type == Type.CRYSTAL_CHEST && Notes.keyCount(CrystalKey(Dungeon.depth)) < 1) {
 
-                    GLog.w(Messages.get(this, "locked_chest"))
+                    GLog.w(Messages.get(this.javaClass, "locked_chest"))
                     ready()
                     return false
 
@@ -724,7 +724,7 @@ class Hero : Char() {
                 when (heap.type) {
                     Heap.Type.TOMB -> {
                         Sample.INSTANCE.play(Assets.SND_TOMB)
-                        Camera.main.shake(1f, 0.5f)
+                        Camera.main!!.shake(1f, 0.5f)
                     }
                     Heap.Type.SKELETON, Heap.Type.REMAINS -> {
                     }
@@ -775,7 +775,7 @@ class Hero : Char() {
                 Sample.INSTANCE.play(Assets.SND_UNLOCK)
 
             } else {
-                GLog.w(Messages.get(this, "locked_door"))
+                GLog.w(Messages.get(this.javaClass, "locked_door"))
                 ready()
             }
 
@@ -822,7 +822,7 @@ class Hero : Char() {
             if (Dungeon.depth == 1) {
 
                 if (belongings.getItem<Amulet>(Amulet::class.java) == null) {
-                    GameScene.show(WndMessage(Messages.get(this, "leave")))
+                    GameScene.show(WndMessage(Messages.get(this.javaClass, "leave")))
                     ready()
                 } else {
                     Dungeon.win(Amulet::class.java)
@@ -857,7 +857,7 @@ class Hero : Char() {
 
         enemy = action.target
 
-        if (enemy!!.isAlive && canAttack(enemy) && !isCharmedBy(enemy)) {
+        if (enemy!!.isAlive && canAttack(enemy) && !isCharmedBy(enemy!!)) {
 
             Invisibility.dispel()
             spend(attackDelay())
@@ -886,7 +886,7 @@ class Hero : Char() {
     fun rest(fullRest: Boolean) {
         spendAndNext(TIME_TO_REST)
         if (!fullRest) {
-            sprite!!.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"))
+            sprite!!.showStatus(CharSprite.DEFAULT, Messages.get(this.javaClass, "wait"))
         }
         resting = fullRest
     }
@@ -934,7 +934,7 @@ class Hero : Char() {
 
         if (this.buff<Drowsy>(Drowsy::class.java) != null) {
             Buff.detach(this, Drowsy::class.java)
-            GLog.w(Messages.get(this, "pain_resist"))
+            GLog.w(Messages.get(this.javaClass, "pain_resist"))
         }
 
         val thorns = buff<CapeOfThorns.Thorns>(CapeOfThorns.Thorns::class.java)
@@ -1008,7 +1008,7 @@ class Hero : Char() {
             return false
 
         if (rooted) {
-            Camera.main.shake(1f, 1f)
+            Camera.main!!.shake(1f, 1f)
             return false
         }
 
@@ -1064,7 +1064,7 @@ class Hero : Char() {
                     passable[i] = p[i] && (v!![i] || m!![i])
                 }
 
-                path = Dungeon.findPath(this, pos, target, passable, fieldOfView)
+                path = Dungeon.findPath(this, pos, target, passable, fieldOfView!!)
             }
 
             if (path == null) return false
@@ -1119,46 +1119,52 @@ class Hero : Char() {
 
             curAction = HeroAction.Alchemy(cell)
 
-        } else if (fieldOfView!![cell] && (ch = Actor.findChar(cell)) is Mob) {
+        } else {
+            ch = Actor.findChar(cell)
+            if (fieldOfView!![cell] && ch is Mob) {
 
-            if (ch is NPC) {
-                curAction = HeroAction.Interact(ch as NPC?)
+                if (ch is NPC) {
+                    curAction = HeroAction.Interact(ch)
+                } else {
+                    curAction = HeroAction.Attack(ch)
+                }
+
             } else {
-                curAction = HeroAction.Attack(ch)
-            }
-
-        } else if ((heap = Dungeon.level!!.heaps.get(cell)) != null
-                //moving to an item doesn't auto-pickup when enemies are near...
-                && (visibleEnemies!!.size == 0 || cell == pos ||
+                heap = Dungeon.level!!.heaps.get(cell)
+                if (heap != null
+                        //moving to an item doesn't auto-pickup when enemies are near...
+                        && (visibleEnemies!!.size == 0 || cell == pos ||
                         //...but only for standard heaps, chests and similar open as normal.
                         heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
 
-            when (heap.type) {
-                Heap.Type.HEAP -> curAction = HeroAction.PickUp(cell)
-                Heap.Type.FOR_SALE -> curAction = if (heap.size() == 1 && heap.peek().price() > 0)
-                    HeroAction.Buy(cell)
-                else
-                    HeroAction.PickUp(cell)
-                else -> curAction = HeroAction.OpenChest(cell)
+                    when (heap.type) {
+                        Heap.Type.HEAP -> curAction = HeroAction.PickUp(cell)
+                        Heap.Type.FOR_SALE -> curAction = if (heap.size() == 1 && heap.peek().price() > 0)
+                            HeroAction.Buy(cell)
+                        else
+                            HeroAction.PickUp(cell)
+                        else -> curAction = HeroAction.OpenChest(cell)
+                    }
+
+                } else if (Dungeon.level!!.map!![cell] == Terrain.LOCKED_DOOR || Dungeon.level!!.map!![cell] == Terrain.LOCKED_EXIT) {
+
+                    curAction = HeroAction.Unlock(cell)
+
+                } else if (cell == Dungeon.level!!.exit && Dungeon.depth < 26) {
+
+                    curAction = HeroAction.Descend(cell)
+
+                } else if (cell == Dungeon.level!!.entrance) {
+
+                    curAction = HeroAction.Ascend(cell)
+
+                } else {
+
+                    curAction = HeroAction.Move(cell)
+                    lastAction = null
+
+                }
             }
-
-        } else if (Dungeon.level!!.map!![cell] == Terrain.LOCKED_DOOR || Dungeon.level!!.map!![cell] == Terrain.LOCKED_EXIT) {
-
-            curAction = HeroAction.Unlock(cell)
-
-        } else if (cell == Dungeon.level!!.exit && Dungeon.depth < 26) {
-
-            curAction = HeroAction.Descend(cell)
-
-        } else if (cell == Dungeon.level!!.entrance) {
-
-            curAction = HeroAction.Ascend(cell)
-
-        } else {
-
-            curAction = HeroAction.Move(cell)
-            lastAction = null
-
         }
 
         return true
@@ -1195,7 +1201,7 @@ class Hero : Char() {
                 Buff.prolong<Bless>(this, Bless::class.java, 30f)
                 this.exp = 0
 
-                GLog.p(Messages.get(this, "level_cap"))
+                GLog.p(Messages.get(this.javaClass, "level_cap"))
                 Sample.INSTANCE.play(Assets.SND_LEVELUP)
             }
 
@@ -1203,7 +1209,7 @@ class Hero : Char() {
 
         if (levelUp) {
 
-            GLog.p(Messages.get(this, "new_level"), lvl)
+            GLog.p(Messages.get(this.javaClass, "new_level"), lvl)
             sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(Hero::class.java, "level_up"))
             Sample.INSTANCE.play(Assets.SND_LEVELUP)
 
@@ -1252,7 +1258,7 @@ class Hero : Char() {
         return stealth
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         curAction = null
 
@@ -1274,13 +1280,13 @@ class Hero : Char() {
             Buff.detach(this, Paralysis::class.java)
             spend(-cooldown())
 
-            Flare(8, 32f).color(0xFFFF66, true).show(sprite, 2f)
+            Flare(8, 32f).color(0xFFFF66, true).show(sprite!!, 2f)
             CellEmitter.get(this.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3)
 
             ankh.detach(belongings.backpack)
 
             Sample.INSTANCE.play(Assets.SND_TELEPORT)
-            GLog.w(Messages.get(this, "revive"))
+            GLog.w(Messages.get(this.javaClass, "revive"))
             Statistics.ankhsUsed++
 
             return
@@ -1291,12 +1297,12 @@ class Hero : Char() {
 
         if (ankh == null) {
 
-            reallyDie(cause)
+            reallyDie(cause!!)
 
         } else {
 
             Dungeon.deleteGame(GamesInProgress.curSlot, false)
-            GameScene.show(WndResurrect(ankh, cause))
+            GameScene.show(WndResurrect(ankh, cause!!))
 
         }
     }
@@ -1315,7 +1321,7 @@ class Hero : Char() {
 
     override fun onAttackComplete() {
 
-        AttackIndicator.target(enemy)
+        AttackIndicator.target(enemy!!)
 
         val hit = attack(enemy)
 
@@ -1455,10 +1461,10 @@ class Hero : Char() {
 
 
         if (intentional) {
-            sprite!!.showStatus(CharSprite.DEFAULT, Messages.get(this, "search"))
+            sprite!!.showStatus(CharSprite.DEFAULT, Messages.get(this.javaClass, "search"))
             sprite!!.operate(pos)
             if (cursed) {
-                GLog.n(Messages.get(this, "search_distracted"))
+                GLog.n(Messages.get(this.javaClass, "search_distracted"))
                 buff<Hunger>(Hunger::class.java)!!.reduceHunger(TIME_TO_SEARCH - 2 * HUNGER_FOR_SEARCH)
             } else {
                 buff<Hunger>(Hunger::class.java)!!.reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH)
@@ -1468,7 +1474,7 @@ class Hero : Char() {
         }
 
         if (smthFound) {
-            GLog.w(Messages.get(this, "noticed_smth"))
+            GLog.w(Messages.get(this.javaClass, "noticed_smth"))
             Sample.INSTANCE.play(Assets.SND_SECRET)
             interrupt()
         }
@@ -1542,7 +1548,7 @@ class Hero : Char() {
 
                 if (discoverable[i]) {
 
-                    visited[i] = true
+                    visited!![i] = true
                     if (Terrain.flags[terr] and Terrain.SECRET != 0) {
                         Dungeon.level!!.discover(i)
                     }
@@ -1559,7 +1565,7 @@ class Hero : Char() {
             val pos = Dungeon.hero!!.pos
 
             val passable = ArrayList<Int>()
-            for (ofs in PathFinder.NEIGHBOURS8) {
+            for (ofs in PathFinder.NEIGHBOURS8!!) {
                 val cell = pos + ofs
                 if ((Dungeon.level!!.passable[cell] || Dungeon.level!!.avoid[cell]) && Dungeon.level!!.heaps.get(cell) == null) {
                     passable.add(cell)

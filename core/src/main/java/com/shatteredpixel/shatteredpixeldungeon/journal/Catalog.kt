@@ -142,7 +142,7 @@ enum class Catalog {
 
     fun allSeen(): Boolean {
         for (item in items()) {
-            if (!seen[item]) {
+            if (!seen[item]!!) {
                 return false
             }
         }
@@ -273,7 +273,7 @@ enum class Catalog {
         fun isSeen(itemClass: Class<out Item>): Boolean {
             for (cat in values()) {
                 if (cat.seen.containsKey(itemClass)) {
-                    return cat.seen[itemClass]
+                    return cat.seen[itemClass]!!
                 }
             }
             return false
@@ -281,7 +281,7 @@ enum class Catalog {
 
         fun setSeen(itemClass: Class<out Item>) {
             for (cat in values()) {
-                if (cat.seen.containsKey(itemClass) && !cat.seen[itemClass]) {
+                if (cat.seen.containsKey(itemClass) && !cat.seen[itemClass]!!) {
                     cat.seen[itemClass] = true
                     Journal.saveNeeded = true
                 }
@@ -300,9 +300,9 @@ enum class Catalog {
             //if we have identified all items of a set, we use the badge to keep track instead.
             if (!Badges.isUnlocked(Badges.Badge.ALL_ITEMS_IDENTIFIED)) {
                 for (cat in values()) {
-                    if (!Badges.isUnlocked(catalogBadges[cat])) {
+                    if (!Badges.isUnlocked(catalogBadges[cat]!!)) {
                         for (item in cat.items()) {
-                            if (cat.seen[item]) seen.add(item.simpleName)
+                            if (cat.seen[item]!!) seen.add(item.simpleName)
                         }
                     }
                 }
@@ -328,7 +328,7 @@ enum class Catalog {
 
             //catalog-specific badge logic
             for (cat in values()) {
-                if (Badges.isUnlocked(catalogBadges[cat])) {
+                if (Badges.isUnlocked(catalogBadges[cat]!!)) {
                     for (item in cat.items()) {
                         cat.seen[item] = true
                     }

@@ -51,29 +51,29 @@ class HuntressArmor : ClassArmor() {
 
                 val callback = object : Callback {
                     override fun call() {
-                        Item.curUser.attack(targets[this])
+                        Item.curUser!!.attack(targets[this])
                         targets.remove(this)
                         if (targets.isEmpty()) {
-                            Item.curUser.spendAndNext(Item.curUser.attackDelay())
+                            Item.curUser!!.spendAndNext(Item.curUser!!.attackDelay())
                         }
                     }
                 }
 
-                (Item.curUser.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(Item.curUser.pos, mob.pos, proto, callback)
+                (Item.curUser!!.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(Item.curUser!!.pos, mob.pos, proto, callback)
 
                 targets[callback] = mob
             }
         }
 
         if (targets.size == 0) {
-            GLog.w(Messages.get(this, "no_enemies"))
+            GLog.w(Messages.get(this.javaClass, "no_enemies"))
             return
         }
 
-        Item.curUser.HP -= Item.curUser.HP / 3
+        Item.curUser!!.HP -= Item.curUser!!.HP / 3
 
-        Item.curUser.sprite!!.zap(Item.curUser.pos)
-        Item.curUser.busy()
+        Item.curUser!!.sprite!!.zap(Item.curUser!!.pos)
+        Item.curUser!!.busy()
     }
 
 }

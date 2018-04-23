@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
@@ -49,7 +50,7 @@ import java.util.ArrayList
 
 abstract class Plant : Bundlable {
 
-    var plantName = Messages.get(this, "name")
+    var plantName = Messages.get(this.javaClass, "name")
 
     var image: Int = 0
     var pos: Int = 0
@@ -112,7 +113,7 @@ abstract class Plant : Bundlable {
     }
 
     fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     open class Seed : Item() {
@@ -173,7 +174,7 @@ abstract class Plant : Bundlable {
                 plant.pos = pos
                 return plant
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 

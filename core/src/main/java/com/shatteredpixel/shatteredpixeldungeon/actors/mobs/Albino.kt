@@ -37,7 +37,7 @@ class Albino : Rat() {
         HP = HT
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Badges.validateRare(this)
     }

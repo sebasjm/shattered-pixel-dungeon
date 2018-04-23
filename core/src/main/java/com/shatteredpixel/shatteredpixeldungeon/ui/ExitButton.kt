@@ -31,35 +31,35 @@ import com.watabou.noosa.ui.Button
 
 class ExitButton : Button() {
 
-    protected var image: Image
+    protected var image: Image? = null
 
     init {
 
-        width = image.width
-        height = image.height
+        width = image!!.width
+        height = image!!.height
     }
 
     override fun createChildren() {
         super.createChildren()
 
         image = Icons.EXIT.get()
-        add(image)
+        add(image!!)
     }
 
     override fun layout() {
         super.layout()
 
-        image.x = x
-        image.y = y
+        image!!.x = x
+        image!!.y = y
     }
 
     override fun onTouchDown() {
-        image.brightness(1.5f)
+        image!!.brightness(1.5f)
         Sample.INSTANCE.play(Assets.SND_CLICK)
     }
 
     override fun onTouchUp() {
-        image.resetColor()
+        image!!.resetColor()
     }
 
     override fun onClick() {

@@ -126,14 +126,14 @@ class WndLangs : Window() {
 
             val info = PixelScene.renderMultiline(6)
             when (currLang.status()) {
-                Languages.Status.REVIEWED -> info.text(Messages.get(this, "completed"), width - textLeft)
-                Languages.Status.UNREVIEWED -> info.text(Messages.get(this, "unreviewed"), width - textLeft)
-                Languages.Status.INCOMPLETE -> info.text(Messages.get(this, "unfinished"), width - textLeft)
+                Languages.Status.REVIEWED -> info.text(Messages.get(this.javaClass, "completed"), width - textLeft)
+                Languages.Status.UNREVIEWED -> info.text(Messages.get(this.javaClass, "unreviewed"), width - textLeft)
+                Languages.Status.INCOMPLETE -> info.text(Messages.get(this.javaClass, "unfinished"), width - textLeft)
             }
             info.setPos(textLeft.toFloat(), title.height() + 2)
             add(info)
 
-            val creditsBtn = object : RedButton(Messages.titleCase(Messages.get(this, "credits"))) {
+            val creditsBtn = object : RedButton(Messages.titleCase(Messages.get(this.javaClass, "credits"))) {
                 override fun onClick() {
                     super.onClick()
                     var creds = ""
@@ -180,7 +180,7 @@ class WndLangs : Window() {
             add(creditsBtn)
 
             val transifex_text = PixelScene.renderMultiline(6)
-            transifex_text.text(Messages.get(this, "transifex"), width - textLeft)
+            transifex_text.text(Messages.get(this.javaClass, "transifex"), width - textLeft)
             transifex_text.setPos(textLeft.toFloat(), creditsBtn.top() - 2f - transifex_text.height())
             add(transifex_text)
 

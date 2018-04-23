@@ -39,7 +39,7 @@ class BadgeBanner private constructor(private val index: Int) : Image(Assets.BAD
     init {
 
         if (atlas == null) {
-            atlas = TextureFilm(texture, 16, 16)
+            atlas = TextureFilm(texture!!, 16, 16)
         }
 
         frame(atlas!!.get(index))
@@ -169,13 +169,14 @@ class BadgeBanner private constructor(private val index: Int) : Image(Assets.BAD
             if (current != null) {
                 current!!.killAndErase()
             }
-            return current = BadgeBanner(image)
+            current = BadgeBanner(image)
+            return current!!
         }
 
         fun image(index: Int): Image {
             val image = Image(Assets.BADGES)
             if (atlas == null) {
-                atlas = TextureFilm(image.texture, 16, 16)
+                atlas = TextureFilm(image.texture!!, 16, 16)
             }
             image.frame(atlas!!.get(index))
             return image

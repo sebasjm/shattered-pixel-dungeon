@@ -65,7 +65,8 @@ open class Beam private constructor(s: PointF, e: PointF, asset: Effects.Type, d
         alpha(p)
         scale.set(scale.x, p)
 
-        if ((timeLeft -= Game.elapsed) <= 0) {
+        timeLeft -= Game.elapsed
+        if (timeLeft <= 0) {
             killAndErase()
         }
     }

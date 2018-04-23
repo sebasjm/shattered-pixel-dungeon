@@ -54,7 +54,7 @@ class WndStartGame(slot: Int) : Window() {
         Badges.loadGlobal()
         Journal.loadGlobal()
 
-        val title = PixelScene.renderText(Messages.get(this, "title"), 12)
+        val title = PixelScene.renderText(Messages.get(this.javaClass, "title"), 12)
         title.hardlight(Window.TITLE_COLOR)
         title.x = (WIDTH - title.width()) / 2f
         title.y = 2f
@@ -80,7 +80,7 @@ class WndStartGame(slot: Int) : Window() {
         ava.setRect(20f, separator.y + 2, (WIDTH - 30).toFloat(), 80f)
         add(ava)
 
-        val start = object : RedButton(Messages.get(this, "start")) {
+        val start = object : RedButton(Messages.get(this.javaClass, "start")) {
             override fun onClick() {
                 if (GamesInProgress.selectedClass == null) return
 
@@ -113,7 +113,7 @@ class WndStartGame(slot: Int) : Window() {
             val challengeButton = object : IconButton(
                     Icons.get(if (SPDSettings.challenges() > 0) Icons.CHALLENGE_ON else Icons.CHALLENGE_OFF)) {
                 override fun onClick() {
-                    ShatteredPixelDungeon.scene()!!.add(object : WndChallenges(SPDSettings.challenges(), true) {
+                    Game.scene()!!.add(object : WndChallenges(SPDSettings.challenges(), true) {
                         override fun onBackPressed() {
                             super.onBackPressed()
                             icon(Icons.get(if (SPDSettings.challenges() > 0)
@@ -189,7 +189,7 @@ class WndStartGame(slot: Int) : Window() {
             super.onClick()
 
             if (cl == HeroClass.HUNTRESS && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)) {
-                ShatteredPixelDungeon.scene()!!.add(
+                Game.scene()!!.add(
                         WndMessage(Messages.get(WndStartGame::class.java, "huntress_unlock")))
             } else {
                 GamesInProgress.selectedClass = cl
@@ -198,8 +198,8 @@ class WndStartGame(slot: Int) : Window() {
 
         companion object {
 
-            private val WIDTH = 24
-            private val HEIGHT = 16
+            val WIDTH = 24
+            val HEIGHT = 16
         }
     }
 
@@ -226,7 +226,7 @@ class WndStartGame(slot: Int) : Window() {
             heroItem = object : IconButton() {
                 override fun onClick() {
                     if (cl == null) return
-                    ShatteredPixelDungeon.scene()!!.add(WndMessage(Messages.get(cl, cl!!.name + "_desc_item")))
+                    Game.scene()!!.add(WndMessage(Messages.get(cl!!.javaClass, cl!!.name + "_desc_item")))
                 }
             }
             heroItem!!.setSize(BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
@@ -235,7 +235,7 @@ class WndStartGame(slot: Int) : Window() {
             heroLoadout = object : IconButton() {
                 override fun onClick() {
                     if (cl == null) return
-                    ShatteredPixelDungeon.scene()!!.add(WndMessage(Messages.get(cl, cl!!.name + "_desc_loadout")))
+                    Game.scene()!!.add(WndMessage(Messages.get(cl!!.javaClass, cl!!.name + "_desc_loadout")))
                 }
             }
             heroLoadout!!.setSize(BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
@@ -244,7 +244,7 @@ class WndStartGame(slot: Int) : Window() {
             heroMisc = object : IconButton() {
                 override fun onClick() {
                     if (cl == null) return
-                    ShatteredPixelDungeon.scene()!!.add(WndMessage(Messages.get(cl, cl!!.name + "_desc_misc")))
+                    Game.scene()!!.add(WndMessage(Messages.get(cl!!.javaClass, cl!!.name + "_desc_misc")))
                 }
             }
             heroMisc!!.setSize(BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
@@ -253,11 +253,11 @@ class WndStartGame(slot: Int) : Window() {
             heroSubclass = object : IconButton(ItemSprite(ItemSpriteSheet.MASTERY, null)) {
                 override fun onClick() {
                     if (cl == null) return
-                    var msg = Messages.get(cl, cl!!.name + "_desc_subclasses")
+                    var msg = Messages.get(cl!!.javaClass, cl!!.name + "_desc_subclasses")
                     for (sub in cl!!.subClasses()) {
                         msg += "\n\n" + sub.desc()
                     }
-                    ShatteredPixelDungeon.scene()!!.add(WndMessage(msg))
+                    Game.scene()!!.add(WndMessage(msg))
                 }
             }
             heroSubclass!!.setSize(BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
@@ -328,14 +328,11 @@ class WndStartGame(slot: Int) : Window() {
             }
         }
 
-        companion object {
-
-            private val BTN_SIZE = 20
-        }
     }
 
     companion object {
 
+        private val BTN_SIZE = 20
         private val WIDTH = 120
         private val HEIGHT = 140
     }

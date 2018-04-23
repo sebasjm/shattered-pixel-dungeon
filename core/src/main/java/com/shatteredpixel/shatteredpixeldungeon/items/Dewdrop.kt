@@ -57,9 +57,9 @@ class Dewdrop : Item() {
             if (effect > 0) {
                 hero.HP += effect
                 hero.sprite!!.emitter().burst(Speck.factory(Speck.HEALING), 1)
-                hero.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", effect))
+                hero.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this.javaClass, "value", effect))
             } else {
-                GLog.i(Messages.get(this, "already_full"))
+                GLog.i(Messages.get(this.javaClass, "already_full"))
                 return false
             }
 

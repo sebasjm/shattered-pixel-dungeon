@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
@@ -78,7 +79,8 @@ open class Armor(var tier: Int) : EquipableItem() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        if ((hitsToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
+        hitsToKnow = bundle.getInt(UNFAMILIRIARITY)
+        if (hitsToKnow == 0) {
             hitsToKnow = HITS_TO_KNOW
         }
         inscribe(bundle.get(GLYPH) as Glyph)
@@ -156,7 +158,7 @@ open class Armor(var tier: Int) : EquipableItem() {
             level(level() + 1)
             Badges.validateItemLevelAquired(this)
         }
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             Buff.affect<BrokenSeal.WarriorShield>(Dungeon.hero!!, BrokenSeal.WarriorShield::class.java)!!.setArmor(this)
         }
     }
@@ -187,7 +189,7 @@ open class Armor(var tier: Int) : EquipableItem() {
         }
     }
 
-    override fun isEquipped(hero: Hero?): Boolean {
+    override fun isEquipped(hero: Hero): Boolean {
         return hero!!.belongings.armor === this
     }
 
@@ -276,7 +278,7 @@ open class Armor(var tier: Int) : EquipableItem() {
             info += " " + glyph!!.desc()
         }
 
-        if (cursed && isEquipped(Dungeon.hero)) {
+        if (cursed && isEquipped(Dungeon.hero!!)) {
             info += "\n\n" + Messages.get(Armor::class.java, "cursed_worn")
         } else if (cursedKnown && cursed) {
             info += "\n\n" + Messages.get(Armor::class.java, "cursed")
@@ -340,7 +342,7 @@ open class Armor(var tier: Int) : EquipableItem() {
     override fun price(): Int {
         if (seal != null) return 0
 
-        var price = 20 * tier
+        var price: Double = 20.0 * tier
         if (hasGoodGlyph()) {
             price *= 1.5
         }
@@ -351,9 +353,9 @@ open class Armor(var tier: Int) : EquipableItem() {
             price *= level() + 1
         }
         if (price < 1) {
-            price = 1
+            price = 1.0
         }
-        return price
+        return price.toInt()
     }
 
     fun inscribe(glyph: Glyph?): Armor {
@@ -395,17 +397,17 @@ open class Armor(var tier: Int) : EquipableItem() {
 
         fun name(): String {
             return if (!curse())
-                name(Messages.get(this, "glyph"))
+                name(Messages.get(this.javaClass, "glyph"))
             else
                 name(Messages.get(Item::class.java, "curse"))
         }
 
         fun name(armorName: String): String {
-            return Messages.get(this, "name", armorName)
+            return Messages.get(this.javaClass, "name", armorName)
         }
 
         fun desc(): String {
-            return Messages.get(this, "desc")
+            return Messages.get(this.javaClass, "desc")
         }
 
         open fun curse(): Boolean {
@@ -430,7 +432,7 @@ open class Armor(var tier: Int) : EquipableItem() {
             if (!owner.isAlive && owner is Hero) {
 
                 Dungeon.fail(javaClass)
-                GLog.n(Messages.get(this, "killed", name()))
+                GLog.n(Messages.get(this.javaClass, "killed", name()))
 
                 Badges.validateDeathFromGlyph()
                 return true
@@ -451,7 +453,7 @@ open class Armor(var tier: Int) : EquipableItem() {
                 try {
                     return (glyphs[Random.chances(chances)] as Class<Glyph>).newInstance()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                     return null
                 }
 
@@ -461,7 +463,7 @@ open class Armor(var tier: Int) : EquipableItem() {
                 try {
                     return (Random.oneOf(*curses) as Class<Glyph>).newInstance()
                 } catch (e: Exception) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                     return null
                 }
 

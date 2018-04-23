@@ -27,9 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Halo
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle
 import com.watabou.glwrap.Blending
 import com.watabou.noosa.Game
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
-import com.watabou.utils.PointF
 
 class WandmakerSprite : MobSprite() {
 
@@ -39,7 +39,7 @@ class WandmakerSprite : MobSprite() {
 
         texture(Assets.MAKER)
 
-        val frames = TextureFilm(texture, 12, 14)
+        val frames = TextureFilm(texture!!, 12, 14)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 2, 1)
@@ -57,7 +57,8 @@ class WandmakerSprite : MobSprite() {
         super.link(ch)
 
         if (shield == null) {
-            parent!!.add(shield = Shield())
+            shield = Shield()
+            parent!!.add(shield!!)
         }
     }
 
@@ -74,7 +75,7 @@ class WandmakerSprite : MobSprite() {
         }
     }
 
-    inner class Shield : Halo(9, 0xBBAACC, 1f) {
+    inner class Shield : Halo(9f, 0xBBAACC, 1f) {
 
         private var phase: Float = 0.toFloat()
 
@@ -90,7 +91,8 @@ class WandmakerSprite : MobSprite() {
             super.update()
 
             if (phase < 1) {
-                if ((phase -= Game.elapsed) <= 0) {
+                phase -= Game.elapsed
+                if (phase <= 0) {
                     killAndErase()
                 } else {
                     scale.set((2 - phase) * radius / Halo.RADIUS)
@@ -99,7 +101,8 @@ class WandmakerSprite : MobSprite() {
                 }
             }
 
-            if (visible = this@WandmakerSprite.visible) {
+            visible = this@WandmakerSprite.visible
+            if (visible) {
                 val p = this@WandmakerSprite.center()
                 point(p.x, p.y)
             }

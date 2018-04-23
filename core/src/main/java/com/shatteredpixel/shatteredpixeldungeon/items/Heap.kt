@@ -105,7 +105,7 @@ class Heap : Bundlable {
 
     fun open(hero: Hero) {
         when (type) {
-            Heap.Type.MIMIC -> if (Mimic.spawnAt(pos, items) != null) {
+            Heap.Type.MIMIC -> if (Mimic.spawnAt(pos, items!!) != null) {
                 destroy()
             } else {
                 type = Type.CHEST
@@ -131,7 +131,7 @@ class Heap : Bundlable {
             val bonus = RingOfWealth.tryRareDrop(hero, 1)
             if (bonus != null) {
                 items!!.addAll(0, bonus)
-                Flare(8, 32f).color(0xFFFF00, true).show(sprite, 2f)
+                Flare(8, 32f).color(0xFFFF00, true).show(sprite!!, 2f)
             }
             sprite!!.link()
             sprite!!.drop()
@@ -200,7 +200,7 @@ class Heap : Bundlable {
     fun burn() {
 
         if (type == Type.MIMIC) {
-            val m = Mimic.spawnAt(pos, items)
+            val m = Mimic.spawnAt(pos, items!!)
             if (m != null) {
                 Buff.affect<Burning>(m, Burning::class.java)!!.reignite(m)
                 m.sprite!!.emitter().burst(FlameParticle.FACTORY, 5)
@@ -298,7 +298,7 @@ class Heap : Bundlable {
     fun freeze() {
 
         if (type == Type.MIMIC) {
-            val m = Mimic.spawnAt(pos, items)
+            val m = Mimic.spawnAt(pos, items!!)
             if (m != null) {
                 Buff.prolong<Frost>(m, Frost::class.java, Frost.duration(m) * Random.Float(1.0f, 1.5f))
                 destroy()
@@ -343,29 +343,29 @@ class Heap : Bundlable {
 
     override fun toString(): String {
         when (type) {
-            Heap.Type.CHEST, Heap.Type.MIMIC -> return Messages.get(this, "chest")
-            Heap.Type.LOCKED_CHEST -> return Messages.get(this, "locked_chest")
-            Heap.Type.CRYSTAL_CHEST -> return Messages.get(this, "crystal_chest")
-            Heap.Type.TOMB -> return Messages.get(this, "tomb")
-            Heap.Type.SKELETON -> return Messages.get(this, "skeleton")
-            Heap.Type.REMAINS -> return Messages.get(this, "remains")
+            Heap.Type.CHEST, Heap.Type.MIMIC -> return Messages.get(this.javaClass, "chest")
+            Heap.Type.LOCKED_CHEST -> return Messages.get(this.javaClass, "locked_chest")
+            Heap.Type.CRYSTAL_CHEST -> return Messages.get(this.javaClass, "crystal_chest")
+            Heap.Type.TOMB -> return Messages.get(this.javaClass, "tomb")
+            Heap.Type.SKELETON -> return Messages.get(this.javaClass, "skeleton")
+            Heap.Type.REMAINS -> return Messages.get(this.javaClass, "remains")
             else -> return peek().toString()
         }
     }
 
     fun info(): String {
         when (type) {
-            Heap.Type.CHEST, Heap.Type.MIMIC -> return Messages.get(this, "chest_desc")
-            Heap.Type.LOCKED_CHEST -> return Messages.get(this, "locked_chest_desc")
+            Heap.Type.CHEST, Heap.Type.MIMIC -> return Messages.get(this.javaClass, "chest_desc")
+            Heap.Type.LOCKED_CHEST -> return Messages.get(this.javaClass, "locked_chest_desc")
             Heap.Type.CRYSTAL_CHEST -> return if (peek() is Artifact)
-                Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact"))
+                Messages.get(this.javaClass, "crystal_chest_desc", Messages.get(this.javaClass, "artifact"))
             else if (peek() is Wand)
-                Messages.get(this, "crystal_chest_desc", Messages.get(this, "wand"))
+                Messages.get(this.javaClass, "crystal_chest_desc", Messages.get(this.javaClass, "wand"))
             else
-                Messages.get(this, "crystal_chest_desc", Messages.get(this, "ring"))
-            Heap.Type.TOMB -> return Messages.get(this, "tomb_desc")
-            Heap.Type.SKELETON -> return Messages.get(this, "skeleton_desc")
-            Heap.Type.REMAINS -> return Messages.get(this, "remains_desc")
+                Messages.get(this.javaClass, "crystal_chest_desc", Messages.get(this.javaClass, "ring"))
+            Heap.Type.TOMB -> return Messages.get(this.javaClass, "tomb_desc")
+            Heap.Type.SKELETON -> return Messages.get(this.javaClass, "skeleton_desc")
+            Heap.Type.REMAINS -> return Messages.get(this.javaClass, "remains_desc")
             else -> return peek().info()
         }
     }
@@ -376,11 +376,11 @@ class Heap : Bundlable {
         type = Type.valueOf(bundle.getString(TYPE))
 
         items = LinkedList(bundle.getCollection(ITEMS) as Collection<*> as Collection<Item>)
-        items!!.removeAll(setOf<Any>(null))
+        items!!.removeAll(setOf<Any?>(null))
 
         //remove any document pages that either don't exist anymore or that the player already has
         for (item in items!!.toTypedArray<Item>()) {
-            if (item is DocumentPage && (!(item as DocumentPage).document().pages().contains((item as DocumentPage).page()) || (item as DocumentPage).document().hasPage((item as DocumentPage).page()))) {
+            if (item is DocumentPage && (!(item as DocumentPage).document().pages().contains((item as DocumentPage).page()) || (item as DocumentPage).document().hasPage((item as DocumentPage).page()!!))) {
                 items!!.remove(item)
             }
         }
@@ -391,7 +391,7 @@ class Heap : Bundlable {
         bundle.put(POS, pos)
         bundle.put(SEEN, seen)
         bundle.put(TYPE, type.toString())
-        bundle.put(ITEMS, items)
+        bundle.put(ITEMS, items!!)
     }
 
     companion object {

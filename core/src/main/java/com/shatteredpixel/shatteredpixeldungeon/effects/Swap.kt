@@ -77,14 +77,14 @@ class Swap(private val ch1: Char, private val ch2: Char) : Actor() {
 
             }
 
-            if (ch1 === Dungeon.hero || ch2 === Dungeon.hero) {
+            if (ch1 === Dungeon.hero!! || ch2 === Dungeon.hero!!) {
                 Dungeon.observe()
                 GameScene.updateFog()
             }
         }
     }
 
-    private inner class Effect(private val sprite: CharSprite, from: Int, to: Int) : Visual(0, 0, 0, 0) {
+    private inner class Effect(private val sprite: CharSprite, from: Int, to: Int) : Visual(0f, 0f, 0f, 0f) {
         private val end: PointF
         private var passed: Float = 0.toFloat()
 
@@ -104,7 +104,8 @@ class Swap(private val ch1: Char, private val ch2: Char) : Actor() {
         override fun update() {
             super.update()
 
-            if ((passed += Game.elapsed) < delay) {
+            passed += Game.elapsed
+            if (passed < delay) {
                 sprite.x = x
                 sprite.y = y
 

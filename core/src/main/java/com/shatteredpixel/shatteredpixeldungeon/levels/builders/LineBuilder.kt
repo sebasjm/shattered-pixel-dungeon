@@ -43,16 +43,16 @@ class LineBuilder : RegularBuilder() {
 
         entrance!!.setSize()
         entrance!!.setPos(0, 0)
-        branchable.add(entrance)
+        branchable.add(entrance!!)
 
         if (shop != null) {
-            Builder.placeRoom(rooms, entrance, shop, direction + 180f)
+            Builder.placeRoom(rooms, entrance!!, shop!!, direction + 180f)
         }
 
         var roomsOnPath = (multiConnections.size * pathLength).toInt() + Random.chances(pathLenJitterChances)
         roomsOnPath = Math.min(roomsOnPath, multiConnections.size)
 
-        var curr = entrance
+        var curr = entrance!!
 
         var pathTunnels = pathTunnelChances.clone()
         for (i in 0..roomsOnPath) {
@@ -67,14 +67,14 @@ class LineBuilder : RegularBuilder() {
             pathTunnels[tunnels]--
 
             for (j in 0 until tunnels) {
-                val t = ConnectionRoom.createRoom()
+                val t = ConnectionRoom.createRoom()!!
                 Builder.placeRoom(rooms, curr, t, direction + Random.Float(-pathVariance, pathVariance))
                 branchable.add(t)
                 rooms.add(t)
                 curr = t
             }
 
-            val r = if (i == roomsOnPath) exit else multiConnections[i]
+            val r = if (i == roomsOnPath) exit!! else multiConnections[i]
             Builder.placeRoom(rooms, curr, r, direction + Random.Float(-pathVariance, pathVariance))
             branchable.add(r)
             curr = r

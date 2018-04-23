@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual
 import com.watabou.noosa.Image
@@ -82,8 +83,8 @@ class MassGraveRoom : SpecialRoom() {
         items.add(Gold(1))
         if (Random.Float() <= 0.3f) items.add(Gold())
         if (Random.Float() <= 0.3f) items.add(Gold())
-        if (Random.Float() <= 0.6f) items.add(Generator.random())
-        if (Random.Float() <= 0.3f) items.add(Generator.randomArmor())
+        if (Random.Float() <= 0.6f) items.add(Generator.random()!!)
+        if (Random.Float() <= 0.3f) items.add(Generator.randomArmor()!!)
 
         for (item in items) {
             var pos: Int
@@ -117,11 +118,11 @@ class MassGraveRoom : SpecialRoom() {
         }
 
         override fun name(tileX: Int, tileY: Int): String? {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(tileX: Int, tileY: Int): String? {
-            return Messages.get(this, "desc")
+            return Messages.get(this.javaClass, "desc")
         }
 
         companion object {

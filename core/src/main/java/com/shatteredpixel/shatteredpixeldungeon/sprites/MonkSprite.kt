@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Random
 
@@ -33,7 +34,7 @@ class MonkSprite : MobSprite() {
 
         texture(Assets.MONK)
 
-        val frames = TextureFilm(texture, 15, 14)
+        val frames = TextureFilm(texture!!, 15, 14)
 
         idle = MovieClip.Animation(6, true)
         idle!!.frames(frames, 1, 0, 1, 2)
@@ -50,7 +51,7 @@ class MonkSprite : MobSprite() {
         die = MovieClip.Animation(15, false)
         die!!.frames(frames, 1, 7, 8, 8, 9, 10)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun attack(cell: Int) {
@@ -61,6 +62,6 @@ class MonkSprite : MobSprite() {
     }
 
     override fun onComplete(anim: MovieClip.Animation) {
-        super.onComplete(if (anim === kick) attack else anim)
+        super.onComplete(if (anim === kick) attack!! else anim)
     }
 }

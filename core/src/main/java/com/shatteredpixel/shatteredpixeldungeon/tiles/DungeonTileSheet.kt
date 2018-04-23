@@ -213,7 +213,7 @@ object DungeonTileSheet {
      * Logic for the selection of alternate tile visuals
      */
 
-    var tileVariance: ByteArray
+    var tileVariance: ByteArray = ByteArray(0)
 
     //These alt visuals will trigger 50% of the time (45% of the time if a rare alt is also present)
     var commonAltVisuals = SparseIntArray(32)

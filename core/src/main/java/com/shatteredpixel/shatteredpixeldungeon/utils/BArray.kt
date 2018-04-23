@@ -49,7 +49,7 @@ object BArray {
         return result
     }
 
-    fun or(a: BooleanArray, b: BooleanArray, result: BooleanArray): BooleanArray {
+    fun or(a: BooleanArray, b: BooleanArray, result: BooleanArray?): BooleanArray {
         return or(a, b, 0, a.size, result)
     }
 

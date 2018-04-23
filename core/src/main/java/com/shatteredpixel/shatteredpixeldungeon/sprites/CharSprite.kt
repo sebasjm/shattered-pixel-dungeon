@@ -44,7 +44,6 @@ import com.watabou.glwrap.Vertexbuffer
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
 import com.watabou.noosa.MovieClip
-import com.watabou.noosa.NoosaScript
 import com.watabou.noosa.Visual
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.particles.Emitter
@@ -118,7 +117,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
     override fun play(anim: MovieClip.Animation?) {
         //Shouldn't interrupt the dieing animation
         if (curAnim == null || curAnim !== die) {
-            super.play(anim)
+            super.play(anim!!)
         }
     }
 
@@ -130,7 +129,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         turnTo(ch.pos, Random.Int(Dungeon.level!!.length()))
         renderShadow = true
 
-        if (ch !== Dungeon.hero) {
+        if (ch !== Dungeon.hero!!) {
             if (health == null) {
                 health = CharHealthIndicator(ch)
             } else {
@@ -146,8 +145,8 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         val csize = DungeonTilemap.SIZE
 
         return PointF(
-                PixelScene.align(Camera.main, (cell % Dungeon.level!!.width() + 0.5f) * csize - width * 0.5f),
-                PixelScene.align(Camera.main, (cell / Dungeon.level!!.width() + 1.0f) * csize - height - csize * perspectiveRaise)
+                PixelScene.align(Camera.main!!, (cell % Dungeon.level!!.width() + 0.5f) * csize - width * 0.5f),
+                PixelScene.align(Camera.main!!, (cell / Dungeon.level!!.width() + 1.0f) * csize - height - csize * perspectiveRaise)
         )
     }
 
@@ -180,7 +179,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
 
         motion = PosTweener(this, worldToCamera(to), MOVE_INTERVAL)
         motion!!.listener = this
-        parent!!.add(motion)
+        parent!!.add(motion!!)
 
         isMoving = true
 
@@ -233,7 +232,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         val distance = Dungeon.level!!.distance(from, to)
         jumpTweener = JumpTweener(this, worldToCamera(to), (distance * 4).toFloat(), distance * 0.1f)
         jumpTweener!!.listener = this
-        parent!!.add(jumpTweener)
+        parent!!.add(jumpTweener!!)
 
         turnTo(from, to)
     }
@@ -313,7 +312,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 }
                 invisible = AlphaTweener(this, 0.4f, 0.4f)
                 if (parent != null) {
-                    parent!!.add(invisible)
+                    parent!!.add(invisible!!)
                 } else
                     alpha(0.4f)
             }
@@ -322,7 +321,10 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 iceBlock = IceBlock.freeze(this)
                 paused = true
             }
-            CharSprite.State.ILLUMINATED -> GameScene.effect(halo = TorchHalo(this))
+            CharSprite.State.ILLUMINATED -> {
+                halo = TorchHalo(this)
+                GameScene.effect(halo!!)
+            }
             CharSprite.State.CHILLED -> {
                 chilled = emitter()
                 chilled!!.pour(SnowParticle.FACTORY, 0.1f)
@@ -393,11 +395,14 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         super.update()
 
         if (paused && listener != null) {
-            listener!!.onComplete(curAnim)
+            listener!!.onComplete(curAnim!!)
         }
 
-        if (flashTime > 0 && (flashTime -= Game.elapsed) <= 0) {
-            resetColor()
+        if (flashTime > 0) {
+            flashTime -= Game.elapsed
+            if (flashTime <= 0) {
+                resetColor()
+            }
         }
 
         if (burning != null) {
@@ -522,7 +527,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
     }
 
     override fun draw() {
-        if (texture == null || !dirty && buffer == null)
+        if (texture!! == null || !dirty && buffer == null)
             return
 
         if (renderShadow) {
@@ -549,7 +554,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                     0f, 0f, 0f, am * .6f,
                     0f, 0f, 0f, aa * .6f)
 
-            script.drawQuad(buffer)
+            script.drawQuad(buffer!!)
         }
 
         super.draw()
@@ -575,7 +580,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 motion = null
                 ch!!.onMotionComplete()
 
-                notifyAll()
+                (this as java.lang.Object).notifyAll()
             }
 
         }

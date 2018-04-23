@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class BeeSprite : MobSprite() {
@@ -29,7 +30,7 @@ class BeeSprite : MobSprite() {
 
         texture(Assets.BEE)
 
-        val frames = TextureFilm(texture, 16, 16)
+        val frames = TextureFilm(texture!!, 16, 16)
 
         idle = MovieClip.Animation(12, true)
         idle!!.frames(frames, 0, 1, 1, 0, 2, 2)
@@ -43,7 +44,7 @@ class BeeSprite : MobSprite() {
         die = MovieClip.Animation(20, false)
         die!!.frames(frames, 7, 8, 9, 10)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun blood(): Int {

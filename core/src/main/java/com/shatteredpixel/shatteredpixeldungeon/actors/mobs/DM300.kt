@@ -71,7 +71,7 @@ class DM300 : Mob() {
         return Random.NormalIntRange(20, 25)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 28
     }
 
@@ -81,7 +81,7 @@ class DM300 : Mob() {
 
     public override fun act(): Boolean {
 
-        GameScene.add(Blob.seed<ToxicGas>(pos, 30, ToxicGas::class.java))
+        GameScene.add(Blob.seed<ToxicGas>(pos, 30, ToxicGas::class.java)!!)
 
         return super.act()
     }
@@ -95,7 +95,7 @@ class DM300 : Mob() {
             sprite!!.emitter().burst(ElmoParticle.FACTORY, 5)
 
             if (Dungeon.level!!.heroFOV[step] && Dungeon.hero!!.isAlive) {
-                GLog.n(Messages.get(this, "repair"))
+                GLog.n(Messages.get(this.javaClass, "repair"))
             }
         }
 
@@ -104,7 +104,7 @@ class DM300 : Mob() {
 
         if (Dungeon.level!!.heroFOV[cell]) {
             CellEmitter.get(cell).start(Speck.factory(Speck.ROCK), 0.07f, 10)
-            Camera.main.shake(3f, 0.7f)
+            Camera.main!!.shake(3f, 0.7f)
             Sample.INSTANCE.play(Assets.SND_ROCKS)
 
             if (Dungeon.level!!.water[cell]) {
@@ -127,7 +127,7 @@ class DM300 : Mob() {
         if (lock != null && !isImmune(src.javaClass)) lock.addTime(dmg * 1.5f)
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         super.die(cause)
 
@@ -139,13 +139,13 @@ class DM300 : Mob() {
         val beacon = Dungeon.hero!!.belongings.getItem<LloydsBeacon>(LloydsBeacon::class.java)
         beacon?.upgrade()
 
-        yell(Messages.get(this, "defeated"))
+        yell(Messages.get(this.javaClass, "defeated"))
     }
 
     override fun notice() {
         super.notice()
         BossHealthBar.assignBoss(this)
-        yell(Messages.get(this, "notice"))
+        yell(Messages.get(this.javaClass, "notice"))
     }
 
     init {

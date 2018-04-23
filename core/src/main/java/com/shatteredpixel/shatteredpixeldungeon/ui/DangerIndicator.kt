@@ -47,11 +47,11 @@ class DangerIndicator : Tag(0xFF4C4C) {
     override fun createChildren() {
         super.createChildren()
 
-        number = BitmapText(PixelScene.pixelFont)
-        add(number)
+        number = BitmapText(PixelScene.pixelFont!!)
+        add(number!!)
 
         icon = Icons.SKULL.get()
-        add(icon)
+        add(icon!!)
     }
 
     override fun layout() {
@@ -75,7 +75,8 @@ class DangerIndicator : Tag(0xFF4C4C) {
             val v = Dungeon.hero!!.visibleEnemies()
             if (v != lastNumber) {
                 lastNumber = v
-                if (visible = lastNumber > 0) {
+                visible = lastNumber > 0
+                if (visible) {
                     number!!.text(Integer.toString(lastNumber))
                     number!!.measure()
                     placeNumber()
@@ -95,11 +96,11 @@ class DangerIndicator : Tag(0xFF4C4C) {
 
             val target = Dungeon.hero!!.visibleEnemy(enemyIndex++)
 
-            TargetHealthIndicator.instance.target(if (target === TargetHealthIndicator.instance.target()) null else target)
+            TargetHealthIndicator.instance!!.target(if (target === TargetHealthIndicator.instance!!.target()) null else target)
 
             if (Dungeon.hero!!.curAction == null) {
-                Camera.main.target = null
-                Camera.main.focusOn(target.sprite)
+                Camera.main!!.target = null
+                Camera.main!!.focusOn(target.sprite!!)
             }
         }
     }

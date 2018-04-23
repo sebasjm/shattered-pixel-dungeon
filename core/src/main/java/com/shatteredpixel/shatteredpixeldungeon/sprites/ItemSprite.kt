@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
-import android.graphics.Bitmap
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
@@ -38,7 +36,6 @@ import com.watabou.glwrap.Matrix
 import com.watabou.glwrap.Vertexbuffer
 import com.watabou.noosa.Game
 import com.watabou.noosa.MovieClip
-import com.watabou.noosa.NoosaScript
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.PointF
@@ -84,7 +81,7 @@ open class ItemSprite : MovieClip {
     }
 
     @JvmOverloads
-    fun link(heap: Heap = heap) {
+    fun link(heap: Heap = this.heap!!) {
         this.heap = heap
         view(heap.image(), heap.glowing())
         renderShadow = true
@@ -218,7 +215,7 @@ open class ItemSprite : MovieClip {
     }
 
     override fun draw() {
-        if (texture == null || !dirty && buffer == null)
+        if (texture!! == null || !dirty && buffer == null)
             return
 
         if (renderShadow) {
@@ -245,7 +242,7 @@ open class ItemSprite : MovieClip {
                     0f, 0f, 0f, am * .6f,
                     0f, 0f, 0f, aa * .6f)
 
-            script.drawQuad(buffer)
+            script.drawQuad(buffer!!)
         }
 
         super.draw()
@@ -261,7 +258,8 @@ open class ItemSprite : MovieClip {
         if (dropInterval > 0) {
             shadowOffset -= speed.y * Game.elapsed * 0.8f
 
-            if ((dropInterval -= Game.elapsed) <= 0) {
+            dropInterval -= Game.elapsed
+            if (dropInterval <= 0) {
 
                 speed.set(0f)
                 acc.set(0f)
@@ -286,15 +284,20 @@ open class ItemSprite : MovieClip {
         }
 
         if (visible && glowing != null) {
-            if (glowUp && (phase += Game.elapsed) > glowing!!.period) {
+
+            phase += Game.elapsed
+            if (glowUp && phase > glowing!!.period) {
 
                 glowUp = false
                 phase = glowing!!.period
 
-            } else if (!glowUp && (phase -= Game.elapsed) < 0) {
+            } else if (!glowUp) {
 
-                glowUp = true
-                phase = 0f
+                phase -= Game.elapsed
+                if (phase < 0) {
+                    glowUp = true
+                    phase = 0f
+                }
 
             }
 

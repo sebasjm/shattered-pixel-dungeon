@@ -62,10 +62,10 @@ class ChaliceOfBlood : Artifact() {
             if (damage > hero.HP * 0.75) {
 
                 GameScene.show(
-                        object : WndOptions(Messages.get(this, "name"),
-                                Messages.get(this, "prick_warn"),
-                                Messages.get(this, "yes"),
-                                Messages.get(this, "no")) {
+                        object : WndOptions(Messages.get(this.javaClass, "name"),
+                                Messages.get(this.javaClass, "prick_warn"),
+                                Messages.get(this.javaClass, "yes"),
+                                Messages.get(this.javaClass, "no")) {
                             override fun onSelect(index: Int) {
                                 if (index == 0)
                                     prick(Dungeon.hero!!)
@@ -92,7 +92,7 @@ class ChaliceOfBlood : Artifact() {
         hero.sprite!!.operate(hero.pos)
         hero.busy()
         hero.spend(3f)
-        GLog.w(Messages.get(this, "onprick"))
+        GLog.w(Messages.get(this.javaClass, "onprick"))
         if (damage <= 0) {
             damage = 1
         } else {
@@ -104,7 +104,7 @@ class ChaliceOfBlood : Artifact() {
 
         if (!hero.isAlive) {
             Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "ondeath"))
+            GLog.n(Messages.get(this.javaClass, "ondeath"))
         } else {
             upgrade()
         }
@@ -132,16 +132,16 @@ class ChaliceOfBlood : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             desc += "\n\n"
             if (cursed)
-                desc += Messages.get(this, "desc_cursed")
+                desc += Messages.get(this.javaClass, "desc_cursed")
             else if (level() == 0)
-                desc += Messages.get(this, "desc_1")
+                desc += Messages.get(this.javaClass, "desc_1")
             else if (level() < levelCap)
-                desc += Messages.get(this, "desc_2")
+                desc += Messages.get(this.javaClass, "desc_2")
             else
-                desc += Messages.get(this, "desc_3")
+                desc += Messages.get(this.javaClass, "desc_3")
         }
 
         return desc

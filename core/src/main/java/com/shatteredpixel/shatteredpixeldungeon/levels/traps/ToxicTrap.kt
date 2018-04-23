@@ -35,7 +35,7 @@ class ToxicTrap : Trap() {
 
     override fun activate() {
 
-        GameScene.add(Blob.seed<ToxicGas>(pos, 300 + 20 * Dungeon.depth, ToxicGas::class.java))
+        GameScene.add(Blob.seed<ToxicGas>(pos, 300 + 20 * Dungeon.depth, ToxicGas::class.java)!!)
 
     }
 }

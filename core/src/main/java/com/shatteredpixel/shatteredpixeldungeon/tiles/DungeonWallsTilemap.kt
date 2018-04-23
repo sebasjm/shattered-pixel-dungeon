@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 
-class DungeonWallsTilemap : DungeonTilemap(Dungeon.level!!.tilesTex()) {
+class DungeonWallsTilemap : DungeonTilemap(Dungeon.level!!.tilesTex()!!) {
     init {
         map(Dungeon.level!!.map, Dungeon.level!!.width())
     }

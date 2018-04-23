@@ -45,7 +45,7 @@ object Maze {
         }
 
         //set spaces where there are doors
-        for (d in r.connected.values) {
+        for (d in r.connected.values.filterNotNull()) {
             maze[d.x - r.left][d.y - r.top] = EMPTY
         }
 

@@ -54,7 +54,7 @@ class WndSettings : WndTabbed() {
         audio = AudioTab()
         add(audio)
 
-        add(object : WndTabbed.LabeledTab(Messages.get(this, "display")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "display")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 display.active = value
@@ -63,7 +63,7 @@ class WndSettings : WndTabbed() {
             }
         })
 
-        add(object : WndTabbed.LabeledTab(Messages.get(this, "ui")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "ui")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 ui.active = value
@@ -72,7 +72,7 @@ class WndSettings : WndTabbed() {
             }
         })
 
-        add(object : WndTabbed.LabeledTab(Messages.get(this, "audio")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "audio")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 audio.active = value
@@ -92,7 +92,7 @@ class WndSettings : WndTabbed() {
     private inner class DisplayTab : Group() {
         init {
 
-            val scale = object : OptionSlider(Messages.get(this, "scale"),
+            val scale = object : OptionSlider(Messages.get(this.javaClass, "scale"),
                     Math.ceil((2 * Game.density).toDouble()).toInt().toString() + "X",
                     PixelScene.maxDefaultZoom.toString() + "X",
                     Math.ceil((2 * Game.density).toDouble()).toInt(),
@@ -100,7 +100,7 @@ class WndSettings : WndTabbed() {
                 override fun onChange() {
                     if (selectedValue != SPDSettings.scale()) {
                         SPDSettings.scale(selectedValue)
-                        ShatteredPixelDungeon.switchNoFade(ShatteredPixelDungeon.scene()!!.javaClass as Class<out PixelScene>, object : Game.SceneChangeCallback {
+                        ShatteredPixelDungeon.switchNoFade(Game.scene()!!.javaClass as Class<out PixelScene>, object : Game.SceneChangeCallback {
                             override fun beforeCreate() {
                                 //do nothing
                             }
@@ -118,12 +118,12 @@ class WndSettings : WndTabbed() {
                 add(scale)
             }
 
-            val chkSaver = object : CheckBox(Messages.get(this, "saver")) {
+            val chkSaver = object : CheckBox(Messages.get(this.javaClass, "saver")) {
                 override fun onClick() {
                     super.onClick()
                     if (checked()) {
                         checked(!checked())
-                        ShatteredPixelDungeon.scene()!!.add(object : WndOptions(
+                        Game.scene()!!.add(object : WndOptions(
                                 Messages.get(DisplayTab::class.java, "saver"),
                                 Messages.get(DisplayTab::class.java, "saver_desc"),
                                 Messages.get(DisplayTab::class.java, "okay"),
@@ -147,9 +147,9 @@ class WndSettings : WndTabbed() {
             }
 
             val btnOrientation = object : RedButton(if (SPDSettings.landscape())
-                Messages.get(this, "portrait")
+                Messages.get(this.javaClass, "portrait")
             else
-                Messages.get(this, "landscape")) {
+                Messages.get(this.javaClass, "landscape")) {
                 override fun onClick() {
                     SPDSettings.landscape(!SPDSettings.landscape())
                 }
@@ -158,8 +158,8 @@ class WndSettings : WndTabbed() {
             add(btnOrientation)
 
 
-            val brightness = object : OptionSlider(Messages.get(this, "brightness"),
-                    Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
+            val brightness = object : OptionSlider(Messages.get(this.javaClass, "brightness"),
+                    Messages.get(this.javaClass, "dark"), Messages.get(this.javaClass, "bright"), -2, 2) {
                 override fun onChange() {
                     SPDSettings.brightness(selectedValue)
                 }
@@ -168,8 +168,8 @@ class WndSettings : WndTabbed() {
             brightness.setRect(0f, btnOrientation.bottom() + GAP_LRG, WIDTH.toFloat(), SLIDER_HEIGHT.toFloat())
             add(brightness)
 
-            val tileGrid = object : OptionSlider(Messages.get(this, "visual_grid"),
-                    Messages.get(this, "off"), Messages.get(this, "high"), -1, 3) {
+            val tileGrid = object : OptionSlider(Messages.get(this.javaClass, "visual_grid"),
+                    Messages.get(this.javaClass, "off"), Messages.get(this.javaClass, "high"), -1, 3) {
                 override fun onChange() {
                     SPDSettings.visualGrid(selectedValue)
                 }
@@ -185,12 +185,12 @@ class WndSettings : WndTabbed() {
     private inner class UITab : Group() {
         init {
 
-            val barDesc = PixelScene.renderText(Messages.get(this, "mode"), 9)
+            val barDesc = PixelScene.renderText(Messages.get(this.javaClass, "mode"), 9)
             barDesc.x = (WIDTH - barDesc.width()) / 2
             PixelScene.align(barDesc)
             add(barDesc)
 
-            val btnSplit = object : RedButton(Messages.get(this, "split")) {
+            val btnSplit = object : RedButton(Messages.get(this.javaClass, "split")) {
                 override fun onClick() {
                     SPDSettings.toolbarMode(Toolbar.Mode.SPLIT.name)
                     Toolbar.updateLayout()
@@ -199,7 +199,7 @@ class WndSettings : WndTabbed() {
             btnSplit.setRect(0f, barDesc.y + barDesc.baseLine() + GAP_TINY.toFloat(), 36f, 16f)
             add(btnSplit)
 
-            val btnGrouped = object : RedButton(Messages.get(this, "group")) {
+            val btnGrouped = object : RedButton(Messages.get(this.javaClass, "group")) {
                 override fun onClick() {
                     SPDSettings.toolbarMode(Toolbar.Mode.GROUP.name)
                     Toolbar.updateLayout()
@@ -208,7 +208,7 @@ class WndSettings : WndTabbed() {
             btnGrouped.setRect(btnSplit.right() + GAP_TINY, barDesc.y + barDesc.baseLine() + GAP_TINY.toFloat(), 36f, 16f)
             add(btnGrouped)
 
-            val btnCentered = object : RedButton(Messages.get(this, "center")) {
+            val btnCentered = object : RedButton(Messages.get(this.javaClass, "center")) {
                 override fun onClick() {
                     SPDSettings.toolbarMode(Toolbar.Mode.CENTER.name)
                     Toolbar.updateLayout()
@@ -217,7 +217,7 @@ class WndSettings : WndTabbed() {
             btnCentered.setRect(btnGrouped.right() + GAP_TINY, barDesc.y + barDesc.baseLine() + GAP_TINY.toFloat(), 36f, 16f)
             add(btnCentered)
 
-            val chkFlipToolbar = object : CheckBox(Messages.get(this, "flip_toolbar")) {
+            val chkFlipToolbar = object : CheckBox(Messages.get(this.javaClass, "flip_toolbar")) {
                 override fun onClick() {
                     super.onClick()
                     SPDSettings.flipToolbar(checked())
@@ -228,7 +228,7 @@ class WndSettings : WndTabbed() {
             chkFlipToolbar.checked(SPDSettings.flipToolbar())
             add(chkFlipToolbar)
 
-            val chkFlipTags = object : CheckBox(Messages.get(this, "flip_indicators")) {
+            val chkFlipTags = object : CheckBox(Messages.get(this.javaClass, "flip_indicators")) {
                 override fun onClick() {
                     super.onClick()
                     SPDSettings.flipTags(checked())
@@ -239,7 +239,7 @@ class WndSettings : WndTabbed() {
             chkFlipTags.checked(SPDSettings.flipTags())
             add(chkFlipTags)
 
-            val slots = object : OptionSlider(Messages.get(this, "quickslots"), "0", "4", 0, 4) {
+            val slots = object : OptionSlider(Messages.get(this.javaClass, "quickslots"), "0", "4", 0, 4) {
                 override fun onChange() {
                     SPDSettings.quickSlots(selectedValue)
                     Toolbar.updateLayout()
@@ -249,7 +249,7 @@ class WndSettings : WndTabbed() {
             slots.setRect(0f, chkFlipTags.bottom() + GAP_TINY, WIDTH.toFloat(), SLIDER_HEIGHT.toFloat())
             add(slots)
 
-            val chkImmersive = object : CheckBox(Messages.get(this, "nav_bar")) {
+            val chkImmersive = object : CheckBox(Messages.get(this.javaClass, "nav_bar")) {
                 override fun onClick() {
                     super.onClick()
                     SPDSettings.fullscreen(checked())
@@ -260,10 +260,10 @@ class WndSettings : WndTabbed() {
             chkImmersive.enable(DeviceCompat.supportsFullScreen())
             add(chkImmersive)
 
-            val chkFont = object : CheckBox(Messages.get(this, "system_font")) {
+            val chkFont = object : CheckBox(Messages.get(this.javaClass, "system_font")) {
                 override fun onClick() {
                     super.onClick()
-                    ShatteredPixelDungeon.switchNoFade(ShatteredPixelDungeon.scene()!!.javaClass as Class<out PixelScene>, object : Game.SceneChangeCallback {
+                    ShatteredPixelDungeon.switchNoFade(Game.scene()!!.javaClass as Class<out PixelScene>, object : Game.SceneChangeCallback {
                         override fun beforeCreate() {
                             SPDSettings.systemFont(checked())
                         }
@@ -283,7 +283,7 @@ class WndSettings : WndTabbed() {
 
     private inner class AudioTab : Group() {
         init {
-            val musicVol = object : OptionSlider(Messages.get(this, "music_vol"), "0", "10", 0, 10) {
+            val musicVol = object : OptionSlider(Messages.get(this.javaClass, "music_vol"), "0", "10", 0, 10) {
                 override fun onChange() {
                     SPDSettings.musicVol(selectedValue)
                 }
@@ -292,7 +292,7 @@ class WndSettings : WndTabbed() {
             musicVol.setRect(0f, 0f, WIDTH.toFloat(), SLIDER_HEIGHT.toFloat())
             add(musicVol)
 
-            val musicMute = object : CheckBox(Messages.get(this, "music_mute")) {
+            val musicMute = object : CheckBox(Messages.get(this.javaClass, "music_mute")) {
                 override fun onClick() {
                     super.onClick()
                     SPDSettings.music(!checked())
@@ -303,7 +303,7 @@ class WndSettings : WndTabbed() {
             add(musicMute)
 
 
-            val SFXVol = object : OptionSlider(Messages.get(this, "sfx_vol"), "0", "10", 0, 10) {
+            val SFXVol = object : OptionSlider(Messages.get(this.javaClass, "sfx_vol"), "0", "10", 0, 10) {
                 override fun onChange() {
                     SPDSettings.SFXVol(selectedValue)
                 }
@@ -312,7 +312,7 @@ class WndSettings : WndTabbed() {
             SFXVol.setRect(0f, musicMute.bottom() + GAP_LRG, WIDTH.toFloat(), SLIDER_HEIGHT.toFloat())
             add(SFXVol)
 
-            val btnSound = object : CheckBox(Messages.get(this, "sfx_mute")) {
+            val btnSound = object : CheckBox(Messages.get(this.javaClass, "sfx_mute")) {
                 override fun onClick() {
                     super.onClick()
                     SPDSettings.soundFx(!checked())

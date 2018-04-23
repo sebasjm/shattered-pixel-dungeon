@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
@@ -106,7 +107,7 @@ class WandOfRegrowth : Wand() {
                 processSoulMark(ch, chargesPerCast())
             }
 
-            GameScene.add(Blob.seed<Regrowth>(i, 10, Regrowth::class.java))
+            GameScene.add(Blob.seed<Regrowth>(i, 10, Regrowth::class.java)!!)
 
         }
     }
@@ -115,9 +116,9 @@ class WandOfRegrowth : Wand() {
         if (strength >= 0 && Dungeon.level!!.passable[cell] && !Dungeon.level!!.losBlocking[cell]) {
             affectedCells!!.add(cell)
             if (strength >= 1.5f) {
-                spreadRegrowth(cell + PathFinder.CIRCLE8[left(direction)], strength - 1.5f)
-                spreadRegrowth(cell + PathFinder.CIRCLE8[direction], strength - 1.5f)
-                spreadRegrowth(cell + PathFinder.CIRCLE8[right(direction)], strength - 1.5f)
+                spreadRegrowth(cell + PathFinder.CIRCLE8!![left(direction)], strength - 1.5f)
+                spreadRegrowth(cell + PathFinder.CIRCLE8!![direction], strength - 1.5f)
+                spreadRegrowth(cell + PathFinder.CIRCLE8!![right(direction)], strength - 1.5f)
             } else {
                 visualCells!!.add(cell)
             }
@@ -195,8 +196,8 @@ class WandOfRegrowth : Wand() {
         val maxDist = Math.round(1.2f + chargesPerCast() * .8f)
         val dist = Math.min(bolt.dist!!, maxDist)
 
-        for (i in PathFinder.CIRCLE8.indices) {
-            if (bolt.sourcePos!! + PathFinder.CIRCLE8[i] == bolt.path[1]) {
+        for (i in PathFinder.CIRCLE8!!.indices) {
+            if (bolt.sourcePos!! + PathFinder.CIRCLE8!![i] == bolt.path[1]) {
                 direction = i
                 break
             }
@@ -207,9 +208,9 @@ class WandOfRegrowth : Wand() {
             strength-- //as we start at dist 1, not 0.
             if (!Dungeon.level!!.losBlocking[c]) {
                 affectedCells!!.add(c)
-                spreadRegrowth(c + PathFinder.CIRCLE8[left(direction)], strength - 1)
-                spreadRegrowth(c + PathFinder.CIRCLE8[direction], strength - 1)
-                spreadRegrowth(c + PathFinder.CIRCLE8[right(direction)], strength - 1)
+                spreadRegrowth(c + PathFinder.CIRCLE8!![left(direction)], strength - 1)
+                spreadRegrowth(c + PathFinder.CIRCLE8!![direction], strength - 1)
+                spreadRegrowth(c + PathFinder.CIRCLE8!![right(direction)], strength - 1)
             } else {
                 visualCells!!.add(c)
             }
@@ -220,15 +221,15 @@ class WandOfRegrowth : Wand() {
 
         for (cell in visualCells!!) {
             //this way we only get the cells at the tip, much better performance.
-            (Item.curUser.sprite!!.parent!!.recycle(MagicMissile::class.java) as MagicMissile).reset(
+            (Item.curUser!!.sprite!!.parent!!.recycle(MagicMissile::class.java) as MagicMissile).reset(
                     MagicMissile.FOLIAGE_CONE,
-                    Item.curUser.sprite,
+                    Item.curUser!!.sprite!!,
                     cell, null
             )
         }
-        MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+        MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.FOLIAGE_CONE,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.path[dist / 2],
                 callback)
 
@@ -247,7 +248,7 @@ class WandOfRegrowth : Wand() {
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(ColorMath.random(0x004400, 0x88CC44))
         particle.am = 1f
-        particle.setLifespan(1f)
+        particle.lifespan = (1f)
         particle.setSize(1f, 1.5f)
         particle.shuffleXY(0.5f)
         val dst = Random.Float(11f)
@@ -266,7 +267,7 @@ class WandOfRegrowth : Wand() {
             val nDrops = Random.NormalIntRange(3, 6)
 
             val candidates = ArrayList<Int>()
-            for (i in PathFinder.NEIGHBOURS8) {
+            for (i in PathFinder.NEIGHBOURS8!!) {
                 if (Dungeon.level!!.passable[pos + i]) {
                     candidates.add(pos + i)
                 }
@@ -301,7 +302,7 @@ class WandOfRegrowth : Wand() {
             val nSeeds = Random.NormalIntRange(2, 4)
 
             val candidates = ArrayList<Int>()
-            for (i in PathFinder.NEIGHBOURS8) {
+            for (i in PathFinder.NEIGHBOURS8!!) {
                 if (Dungeon.level!!.passable[pos + i]) {
                     candidates.add(pos + i)
                 }

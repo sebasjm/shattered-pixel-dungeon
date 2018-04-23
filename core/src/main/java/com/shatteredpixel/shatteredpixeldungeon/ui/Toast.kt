@@ -29,31 +29,31 @@ import com.watabou.noosa.ui.Component
 open class Toast(text: String) : Component() {
 
     protected var bg: NinePatch? = null
-    protected var close: SimpleButton
-    protected var text: RenderedTextMultiline
+    protected var close: SimpleButton? = null
+    protected var text: RenderedTextMultiline? = null
 
     init {
         text(text)
 
-        width = this.text.width() + close.width() + bg!!.marginHor().toFloat() + MARGIN_HOR * 3
-        height = Math.max(this.text.height(), close.height()) + bg!!.marginVer().toFloat() + MARGIN_VER * 2
+        width = this.text!!.width() + close!!.width() + bg!!.marginHor().toFloat() + MARGIN_HOR * 3
+        height = Math.max(this.text!!.height(), close!!.height()) + bg!!.marginVer().toFloat() + MARGIN_VER * 2
     }
 
     override fun createChildren() {
         super.createChildren()
 
         bg = Chrome.get(Chrome.Type.TOAST_TR)
-        add(bg)
+        add(bg!!)
 
         close = object : SimpleButton(Icons.get(Icons.CLOSE)) {
             override fun onClick() {
                 onClose()
             }
         }
-        add(close)
+        add(close!!)
 
         text = PixelScene.renderMultiline(8)
-        add(text)
+        add(text!!)
     }
 
     override fun layout() {
@@ -63,17 +63,17 @@ open class Toast(text: String) : Component() {
         bg!!.y = y
         bg!!.size(width, height)
 
-        close.setPos(
-                bg!!.x + bg!!.width() - bg!!.marginHor() / 2f - MARGIN_HOR - close.width(),
-                y + (height - close.height()) / 2f)
-        PixelScene.align(close)
+        close!!.setPos(
+                bg!!.x + bg!!.width() - bg!!.marginHor() / 2f - MARGIN_HOR - close!!.width(),
+                y + (height - close!!.height()) / 2f)
+        PixelScene.align(close!!)
 
-        text.setPos(close.left() - MARGIN_HOR - text.width(), y + (height - text.height()) / 2)
-        PixelScene.align(text)
+        text!!.setPos(close!!.left() - MARGIN_HOR - text!!.width(), y + (height - text!!.height()) / 2)
+        PixelScene.align(text!!)
     }
 
     fun text(txt: String) {
-        text.text(txt)
+        text!!.text(txt)
     }
 
     protected open fun onClose() {}

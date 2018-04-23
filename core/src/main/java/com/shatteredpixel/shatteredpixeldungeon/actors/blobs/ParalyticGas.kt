@@ -46,8 +46,9 @@ class ParalyticGas : Blob() {
         for (i in area.left until area.right) {
             for (j in area.top until area.bottom) {
                 cell = i + j * Dungeon.level!!.width()
-                if (cur!![cell] > 0 && (ch = Actor.findChar(cell)) != null) {
-                    if (!ch!!.isImmune(this.javaClass))
+                if (cur!![cell] > 0) {
+                    ch = Actor.findChar(cell)
+                    if (ch != null) if (!ch!!.isImmune(this.javaClass))
                         Buff.prolong<Paralysis>(ch, Paralysis::class.java, Paralysis.DURATION)
                 }
             }
@@ -61,6 +62,6 @@ class ParalyticGas : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

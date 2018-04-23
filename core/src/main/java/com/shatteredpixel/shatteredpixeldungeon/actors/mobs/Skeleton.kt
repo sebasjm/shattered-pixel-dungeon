@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
@@ -58,19 +59,19 @@ class Skeleton : Mob() {
         return Random.NormalIntRange(2, 10)
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         super.die(cause)
 
         if (cause === Chasm::class.java) return
 
         var heroKilled = false
-        for (i in PathFinder.NEIGHBOURS8.indices) {
-            val ch = Actor.findChar(pos + PathFinder.NEIGHBOURS8[i])
+        for (i in PathFinder.NEIGHBOURS8!!.indices) {
+            val ch = Actor.findChar(pos + PathFinder.NEIGHBOURS8!![i])
             if (ch != null && ch!!.isAlive) {
                 val damage = Math.max(0, damageRoll() - ch!!.drRoll() / 2)
                 ch!!.damage(damage, this)
-                if (ch === Dungeon.hero && !ch!!.isAlive) {
+                if (ch === Dungeon.hero!! && !ch!!.isAlive) {
                     heroKilled = true
                 }
             }
@@ -82,7 +83,7 @@ class Skeleton : Mob() {
 
         if (heroKilled) {
             Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "explo_kill"))
+            GLog.n(Messages.get(this.javaClass, "explo_kill"))
         }
     }
 
@@ -96,7 +97,7 @@ class Skeleton : Mob() {
         return loot
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 12
     }
 

@@ -47,11 +47,12 @@ class FloatingText : RenderedText() {
         super.update()
 
         if (timeLeft > 0) {
-            if ((timeLeft -= Game.elapsed) <= 0) {
+            timeLeft -= Game.elapsed
+            if (timeLeft <= 0) {
                 kill()
             } else {
                 val p = timeLeft / LIFESPAN
-                alpha(if (p > 0.5f) 1 else p * 2)
+                alpha(if (p > 0.5f) 1f else p * 2)
             }
         }
     }
@@ -75,8 +76,8 @@ class FloatingText : RenderedText() {
 
         revive()
 
-        if (cameraZoom != Camera.main.zoom) {
-            cameraZoom = Camera.main.zoom
+        if (cameraZoom != Camera.main!!.zoom) {
+            cameraZoom = Camera.main!!.zoom
             PixelScene.chooseFont(9f, cameraZoom)
             size(9 * cameraZoom.toInt())
             scale.set(1 / cameraZoom)
@@ -85,8 +86,8 @@ class FloatingText : RenderedText() {
         text(text)
         hardlight(color)
 
-        this.x = PixelScene.align(Camera.main, x - width() / 2)
-        this.y = PixelScene.align(Camera.main, y - height())
+        this.x = PixelScene.align(Camera.main!!, x - width() / 2)
+        this.y = PixelScene.align(Camera.main!!, y - height())
 
         timeLeft = LIFESPAN
     }

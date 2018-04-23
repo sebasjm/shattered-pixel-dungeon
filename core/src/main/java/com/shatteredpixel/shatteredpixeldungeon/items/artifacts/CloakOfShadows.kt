@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor
@@ -78,7 +79,7 @@ class CloakOfShadows : Artifact() {
                 if (!isEquipped(hero))
                     GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
                 else if (charge <= 0)
-                    GLog.i(Messages.get(this, "no_charge"))
+                    GLog.i(Messages.get(this.javaClass, "no_charge"))
                 else {
                     stealthed = true
                     hero.spend(1f)
@@ -87,7 +88,7 @@ class CloakOfShadows : Artifact() {
                     activeBuff = activeBuff()
                     activeBuff!!.attachTo(hero)
                     if (hero.sprite!!.parent != null) {
-                        hero.sprite!!.parent!!.add(AlphaTweener(hero.sprite, 0.4f, 0.4f))
+                        hero.sprite!!.parent!!.add(AlphaTweener(hero.sprite!!, 0.4f, 0.4f))
                     } else {
                         hero.sprite!!.alpha(0.4f)
                     }
@@ -157,7 +158,7 @@ class CloakOfShadows : Artifact() {
     inner class cloakRecharge : Artifact.ArtifactBuff() {
         override fun act(): Boolean {
             if (charge < chargeCap) {
-                val lock = target.buff<LockedFloor>(LockedFloor::class.java)
+                val lock = target!!.buff<LockedFloor>(LockedFloor::class.java)
                 if (!stealthed && (lock == null || lock.regenOn())) {
                     var turnsToCharge = (50 - (chargeCap - charge)).toFloat()
                     if (level() > 7) turnsToCharge -= 10 * (level() - 7) / 3f
@@ -214,11 +215,11 @@ class CloakOfShadows : Artifact() {
                 if (charge < 0) {
                     charge = 0
                     detach()
-                    GLog.w(Messages.get(this, "no_charge"))
-                    (target as Hero).interrupt()
+                    GLog.w(Messages.get(this.javaClass, "no_charge"))
+                    (target!! as Hero).interrupt()
                 } else {
                     //target hero level is 1 + 2*cloak level
-                    var lvlDiffFromTarget = (target as Hero).lvl - (1 + level() * 2)
+                    var lvlDiffFromTarget = (target!! as Hero).lvl - (1 + level() * 2)
                     //plus an extra one for each level after 6
                     if (level() >= 7) {
                         lvlDiffFromTarget -= level() - 6
@@ -232,7 +233,7 @@ class CloakOfShadows : Artifact() {
                     if (exp >= (level() + 1) * 50 && level() < levelCap) {
                         upgrade()
                         exp -= level() * 50
-                        GLog.p(Messages.get(this, "levelup"))
+                        GLog.p(Messages.get(this.javaClass, "levelup"))
 
                     }
                     turnsToCost = 5
@@ -252,21 +253,21 @@ class CloakOfShadows : Artifact() {
 
         override fun fx(on: Boolean) {
             if (on)
-                target.sprite!!.add(CharSprite.State.INVISIBLE)
-            else if (target.invisible == 0) target.sprite!!.remove(CharSprite.State.INVISIBLE)
+                target!!.sprite!!.add(CharSprite.State.INVISIBLE)
+            else if (target!!.invisible == 0) target!!.sprite!!.remove(CharSprite.State.INVISIBLE)
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc")
+            return Messages.get(this.javaClass, "desc")
         }
 
         override fun detach() {
-            if (target.invisible > 0)
-                target.invisible--
+            if (target!!.invisible > 0)
+                target!!.invisible--
             stealthed = false
 
             updateQuickslot()

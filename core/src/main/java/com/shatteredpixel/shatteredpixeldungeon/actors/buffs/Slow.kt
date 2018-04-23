@@ -35,11 +35,11 @@ class Slow : FlavourBuff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 
     companion object {

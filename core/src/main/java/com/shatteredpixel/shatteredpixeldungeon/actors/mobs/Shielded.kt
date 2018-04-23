@@ -37,7 +37,7 @@ class Shielded : Brute() {
         return Random.NormalIntRange(0, 10)
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Badges.validateRare(this)
     }

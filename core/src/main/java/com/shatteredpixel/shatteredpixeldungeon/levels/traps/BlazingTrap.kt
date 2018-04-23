@@ -42,12 +42,12 @@ class BlazingTrap : Trap() {
 
     override fun activate() {
         PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.solid, null), 2)
-        for (i in PathFinder.distance.indices) {
-            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+        for (i in PathFinder.distance!!.indices) {
+            if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
                 if (Dungeon.level!!.pit[i] || Dungeon.level!!.water[i])
-                    GameScene.add(Blob.seed<Fire>(i, 1, Fire::class.java))
+                    GameScene.add(Blob.seed<Fire>(i, 1, Fire::class.java)!!)
                 else
-                    GameScene.add(Blob.seed<Fire>(i, 5, Fire::class.java))
+                    GameScene.add(Blob.seed<Fire>(i, 5, Fire::class.java)!!)
                 CellEmitter.get(i).burst(FlameParticle.FACTORY, 5)
             }
         }

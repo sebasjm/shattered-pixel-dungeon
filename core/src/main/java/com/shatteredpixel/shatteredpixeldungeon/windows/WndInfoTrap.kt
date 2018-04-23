@@ -26,4 +26,4 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap
 
-class WndInfoTrap(trap: Trap) : WndTitledMessage(TerrainFeaturesTilemap.tile(trap.pos, Dungeon.level!!.map!![trap.pos]), Messages.titleCase(trap.name), (if (!trap.active) Messages.get(WndInfoTrap::class.java, "inactive") + "\n\n" else "") + trap.desc())
+class WndInfoTrap(trap: Trap) : WndTitledMessage(TerrainFeaturesTilemap.tile(trap.pos, Dungeon.level!!.map!![trap.pos])!!, Messages.titleCase(trap.name), (if (!trap.active) Messages.get(WndInfoTrap::class.java, "inactive") + "\n\n" else "") + trap.desc())

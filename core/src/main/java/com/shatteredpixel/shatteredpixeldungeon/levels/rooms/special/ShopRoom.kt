@@ -75,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Tipp
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant
 import com.watabou.utils.Point
 import com.watabou.utils.Random
@@ -104,7 +105,7 @@ open class ShopRoom : SpecialRoom() {
 
         placeItems(level)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 
@@ -208,28 +209,29 @@ open class ShopRoom : SpecialRoom() {
                 }
             }
 
-            itemsToSpawn.add(TippedDart.randomTipped())
+            itemsToSpawn.add(TippedDart.randomTipped()!!)
 
             itemsToSpawn.add(MerchantsBeacon())
 
 
-            itemsToSpawn.add(ChooseBag(Dungeon.hero!!.belongings))
+            itemsToSpawn.add(ChooseBag(Dungeon.hero!!.belongings)!!)
 
 
             itemsToSpawn.add(PotionOfHealing())
             for (i in 0..2)
-                itemsToSpawn.add(Generator.random(Generator.Category.POTION))
+                itemsToSpawn.add(Generator.random(Generator.Category.POTION)!!)
 
             itemsToSpawn.add(ScrollOfIdentify())
             itemsToSpawn.add(ScrollOfRemoveCurse())
             itemsToSpawn.add(ScrollOfMagicMapping())
-            itemsToSpawn.add(Generator.random(Generator.Category.SCROLL))
+            itemsToSpawn.add(Generator.random(Generator.Category.SCROLL)!!)
 
             for (i in 0..1)
                 itemsToSpawn.add(if (Random.Int(2) == 0)
-                    Generator.random(Generator.Category.POTION)
+                    Generator.random(Generator.Category.POTION)!!
                 else
-                    Generator.random(Generator.Category.SCROLL))
+                    Generator.random(Generator.Category.SCROLL)!!
+                )
 
 
             itemsToSpawn.add(SmallRation())

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
@@ -74,9 +75,9 @@ class WandOfPrismaticLight : DamageWand() {
 
         if (Dungeon.level!!.viewDistance < 6) {
             if (Dungeon.isChallenged(Challenges.DARKNESS)) {
-                Buff.prolong<Light>(Item.curUser, Light::class.java, 2f + level())
+                Buff.prolong<Light>(Item.curUser!!, Light::class.java, 2f + level())
             } else {
-                Buff.prolong<Light>(Item.curUser, Light::class.java, 10f + level() * 5)
+                Buff.prolong<Light>(Item.curUser!!, Light::class.java, 10f + level() * 5)
             }
         }
     }
@@ -106,11 +107,11 @@ class WandOfPrismaticLight : DamageWand() {
     private fun affectMap(beam: Ballistica) {
         var noticed = false
         for (c in beam.subPath(0, beam.dist!!)) {
-            for (n in PathFinder.NEIGHBOURS9) {
+            for (n in PathFinder.NEIGHBOURS9!!) {
                 val cell = c + n
 
                 if (Dungeon.level!!.discoverable[cell])
-                    Dungeon.level!!.mapped[cell] = true
+                    Dungeon.level!!.mapped!![cell] = true
 
                 val terr = Dungeon.level!!.map!![cell]
                 if (Terrain.flags[terr] and Terrain.SECRET != 0) {
@@ -133,8 +134,8 @@ class WandOfPrismaticLight : DamageWand() {
     }
 
     override fun fx(beam: Ballistica, callback: Callback) {
-        Item.curUser.sprite!!.parent!!.add(
-                Beam.LightRay(Item.curUser.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos!!)))
+        Item.curUser!!.sprite!!.parent!!.add(
+                Beam.LightRay(Item.curUser!!.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos!!)))
         callback.call()
     }
 
@@ -146,7 +147,7 @@ class WandOfPrismaticLight : DamageWand() {
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(Random.Int(0x1000000))
         particle.am = 0.5f
-        particle.setLifespan(1f)
+        particle.lifespan = (1f)
         particle.speed.polar(Random.Float(PointF.PI2), 2f)
         particle.setSize(1f, 2f)
         particle.radiateXY(0.5f)

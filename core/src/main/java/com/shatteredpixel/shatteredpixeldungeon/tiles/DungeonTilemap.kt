@@ -54,7 +54,7 @@ abstract class DungeonTilemap(tex: String) : Tilemap(tex, TextureFilm(tex, SIZE,
         if (Dungeon.level!!.insideMap(cell)) {
             super.updateMapCell(cell - mapWidth - 1)
             super.updateMapCell(cell + mapWidth + 1)
-            for (i in PathFinder.NEIGHBOURS9)
+            for (i in PathFinder.NEIGHBOURS9!!)
                 data[cell + i] = getTileVisual(cell + i, map!![cell + i], false)
 
             //unless we're at the level's edge, then just do the one tile.

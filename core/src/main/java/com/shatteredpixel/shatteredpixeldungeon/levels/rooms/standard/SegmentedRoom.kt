@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 import com.watabou.utils.Rect
@@ -46,7 +47,7 @@ class SegmentedRoom : StandardRoom() {
         Painter.fill(level, this, Terrain.WALL)
         Painter.fill(level, this, 1, Terrain.EMPTY)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
             //set door areas to be empty to help with create walls logic
             Painter.set(level, door, Terrain.EMPTY)

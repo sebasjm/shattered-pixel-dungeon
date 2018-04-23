@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 
 class WndTradeItem : Window {
 
-    private val owner: WndBag?
+    private var owner: WndBag? = null
 
     constructor(item: Item, owner: WndBag) : super() {
 
@@ -50,7 +50,7 @@ class WndTradeItem : Window {
 
         if (item.quantity() == 1) {
 
-            val btnSell = object : RedButton(Messages.get(this, "sell", item.price())) {
+            val btnSell = object : RedButton(Messages.get(this.javaClass, "sell", item.price())) {
                 override fun onClick() {
                     sell(item)
                     hide()
@@ -64,7 +64,7 @@ class WndTradeItem : Window {
         } else {
 
             val priceAll = item.price()
-            val btnSell1 = object : RedButton(Messages.get(this, "sell_1", priceAll / item.quantity())) {
+            val btnSell1 = object : RedButton(Messages.get(this.javaClass, "sell_1", priceAll / item.quantity())) {
                 override fun onClick() {
                     sellOne(item)
                     hide()
@@ -72,7 +72,7 @@ class WndTradeItem : Window {
             }
             btnSell1.setRect(0f, pos + GAP, WIDTH.toFloat(), BTN_HEIGHT.toFloat())
             add(btnSell1)
-            val btnSellAll = object : RedButton(Messages.get(this, "sell_all", priceAll)) {
+            val btnSellAll = object : RedButton(Messages.get(this.javaClass, "sell_all", priceAll)) {
                 override fun onClick() {
                     sell(item)
                     hide()
@@ -85,7 +85,7 @@ class WndTradeItem : Window {
 
         }
 
-        val btnCancel = object : RedButton(Messages.get(this, "cancel")) {
+        val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
             override fun onClick() {
                 hide()
             }
@@ -106,7 +106,7 @@ class WndTradeItem : Window {
 
         if (canBuy) {
 
-            val btnBuy = object : RedButton(Messages.get(this, "buy", price)) {
+            val btnBuy = object : RedButton(Messages.get(this.javaClass, "buy", price)) {
                 override fun onClick() {
                     hide()
                     buy(heap)
@@ -116,7 +116,7 @@ class WndTradeItem : Window {
             btnBuy.enable(price <= Dungeon.gold)
             add(btnBuy)
 
-            val btnCancel = object : RedButton(Messages.get(this, "cancel")) {
+            val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
                 override fun onClick() {
                     hide()
                 }
@@ -125,10 +125,10 @@ class WndTradeItem : Window {
             val thievery = Dungeon.hero!!.buff<MasterThievesArmband.Thievery>(MasterThievesArmband.Thievery::class.java)
             if (thievery != null) {
                 val chance = thievery.stealChance(price)
-                val btnSteal = object : RedButton(Messages.get(this, "steal", Math.min(100, (chance * 100).toInt()))) {
+                val btnSteal = object : RedButton(Messages.get(this.javaClass, "steal", Math.min(100, (chance * 100).toInt()))) {
                     override fun onClick() {
                         if (thievery.steal(price)) {
-                            val hero = Dungeon.hero
+                            val hero = Dungeon.hero!!
                             val item = heap.pickUp()
                             hide()
 
@@ -138,7 +138,7 @@ class WndTradeItem : Window {
                         } else {
                             for (mob in Dungeon.level!!.mobs) {
                                 if (mob is Shopkeeper) {
-                                    mob.yell(Messages.get(mob, "thief"))
+                                    mob.yell(Messages.get(mob.javaClass, "thief"))
                                     mob.flee()
                                     break
                                 }
@@ -170,7 +170,7 @@ class WndTradeItem : Window {
         super.hide()
 
         if (owner != null) {
-            owner.hide()
+            owner!!.hide()
             Shopkeeper.sell()
         }
     }
@@ -181,7 +181,7 @@ class WndTradeItem : Window {
         val titlebar = IconTitle()
         titlebar.icon(ItemSprite(item))
         titlebar.label(if (forSale)
-            Messages.get(this, "sale", item.toString(), price(item))
+            Messages.get(this.javaClass, "sale", item.toString(), price(item))
         else
             Messages.titleCase(item.toString()))
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
@@ -207,7 +207,7 @@ class WndTradeItem : Window {
 
     private fun sell(item: Item) {
 
-        val hero = Dungeon.hero
+        val hero = Dungeon.hero!!
 
         if (item.isEquipped(hero) && !(item as EquipableItem).doUnequip(hero, false)) {
             return
@@ -227,9 +227,9 @@ class WndTradeItem : Window {
             sell(item)
         } else {
 
-            val hero = Dungeon.hero
+            val hero = Dungeon.hero!!
 
-            item = item.detach(hero!!.belongings.backpack)
+            item = item.detach(hero!!.belongings.backpack)!!
 
             Gold(item.price()).doPickUp(hero)
 
@@ -245,7 +245,7 @@ class WndTradeItem : Window {
 
     private fun buy(heap: Heap) {
 
-        val hero = Dungeon.hero
+        val hero = Dungeon.hero!!
         val item = heap.pickUp()
 
         val price = price(item)

@@ -91,10 +91,10 @@ object Chasm {
 
     fun heroLand() {
 
-        val hero = Dungeon.hero
+        val hero = Dungeon.hero!!
 
         hero!!.sprite!!.burst(hero.sprite!!.blood(), 10)
-        Camera.main.shake(4f, 0.2f)
+        Camera.main!!.shake(4f, 0.2f)
 
         Dungeon.level!!.press(hero.pos, hero, true)
         Buff.prolong<Cripple>(hero, Cripple::class.java, Cripple.DURATION)
@@ -102,12 +102,12 @@ object Chasm {
         //The lower the hero's HP, the more bleed and the less upfront damage.
         //Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
         Buff.affect<Bleeding>(hero, Bleeding::class.java)!!.set(Math.round(hero.HT / (6f + 6f * (hero.HP / hero.HT.toFloat()))))
-        hero.damage(Math.max(hero.HP / 2, Random.NormalIntRange(hero.HP / 2, hero.HT / 4)), Hero.Doom {
+        hero.damage(Math.max(hero.HP / 2, Random.NormalIntRange(hero.HP / 2, hero.HT / 4)), {
             Badges.validateDeathFromFalling()
 
             Dungeon.fail(Chasm::class.java)
             GLog.n(Messages.get(Chasm::class.java, "ondeath"))
-        })
+        } as Hero.Doom )
     }
 
     fun mobFall(mob: Mob) {

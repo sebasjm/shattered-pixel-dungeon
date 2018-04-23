@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
@@ -55,38 +56,38 @@ class WarriorArmor : ClassArmor() {
         protected var leaper: CellSelector.Listener = object : CellSelector.Listener {
 
             override fun onSelect(target: Int?) {
-                if (target != null && target != Item.curUser.pos) {
+                if (target != null && target != Item.curUser!!.pos) {
 
-                    val route = Ballistica(Item.curUser.pos, target, Ballistica.PROJECTILE)
+                    val route = Ballistica(Item.curUser!!.pos, target, Ballistica.PROJECTILE)
                     var cell = route.collisionPos!!
 
                     //can't occupy the same cell as another char, so move back one.
-                    if (Actor.findChar(cell) != null && cell != Item.curUser.pos)
+                    if (Actor.findChar(cell) != null && cell != Item.curUser!!.pos)
                         cell = route.path[route.dist!! - 1]
 
 
-                    Item.curUser.HP -= Item.curUser.HP / 3
+                    Item.curUser!!.HP -= Item.curUser!!.HP / 3
 
                     val dest = cell
-                    Item.curUser.busy()
-                    Item.curUser.sprite!!.jump(Item.curUser.pos, cell, Callback {
-                        Item.curUser.move(dest)
-                        Dungeon.level!!.press(dest, Item.curUser, true)
+                    Item.curUser!!.busy()
+                    Item.curUser!!.sprite!!.jump(Item.curUser!!.pos, cell, {
+                        Item.curUser!!.move(dest)
+                        Dungeon.level!!.press(dest, Item.curUser!!, true)
                         Dungeon.observe()
                         GameScene.updateFog()
 
-                        for (i in PathFinder.NEIGHBOURS8.indices) {
-                            val mob = Actor.findChar(Item.curUser.pos + PathFinder.NEIGHBOURS8[i])
-                            if (mob != null && mob !== Item.curUser) {
+                        for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                            val mob = Actor.findChar(Item.curUser!!.pos + PathFinder.NEIGHBOURS8!![i])
+                            if (mob != null && mob !== Item.curUser!!) {
                                 Buff.prolong<Paralysis>(mob, Paralysis::class.java, SHOCK_TIME.toFloat())
                             }
                         }
 
                         CellEmitter.center(dest).burst(Speck.factory(Speck.DUST), 10)
-                        Camera.main.shake(2f, 0.5f)
+                        Camera.main!!.shake(2f, 0.5f)
 
-                        Item.curUser.spendAndNext(LEAP_TIME.toFloat())
-                    })
+                        Item.curUser!!.spendAndNext(LEAP_TIME.toFloat())
+                    } as Callback)
                 }
             }
 

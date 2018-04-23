@@ -56,17 +56,18 @@ class Chains(private val from: PointF, private val to: PointF, private val callb
 
         numChains = Math.round(distance / 6f) + 1
 
-        chains = arrayOfNulls(numChains)
-        for (i in chains.indices) {
-            chains[i] = Image(Effects.get(Effects.Type.CHAIN))
-            chains[i].angle = rotation
-            chains[i].origin.set(chains[i].width() / 2, chains[i].height())
-            add(chains[i])
-        }
+        chains = (0 until numChains).map {
+            val chain = Image(Effects.get(Effects.Type.CHAIN))
+            chain.angle = rotation
+            chain.origin.set(chain.width() / 2, chain.height())
+            add(chain)
+            chain
+        }.toTypedArray()
     }
 
     override fun update() {
-        if ((spent += Game.elapsed) > duration) {
+        spent += Game.elapsed
+        if (spent > duration) {
 
             killAndErase()
             callback?.call()

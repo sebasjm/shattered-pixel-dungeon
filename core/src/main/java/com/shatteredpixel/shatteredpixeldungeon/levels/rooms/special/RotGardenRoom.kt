@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -83,7 +84,7 @@ class RotGardenRoom : SpecialRoom() {
             return false
         }
 
-        for (i in PathFinder.NEIGHBOURS9) {
+        for (i in PathFinder.NEIGHBOURS9!!) {
             if (level.findMob(pos + i) != null) {
                 return false
             }
@@ -96,7 +97,7 @@ class RotGardenRoom : SpecialRoom() {
         plant.pos = pos
         level.mobs.add(plant)
 
-        for (i in PathFinder.NEIGHBOURS8) {
+        for (i in PathFinder.NEIGHBOURS8!!) {
             if (level.map!![pos + i] == Terrain.GRASS) {
                 Painter.set(level, pos + i, Terrain.HIGH_GRASS)
             }

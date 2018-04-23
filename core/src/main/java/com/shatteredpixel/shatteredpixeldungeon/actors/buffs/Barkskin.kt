@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
 
@@ -29,7 +30,7 @@ class Barkskin : Buff() {
     private var level = 0
 
     override fun act(): Boolean {
-        if (target.isAlive) {
+        if (target!!.isAlive) {
 
             spend(Actor.TICK)
             if (--level <= 0) {
@@ -60,10 +61,10 @@ class Barkskin : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", level)
+        return Messages.get(this.javaClass, "desc", level)
     }
 }

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndLangs
@@ -41,7 +42,7 @@ class LanguageButton : Button() {
         super.createChildren()
 
         image = Icons.get(Icons.LANGS)
-        add(image)
+        add(image!!)
         updateIcon()
     }
 
@@ -49,7 +50,8 @@ class LanguageButton : Button() {
         super.update()
 
         if (flashing) {
-            image!!.am = Math.abs(Math.cos((time += Game.elapsed).toDouble())).toFloat()
+            time += Game.elapsed
+            image!!.am = Math.abs(Math.cos(time.toDouble())).toFloat()
             if (time >= Math.PI) {
                 time = 0f
             }

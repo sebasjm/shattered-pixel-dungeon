@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Random
 
@@ -30,7 +31,7 @@ class SheepSprite : MobSprite() {
 
         texture(Assets.SHEEP)
 
-        val frames = TextureFilm(texture, 16, 15)
+        val frames = TextureFilm(texture!!, 16, 15)
 
         idle = MovieClip.Animation(8, true)
         idle!!.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0)
@@ -42,6 +43,6 @@ class SheepSprite : MobSprite() {
         die!!.frames(frames, 0)
 
         play(idle)
-        curFrame = Random.Int(curAnim!!.frames.size)
+        curFrame = Random.Int(curAnim!!.frames!!.size)
     }
 }

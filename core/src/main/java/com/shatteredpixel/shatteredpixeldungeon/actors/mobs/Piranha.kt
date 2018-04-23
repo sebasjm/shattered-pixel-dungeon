@@ -72,7 +72,7 @@ class Piranha : Mob() {
         return Random.NormalIntRange(Dungeon.depth, 4 + Dungeon.depth * 2)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 20 + Dungeon.depth * 2
     }
 
@@ -99,7 +99,7 @@ class Piranha : Mob() {
 
         val step = Dungeon.findStep(this, pos, target,
                 Dungeon.level!!.water,
-                fieldOfView)
+                fieldOfView!!)
         if (step != -1) {
             move(step)
             return true
@@ -111,7 +111,7 @@ class Piranha : Mob() {
     override fun getFurther(target: Int): Boolean {
         val step = Dungeon.flee(this, pos, target,
                 Dungeon.level!!.water,
-                fieldOfView)
+                fieldOfView!!)
         if (step != -1) {
             move(step)
             return true

@@ -35,7 +35,7 @@ class RatKing : NPC() {
         state = SLEEPING
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char?): Int {
         return 1000
     }
 
@@ -59,17 +59,17 @@ class RatKing : NPC() {
         sprite!!.turnTo(pos, Dungeon.hero!!.pos)
         if (state === SLEEPING) {
             notice()
-            yell(Messages.get(this, "not_sleeping"))
+            yell(Messages.get(this.javaClass, "not_sleeping"))
             state = WANDERING
         } else {
-            yell(Messages.get(this, "what_is_it"))
+            yell(Messages.get(this.javaClass, "what_is_it"))
         }
         return true
     }
 
     override fun description(): String {
         return if ((sprite as RatKingSprite).festive)
-            Messages.get(this, "desc_festive")
+            Messages.get(this.javaClass, "desc_festive")
         else
             super.description()
     }

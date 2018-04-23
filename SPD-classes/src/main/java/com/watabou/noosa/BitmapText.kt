@@ -195,7 +195,7 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
     }
 
     @Synchronized
-    fun text(str: String) {
+    fun text(str: String?) {
         text = str
         dirty = true
     }

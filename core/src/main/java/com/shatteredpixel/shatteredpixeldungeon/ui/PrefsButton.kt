@@ -36,7 +36,7 @@ class PrefsButton : Button() {
         super.createChildren()
 
         image = Icons.PREFS.get()
-        add(image)
+        add(image!!)
     }
 
     override fun layout() {

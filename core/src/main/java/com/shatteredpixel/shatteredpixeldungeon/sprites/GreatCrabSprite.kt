@@ -30,7 +30,7 @@ class GreatCrabSprite : MobSprite() {
 
         texture(Assets.CRAB)
 
-        val frames = TextureFilm(texture, 16, 16)
+        val frames = TextureFilm(texture!!, 16, 16)
 
         idle = MovieClip.Animation(5, true)
         idle!!.frames(frames, 16, 17, 16, 18)
@@ -44,7 +44,7 @@ class GreatCrabSprite : MobSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 26, 27, 28, 29)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun blood(): Int {

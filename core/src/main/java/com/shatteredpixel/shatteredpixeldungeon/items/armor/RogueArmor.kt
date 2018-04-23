@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
@@ -62,7 +63,7 @@ class RogueArmor : ClassArmor() {
                         return
                     }
 
-                    Item.curUser.HP -= Item.curUser.HP / 3
+                    Item.curUser!!.HP -= Item.curUser!!.HP / 3
 
                     for (mob in Dungeon.level!!.mobs.toTypedArray<Mob>()) {
                         if (Dungeon.level!!.heroFOV[mob.pos]) {
@@ -72,14 +73,14 @@ class RogueArmor : ClassArmor() {
                         }
                     }
 
-                    ScrollOfTeleportation.appear(Item.curUser, target)
+                    ScrollOfTeleportation.appear(Item.curUser!!, target)
                     CellEmitter.get(target).burst(Speck.factory(Speck.WOOL), 10)
                     Sample.INSTANCE.play(Assets.SND_PUFF)
-                    Dungeon.level!!.press(target, Item.curUser)
+                    Dungeon.level!!.press(target, Item.curUser!!)
                     Dungeon.observe()
                     GameScene.updateFog()
 
-                    Item.curUser.spendAndNext(Actor.TICK)
+                    Item.curUser!!.spendAndNext(Actor.TICK)
                 }
             }
 

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
 import com.watabou.utils.Bundle
@@ -45,9 +46,9 @@ class Healing : Buff() {
 
         healingThisTick = GameMath.gate(1f, healingThisTick.toFloat(), healingLeft.toFloat()).toInt()
 
-        target.HP = Math.min(target.HT, target.HP + healingThisTick)
+        target!!.HP = Math.min(target!!.HT, target!!.HP + healingThisTick)
 
-        target.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", healingThisTick))
+        target!!.sprite!!.showStatus(CharSprite.POSITIVE, Messages.get(this.javaClass, "value", healingThisTick))
 
         healingLeft -= healingThisTick
 
@@ -72,9 +73,9 @@ class Healing : Buff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.HEALING)
+            target!!.sprite!!.add(CharSprite.State.HEALING)
         else
-            target.sprite!!.remove(CharSprite.State.HEALING)
+            target!!.sprite!!.remove(CharSprite.State.HEALING)
     }
 
     override fun storeInBundle(bundle: Bundle) {

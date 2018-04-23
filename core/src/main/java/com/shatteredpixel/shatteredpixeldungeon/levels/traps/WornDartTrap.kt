@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
@@ -70,10 +71,10 @@ class WornDartTrap : Trap() {
 
                     override fun act(): Boolean {
                         val toRemove = this
-                        (ShatteredPixelDungeon.scene()!!.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, finalTarget.sprite, Dart()) {
+                        (Game.scene()!!.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, finalTarget.sprite!!, Dart(), {
                             val dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll()
                             finalTarget.damage(dmg, trap)
-                            if (finalTarget === Dungeon.hero && !finalTarget.isAlive) {
+                            if (finalTarget === Dungeon.hero!! && !finalTarget.isAlive) {
                                 Dungeon.fail(trap.javaClass)
                             }
                             Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(0.8f, 1.25f))
@@ -81,7 +82,7 @@ class WornDartTrap : Trap() {
                             finalTarget.sprite!!.flash()
                             Actor.remove(toRemove)
                             next()
-                        }
+                        } as Callback)
                         return false
                     }
                 })

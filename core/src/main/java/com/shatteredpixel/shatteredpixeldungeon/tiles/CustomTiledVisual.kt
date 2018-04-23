@@ -91,7 +91,7 @@ abstract class CustomTiledVisual(tx: Any) : Tilemap(tx, TextureFilm(tx, SIZE, SI
             return null
         } else {
             val img = Image(texture)
-            img.frame(tileset.get(data[tileX + mapWidth * tileY]))
+            img.frame(tileset.get(data!![tileX + mapWidth * tileY]))
             return img
         }
     }

@@ -57,7 +57,8 @@ class Surprise : Image(Effects.get(Effects.Type.EXCLAMATION)) {
     override fun update() {
         super.update()
 
-        if ((time -= Game.elapsed) <= 0) {
+        time -= Game.elapsed
+        if (time <= 0) {
             kill()
         } else {
             val p = time / TIME_TO_FADE

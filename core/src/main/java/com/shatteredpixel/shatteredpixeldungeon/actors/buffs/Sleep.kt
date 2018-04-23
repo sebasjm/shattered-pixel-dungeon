@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 class Sleep : FlavourBuff() {
 
     override fun fx(on: Boolean) {
-        if (on) target.sprite!!.idle()
+        if (on) target!!.sprite!!.idle()
     }
 
     companion object {

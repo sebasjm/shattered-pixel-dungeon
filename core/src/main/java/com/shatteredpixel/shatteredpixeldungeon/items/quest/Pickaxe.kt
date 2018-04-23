@@ -88,19 +88,19 @@ class Pickaxe : Weapon() {
         if (action == AC_MINE) {
 
             if (Dungeon.depth < 11 || Dungeon.depth > 15) {
-                GLog.w(Messages.get(this, "no_vein"))
+                GLog.w(Messages.get(this.javaClass, "no_vein"))
                 return
             }
 
-            for (i in PathFinder.NEIGHBOURS8.indices) {
+            for (i in PathFinder.NEIGHBOURS8!!.indices) {
 
-                val pos = hero.pos + PathFinder.NEIGHBOURS8[i]
+                val pos = hero.pos + PathFinder.NEIGHBOURS8!![i]
                 if (Dungeon.level!!.map!![pos] == Terrain.WALL_DECO) {
 
                     hero.spend(TIME_TO_MINE)
                     hero.busy()
 
-                    hero.sprite!!.attack(pos) {
+                    hero.sprite!!.attack(pos, {
                         CellEmitter.center(pos).burst(Speck.factory(Speck.STAR), 7)
                         Sample.INSTANCE.play(Assets.SND_EVOKE)
 
@@ -108,20 +108,20 @@ class Pickaxe : Weapon() {
                         GameScene.updateMap(pos)
 
                         val gold = DarkGold()
-                        if (gold.doPickUp(Dungeon.hero)) {
-                            GLog.i(Messages.get(Dungeon.hero!!, "you_now_have", gold.name()))
+                        if (gold.doPickUp(Dungeon.hero!!)) {
+                            GLog.i(Messages.get(Dungeon.hero!!.javaClass, "you_now_have", gold.name()))
                         } else {
                             Dungeon.level!!.drop(gold, hero.pos).sprite!!.drop()
                         }
 
                         hero.onOperateComplete()
-                    }
+                    }as Callback)
 
                     return
                 }
             }
 
-            GLog.w(Messages.get(this, "no_vein"))
+            GLog.w(Messages.get(this.javaClass, "no_vein"))
 
         }
     }

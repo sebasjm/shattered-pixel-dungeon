@@ -47,12 +47,12 @@ class WndResurrect(ankh: Ankh, causeOfDeath: Any) : Window() {
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 
-        val message = PixelScene.renderMultiline(Messages.get(this, "message"), 6)
+        val message = PixelScene.renderMultiline(Messages.get(this.javaClass, "message"), 6)
         message.maxWidth(WIDTH)
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnYes = object : RedButton(Messages.get(this, "yes")) {
+        val btnYes = object : RedButton(Messages.get(this.javaClass, "yes")) {
             override fun onClick() {
                 hide()
 
@@ -65,12 +65,12 @@ class WndResurrect(ankh: Ankh, causeOfDeath: Any) : Window() {
         btnYes.setRect(0f, message.top() + message.height() + GAP, WIDTH.toFloat(), BTN_HEIGHT.toFloat())
         add(btnYes)
 
-        val btnNo = object : RedButton(Messages.get(this, "no")) {
+        val btnNo = object : RedButton(Messages.get(this.javaClass, "no")) {
             override fun onClick() {
                 hide()
 
-                Rankings.INSTANCE.submit(false, WndResurrect.causeOfDeath.javaClass)
-                Hero.reallyDie(WndResurrect.causeOfDeath)
+                Rankings.INSTANCE.submit(false, WndResurrect.causeOfDeath!!.javaClass)
+                Hero.reallyDie(WndResurrect.causeOfDeath!!)
             }
         }
         btnNo.setRect(0f, btnYes.bottom() + GAP, WIDTH.toFloat(), BTN_HEIGHT.toFloat())
@@ -93,6 +93,6 @@ class WndResurrect(ankh: Ankh, causeOfDeath: Any) : Window() {
         private val GAP = 2f
 
         var instance: WndResurrect? = null
-        var causeOfDeath: Any
+        var causeOfDeath: Any? = null
     }
 }

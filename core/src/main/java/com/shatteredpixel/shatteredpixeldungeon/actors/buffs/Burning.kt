@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire
@@ -72,17 +73,17 @@ class Burning : Buff(), Hero.Doom {
 
     override fun act(): Boolean {
 
-        if (target.isAlive) {
+        if (target!!.isAlive) {
 
-            val damage = Random.NormalIntRange(1, 3 + target.HT / 40)
-            Buff.detach(target, Chill::class.java)
+            val damage = Random.NormalIntRange(1, 3 + target!!.HT / 40)
+            Buff.detach(target!!, Chill::class.java)
 
-            if (target is Hero) {
+            if (target!! is Hero) {
 
-                val hero = target as Hero
+                val hero = target!! as Hero
 
                 if (hero.belongings.armor != null && hero.belongings.armor!!.hasGlyph(Brimstone::class.java)) {
-                    Buff.affect<Brimstone.BrimstoneShield>(target, Brimstone.BrimstoneShield::class.java)
+                    Buff.affect<Brimstone.BrimstoneShield>(target!!, Brimstone.BrimstoneShield::class.java)
 
                 } else {
 
@@ -110,45 +111,45 @@ class Burning : Buff(), Hero.Doom {
                                 }
                             }
                             Heap.burnFX(hero.pos)
-                            GLog.w(Messages.get(this, "burnsup", Messages.capitalize(toBurn!!.toString())))
+                            GLog.w(Messages.get(this.javaClass, "burnsup", Messages.capitalize(toBurn!!.toString())))
                         }
                     }
                 }
 
             } else {
-                target.damage(damage, this)
+                target!!.damage(damage, this)
             }
 
-            if (target is Thief) {
+            if (target!! is Thief) {
 
-                val item = (target as Thief).item
+                val item = (target!! as Thief).item
 
                 if (item is Scroll && !(item is ScrollOfUpgrade || item is ScrollOfMagicalInfusion)) {
-                    target.sprite!!.emitter().burst(ElmoParticle.FACTORY, 6)
-                    (target as Thief).item = null
+                    target!!.sprite!!.emitter().burst(ElmoParticle.FACTORY, 6)
+                    (target!! as Thief).item = null
                 } else if (item is MysteryMeat) {
-                    target.sprite!!.emitter().burst(ElmoParticle.FACTORY, 6)
-                    (target as Thief).item = ChargrilledMeat()
+                    target!!.sprite!!.emitter().burst(ElmoParticle.FACTORY, 6)
+                    (target!! as Thief).item = ChargrilledMeat()
                 }
 
             }
 
         } else {
 
-            val brimShield = target.buff<Brimstone.BrimstoneShield>(Brimstone.BrimstoneShield::class.java)
+            val brimShield = target!!.buff<Brimstone.BrimstoneShield>(Brimstone.BrimstoneShield::class.java)
             brimShield?.startDecay()
 
             detach()
         }
 
-        if (Dungeon.level!!.flamable[target.pos] && Blob.volumeAt(target.pos, Fire::class.java) == 0) {
-            GameScene.add(Blob.seed<Fire>(target.pos, 4, Fire::class.java))
+        if (Dungeon.level!!.flamable[target!!.pos] && Blob.volumeAt(target!!.pos, Fire::class.java) == 0) {
+            GameScene.add(Blob.seed<Fire>(target!!.pos, 4, Fire::class.java)!!)
         }
 
         spend(Actor.TICK)
         left -= Actor.TICK
 
-        if (left <= 0 || Dungeon.level!!.water[target.pos] && !target.flying) {
+        if (left <= 0 || Dungeon.level!!.water[target!!.pos] && !target!!.flying) {
 
             detach()
         }
@@ -166,21 +167,21 @@ class Burning : Buff(), Hero.Doom {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.BURNING)
+            target!!.sprite!!.add(CharSprite.State.BURNING)
         else
-            target.sprite!!.remove(CharSprite.State.BURNING)
+            target!!.sprite!!.remove(CharSprite.State.BURNING)
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns(left))
+        return Messages.get(this.javaClass, "desc", dispTurns(left))
     }
 
     override fun onDeath() {
@@ -188,7 +189,7 @@ class Burning : Buff(), Hero.Doom {
         Badges.validateDeathFromFire()
 
         Dungeon.fail(javaClass)
-        GLog.n(Messages.get(this, "ondeath"))
+        GLog.n(Messages.get(this.javaClass, "ondeath"))
     }
 
     companion object {

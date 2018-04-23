@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class PiranhaSprite : MobSprite() {
@@ -34,7 +35,7 @@ class PiranhaSprite : MobSprite() {
 
         texture(Assets.PIRANHA)
 
-        val frames = TextureFilm(texture, 12, 16)
+        val frames = TextureFilm(texture!!, 12, 16)
 
         idle = MovieClip.Animation(8, true)
         idle!!.frames(frames, 0, 1, 2, 1)
@@ -48,7 +49,7 @@ class PiranhaSprite : MobSprite() {
         die = MovieClip.Animation(4, false)
         die!!.frames(frames, 12, 13, 14)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun link(ch: Char) {

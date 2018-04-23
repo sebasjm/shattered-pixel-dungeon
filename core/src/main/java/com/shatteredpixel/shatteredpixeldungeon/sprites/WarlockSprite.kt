@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
@@ -33,7 +34,7 @@ class WarlockSprite : MobSprite() {
 
         texture(Assets.WARLOCK)
 
-        val frames = TextureFilm(texture, 12, 15)
+        val frames = TextureFilm(texture!!, 12, 15)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1)
@@ -60,8 +61,9 @@ class WarlockSprite : MobSprite() {
         MagicMissile.boltFromChar(parent!!,
                 MagicMissile.SHADOW,
                 this,
-                cell
-        ) { (ch as Warlock).onZapComplete() }
+                cell,
+                { (ch as Warlock).onZapComplete() } as Callback
+        )
         Sample.INSTANCE.play(Assets.SND_ZAP)
     }
 

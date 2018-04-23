@@ -128,7 +128,8 @@ class PrisonLevel : RegularLevel() {
         }
 
         override fun update() {
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
                 super.update()
             }
         }

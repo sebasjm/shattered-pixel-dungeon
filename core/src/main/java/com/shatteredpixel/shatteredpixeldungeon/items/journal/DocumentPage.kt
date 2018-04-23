@@ -53,7 +53,7 @@ abstract class DocumentPage : Item() {
         GameScene.pickUpJournal(this, hero.pos)
         GameScene.flashJournal()
         WndJournal.last_index = 0
-        document().addPage(page)
+        document().addPage(page!!)
         Sample.INSTANCE.play(Assets.SND_ITEM)
         hero.spendAndNext(Item.TIME_TO_PICK_UP)
         return true
@@ -61,7 +61,7 @@ abstract class DocumentPage : Item() {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        bundle.put(PAGE, page())
+        bundle.put(PAGE, page()!!)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {

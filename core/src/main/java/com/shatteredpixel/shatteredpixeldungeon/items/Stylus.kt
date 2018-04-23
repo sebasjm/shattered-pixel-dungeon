@@ -43,11 +43,11 @@ class Stylus : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private val itemSelector = WndBag.Listener { item ->
+    private val itemSelector = { item: Item? ->
         if (item != null) {
             this@Stylus.inscribe(item as Armor)
         }
-    }
+    } as WndBag.Listener
 
     init {
         image = ItemSpriteSheet.STYLUS
@@ -70,7 +70,7 @@ class Stylus : Item() {
         if (action == AC_INSCRIBE) {
 
             Item.curUser = hero
-            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"))
+            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get(this.javaClass, "prompt"))
 
         }
     }
@@ -78,26 +78,26 @@ class Stylus : Item() {
     private fun inscribe(armor: Armor) {
 
         if (!armor.isIdentified) {
-            GLog.w(Messages.get(this, "identify"))
+            GLog.w(Messages.get(this.javaClass, "identify"))
             return
         } else if (armor.cursed || armor.hasCurseGlyph()) {
-            GLog.w(Messages.get(this, "cursed"))
+            GLog.w(Messages.get(this.javaClass, "cursed"))
             return
         }
 
-        detach(Item.curUser.belongings.backpack)
+        detach(Item.curUser!!.belongings.backpack)
 
-        GLog.w(Messages.get(this, "inscribed"))
+        GLog.w(Messages.get(this.javaClass, "inscribed"))
 
         armor.inscribe()
 
-        Item.curUser.sprite!!.operate(Item.curUser.pos)
-        Item.curUser.sprite!!.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10)
-        Enchanting.show(Item.curUser, armor)
+        Item.curUser!!.sprite!!.operate(Item.curUser!!.pos)
+        Item.curUser!!.sprite!!.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10)
+        Enchanting.show(Item.curUser!!, armor)
         Sample.INSTANCE.play(Assets.SND_BURNING)
 
-        Item.curUser.spend(TIME_TO_INSCRIBE)
-        Item.curUser.busy()
+        Item.curUser!!.spend(TIME_TO_INSCRIBE)
+        Item.curUser!!.busy()
     }
 
     override fun price(): Int {

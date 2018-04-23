@@ -141,7 +141,7 @@ open class Bag : Item(), Iterable<Item> {
         return ItemIterator()
     }
 
-    private inner class ItemIterator : Iterator<Item> {
+    private inner class ItemIterator : MutableIterator<Item> {
 
         private var index = 0
         private var nested: MutableIterator<Item>? = null

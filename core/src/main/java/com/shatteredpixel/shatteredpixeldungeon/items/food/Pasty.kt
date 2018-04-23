@@ -55,15 +55,15 @@ class Pasty : Food() {
         super.reset()
         when (holiday) {
             Pasty.Holiday.NONE -> {
-                name = Messages.get(this, "pasty")
+                name = Messages.get(this.javaClass, "pasty")
                 image = ItemSpriteSheet.PASTY
             }
             Pasty.Holiday.HWEEN -> {
-                name = Messages.get(this, "pie")
+                name = Messages.get(this.javaClass, "pie")
                 image = ItemSpriteSheet.PUMPKIN_PIE
             }
             Pasty.Holiday.XMAS -> {
-                name = Messages.get(this, "cane")
+                name = Messages.get(this.javaClass, "cane")
                 image = ItemSpriteSheet.CANDY_CANE
             }
         }
@@ -91,10 +91,10 @@ class Pasty : Food() {
 
     override fun info(): String {
         when (holiday) {
-            Pasty.Holiday.NONE -> return Messages.get(this, "pasty_desc")
-            Pasty.Holiday.HWEEN -> return Messages.get(this, "pie_desc")
-            Pasty.Holiday.XMAS -> return Messages.get(this, "cane_desc")
-            else -> return Messages.get(this, "pasty_desc")
+            Pasty.Holiday.NONE -> return Messages.get(this.javaClass, "pasty_desc")
+            Pasty.Holiday.HWEEN -> return Messages.get(this.javaClass, "pie_desc")
+            Pasty.Holiday.XMAS -> return Messages.get(this.javaClass, "cane_desc")
+            else -> return Messages.get(this.javaClass, "pasty_desc")
         }
     }
 

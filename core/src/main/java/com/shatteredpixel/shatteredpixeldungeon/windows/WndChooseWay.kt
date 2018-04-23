@@ -41,7 +41,7 @@ class WndChooseWay(tome: TomeOfMastery, way1: HeroSubClass, way2: HeroSubClass) 
         add(titlebar)
 
         val hl = PixelScene.renderMultiline(6)
-        hl.text(way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this, "message"), WIDTH)
+        hl.text(way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this.javaClass, "message"), WIDTH)
         hl.setPos(titlebar.left(), titlebar.bottom() + GAP)
         add(hl)
 
@@ -63,7 +63,7 @@ class WndChooseWay(tome: TomeOfMastery, way1: HeroSubClass, way2: HeroSubClass) 
         btnWay2.setRect(btnWay1.right() + GAP, btnWay1.top(), btnWay1.width(), BTN_HEIGHT.toFloat())
         add(btnWay2)
 
-        val btnCancel = object : RedButton(Messages.get(this, "cancel")) {
+        val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
             override fun onClick() {
                 hide()
             }

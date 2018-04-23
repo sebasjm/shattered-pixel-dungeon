@@ -136,11 +136,13 @@ class HallsLevel : RegularLevel() {
 
         override fun update() {
 
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
 
                 super.update()
 
-                if ((delay -= Game.elapsed) <= 0) {
+                delay -= Game.elapsed
+                if (delay <= 0) {
 
                     delay = Random.Float(2f)
 
@@ -183,7 +185,7 @@ class HallsLevel : RegularLevel() {
         override fun update() {
             super.update()
             val p = left / lifespan
-            am = if (p > 0.8f) (1 - p) * 5 else 1
+            am = if (p > 0.8f) (1 - p) * 5 else 1f
         }
     }
 

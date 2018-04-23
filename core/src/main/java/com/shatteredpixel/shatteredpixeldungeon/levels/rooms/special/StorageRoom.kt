@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Random
 
 class StorageRoom : SpecialRoom() {
@@ -66,7 +67,7 @@ class StorageRoom : SpecialRoom() {
                 return prize
         }
 
-        return Generator.random(Random.oneOf<Category>(
+        return Generator.random(Random.oneOf<Generator.Category>(
                 Generator.Category.POTION,
                 Generator.Category.SCROLL,
                 Generator.Category.FOOD,

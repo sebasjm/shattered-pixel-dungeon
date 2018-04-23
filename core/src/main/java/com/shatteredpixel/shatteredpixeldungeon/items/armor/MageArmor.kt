@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.noosa.audio.Sample
 
@@ -47,13 +48,13 @@ class MageArmor : ClassArmor() {
             }
         }
 
-        Item.curUser.HP -= Item.curUser.HP / 3
+        Item.curUser!!.HP -= Item.curUser!!.HP / 3
 
-        Item.curUser.spend(Actor.TICK)
-        Item.curUser.sprite!!.operate(Item.curUser.pos)
-        Item.curUser.busy()
+        Item.curUser!!.spend(Actor.TICK)
+        Item.curUser!!.sprite!!.operate(Item.curUser!!.pos)
+        Item.curUser!!.busy()
 
-        Item.curUser.sprite!!.centerEmitter().start(ElmoParticle.FACTORY, 0.15f, 4)
+        Item.curUser!!.sprite!!.centerEmitter().start(ElmoParticle.FACTORY, 0.15f, 4)
         Sample.INSTANCE.play(Assets.SND_READ)
     }
 

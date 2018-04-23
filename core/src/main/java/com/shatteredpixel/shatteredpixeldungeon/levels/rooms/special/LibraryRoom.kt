@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurs
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Random
 
 class LibraryRoom : SpecialRoom() {
@@ -70,6 +71,6 @@ class LibraryRoom : SpecialRoom() {
         if (prize == null)
             prize = Generator.random(Generator.Category.SCROLL)
 
-        return prize
+        return prize!!
     }
 }

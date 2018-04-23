@@ -46,7 +46,7 @@ open class Gnoll : Mob() {
         return Random.NormalIntRange(1, 6)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 10
     }
 

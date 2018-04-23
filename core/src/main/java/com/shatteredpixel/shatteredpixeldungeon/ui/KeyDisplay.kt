@@ -40,7 +40,7 @@ import com.watabou.utils.RectF
 import java.nio.FloatBuffer
 import java.util.LinkedHashMap
 
-class KeyDisplay : Visual(0, 0, 0, 0) {
+class KeyDisplay : Visual(0f, 0f, 0f, 0f) {
 
     private val vertices = FloatArray(16)
     private var quads: FloatBuffer? = null
@@ -59,9 +59,9 @@ class KeyDisplay : Visual(0, 0, 0, 0) {
         for (rec in Notes.getRecords<Notes.KeyRecord>(Notes.KeyRecord::class.java)) {
             if (rec.depth() < Dungeon.depth) {
                 //only ever 1 black key
-                keys[0] = 1
+                keys!![0] = 1
             } else if (rec.depth() == Dungeon.depth) {
-                keys[keyMap[rec.type()]] += rec.quantity()
+                keys!![keyMap[rec.type()]!!] += rec.quantity()
             }
         }
 
@@ -100,7 +100,7 @@ class KeyDisplay : Visual(0, 0, 0, 0) {
         script.lighting(
                 rm, gm, bm, am,
                 ra, ga, ba, aa)
-        script.drawQuadSet(buffer, totalKeys, 0)
+        script.drawQuadSet(buffer!!, totalKeys, 0)
     }
 
     private fun updateVertices() {
@@ -117,12 +117,12 @@ class KeyDisplay : Visual(0, 0, 0, 0) {
             var mostType: Class<out Key>? = null
             var mostNum = 0
             for (k in keyMap.keys) {
-                if (keys!![keyMap[k]] >= mostNum) {
+                if (keys!![keyMap[k]!!] >= mostNum) {
                     mostType = k
-                    mostNum = keys!![keyMap[k]]
+                    mostNum = keys!![keyMap[k]!!]
                 }
             }
-            keys!![keyMap.get(mostType)]--
+            keys!![keyMap.get(mostType)!!]--
             totalKeys--
         }
 

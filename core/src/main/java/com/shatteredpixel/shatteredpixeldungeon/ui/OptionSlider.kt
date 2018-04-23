@@ -47,7 +47,7 @@ abstract class OptionSlider(title: String, minTxt: String, maxTxt: String, minVa
     private var sliderNode: NinePatch? = null
     private var BG: NinePatch? = null
     private var sliderBG: ColorBlock? = null
-    private val sliderTicks: Array<ColorBlock>
+    private val sliderTicks: Array<ColorBlock?>
     private var tickDist: Float = 0.toFloat()
 
     var selectedValue: Int
@@ -76,9 +76,10 @@ abstract class OptionSlider(title: String, minTxt: String, maxTxt: String, minVa
 
         sliderTicks = arrayOfNulls(maxVal - minVal + 1)
         for (i in sliderTicks.indices) {
-            add(sliderTicks[i] = ColorBlock(1f, 11f, -0xddddde))
+            sliderTicks[i] = ColorBlock(1f, 11f, -0xddddde)
+            add(sliderTicks[i]!!)
         }
-        add(sliderNode)
+        add(sliderNode!!)
     }
 
     protected abstract fun onChange()
@@ -86,14 +87,19 @@ abstract class OptionSlider(title: String, minTxt: String, maxTxt: String, minVa
     override fun createChildren() {
         super.createChildren()
 
-        add(BG = Chrome.get(Chrome.Type.BUTTON))
+        BG = Chrome.get(Chrome.Type.BUTTON)
+        add(BG!!)
         BG!!.alpha(0.5f)
 
-        add(title = PixelScene.renderText(9))
-        add(this.minTxt = PixelScene.renderText(6))
-        add(this.maxTxt = PixelScene.renderText(6))
+        title = PixelScene.renderText(9)
+        add(title!!)
+        this.minTxt = PixelScene.renderText(6)
+        add(this.minTxt!!)
+        this.maxTxt = PixelScene.renderText(6)
+        add(this.maxTxt!!)
 
-        add(sliderBG = ColorBlock(1f, 1f, -0xddddde))
+        sliderBG = ColorBlock(1f, 1f, -0xddddde)
+        add(sliderBG!!)
         sliderNode = Chrome.get(Chrome.Type.BUTTON)
         sliderNode!!.size(5f, 9f)
 
@@ -128,7 +134,7 @@ abstract class OptionSlider(title: String, minTxt: String, maxTxt: String, minVa
                 }
             }
         }
-        add(touchArea)
+        add(touchArea!!)
 
     }
 
@@ -141,8 +147,8 @@ abstract class OptionSlider(title: String, minTxt: String, maxTxt: String, minVa
         sliderBG!!.size(width - 5, 1f)
         tickDist = sliderBG!!.width() / (maxVal - minVal)
         for (i in sliderTicks.indices) {
-            sliderTicks[i].y = sliderBG!!.y - 5
-            sliderTicks[i].x = (x + 2f + tickDist * i).toInt().toFloat()
+            sliderTicks[i]!!.y = sliderBG!!.y - 5
+            sliderTicks[i]!!.x = (x + 2f + tickDist * i).toInt().toFloat()
         }
 
         maxTxt!!.y = sliderBG!!.y - 6f - minTxt!!.baseLine()

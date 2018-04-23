@@ -46,7 +46,7 @@ class Foliage : Blob() {
                 cell = i + j * Dungeon.level!!.width()
                 if (cur!![cell] > 0) {
 
-                    off[cell] = cur!![cell]
+                    off!![cell] = cur!![cell]
                     volume += off!![cell]
 
                     if (map!![cell] == Terrain.EMBERS) {
@@ -57,12 +57,12 @@ class Foliage : Blob() {
                     visible = visible || Dungeon.level!!.heroFOV[cell]
 
                 } else {
-                    off[cell] = 0
+                    off!![cell] = 0
                 }
             }
         }
 
-        val hero = Dungeon.hero
+        val hero = Dungeon.hero!!
         if (hero!!.isAlive && hero.visibleEnemies() == 0 && cur!![hero.pos] > 0) {
             Buff.affect<Shadows>(hero, Shadows::class.java)!!.prolong()
         }
@@ -78,6 +78,6 @@ class Foliage : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

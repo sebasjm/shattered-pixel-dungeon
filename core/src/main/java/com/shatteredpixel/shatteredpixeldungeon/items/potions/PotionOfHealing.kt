@@ -45,7 +45,7 @@ class PotionOfHealing : Potion() {
         //starts out healing 30 hp, equalizes with hero health total at level 11
         Buff.affect<Healing>(hero, Healing::class.java)!!.setHeal((0.8f * hero.HT + 14).toInt(), 0.333f, 0)
         cure(hero)
-        GLog.p(Messages.get(this, "heal"))
+        GLog.p(Messages.get(this.javaClass, "heal"))
     }
 
     override fun price(): Int {

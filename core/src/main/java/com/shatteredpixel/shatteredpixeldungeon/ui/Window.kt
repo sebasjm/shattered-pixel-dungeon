@@ -34,7 +34,7 @@ import com.watabou.noosa.NinePatch
 import com.watabou.noosa.TouchArea
 import com.watabou.utils.Signal
 
-open class Window @JvmOverloads constructor(protected var width: Int = 0, protected var height: Int = 0, protected var yOffset: Int = 0, protected var chrome: NinePatch = Chrome.get(Chrome.Type.WINDOW)) : Group(), Signal.Listener<Key> {
+open class Window @JvmOverloads constructor(protected var width: Int = 0, protected var height: Int = 0, protected var yOffset: Int = 0, protected var chrome: NinePatch = Chrome.get(Chrome.Type.WINDOW)!!) : Group(), Signal.Listener<Key> {
 
     protected var blocker: TouchArea
     protected var shadow: ShadowBox
@@ -43,7 +43,7 @@ open class Window @JvmOverloads constructor(protected var width: Int = 0, protec
 
     init {
 
-        blocker = object : TouchArea(0f, 0f, PixelScene.uiCamera.width.toFloat(), PixelScene.uiCamera.height.toFloat()) {
+        blocker = object : TouchArea(0f, 0f, PixelScene.uiCamera!!.width.toFloat(), PixelScene.uiCamera!!.height.toFloat()) {
             override fun onClick(touch: Touch) {
                 if (this@Window.parent != null && !this@Window.chrome.overlapsScreenPoint(
                                 touch.current.x.toInt(),
@@ -53,15 +53,15 @@ open class Window @JvmOverloads constructor(protected var width: Int = 0, protec
                 }
             }
         }
-        blocker.camera = PixelScene.uiCamera
+        blocker.camera = PixelScene.uiCamera!!
         add(blocker)
 
         shadow = ShadowBox()
         shadow.am = 0.5f
-        shadow.camera = if (PixelScene.uiCamera.visible)
-            PixelScene.uiCamera
+        shadow.camera = if (PixelScene.uiCamera!!.visible)
+            PixelScene.uiCamera!!
         else
-            Camera.main
+            Camera.main!!
         add(shadow)
 
         chrome.x = (-chrome.marginLeft()).toFloat()
@@ -79,7 +79,7 @@ open class Window @JvmOverloads constructor(protected var width: Int = 0, protec
         camera!!.y = (Game.height - camera!!.height * camera!!.zoom).toInt() / 2
         camera!!.y -= (yOffset * camera!!.zoom).toInt()
         camera!!.scroll.set(chrome.x, chrome.y)
-        Camera.add(camera)
+        Camera.add(camera!!)
 
         shadow.boxRect(
                 camera!!.x / camera!!.zoom,
@@ -123,7 +123,7 @@ open class Window @JvmOverloads constructor(protected var width: Int = 0, protec
     override fun destroy() {
         super.destroy()
 
-        Camera.remove(camera)
+        Camera.remove(camera!!)
         Keys.event.remove(this)
     }
 

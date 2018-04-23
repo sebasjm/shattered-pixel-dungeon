@@ -104,7 +104,7 @@ class Succubus : Mob() {
 
         if (Dungeon.level!!.avoid[cell]) {
             val candidates = ArrayList<Int>()
-            for (n in PathFinder.NEIGHBOURS8) {
+            for (n in PathFinder.NEIGHBOURS8!!) {
                 cell = route.collisionPos!! + n
                 if (Dungeon.level!!.passable[cell] && Actor.findChar(cell) == null) {
                     candidates.add(cell)
@@ -123,7 +123,7 @@ class Succubus : Mob() {
         delay = BLINK_DELAY
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 40
     }
 

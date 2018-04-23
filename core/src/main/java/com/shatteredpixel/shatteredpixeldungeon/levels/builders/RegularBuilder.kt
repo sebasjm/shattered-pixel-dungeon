@@ -119,7 +119,7 @@ abstract class RegularBuilder : Builder() {
     protected fun weightRooms(rooms: ArrayList<Room>) {
         for (r in rooms.toTypedArray<Room>()) {
             if (r is StandardRoom) {
-                for (i in 1 until (r as StandardRoom).sizeCat.connectionWeight())
+                for (i in 1 until (r as StandardRoom).sizeCat!!.connectionWeight())
                     rooms.add(r)
             }
         }
@@ -155,11 +155,11 @@ abstract class RegularBuilder : Builder() {
             connectionChances[connectingRooms]--
 
             for (j in 0 until connectingRooms) {
-                val t = if (r is SecretRoom) MazeConnectionRoom() else ConnectionRoom.createRoom()
+                val t = (if (r is SecretRoom) MazeConnectionRoom() else ConnectionRoom.createRoom())!!
                 tries = 3
 
                 do {
-                    angle = Builder.placeRoom(rooms, curr, t, randomBranchAngle(curr))
+                    angle = Builder.placeRoom(rooms, curr!!, t, randomBranchAngle(curr))
                     tries--
                 } while (angle == -1f && tries > 0)
 
@@ -185,7 +185,7 @@ abstract class RegularBuilder : Builder() {
             tries = 10
 
             do {
-                angle = Builder.placeRoom(rooms, curr, r, randomBranchAngle(curr))
+                angle = Builder.placeRoom(rooms, curr!!, r, randomBranchAngle(curr!!))
                 tries--
             } while (angle == -1f && tries > 0)
 
@@ -203,7 +203,7 @@ abstract class RegularBuilder : Builder() {
             }
             if (r.maxConnections(Room.ALL) > 1 && Random.Int(3) == 0) {
                 if (r is StandardRoom) {
-                    for (j in 0 until r.sizeCat.connectionWeight()) {
+                    for (j in 0 until r.sizeCat!!.connectionWeight()) {
                         branchable.add(r)
                     }
                 } else {

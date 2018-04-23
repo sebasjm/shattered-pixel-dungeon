@@ -63,7 +63,7 @@ class BloodParticle : PixelParticle.Shrinking() {
     override fun update() {
         super.update()
         val p = left / lifespan
-        am = if (p > 0.6f) (1 - p) * 2.5f else 1
+        am = if (p > 0.6f) (1 - p) * 2.5f else 1f
     }
 
     companion object {

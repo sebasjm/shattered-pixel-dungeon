@@ -92,6 +92,7 @@ abstract class Actor : Bundlable {
             id
         } else {
             id = nextID++
+            id
         }
     }
 
@@ -136,7 +137,7 @@ abstract class Actor : Bundlable {
         @Synchronized
         fun fixTime() {
 
-            if (Dungeon.hero != null && all.contains(Dungeon.hero)) {
+            if (Dungeon.hero!! != null && all.contains(Dungeon.hero!!)) {
                 Statistics.duration += now
             }
 
@@ -154,7 +155,7 @@ abstract class Actor : Bundlable {
 
         fun init() {
 
-            add(Dungeon.hero)
+            add(Dungeon.hero!!)
 
             for (mob in Dungeon.level!!.mobs) {
                 add(mob)
@@ -215,9 +216,9 @@ abstract class Actor : Bundlable {
                         // If it's character's turn to act, but its sprite
                         // is moving, wait till the movement is over
                         try {
-                            synchronized(acting.sprite) {
+                            synchronized(acting.sprite!!) {
                                 if (acting.sprite!!.isMoving) {
-                                    acting.sprite!!.wait()
+                                    (acting.sprite!! as java.lang.Object).wait()
                                 }
                             }
                         } catch (e: InterruptedException) {
@@ -233,7 +234,7 @@ abstract class Actor : Bundlable {
                         current = null
                     } else {
                         doNext = acting!!.act()
-                        if (doNext && (Dungeon.hero == null || !Dungeon.hero!!.isAlive)) {
+                        if (doNext && (Dungeon.hero!! == null || !Dungeon.hero!!.isAlive)) {
                             doNext = false
                             current = null
                         }
@@ -254,11 +255,11 @@ abstract class Actor : Bundlable {
 
                         synchronized(GameScene::class.java) {
                             //signals to the gamescene that actor processing is finished for now
-                            GameScene::class.java!!.notify()
+                            (GameScene::class.java as java.lang.Object).notify()
                         }
 
                         try {
-                            Thread.currentThread().wait()
+                            (Thread.currentThread() as java.lang.Object).wait()
                         } catch (e: InterruptedException) {
                             interrupted = true
                         }
@@ -291,9 +292,8 @@ abstract class Actor : Bundlable {
             actor.onAdd()
 
             if (actor is Char) {
-                val ch = actor as Char?
-                chars.add(ch)
-                for (buff in ch!!.buffs()) {
+                chars.add(actor)
+                for (buff in actor.buffs()) {
                     all.add(buff)
                     buff.onAdd()
                 }

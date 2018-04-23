@@ -38,7 +38,7 @@ class Alchemy : Blob() {
             for (j in area.left - 1..area.right) {
                 cell = j + i * Dungeon.level!!.width()
                 if (Dungeon.level!!.insideMap(cell)) {
-                    off[cell] = cur!![cell]
+                    off!![cell] = cur!![cell]
                     volume += off!![cell]
                     if (off!![cell] > 0 && Dungeon.level!!.heroFOV[cell]) {
                         Notes.add(Notes.Landmark.ALCHEMY)
@@ -49,7 +49,7 @@ class Alchemy : Blob() {
 
                         var n: Int
                         do {
-                            n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
+                            n = cell + PathFinder.NEIGHBOURS8!![Random.Int(8)]
                         } while (!Dungeon.level!!.passable[n])
                         Dungeon.level!!.drop(Dungeon.level!!.heaps.get(cell).pickUp(), n).sprite!!.drop(pos)
                     }

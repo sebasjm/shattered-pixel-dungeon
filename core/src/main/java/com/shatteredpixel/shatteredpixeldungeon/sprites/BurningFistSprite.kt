@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
@@ -35,7 +36,7 @@ class BurningFistSprite : MobSprite() {
 
         texture(Assets.BURNING)
 
-        val frames = TextureFilm(texture, 24, 17)
+        val frames = TextureFilm(texture!!, 24, 17)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 0, 0, 1)
@@ -49,7 +50,7 @@ class BurningFistSprite : MobSprite() {
         die = MovieClip.Animation(10, false)
         die!!.frames(frames, 0, 2, 3, 4)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun attack(cell: Int) {
@@ -64,8 +65,9 @@ class BurningFistSprite : MobSprite() {
             MagicMissile.boltFromChar(parent!!,
                     MagicMissile.SHADOW,
                     this,
-                    posToShoot
-            ) { ch!!.onAttackComplete() }
+                    posToShoot,
+                    { ch!!.onAttackComplete() } as Callback
+            )
 
             idle()
 

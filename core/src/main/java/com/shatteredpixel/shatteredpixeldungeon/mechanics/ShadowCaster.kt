@@ -31,19 +31,24 @@ object ShadowCaster {
 
     //max length of rows as FOV moves out, for each FOV distance
     //This is used to make the overall FOV circular, instead of square
-    private var rounding: Array<IntArray>? = null
+    private val rounding: Array<Array<Int>>
 
     init {
-        rounding = arrayOfNulls(MAX_DISTANCE + 1)
-        for (i in 1..MAX_DISTANCE) {
-            rounding[i] = IntArray(i + 1)
-            for (j in 1..i) {
-                //testing the middle of a cell, so we use i + 0.5
-                rounding!![i][j] = Math.min(
+        rounding = arrayOfNulls<IntArray>(MAX_DISTANCE + 1).mapIndexed { i, it ->
+            IntArray(i + 1).mapIndexed { j, el ->
+                Math.min(
                         j.toLong(),
                         Math.round((i + 0.5) * Math.cos(Math.asin(j / (i + 0.5))))).toInt()
-            }
-        }
+            }.toTypedArray()
+        }.toTypedArray()
+//        rounding =
+//        for (i in 1..MAX_DISTANCE) {
+//            rounding[i] = IntArray(i + 1)
+//            for (j in 1..i) {
+//                //testing the middle of a cell, so we use i + 0.5
+//                rounding!![i][j] =
+//            }
+//        }
     }
 
     fun castShadow(x: Int, y: Int, fieldOfView: BooleanArray, distance: Int) {

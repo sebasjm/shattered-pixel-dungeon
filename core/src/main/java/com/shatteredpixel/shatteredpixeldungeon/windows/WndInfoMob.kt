@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthBar
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.watabou.noosa.RenderedText
 import com.watabou.noosa.ui.Component
 

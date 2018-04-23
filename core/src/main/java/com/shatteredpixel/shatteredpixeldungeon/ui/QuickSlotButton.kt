@@ -69,7 +69,7 @@ class QuickSlotButton(private val slotNum: Int) : Button(), WndBag.Listener {
                     val item = select(slotNum)
                     if (item!!.usesTargeting)
                         useTargeting()
-                    item.execute(Dungeon.hero)
+                    item.execute(Dungeon.hero!!)
                 }
             }
 
@@ -78,22 +78,22 @@ class QuickSlotButton(private val slotNum: Int) : Button(), WndBag.Listener {
             }
 
             override fun onTouchDown() {
-                icon.lightness(0.7f)
+                icon!!.lightness(0.7f)
             }
 
             override fun onTouchUp() {
-                icon.resetColor()
+                icon!!.resetColor()
             }
         }
         slot!!.showParams(true, false, true)
-        add(slot)
+        add(slot!!)
 
         crossB = Icons.TARGET.get()
         crossB!!.visible = false
-        add(crossB)
+        add(crossB!!)
 
         crossM = Image()
-        crossM!!.copy(crossB)
+        crossM!!.copy(crossB!!)
     }
 
     override fun layout() {
@@ -107,11 +107,11 @@ class QuickSlotButton(private val slotNum: Int) : Button(), WndBag.Listener {
     }
 
     override fun onClick() {
-        GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item"))
+        GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this.javaClass, "select_item"))
     }
 
     override fun onLongClick(): Boolean {
-        GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item"))
+        GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this.javaClass, "select_item"))
         return true
     }
 
@@ -143,17 +143,17 @@ class QuickSlotButton(private val slotNum: Int) : Button(), WndBag.Listener {
     private fun useTargeting() {
 
         if (lastTarget != null &&
-                Actor.chars().contains(lastTarget) &&
+                Actor.chars().contains(lastTarget!!) &&
                 lastTarget!!.isAlive &&
                 Dungeon.level!!.heroFOV[lastTarget!!.pos]) {
 
             targeting = true
             val sprite = lastTarget!!.sprite
 
-            sprite!!.parent!!.addToFront(crossM)
-            crossM!!.point(sprite.center(crossM))
+            sprite!!.parent!!.addToFront(crossM!!)
+            crossM!!.point(sprite.center(crossM!!))
 
-            crossB!!.point(slot!!.icon.center(crossB))
+            crossB!!.point(slot!!.icon!!.center(crossB!!))
             crossB!!.visible = true
 
         } else {
@@ -190,14 +190,14 @@ class QuickSlotButton(private val slotNum: Int) : Button(), WndBag.Listener {
         fun autoAim(target: Char, item: Item = Item()): Int {
 
             //first try to directly target
-            if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {
+            if (item.throwPos(Dungeon.hero!!, target.pos) == target.pos) {
                 return target.pos
             }
 
             //Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
             PathFinder.buildDistanceMap(target.pos, BArray.not(BooleanArray(Dungeon.level!!.length()), null), 2)
-            for (i in PathFinder.distance.indices) {
-                if (PathFinder.distance[i] < Integer.MAX_VALUE && item.throwPos(Dungeon.hero, i) == target.pos)
+            for (i in PathFinder.distance!!.indices) {
+                if (PathFinder.distance!![i] < Integer.MAX_VALUE && item.throwPos(Dungeon.hero!!, i) == target.pos)
                     return i
             }
 
@@ -208,16 +208,16 @@ class QuickSlotButton(private val slotNum: Int) : Button(), WndBag.Listener {
         fun refresh() {
             for (i in instance.indices) {
                 if (instance[i] != null) {
-                    instance[i].item(select(i))
+                    instance[i]!!.item(select(i))
                 }
             }
         }
 
-        fun target(target: Char) {
-            if (target !== Dungeon.hero) {
+        fun target(target: Char?) {
+            if (target !== Dungeon.hero!!) {
                 lastTarget = target
 
-                TargetHealthIndicator.instance.target(target)
+                TargetHealthIndicator.instance!!.target(target)
             }
         }
 

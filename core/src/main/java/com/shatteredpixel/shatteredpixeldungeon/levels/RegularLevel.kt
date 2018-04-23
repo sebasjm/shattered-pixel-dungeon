@@ -23,13 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.levels
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap
-import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey
@@ -51,8 +49,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
@@ -62,10 +60,10 @@ abstract class RegularLevel : Level() {
 
     protected var rooms: ArrayList<Room>? = null
 
-    protected var builder: Builder
+    protected var builder: Builder? = null
 
-    protected var roomEntrance: Room
-    protected var roomExit: Room
+    protected var roomEntrance: Room? = null
+    protected var roomExit: Room? = null
 
     var secretDoors: Int = 0
 
@@ -83,17 +81,19 @@ abstract class RegularLevel : Level() {
                 r.neigbours.clear()
                 r.connected.clear()
             }
-            rooms = builder.build(initRooms.clone() as ArrayList<Room>)
+            rooms = builder!!.build(initRooms.clone() as ArrayList<Room>)
         } while (rooms == null)
 
-        return painter().paint(this, rooms)
+        return painter().paint(this, rooms!!)
 
     }
 
     protected open fun initRooms(): ArrayList<Room> {
         val initRooms = ArrayList<Room>()
-        initRooms.add(roomEntrance = EntranceRoom())
-        initRooms.add(roomExit = ExitRoom())
+        roomEntrance = EntranceRoom()
+        initRooms.add(roomEntrance!!)
+        roomExit = ExitRoom()
+        initRooms.add(roomExit!!)
 
         val standards = standardRooms()
         run {
@@ -103,7 +103,7 @@ abstract class RegularLevel : Level() {
                 do {
                     s = StandardRoom.createRoom()
                 } while (!s!!.setSizeCat(standards - i))
-                i += s.sizeCat.roomValue - 1
+                i += s.sizeCat!!.roomValue - 1
                 initRooms.add(s)
                 i++
             }
@@ -185,7 +185,7 @@ abstract class RegularLevel : Level() {
         try {
             return mobsToSpawn!!.removeAt(0).newInstance()
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
         }
 
@@ -198,7 +198,7 @@ abstract class RegularLevel : Level() {
         val stdRooms = ArrayList<Room>()
         for (room in rooms!!) {
             if (room is StandardRoom && room !== roomEntrance) {
-                for (i in 0 until room.sizeCat.roomValue) {
+                for (i in 0 until room.sizeCat!!.roomValue) {
                     stdRooms.add(room)
                 }
                 //pre-0.6.0 save compatibility
@@ -236,7 +236,7 @@ abstract class RegularLevel : Level() {
 
         for (m in mobs) {
             if (map!![m.pos] == Terrain.HIGH_GRASS) {
-                map[m.pos] = Terrain.GRASS
+                map!![m.pos] = Terrain.GRASS
                 losBlocking[m.pos] = false
             }
 
@@ -301,7 +301,7 @@ abstract class RegularLevel : Level() {
             }
             val cell = randomDropCell()
             if (map!![cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS
+                map!![cell] = Terrain.GRASS
                 losBlocking[cell] = false
             }
 
@@ -323,7 +323,7 @@ abstract class RegularLevel : Level() {
             val cell = randomDropCell()
             drop(item, cell).type = Heap.Type.HEAP
             if (map!![cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS
+                map!![cell] = Terrain.GRASS
                 losBlocking[cell] = false
             }
         }
@@ -332,7 +332,7 @@ abstract class RegularLevel : Level() {
         if (item != null) {
             val cell = randomDropCell()
             if (map!![cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS
+                map!![cell] = Terrain.GRASS
                 losBlocking[cell] = false
             }
             drop(item, cell).type = Heap.Type.REMAINS
@@ -359,7 +359,7 @@ abstract class RegularLevel : Level() {
             p.page(missingPages[0])
             val cell = randomDropCell()
             if (map!![cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS
+                map!![cell] = Terrain.GRASS
                 losBlocking[cell] = false
             }
             drop(p, cell)
@@ -368,7 +368,7 @@ abstract class RegularLevel : Level() {
     }
 
     protected fun randomRoom(type: Class<out Room>): Room? {
-        Random.shuffle(rooms)
+        Random.shuffle(rooms!!)
         for (r in rooms!!) {
             if (type.isInstance(r)
                     //compatibility with pre-0.6.0 saves
@@ -432,7 +432,7 @@ abstract class RegularLevel : Level() {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        bundle.put("rooms", rooms)
+        bundle.put("rooms", rooms!!)
         bundle.put("mobs_to_spawn", mobsToSpawn!!.toTypedArray<Class<*>>())
     }
 
@@ -451,7 +451,7 @@ abstract class RegularLevel : Level() {
 
         if (bundle.contains("mobs_to_spawn")) {
             for (mob in bundle.getClassArray("mobs_to_spawn")!!) {
-                if (mob != null) mobsToSpawn!!.add(mob)
+                if (mob != null) mobsToSpawn!!.add(mob as Class<out Mob>)
             }
         }
     }

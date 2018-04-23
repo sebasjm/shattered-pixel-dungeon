@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant
 import com.watabou.utils.Point
@@ -87,7 +88,7 @@ class PlantsRoom : StandardRoom() {
             level.plant(randomSeed(), level.pointToCell(center))
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 

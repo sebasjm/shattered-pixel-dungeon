@@ -37,6 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
+import com.watabou.noosa.Game
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -72,7 +74,7 @@ class SecretLaboratoryRoom : SecretRoom() {
                 chances[potionCls] = 0f
                 level.drop(potionCls!!.newInstance(), pos)
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
             }
 
         }

@@ -44,9 +44,9 @@ class AboutScene : PixelScene() {
     override fun create() {
         super.create()
 
-        val colWidth = (Camera.main.width / if (SPDSettings.landscape()) 2 else 1).toFloat()
-        val colTop = (Camera.main.height / 2 - if (SPDSettings.landscape()) 30 else 90).toFloat()
-        val wataOffset = if (SPDSettings.landscape()) colWidth else 0
+        val colWidth = Camera.main!!.width / if (SPDSettings.landscape()) 2f else 1f
+        val colTop = Camera.main!!.height / 2 - if (SPDSettings.landscape()) 30f else 90f
+        val wataOffset = if (SPDSettings.landscape()) colWidth else 0f
 
         val shpx = Icons.SHPX.get()
         shpx.x = (colWidth - shpx.width()) / 2
@@ -131,11 +131,11 @@ class AboutScene : PixelScene() {
 
 
         val archs = Archs()
-        archs.setSize(Camera.main.width.toFloat(), Camera.main.height.toFloat())
+        archs.setSize(Camera.main!!.width.toFloat(), Camera.main!!.height.toFloat())
         addToBack(archs)
 
         val btnExit = ExitButton()
-        btnExit.setPos(Camera.main.width - btnExit.width(), 0f)
+        btnExit.setPos(Camera.main!!.width - btnExit.width(), 0f)
         add(btnExit)
 
         fadeIn()

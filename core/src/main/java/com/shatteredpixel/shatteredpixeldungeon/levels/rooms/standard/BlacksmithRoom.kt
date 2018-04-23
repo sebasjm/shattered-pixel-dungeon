@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap
 import com.watabou.utils.Point
 import com.watabou.utils.Random
@@ -52,14 +53,14 @@ class BlacksmithRoom : StandardRoom() {
                 pos = level.pointToCell(random())
             } while (level.map!![pos] != Terrain.EMPTY_SP)
             level.drop(
-                    Generator.random(Random.oneOf<Category>(
+                    Generator.random(Random.oneOf<Generator.Category>(
                             Generator.Category.ARMOR,
                             Generator.Category.WEAPON,
                             Generator.Category.MISSILE
                     )), pos)
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
             Painter.drawInside(level, this, door, 1, Terrain.EMPTY)
         }

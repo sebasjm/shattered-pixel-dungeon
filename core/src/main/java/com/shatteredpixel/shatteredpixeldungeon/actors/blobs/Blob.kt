@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.Rect
 
@@ -36,7 +37,7 @@ open class Blob : Actor() {
     var cur: IntArray? = null
     protected var off: IntArray? = null
 
-    var emitter: BlobEmitter
+    var emitter: BlobEmitter? = null
 
     var area = Rect()
 
@@ -92,7 +93,7 @@ open class Blob : Actor() {
             val data = bundle.getIntArray(CUR)
             val start = bundle.getInt(START)
             for (i in data!!.indices) {
-                cur[i + start] = data[i]
+                cur!![i + start] = data[i]
                 volume += data[i]
             }
 
@@ -165,7 +166,7 @@ open class Blob : Actor() {
                         }
 
                         val value = if (sum >= count) sum / count - 1 else 0
-                        off[cell] = value
+                        off!![cell] = value
 
                         if (value > 0) {
                             if (i < area.top)
@@ -180,7 +181,7 @@ open class Blob : Actor() {
 
                         volume += value
                     } else {
-                        off[cell] = 0
+                        off!![cell] = 0
                     }
                 }
             }
@@ -191,7 +192,7 @@ open class Blob : Actor() {
         if (cur == null) cur = IntArray(level.length())
         if (off == null) off = IntArray(cur!!.size)
 
-        cur[cell] += amount
+        cur!![cell] += amount
         volume += amount
 
         area.union(cell % level.width(), cell / level.width())
@@ -200,7 +201,7 @@ open class Blob : Actor() {
     fun clear(cell: Int) {
         if (volume == 0) return
         volume -= cur!![cell]
-        cur[cell] = 0
+        cur!![cell] = 0
     }
 
     fun fullyClear() {
@@ -238,7 +239,7 @@ open class Blob : Actor() {
                 return gas
 
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 

@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom
 import com.watabou.utils.Bundle
 
@@ -61,7 +62,7 @@ class ImpShopRoom : ShopRoom() {
         Painter.fill(level, this, 1, Terrain.EMPTY_SP)
         Painter.fill(level, this, 3, Terrain.WATER)
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
         }
 

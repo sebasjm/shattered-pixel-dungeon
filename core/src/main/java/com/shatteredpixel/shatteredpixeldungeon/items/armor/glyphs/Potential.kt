@@ -44,9 +44,9 @@ class Potential : Glyph() {
             defender.damage(shockDmg, this)
 
             checkOwner(defender)
-            if (defender === Dungeon.hero) {
+            if (defender === Dungeon.hero!!) {
                 Dungeon.hero!!.belongings.charge(1f + level / 10f)
-                Camera.main.shake(2f, 0.3f)
+                Camera.main!!.shake(2f, 0.3f)
             }
 
             attacker.sprite!!.parent!!.add(Lightning(attacker.pos, defender.pos, null))

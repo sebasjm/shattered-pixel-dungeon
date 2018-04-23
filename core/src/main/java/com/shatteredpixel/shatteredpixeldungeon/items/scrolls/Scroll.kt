@@ -85,11 +85,11 @@ abstract class Scroll : Item() {
         if (action == AC_READ) {
 
             if (hero.buff<Blindness>(Blindness::class.java) != null) {
-                GLog.w(Messages.get(this, "blinded"))
+                GLog.w(Messages.get(this.javaClass, "blinded"))
             } else if (hero.buff<UnstableSpellbook.bookRecharge>(UnstableSpellbook.bookRecharge::class.java) != null
                     && hero.buff<UnstableSpellbook.bookRecharge>(UnstableSpellbook.bookRecharge::class.java)!!.isCursed
                     && this !is ScrollOfRemoveCurse) {
-                GLog.n(Messages.get(this, "cursed"))
+                GLog.n(Messages.get(this.javaClass, "cursed"))
             } else {
                 Item.curUser = hero
                 Item.curItem = detach(hero.belongings.backpack)
@@ -105,9 +105,9 @@ abstract class Scroll : Item() {
     abstract fun empoweredRead()
 
     protected fun readAnimation() {
-        Item.curUser.spend(TIME_TO_READ)
-        Item.curUser.busy()
-        (Item.curUser.sprite as HeroSprite).read()
+        Item.curUser!!.spend(TIME_TO_READ)
+        Item.curUser!!.busy()
+        (Item.curUser!!.sprite as HeroSprite).read()
     }
 
     fun setKnown() {
@@ -129,14 +129,14 @@ abstract class Scroll : Item() {
     }
 
     override fun name(): String {
-        return if (isKnown) name else Messages.get(Scroll::class.java, rune)
+        return if (isKnown) name!! else Messages.get(Scroll::class.java, rune!!)
     }
 
     override fun info(): String {
         return if (isKnown)
             desc()
         else
-            Messages.get(this, "unknown_desc")
+            Messages.get(this.javaClass, "unknown_desc")
     }
 
     fun initials(): Int? {
@@ -151,7 +151,7 @@ abstract class Scroll : Item() {
 
         val AC_READ = "READ"
 
-        protected val TIME_TO_READ = 1f
+        @JvmStatic protected val TIME_TO_READ = 1f
 
         private val scrolls = arrayOf<Class<*>>(ScrollOfIdentify::class.java, ScrollOfMagicMapping::class.java, ScrollOfRecharging::class.java, ScrollOfRemoveCurse::class.java, ScrollOfTeleportation::class.java, ScrollOfUpgrade::class.java, ScrollOfRage::class.java, ScrollOfTerror::class.java, ScrollOfLullaby::class.java, ScrollOfMagicalInfusion::class.java, ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java)
 

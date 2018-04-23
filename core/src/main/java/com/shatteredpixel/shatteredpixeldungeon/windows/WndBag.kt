@@ -54,13 +54,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.watabou.gltextures.TextureCache
 import com.watabou.noosa.BitmapText
 import com.watabou.noosa.ColorBlock
 import com.watabou.noosa.Image
-import com.watabou.noosa.RenderedText
 import com.watabou.noosa.audio.Sample
-import com.watabou.utils.RectF
 
 class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val title: String?) : WndTabbed() {
     private val mode: WndBag.Mode
@@ -141,7 +140,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         PixelScene.align(gold)
         add(gold)
 
-        val amt = BitmapText(Integer.toString(Dungeon.gold), PixelScene.pixelFont)
+        val amt = BitmapText(Integer.toString(Dungeon.gold), PixelScene.pixelFont!!)
         amt.hardlight(Window.TITLE_COLOR)
         amt.measure()
         amt.x = width.toFloat() - gold.width() - amt.width() - 2f
@@ -182,7 +181,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         val x = col * (SLOT_WIDTH + SLOT_MARGIN)
         val y = TITLE_HEIGHT + row * (SLOT_HEIGHT + SLOT_MARGIN)
 
-        add(ItemButton(item).setPos(x.toFloat(), y.toFloat()))
+        add(ItemButton(item!!).setPos(x.toFloat(), y.toFloat()))
 
         if (++col >= nCols) {
             col = 0
@@ -212,7 +211,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         return 20
     }
 
-    private inner class BagTab(private val bag: Bag) : WndTabbed.Tab() {
+    private inner class BagTab(val bag: Bag) : WndTabbed.Tab() {
 
         private val icon: Image
 
@@ -274,11 +273,11 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         }
     }
 
-    private inner class ItemButton(private val item: Item) : ItemSlot(item) {
+    private inner class ItemButton(private val item2: Item) : ItemSlot(item2) {
         private var bg: ColorBlock? = null
 
         init {
-            if (item is Gold) {
+            if (item2 is Gold) {
                 bg!!.visible = false
             }
 
@@ -305,7 +304,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
             super.item(item)
             if (item != null) {
 
-                bg!!.texture(TextureCache.createSolid(if (item.isEquipped(Dungeon.hero)) EQUIPPED else NORMAL))
+                bg!!.texture(TextureCache.createSolid(if (item.isEquipped(Dungeon.hero!!)) EQUIPPED else NORMAL))
                 if (item.cursed && item.cursedKnown) {
                     bg!!.ra = +0.3f
                     bg!!.ga = -0.15f
@@ -318,7 +317,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
                     enable(false)
                 } else {
                     enable(
-                            mode == Mode.FOR_SALE && !item.unique && item.price() > 0 && (!item.isEquipped(Dungeon.hero) || !item.cursed) ||
+                            mode == Mode.FOR_SALE && !item.unique && item.price() > 0 && (!item.isEquipped(Dungeon.hero!!) || !item.cursed) ||
                                     mode == Mode.UPGRADEABLE && item.isUpgradable ||
                                     mode == Mode.UNIDENTIFED && !item.isIdentified ||
                                     mode == Mode.UNIDED_OR_CURSED && (item is EquipableItem || item is Wand) && (!item.isIdentified || item.cursed) ||
@@ -363,26 +362,26 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         }
 
         override fun onClick() {
-            if (!lastBag!!.contains(item) && !item.isEquipped(Dungeon.hero)) {
+            if (!lastBag!!.contains(item2) && !item2.isEquipped(Dungeon.hero!!)) {
 
                 hide()
 
             } else if (listener != null) {
 
                 hide()
-                listener.onSelect(item)
+                listener.onSelect(item2)
 
             } else {
 
-                GameScene.show(WndItem(this@WndBag, item))
+                GameScene.show(WndItem(this@WndBag, item2))
 
             }
         }
 
         override fun onLongClick(): Boolean {
-            if (listener == null && item.defaultAction != null) {
+            if (listener == null && item2.defaultAction != null) {
                 hide()
-                Dungeon.quickslot.setSlot(0, item)
+                Dungeon.quickslot.setSlot(0, item2)
                 QuickSlotButton.refresh()
                 return true
             } else {
@@ -390,11 +389,6 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
             }
         }
 
-        companion object {
-
-            private val NORMAL = -0x66aca9b3
-            private val EQUIPPED = -0x666e6c74
-        }
     }
 
     interface Listener {
@@ -402,6 +396,8 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
     }
 
     companion object {
+        private val NORMAL = -0x66aca9b3
+        private val EQUIPPED = -0x666e6c74
 
         protected val COLS_P = 4
         protected val COLS_L = 6
@@ -412,15 +408,15 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
 
         protected val TITLE_HEIGHT = 14
 
-        private var lastMode: Mode
-        private var lastBag: Bag?
+        private var lastMode: Mode? = null
+        private var lastBag: Bag? = null
 
         fun lastBag(listener: Listener, mode: Mode, title: String): WndBag {
 
             return if (mode == lastMode && lastBag != null &&
-                    Dungeon.hero!!.belongings.backpack.contains(lastBag)) {
+                    Dungeon.hero!!.belongings.backpack.contains(lastBag!!)) {
 
-                WndBag(lastBag, listener, mode, title)
+                WndBag(lastBag!!, listener, mode, title)
 
             } else {
 
@@ -430,7 +426,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         }
 
         fun getBag(bagClass: Class<out Bag>, listener: Listener, mode: Mode, title: String): WndBag {
-            val bag = Dungeon.hero!!.belongings.getItem<out Bag>(bagClass)
+            val bag = Dungeon.hero!!.belongings.getItem(bagClass)
             return if (bag != null)
                 WndBag(bag, listener, mode, title)
             else

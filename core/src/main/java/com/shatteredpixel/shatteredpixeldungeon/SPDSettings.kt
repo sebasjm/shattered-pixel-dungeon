@@ -59,7 +59,7 @@ class SPDSettings : GameSettings() {
         fun fullscreen(value: Boolean) {
             GameSettings.put(KEY_FULLSCREEN, value)
 
-            ShatteredPixelDungeon.instance!!.runOnUiThread { ShatteredPixelDungeon.updateSystemUI() }
+            Game.instance!!.runOnUiThread { ShatteredPixelDungeon.updateSystemUI() }
         }
 
         fun fullscreen(): Boolean {
@@ -68,7 +68,7 @@ class SPDSettings : GameSettings() {
 
         fun landscape(value: Boolean) {
             GameSettings.put(KEY_LANDSCAPE, value)
-            (ShatteredPixelDungeon.instance as ShatteredPixelDungeon).updateDisplaySize()
+            (Game.instance as ShatteredPixelDungeon).updateDisplaySize()
         }
 
         fun landscape(): Boolean {
@@ -77,7 +77,7 @@ class SPDSettings : GameSettings() {
 
         fun powerSaver(value: Boolean) {
             GameSettings.put(KEY_POWER_SAVER, value)
-            (ShatteredPixelDungeon.instance as ShatteredPixelDungeon).updateDisplaySize()
+            (Game.instance as ShatteredPixelDungeon).updateDisplaySize()
         }
 
         fun powerSaver(): Boolean {

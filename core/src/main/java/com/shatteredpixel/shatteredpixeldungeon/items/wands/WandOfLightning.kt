@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
@@ -65,7 +66,7 @@ class WandOfLightning : DamageWand() {
         //lightning deals less damage per-target, the more targets that are hit.
         var multipler = 0.4f + 0.6f / affected.size
         //if the main target is in water, all affected take full damage
-        if (Dungeon.level!!.water[bolt.collisionPos]) multipler = 1f
+        if (Dungeon.level!!.water[bolt.collisionPos!!]) multipler = 1f
 
         val min = 5 + level()
         val max = 10 + 5 * level()
@@ -74,14 +75,14 @@ class WandOfLightning : DamageWand() {
             processSoulMark(ch, chargesPerCast())
             ch.damage(Math.round(damageRoll() * multipler), this)
 
-            if (ch === Dungeon.hero) Camera.main.shake(2f, 0.3f)
+            if (ch === Dungeon.hero!!) Camera.main!!.shake(2f, 0.3f)
             ch.sprite!!.centerEmitter().burst(SparkParticle.FACTORY, 3)
             ch.sprite!!.flash()
         }
 
-        if (!Item.curUser.isAlive) {
+        if (!Item.curUser!!.isAlive) {
             Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "ondeath"))
+            GLog.n(Messages.get(this.javaClass, "ondeath"))
         }
     }
 
@@ -101,10 +102,10 @@ class WandOfLightning : DamageWand() {
             dist = 1
 
         PathFinder.buildDistanceMap(ch.pos, BArray.not(Dungeon.level!!.solid, null), dist)
-        for (i in PathFinder.distance.indices) {
-            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+        for (i in PathFinder.distance!!.indices) {
+            if (PathFinder.distance!![i] < Integer.MAX_VALUE) {
                 val n = Actor.findChar(i)
-                if (n === Dungeon.hero && PathFinder.distance[i] > 1)
+                if (n === Dungeon.hero!! && PathFinder.distance!![i] > 1)
                 //the hero is only zapped if they are adjacent
                     continue
                 else if (n != null && !affected.contains(n)) {
@@ -124,22 +125,22 @@ class WandOfLightning : DamageWand() {
 
         val ch = Actor.findChar(cell)
         if (ch != null) {
-            arcs.add(Lightning.Arc(Item.curUser.sprite!!.center(), ch.sprite!!.center()))
+            arcs.add(Lightning.Arc(Item.curUser!!.sprite!!.center(), ch.sprite!!.center()))
             arc(ch)
         } else {
-            arcs.add(Lightning.Arc(Item.curUser.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos!!)))
+            arcs.add(Lightning.Arc(Item.curUser!!.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos!!)))
             CellEmitter.center(cell).burst(SparkParticle.FACTORY, 3)
         }
 
         //don't want to wait for the effect before processing damage.
-        Item.curUser.sprite!!.parent!!.addToFront(Lightning(arcs, null))
+        Item.curUser!!.sprite!!.parent!!.addToFront(Lightning(arcs, null))
         callback.call()
     }
 
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0xFFFFFF)
         particle.am = 0.6f
-        particle.setLifespan(0.6f)
+        particle.lifespan = (0.6f)
         particle.acc.set(0f, +10f)
         particle.speed.polar(-Random.Float(3.1415926f), 6f)
         particle.setSize(0f, 1.5f)

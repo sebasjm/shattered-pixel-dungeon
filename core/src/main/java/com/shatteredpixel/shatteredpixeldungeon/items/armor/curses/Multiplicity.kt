@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -48,8 +49,8 @@ class Multiplicity : Armor.Glyph() {
         if (Random.Int(20) == 0) {
             val spawnPoints = ArrayList<Int>()
 
-            for (i in PathFinder.NEIGHBOURS8.indices) {
-                val p = defender.pos + PathFinder.NEIGHBOURS8[i]
+            for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                val p = defender.pos + PathFinder.NEIGHBOURS8!![i]
                 if (Actor.findChar(p) == null && (Dungeon.level!!.passable[p] || Dungeon.level!!.avoid[p])) {
                     spawnPoints.add(p)
                 }
@@ -71,7 +72,7 @@ class Multiplicity : Armor.Glyph() {
                         try {
                             Actor.fixTime()
 
-                            m = attacker.javaClass.newInstance()
+                            m = attacker.javaClass.newInstance() as Mob
                             val store = Bundle()
                             attacker.storeInBundle(store)
                             m!!.restoreFromBundle(store)
@@ -83,7 +84,7 @@ class Multiplicity : Armor.Glyph() {
                             }
 
                         } catch (e: Exception) {
-                            ShatteredPixelDungeon.reportException(e)
+                            Game.reportException(e)
                             m = null
                         }
 

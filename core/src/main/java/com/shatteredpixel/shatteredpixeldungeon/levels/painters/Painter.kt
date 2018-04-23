@@ -35,7 +35,7 @@ abstract class Painter {
     // request them in their constructor or other methods
 
     //Painters take a level and its collection of rooms, and paint all the specific tile values
-    abstract fun paint(level: Level, rooms: ArrayList<Room>): Boolean
+    abstract fun paint(level: Level, rooms: ArrayList<Room>?): Boolean
 
     companion object {
 

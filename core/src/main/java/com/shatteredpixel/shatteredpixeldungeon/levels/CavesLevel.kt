@@ -133,11 +133,13 @@ class CavesLevel : RegularLevel() {
 
         override fun update() {
 
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
 
                 super.update()
 
-                if ((delay -= Game.elapsed) <= 0) {
+                delay -= Game.elapsed
+                if (delay <= 0) {
 
                     //pickaxe can remove the ore, should remove the sparkling too.
                     if (Dungeon.level!!.map!![pos] != Terrain.WALL_DECO) {
@@ -172,7 +174,8 @@ class CavesLevel : RegularLevel() {
             super.update()
 
             val p = left / lifespan
-            size((am = if (p < 0.5f) p * 2 else (1 - p) * 2) * 2)
+            am = if (p < 0.5f) p * 2 else (1 - p) * 2
+            size(am * 2)
         }
     }
 

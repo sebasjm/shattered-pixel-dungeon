@@ -50,14 +50,14 @@ class StoneOfEnchantment : InventoryStone() {
 
         }
 
-        Item.curUser.sprite!!.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 5)
-        Enchanting.show(Item.curUser, item)
+        Item.curUser!!.sprite!!.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 5)
+        Enchanting.show(Item.curUser!!, item)
 
         //FIXME add this to translations
         if (item is Weapon) {
-            GLog.p(Messages.get(this, "weapon"))
+            GLog.p(Messages.get(this.javaClass, "weapon"))
         } else {
-            GLog.p(Messages.get(this, "armor"))
+            GLog.p(Messages.get(this.javaClass, "armor"))
         }
 
     }

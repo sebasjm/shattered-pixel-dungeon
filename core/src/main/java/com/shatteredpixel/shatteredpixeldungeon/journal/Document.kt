@@ -39,7 +39,7 @@ enum class Document {
     }
 
     fun addPage(page: String): Boolean {
-        if (pages.containsKey(page) && !pages[page]) {
+        if (pages.containsKey(page) && !pages[page]!!) {
             pages[page] = true
             Journal.saveNeeded = true
             return true
@@ -48,19 +48,19 @@ enum class Document {
     }
 
     fun hasPage(page: String): Boolean {
-        return pages.containsKey(page) && pages[page]
+        return pages.containsKey(page) && pages[page]!!
     }
 
     fun title(): String {
-        return Messages.get(this, "$name.title")
+        return Messages.get(this.javaClass, "$name.title")
     }
 
     fun pageTitle(page: String): String {
-        return Messages.get(this, "$name.$page.title")
+        return Messages.get(this.javaClass, "$name.$page.title")
     }
 
     fun pageBody(page: String): String {
-        return Messages.get(this, "$name.$page.body")
+        return Messages.get(this.javaClass, "$name.$page.body")
     }
 
     companion object {
@@ -90,7 +90,7 @@ enum class Document {
             for (doc in values()) {
                 val pages = ArrayList<String>()
                 for (page in doc.pages()) {
-                    if (doc.pages[page]) {
+                    if (doc.pages[page]!!) {
                         pages.add(page)
                     }
                 }

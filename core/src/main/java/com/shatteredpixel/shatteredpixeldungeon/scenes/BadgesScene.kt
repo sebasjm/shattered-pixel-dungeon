@@ -49,10 +49,10 @@ class BadgesScene : PixelScene() {
 
         Music.INSTANCE.play(Assets.THEME, true)
 
-        PixelScene.uiCamera.visible = false
+        PixelScene.uiCamera!!.visible = false
 
-        val w = Camera.main.width
-        val h = Camera.main.height
+        val w = Camera.main!!.width
+        val h = Camera.main!!.height
 
         val archs = Archs()
         archs.setSize(w.toFloat(), h.toFloat())
@@ -61,7 +61,7 @@ class BadgesScene : PixelScene() {
         val left = 5f
         val top = 16f
 
-        val title = PixelScene.renderText(Messages.get(this, "title"), 9)
+        val title = PixelScene.renderText(Messages.get(this.javaClass, "title"), 9)
         title.hardlight(Window.TITLE_COLOR)
         title.x = (w - title.width()) / 2f
         title.y = (top - title.baseLine()) / 2f
@@ -100,16 +100,16 @@ class BadgesScene : PixelScene() {
         }
 
         val btnExit = ExitButton()
-        btnExit.setPos(Camera.main.width - btnExit.width(), 0f)
+        btnExit.setPos(Camera.main!!.width - btnExit.width(), 0f)
         add(btnExit)
 
         fadeIn()
 
-        Badges.loadingListener = Callback {
+        Badges.loadingListener = {
             if (Game.scene() === this@BadgesScene) {
                 ShatteredPixelDungeon.switchNoFade(BadgesScene::class.java)
             }
-        }
+        } as Callback
     }
 
     override fun destroy() {

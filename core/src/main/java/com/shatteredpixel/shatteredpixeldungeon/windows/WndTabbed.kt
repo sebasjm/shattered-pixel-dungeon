@@ -33,15 +33,15 @@ import com.watabou.noosa.ui.Button
 
 import java.util.ArrayList
 
-open class WndTabbed : Window(0, 0, Chrome.get(Chrome.Type.TAB_SET)) {
+open class WndTabbed : Window(0, 0, Chrome.get(Chrome.Type.TAB_SET)!!) {
 
     protected var tabs: ArrayList<Tab> = ArrayList()
-    protected var selected: Tab
+    protected var selected: Tab? = null
 
     protected fun add(tab: Tab): Tab {
 
         tab.setPos(if (tabs.size == 0)
-            -chrome.marginLeft() + 1
+            -chrome.marginLeft() + 1f
         else
             tabs[tabs.size - 1].right(), height.toFloat())
         tab.select(false)
@@ -132,7 +132,7 @@ open class WndTabbed : Window(0, 0, Chrome.get(Chrome.Type.TAB_SET)) {
         for (i in tabs.indices) {
             tabs[i].setSize(tabWidth.toFloat(), tabHeight().toFloat())
             tabs[i].setPos(if (i == 0)
-                -chrome.marginLeft() + 1
+                -chrome.marginLeft() + 1f
             else
                 tabs[i - 1].right() + spacing, height.toFloat())
         }
@@ -147,7 +147,7 @@ open class WndTabbed : Window(0, 0, Chrome.get(Chrome.Type.TAB_SET)) {
         select(tab)
     }
 
-    protected open inner class Tab : Button() {
+    open inner class Tab : Button() {
 
         protected val CUT = 5
 
@@ -167,17 +167,18 @@ open class WndTabbed : Window(0, 0, Chrome.get(Chrome.Type.TAB_SET)) {
 
         open fun select(value: Boolean) {
 
-            active = !(selected = value)
+            selected = value
+            active = !(selected)
 
             if (bg != null) {
-                remove(bg)
+                remove(bg!!)
             }
 
             bg = Chrome.get(if (selected)
                 Chrome.Type.TAB_SELECTED
             else
                 Chrome.Type.TAB_UNSELECTED)
-            addToBack(bg)
+            addToBack(bg!!)
 
             layout()
         }
@@ -215,7 +216,7 @@ open class WndTabbed : Window(0, 0, Chrome.get(Chrome.Type.TAB_SET)) {
             PixelScene.align(btLabel!!)
         }
 
-        protected override fun select(value: Boolean) {
+        override fun select(value: Boolean) {
             super.select(value)
             btLabel!!.am = if (selected) 1.0f else 0.6f
         }

@@ -42,7 +42,7 @@ class Acidic : Scorpio() {
         val dmg = Random.IntRange(0, damage)
         if (dmg > 0) {
             enemy.damage(dmg, this)
-            if (!enemy.isAlive && enemy === Dungeon.hero) {
+            if (!enemy.isAlive && enemy === Dungeon.hero!!) {
                 Dungeon.fail(javaClass)
                 GLog.n(Messages.capitalize(Messages.get(Char::class.java, "kill", name)))
             }
@@ -51,7 +51,7 @@ class Acidic : Scorpio() {
         return super.defenseProc(enemy, damage)
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Badges.validateRare(this)
     }

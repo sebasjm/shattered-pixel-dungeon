@@ -52,8 +52,8 @@ class Fire : Blob() {
 
                     if (freeze != null && freeze.volume > 0 && freeze.cur!![cell] > 0) {
                         freeze.clear(cell)
-                        cur[cell] = 0
-                        off[cell] = cur[cell]
+                        cur!![cell] = 0
+                        off!![cell] = cur!![cell]
                         continue
                     }
 
@@ -86,7 +86,8 @@ class Fire : Blob() {
                     fire = 0
                 }
 
-                volume += (off[cell] = fire)
+                off!![cell] = fire
+                volume += (off!![cell])
             }
         }
 
@@ -114,6 +115,6 @@ class Fire : Blob() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 import java.util.Calendar
@@ -40,7 +41,7 @@ class RatKingSprite : MobSprite() {
 
         texture(Assets.RATKING)
 
-        val frames = TextureFilm(texture, 16, 17)
+        val frames = TextureFilm(texture!!, 16, 17)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, c + 0, c + 0, c + 0, c + 1)
@@ -54,6 +55,6 @@ class RatKingSprite : MobSprite() {
         die = MovieClip.Animation(10, false)
         die!!.frames(frames, c + 0)
 
-        play(idle)
+        play(idle!!)
     }
 }

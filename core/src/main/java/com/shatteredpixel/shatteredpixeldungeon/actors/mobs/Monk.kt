@@ -61,7 +61,7 @@ open class Monk : Mob() {
         return Random.NormalIntRange(12, 25)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 30
     }
 
@@ -83,9 +83,9 @@ open class Monk : Mob() {
         var damage = damage
         damage = super.attackProc(enemy, damage)
 
-        if (enemy === Dungeon.hero) {
+        if (enemy === Dungeon.hero!!) {
 
-            val hero = Dungeon.hero
+            val hero = Dungeon.hero!!
             val weapon = hero!!.belongings.weapon
 
             if (weapon != null
@@ -99,7 +99,7 @@ open class Monk : Mob() {
                     Dungeon.quickslot.convertToPlaceholder(weapon)
                     weapon.updateQuickslot()
                     Dungeon.level!!.drop(weapon, hero.pos).sprite!!.drop()
-                    GLog.w(Messages.get(this, "disarm", weapon.name()))
+                    GLog.w(Messages.get(this.javaClass, "disarm", weapon.name()))
                 }
             }
         }

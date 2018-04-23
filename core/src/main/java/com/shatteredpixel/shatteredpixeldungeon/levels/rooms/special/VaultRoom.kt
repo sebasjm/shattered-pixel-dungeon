@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -39,8 +40,8 @@ import java.util.Arrays
 
 class VaultRoom : SpecialRoom() {
 
-    private val prizeClasses = ArrayList<Category>(
-            Arrays.asList<Category>(Generator.Category.WAND,
+    private val prizeClasses = ArrayList<Generator.Category>(
+            Arrays.asList<Generator.Category>(Generator.Category.WAND,
                     Generator.Category.RING,
                     Generator.Category.ARTIFACT))
 
@@ -54,14 +55,14 @@ class VaultRoom : SpecialRoom() {
         val cy = (top + bottom) / 2
         val c = cx + cy * level.width()
 
-        Random.shuffle<Category>(prizeClasses)
+        Random.shuffle<Generator.Category>(prizeClasses)
 
         val i1: Item
         val i2: Item
         i1 = prize(level)
         i2 = prize(level)
         level.drop(i1, c).type = Heap.Type.CRYSTAL_CHEST
-        level.drop(i2, c + PathFinder.NEIGHBOURS8[Random.Int(8)]).type = Heap.Type.CRYSTAL_CHEST
+        level.drop(i2, c + PathFinder.NEIGHBOURS8!![Random.Int(8)]).type = Heap.Type.CRYSTAL_CHEST
         level.addItemToSpawn(CrystalKey(Dungeon.depth))
 
         entrance().set(Room.Door.Type.LOCKED)

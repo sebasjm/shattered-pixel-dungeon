@@ -31,7 +31,7 @@ class GuardSprite : MobSprite() {
 
         texture(Assets.GUARD)
 
-        val frames = TextureFilm(texture, 12, 16)
+        val frames = TextureFilm(texture!!, 12, 16)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1)

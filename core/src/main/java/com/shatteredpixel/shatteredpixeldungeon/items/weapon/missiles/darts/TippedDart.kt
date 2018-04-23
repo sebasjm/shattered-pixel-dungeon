@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass
+import com.watabou.noosa.Game
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -109,21 +110,21 @@ abstract class TippedDart : Dart() {
             ingredients[1].quantity(ingredients[1].quantity() - 1)
 
             try {
-                return types[ingredients[1].javaClass].newInstance().quantity(2)
+                return types!![ingredients[1]!!.javaClass as Class<out Plant.Seed>]!!.newInstance().quantity(2)
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 
         }
 
-        override fun sampleOutput(ingredients: ArrayList<Item>): Item? {
-            if (!testIngredients(ingredients)) return null
+        override fun sampleOutput(ingredients: ArrayList<Item>?): Item? {
+            if (!testIngredients(ingredients!!)) return null
 
             try {
-                return types[ingredients[1].javaClass].newInstance().quantity(2)
+                return types[ingredients[1].javaClass as Class<out Plant.Seed>]!!.newInstance().quantity(2)
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 
@@ -155,9 +156,9 @@ abstract class TippedDart : Dart() {
             } while (!types.containsKey(s.javaClass))
 
             try {
-                return types[s.javaClass].newInstance().quantity(2) as TippedDart
+                return types[s.javaClass]!!.newInstance().quantity(2) as TippedDart
             } catch (e: Exception) {
-                ShatteredPixelDungeon.reportException(e)
+                Game.reportException(e)
                 return null
             }
 

@@ -44,7 +44,7 @@ class MindVision : FlavourBuff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun detach() {
@@ -54,7 +54,7 @@ class MindVision : FlavourBuff() {
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 
     companion object {

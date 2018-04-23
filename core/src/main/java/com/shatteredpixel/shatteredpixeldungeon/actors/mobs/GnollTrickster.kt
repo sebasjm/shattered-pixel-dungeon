@@ -60,7 +60,7 @@ class GnollTrickster : Gnoll() {
         properties.add(Char.Property.MINIBOSS)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 16
     }
 
@@ -81,7 +81,7 @@ class GnollTrickster : Gnoll() {
             if (effect >= 6 && enemy.buff<Burning>(Burning::class.java) == null) {
 
                 if (Dungeon.level!!.flamable[enemy.pos])
-                    GameScene.add(Blob.seed<Fire>(enemy.pos, 4, Fire::class.java))
+                    GameScene.add(Blob.seed<Fire>(enemy.pos, 4, Fire::class.java)!!)
                 Buff.affect<Burning>(enemy, Burning::class.java)!!.reignite(enemy)
 
             } else
@@ -107,7 +107,7 @@ class GnollTrickster : Gnoll() {
         return drop
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
 
         Ghost.Quest.process()

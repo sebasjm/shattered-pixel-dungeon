@@ -85,7 +85,7 @@ class King : Mob() {
         return Random.NormalIntRange(25, 40)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 32
     }
 
@@ -134,7 +134,7 @@ class King : Mob() {
         lock?.addTime(dmg.toFloat())
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
 
         GameScene.bossSlain()
         Dungeon.level!!.drop(ArmorKit(), pos).sprite!!.drop()
@@ -147,10 +147,10 @@ class King : Mob() {
         val beacon = Dungeon.hero!!.belongings.getItem<LloydsBeacon>(LloydsBeacon::class.java)
         beacon?.upgrade()
 
-        yell(Messages.get(this, "defeated", Dungeon.hero!!.givenName()))
+        yell(Messages.get(this.javaClass, "defeated", Dungeon.hero!!.givenName()))
     }
 
-    override fun aggro(ch: Char) {
+    override fun aggro(ch: Char?) {
         super.aggro(ch)
         for (mob in Dungeon.level!!.mobs) {
             if (mob is Undead) {
@@ -178,22 +178,22 @@ class King : Mob() {
         val undeadsToSummon = maxArmySize() - Undead.count
 
         PathFinder.buildDistanceMap(pos, passable, undeadsToSummon)
-        PathFinder.distance[pos] = Integer.MAX_VALUE
+        PathFinder.distance!![pos] = Integer.MAX_VALUE
         var dist = 1
 
         undeadLabel@ for (i in 0 until undeadsToSummon) {
             do {
                 for (j in 0 until Dungeon.level!!.length()) {
-                    if (PathFinder.distance[j] == dist) {
+                    if (PathFinder.distance!![j] == dist) {
 
                         val undead = Undead()
                         undead.pos = j
                         GameScene.add(undead)
 
                         ScrollOfTeleportation.appear(undead, j)
-                        Flare(3, 32f).color(0x000000, false).show(undead.sprite, 2f)
+                        Flare(3, 32f).color(0x000000, false).show(undead.sprite!!, 2f)
 
-                        PathFinder.distance[j] = Integer.MAX_VALUE
+                        PathFinder.distance!![j] = Integer.MAX_VALUE
 
                         continue@undeadLabel
                     }
@@ -202,13 +202,13 @@ class King : Mob() {
             } while (dist < undeadsToSummon)
         }
 
-        yell(Messages.get(this, "arise"))
+        yell(Messages.get(this.javaClass, "arise"))
     }
 
     override fun notice() {
         super.notice()
         BossHealthBar.assignBoss(this)
-        yell(Messages.get(this, "notice"))
+        yell(Messages.get(this.javaClass, "notice"))
     }
 
     init {
@@ -253,7 +253,7 @@ class King : Mob() {
             return Random.NormalIntRange(15, 25)
         }
 
-        override fun attackSkill(target: Char): Int {
+        override fun attackSkill(target: Char?): Int {
             return 16
         }
 
@@ -274,7 +274,7 @@ class King : Mob() {
             }
         }
 
-        override fun die(cause: Any) {
+        override fun die(cause: Any?) {
             super.die(cause)
 
             if (Dungeon.level!!.heroFOV[pos]) {

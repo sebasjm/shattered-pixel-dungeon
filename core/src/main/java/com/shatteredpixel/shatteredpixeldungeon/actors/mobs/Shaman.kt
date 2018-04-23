@@ -56,7 +56,7 @@ class Shaman : Mob(), Callback {
         return Random.NormalIntRange(2, 8)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 11
     }
 
@@ -86,20 +86,20 @@ class Shaman : Mob(), Callback {
             if (Char.hit(this, enemy, true)) {
                 var dmg = Random.NormalIntRange(3, 10)
                 if (Dungeon.level!!.water[enemy.pos] && !enemy.flying) {
-                    dmg *= 1.5f
+                    dmg = (dmg * 1.5f).toInt()
                 }
                 enemy.damage(dmg, this)
 
                 enemy.sprite!!.centerEmitter().burst(SparkParticle.FACTORY, 3)
                 enemy.sprite!!.flash()
 
-                if (enemy === Dungeon.hero) {
+                if (enemy === Dungeon.hero!!) {
 
-                    Camera.main.shake(2f, 0.3f)
+                    Camera.main!!.shake(2f, 0.3f)
 
                     if (!enemy.isAlive) {
                         Dungeon.fail(javaClass)
-                        GLog.n(Messages.get(this, "zap_kill"))
+                        GLog.n(Messages.get(this.javaClass, "zap_kill"))
                     }
                 }
             } else {

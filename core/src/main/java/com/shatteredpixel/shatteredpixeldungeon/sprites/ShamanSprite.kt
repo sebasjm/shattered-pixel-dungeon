@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class ShamanSprite : MobSprite() {
@@ -31,7 +32,7 @@ class ShamanSprite : MobSprite() {
 
         texture(Assets.SHAMAN)
 
-        val frames = TextureFilm(texture, 12, 15)
+        val frames = TextureFilm(texture!!, 12, 15)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1)

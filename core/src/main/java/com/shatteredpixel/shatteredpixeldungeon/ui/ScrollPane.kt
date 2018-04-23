@@ -32,8 +32,8 @@ import com.watabou.utils.PointF
 
 open class ScrollPane(protected var content: Component) : Component() {
 
-    protected var controller: TouchController
-    protected var thumb: ColorBlock
+    protected var controller: TouchController? = null
+    protected var thumb: ColorBlock? = null
 
     protected var minX: Float = 0.toFloat()
     protected var minY: Float = 0.toFloat()
@@ -47,12 +47,12 @@ open class ScrollPane(protected var content: Component) : Component() {
         height = content.height()
 
         content.camera = Camera(0, 0, 1, 1, PixelScene.defaultZoom.toFloat())
-        Camera.add(content.camera)
+        Camera.add(content.camera!!)
     }
 
     override fun destroy() {
         super.destroy()
-        Camera.remove(content.camera)
+        Camera.remove(content.camera!!)
     }
 
     fun scrollTo(x: Float, y: Float) {
@@ -61,20 +61,20 @@ open class ScrollPane(protected var content: Component) : Component() {
 
     override fun createChildren() {
         controller = TouchController()
-        add(controller)
+        add(controller!!)
 
         thumb = ColorBlock(1f, 1f, THUMB_COLOR)
-        thumb.am = THUMB_ALPHA
-        add(thumb)
+        thumb!!.am = THUMB_ALPHA
+        add(thumb!!)
     }
 
     override fun layout() {
 
         content.setPos(0f, 0f)
-        controller.x = x
-        controller.y = y
-        controller.width = width
-        controller.height = height
+        controller!!.x = x
+        controller!!.y = y
+        controller!!.width = width
+        controller!!.height = height
 
         val p = camera()!!.cameraToScreen(x, y)
         val cs = content.camera
@@ -82,11 +82,11 @@ open class ScrollPane(protected var content: Component) : Component() {
         cs.y = p.y
         cs.resize(width.toInt(), height.toInt())
 
-        thumb.visible = height < content.height()
-        if (thumb.visible) {
-            thumb.scale.set(2f, height * height / content.height())
-            thumb.x = right() - thumb.width()
-            thumb.y = y
+        thumb!!.visible = height < content.height()
+        if (thumb!!.visible) {
+            thumb!!.scale.set(2f, height * height / content.height())
+            thumb!!.x = right() - thumb!!.width()
+            thumb!!.y = y
         }
     }
 
@@ -96,7 +96,7 @@ open class ScrollPane(protected var content: Component) : Component() {
 
     open fun onClick(x: Float, y: Float) {}
 
-    inner class TouchController : TouchArea(0, 0, 0, 0) {
+    inner class TouchController : TouchArea(0f, 0f, 0f, 0f) {
 
         private val dragThreshold: Float
 
@@ -111,7 +111,7 @@ open class ScrollPane(protected var content: Component) : Component() {
             if (dragging) {
 
                 dragging = false
-                thumb.am = THUMB_ALPHA
+                thumb!!.am = THUMB_ALPHA
 
             } else {
 
@@ -140,7 +140,7 @@ open class ScrollPane(protected var content: Component) : Component() {
                     c.scroll.y = 0f
                 }
 
-                thumb.y = y + height * c.scroll.y / content.height()
+                thumb!!.y = y + height * c.scroll.y / content.height()
 
                 lastPos.set(t.current)
 
@@ -148,7 +148,7 @@ open class ScrollPane(protected var content: Component) : Component() {
 
                 dragging = true
                 lastPos.set(t.current)
-                thumb.am = 1f
+                thumb!!.am = 1f
 
             }
         }

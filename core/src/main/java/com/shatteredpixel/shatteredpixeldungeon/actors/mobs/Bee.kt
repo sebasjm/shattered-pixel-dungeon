@@ -81,7 +81,7 @@ class Bee : Mob() {
             this.potHolder = potHolder.id()
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return defenseSkill
     }
 
@@ -126,7 +126,7 @@ class Bee : Mob() {
                     Random.element(enemies)
                 } else {
                     if (alignment != Char.Alignment.ALLY && Dungeon.level!!.distance(Dungeon.hero!!.pos, potPos) <= 3) {
-                        Dungeon.hero
+                        Dungeon.hero!!
                     } else {
                         null
                     }

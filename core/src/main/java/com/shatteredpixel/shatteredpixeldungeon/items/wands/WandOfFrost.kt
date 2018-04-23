@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
@@ -89,9 +89,9 @@ class WandOfFrost : DamageWand() {
     }
 
     override fun fx(bolt: Ballistica, callback: Callback) {
-        MagicMissile.boltFromChar(Item.curUser.sprite!!.parent!!,
+        MagicMissile.boltFromChar(Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.FROST,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.collisionPos!!,
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)
@@ -107,7 +107,7 @@ class WandOfFrost : DamageWand() {
                 }
 
                 override fun act(): Boolean {
-                    Buff.affect<Frost>(target, Frost::class.java, Frost.duration(target) * Random.Float(1f, 2f))
+                    Buff.affect<Frost>(target!!, Frost::class.java, Frost.duration(target!!) * Random.Float(1f, 2f))
                     return super.act()
                 }
             }.attachTo(defender)
@@ -117,7 +117,7 @@ class WandOfFrost : DamageWand() {
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0x88CCFF)
         particle.am = 0.6f
-        particle.setLifespan(2f)
+        particle.lifespan = (2f)
         val angle = Random.Float(PointF.PI2)
         particle.speed.polar(angle, 2f)
         particle.acc.set(0f, 1f)

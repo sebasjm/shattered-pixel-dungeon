@@ -78,8 +78,8 @@ class Shocking : Weapon.Enchantment() {
         ch.sprite!!.centerEmitter().burst(SparkParticle.FACTORY, 3)
         ch.sprite!!.flash()
 
-        for (i in PathFinder.NEIGHBOURS8.indices) {
-            val n = Actor.findChar(ch.pos + PathFinder.NEIGHBOURS8[i])
+        for (i in PathFinder.NEIGHBOURS8!!.indices) {
+            val n = Actor.findChar(ch.pos + PathFinder.NEIGHBOURS8!![i])
             if (n != null && !affected.contains(n)) {
                 arcs.add(Lightning.Arc(ch.sprite!!.center(), n.sprite!!.center()))
                 hit(n, Random.Int(damage / 2, damage))

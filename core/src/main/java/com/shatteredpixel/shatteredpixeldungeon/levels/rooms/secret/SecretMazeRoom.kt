@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Maze
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
 import com.watabou.utils.Random
@@ -80,9 +81,9 @@ class SecretMazeRoom : SecretRoom() {
 
         var bestDist = 0
         val bestDistP = Point()
-        for (i in PathFinder.distance.indices) {
-            if (PathFinder.distance[i] != Integer.MAX_VALUE && PathFinder.distance[i] > bestDist) {
-                bestDist = PathFinder.distance[i]
+        for (i in PathFinder.distance!!.indices) {
+            if (PathFinder.distance!![i] != Integer.MAX_VALUE && PathFinder.distance!![i] > bestDist) {
+                bestDist = PathFinder.distance!![i]
                 bestDistP.x = i % width() + left
                 bestDistP.y = i / width() + top
             }

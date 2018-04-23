@@ -58,7 +58,8 @@ class RainbowParticle : PixelParticle() {
     override fun update() {
         super.update()
         // alpha: 1 -> 0; size: 1 -> 5
-        size(5 - (am = left / lifespan) * 4)
+        am = left / lifespan
+        size(5 - am * 4)
     }
 
     companion object {

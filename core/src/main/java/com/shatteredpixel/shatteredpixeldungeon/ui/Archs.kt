@@ -51,7 +51,7 @@ class Archs : Component() {
         }
         arcsBg!!.autoAdjust = true
         arcsBg!!.offsetTo(0f, offsB)
-        add(arcsBg)
+        add(arcsBg!!)
 
         arcsFg = object : SkinnedBlock(1f, 1f, Assets.ARCS_FG) {
             override fun script(): NoosaScript {
@@ -60,7 +60,7 @@ class Archs : Component() {
         }
         arcsFg!!.autoAdjust = true
         arcsFg!!.offsetTo(0f, offsF)
-        add(arcsFg)
+        add(arcsFg!!)
     }
 
     override fun layout() {

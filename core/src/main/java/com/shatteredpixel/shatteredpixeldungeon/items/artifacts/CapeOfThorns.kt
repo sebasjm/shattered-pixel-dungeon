@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
@@ -48,13 +49,13 @@ class CapeOfThorns : Artifact() {
     }
 
     override fun desc(): String {
-        var desc = Messages.get(this, "desc")
-        if (isEquipped(Dungeon.hero)) {
+        var desc = Messages.get(this.javaClass, "desc")
+        if (isEquipped(Dungeon.hero!!)) {
             desc += "\n\n"
             if (cooldown == 0)
-                desc += Messages.get(this, "desc_inactive")
+                desc += Messages.get(this.javaClass, "desc_inactive")
             else
-                desc += Messages.get(this, "desc_active")
+                desc += Messages.get(this.javaClass, "desc_active")
         }
 
         return desc
@@ -67,7 +68,7 @@ class CapeOfThorns : Artifact() {
                 cooldown--
                 if (cooldown == 0) {
                     BuffIndicator.refreshHero()
-                    GLog.w(Messages.get(this, "inert"))
+                    GLog.w(Messages.get(this.javaClass, "inert"))
                 }
                 updateQuickslot()
             }
@@ -82,7 +83,7 @@ class CapeOfThorns : Artifact() {
                 if (charge >= chargeCap) {
                     charge = 0
                     cooldown = 10 + level()
-                    GLog.p(Messages.get(this, "radiating"))
+                    GLog.p(Messages.get(this.javaClass, "radiating"))
                     BuffIndicator.refreshHero()
                 }
             }
@@ -100,7 +101,7 @@ class CapeOfThorns : Artifact() {
                 if (exp >= (level() + 1) * 5 && level() < levelCap) {
                     exp -= (level() + 1) * 5
                     upgrade()
-                    GLog.p(Messages.get(this, "levelup"))
+                    GLog.p(Messages.get(this.javaClass, "levelup"))
                 }
 
             }
@@ -109,11 +110,11 @@ class CapeOfThorns : Artifact() {
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc", dispTurns(cooldown.toFloat()))
+            return Messages.get(this.javaClass, "desc", dispTurns(cooldown.toFloat()))
         }
 
         override fun icon(): Int {

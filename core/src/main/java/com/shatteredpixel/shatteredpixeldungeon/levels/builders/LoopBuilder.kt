@@ -87,7 +87,7 @@ class LoopBuilder : RegularBuilder() {
         var pathTunnels = pathTunnelChances.clone()
         for (i in 0 until roomsOnLoop) {
             if (i == 0)
-                loop.add(entrance)
+                loop.add(entrance!!)
             else
                 loop.add(multiConnections.removeAt(0))
 
@@ -99,18 +99,18 @@ class LoopBuilder : RegularBuilder() {
             pathTunnels[tunnels]--
 
             for (j in 0 until tunnels) {
-                loop.add(ConnectionRoom.createRoom())
+                loop.add(ConnectionRoom.createRoom()!!)
             }
         }
 
-        if (exit != null) loop.add((loop.size + 1) / 2, exit)
+        if (exit != null) loop.add((loop.size + 1) / 2, exit!!)
 
         var prev = entrance
         var targetAngle: Float
         for (i in 1 until loop.size) {
             val r = loop[i]
             targetAngle = startAngle + targetAngle(i / loop.size.toFloat())
-            if (Builder.placeRoom(rooms, prev, r, targetAngle) != -1f) {
+            if (Builder.placeRoom(rooms, prev!!, r, targetAngle) != -1f) {
                 prev = r
                 if (!rooms.contains(prev))
                     rooms.add(prev)
@@ -122,10 +122,10 @@ class LoopBuilder : RegularBuilder() {
 
         //FIXME this is still fairly chance reliant
         // should just write a general function for stitching two rooms together in builder
-        while (!prev!!.connect(entrance)) {
+        while (!prev!!.connect(entrance!!)) {
 
             val c = ConnectionRoom.createRoom()
-            if (Builder.placeRoom(loop, prev, c, Builder.angleBetweenRooms(prev, entrance!!)) == -1f) {
+            if (Builder.placeRoom(loop, prev, c!!, Builder.angleBetweenRooms(prev, entrance!!)) == -1f) {
                 return null
             }
             loop.add(c)
@@ -145,7 +145,7 @@ class LoopBuilder : RegularBuilder() {
             var angle: Float
             var tries = 10
             do {
-                angle = Builder.placeRoom(loop, entrance, shop, Random.Float(360f))
+                angle = Builder.placeRoom(loop, entrance!!, shop!!, Random.Float(360f))
                 tries--
             } while (angle == -1f && tries >= 0)
             if (angle == -1f) return null

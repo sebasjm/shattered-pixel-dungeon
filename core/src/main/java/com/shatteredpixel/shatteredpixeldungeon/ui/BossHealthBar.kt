@@ -45,23 +45,23 @@ class BossHealthBar internal constructor() : Component() {
 
     override fun createChildren() {
         bar = Image(asset, 0, 0, 64, 16)
-        add(bar)
+        add(bar!!)
 
         width = bar!!.width
         height = bar!!.height
 
         hp = Image(asset, 15, 19, 47, 4)
-        add(hp)
+        add(hp!!)
 
         skull = Image(asset, 5, 18, 6, 6)
-        add(skull)
+        add(skull!!)
 
         blood = Emitter()
-        blood!!.pos(skull)
+        blood!!.pos(skull!!)
         blood!!.pour(BloodParticle.FACTORY, 0.3f)
         blood!!.autoKill = false
         blood!!.on = false
-        add(blood)
+        add(blood!!)
     }
 
     override fun layout() {
@@ -78,7 +78,7 @@ class BossHealthBar internal constructor() : Component() {
     override fun update() {
         super.update()
         if (boss != null) {
-            if (!boss!!.isAlive || !Dungeon.level!!.mobs.contains(boss)) {
+            if (!boss!!.isAlive || !Dungeon.level!!.mobs.contains(boss!!)) {
                 boss = null
                 active = false
                 visible = active
@@ -103,7 +103,7 @@ class BossHealthBar internal constructor() : Component() {
 
         private val asset = Assets.BOSSHP
 
-        private var instance: BossHealthBar?
+        private var instance: BossHealthBar? = null
         private var bleeding: Boolean = false
 
         fun assignBoss(boss: Mob) {

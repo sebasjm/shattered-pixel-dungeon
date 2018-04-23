@@ -92,12 +92,12 @@ class TerrainFeaturesTilemap(private val plants: SparseArray<Plant>, private val
 
     companion object {
 
-        private var instance: TerrainFeaturesTilemap
+        var instance: TerrainFeaturesTilemap? = null
 
         fun tile(pos: Int, tile: Int): Image? {
-            val uv = instance.tileset.get(instance.getTileVisual(pos, tile, true)) ?: return null
+            val uv = instance!!.tileset.get(instance!!.getTileVisual(pos, tile, true)) ?: return null
 
-            val img = Image(instance.texture)
+            val img = Image(instance!!.texture)
             img.frame(uv)
             return img
         }

@@ -80,7 +80,7 @@ open class MeleeWeapon : Weapon() {
             }
         }
 
-        val stats_desc = Messages.get(this, "stats_desc")
+        val stats_desc = Messages.get(this.javaClass, "stats_desc")
         if (stats_desc != "") info += "\n\n" + stats_desc
 
         when (imbue) {
@@ -90,10 +90,10 @@ open class MeleeWeapon : Weapon() {
 
         if (enchantment != null && (cursedKnown || !enchantment!!.curse())) {
             info += "\n\n" + Messages.get(Weapon::class.java, "enchanted", enchantment!!.name())
-            info += " " + Messages.get(enchantment, "desc")
+            info += " " + Messages.get(enchantment!!.javaClass, "desc")
         }
 
-        if (cursed && isEquipped(Dungeon.hero)) {
+        if (cursed && isEquipped(Dungeon.hero!!)) {
             info += "\n\n" + Messages.get(Weapon::class.java, "cursed_worn")
         } else if (cursedKnown && cursed) {
             info += "\n\n" + Messages.get(Weapon::class.java, "cursed")
@@ -105,7 +105,7 @@ open class MeleeWeapon : Weapon() {
     override fun price(): Int {
         var price = 20 * tier
         if (hasGoodEnchant()) {
-            price *= 1.5
+            price = (price * 1.5).toInt()
         }
         if (cursedKnown && (cursed || hasCurseEnchant())) {
             price /= 2

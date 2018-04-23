@@ -35,7 +35,7 @@ class ConfusionTrap : Trap() {
 
     override fun activate() {
 
-        GameScene.add(Blob.seed<ConfusionGas>(pos, 300 + 20 * Dungeon.depth, ConfusionGas::class.java))
+        GameScene.add(Blob.seed<ConfusionGas>(pos, 300 + 20 * Dungeon.depth, ConfusionGas::class.java)!!)
 
     }
 }

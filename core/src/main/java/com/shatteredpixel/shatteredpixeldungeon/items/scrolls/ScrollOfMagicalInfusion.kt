@@ -45,12 +45,12 @@ class ScrollOfMagicalInfusion : InventoryScroll() {
         else
             (item as Armor).upgrade(true)
 
-        GLog.p(Messages.get(this, "infuse", item.name()))
+        GLog.p(Messages.get(this.javaClass, "infuse", item.name()))
 
         Badges.validateItemLevelAquired(item)
 
-        Item.curUser.sprite!!.emitter().start(Speck.factory(Speck.UP), 0.2f, 3)
-        Enchanting.show(Item.curUser, item)
+        Item.curUser!!.sprite!!.emitter().start(Speck.factory(Speck.UP), 0.2f, 3)
+        Enchanting.show(Item.curUser!!, item)
     }
 
     override fun empoweredRead() {

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.FileUtils
 import com.watabou.utils.Random
@@ -53,7 +54,7 @@ object Bones {
             return
         }
 
-        item = pickItem(Dungeon.hero)
+        item = pickItem(Dungeon.hero!!)
 
         val bundle = Bundle()
         bundle.put(LEVEL, depth)
@@ -62,7 +63,7 @@ object Bones {
         try {
             FileUtils.bundleToFile(BONES_FILE, bundle)
         } catch (e: IOException) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }
@@ -141,7 +142,7 @@ object Bones {
 
                             artifact
                         } catch (e: Exception) {
-                            ShatteredPixelDungeon.reportException(e)
+                            Game.reportException(e)
                             Gold(item!!.price())
                         }
 

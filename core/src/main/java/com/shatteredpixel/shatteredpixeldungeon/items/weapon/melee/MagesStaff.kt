@@ -68,7 +68,7 @@ class MagesStaff() : MeleeWeapon() {
                 }
 
                 if (wand == null) {
-                    applyWand(item as Wand?)
+                    applyWand(item as Wand)
                 } else {
                     val newLevel = if (item.level() >= level())
                         if (level() > 0)
@@ -84,7 +84,7 @@ class MagesStaff() : MeleeWeapon() {
                                     Messages.get(MagesStaff::class.java, "no")) {
                                 override fun onSelect(index: Int) {
                                     if (index == 0) {
-                                        applyWand(item as Wand?)
+                                        applyWand(item as Wand)
                                     }
                                 }
                             }
@@ -95,16 +95,16 @@ class MagesStaff() : MeleeWeapon() {
 
         private fun applyWand(wand: Wand) {
             Sample.INSTANCE.play(Assets.SND_BURNING)
-            Item.curUser.sprite!!.emitter().burst(ElmoParticle.FACTORY, 12)
-            Item.evoke(Item.curUser)
+            Item.curUser!!.sprite!!.emitter().burst(ElmoParticle.FACTORY, 12)
+            Item.evoke(Item.curUser!!)
 
             Dungeon.quickslot.clearItem(wand)
 
-            wand.detach(Item.curUser.belongings.backpack)
+            wand.detach(Item.curUser!!.belongings.backpack)
             Badges.validateTutorial()
 
             GLog.p(Messages.get(MagesStaff::class.java, "imbue", wand.name()))
-            imbueWand(wand, Item.curUser)
+            imbueWand(wand, Item.curUser!!)
 
             updateQuickslot()
         }
@@ -157,7 +157,7 @@ class MagesStaff() : MeleeWeapon() {
         this.wand = wand
         wand.maxCharges = Math.min(wand.maxCharges + 1, 10)
         wand.curCharges = wand.maxCharges
-        name = Messages.get(wand, "staff_name")
+        name = Messages.get(wand.javaClass, "staff_name")
     }
 
     override fun actions(hero: Hero): ArrayList<String> {
@@ -180,7 +180,7 @@ class MagesStaff() : MeleeWeapon() {
         if (action == AC_IMBUE) {
 
             Item.curUser = hero
-            GameScene.selectItem(itemSelector, WndBag.Mode.WAND, Messages.get(this, "prompt"))
+            GameScene.selectItem(itemSelector, WndBag.Mode.WAND, Messages.get(this.javaClass, "prompt"))
 
         } else if (action == AC_ZAP) {
 
@@ -256,7 +256,7 @@ class MagesStaff() : MeleeWeapon() {
         wand.identify()
         if (owner != null) wand.charge(owner)
 
-        name = Messages.get(wand, "staff_name")
+        name = Messages.get(wand.javaClass, "staff_name")
 
         //This is necessary to reset any particles.
         //FIXME this is gross, should implement a better way to fully reset quickslot visuals
@@ -324,9 +324,9 @@ class MagesStaff() : MeleeWeapon() {
         var info = super.info()
 
         if (wand == null) {
-            info += "\n\n" + Messages.get(this, "no_wand")
+            info += "\n\n" + Messages.get(this.javaClass, "no_wand")
         } else {
-            info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name")) + " " + wand!!.statsDesc()
+            info += "\n\n" + Messages.get(this.javaClass, "has_wand", Messages.get(wand!!.javaClass, "name")) + " " + wand!!.statsDesc()
         }
 
         return info
@@ -351,7 +351,7 @@ class MagesStaff() : MeleeWeapon() {
         wand = bundle.get(WAND) as Wand
         if (wand != null) {
             wand!!.maxCharges = Math.min(wand!!.maxCharges + 1, 10)
-            name = Messages.get(wand, "staff_name")
+            name = Messages.get(wand!!.javaClass, "staff_name")
         }
     }
 
@@ -384,10 +384,15 @@ class MagesStaff() : MeleeWeapon() {
             this.maxSize = maxSize
         }
 
-        fun setLifespan(life: Float) {
-            left = life
-            lifespan = left
+
+        override fun setLifespanListener(value: Float) {
+            left = value
         }
+
+//        override fun setLifespan(life: Float) {
+//            left = life
+//            lifespan = left
+//        }
 
         fun shuffleXY(amt: Float) {
             x += Random.Float(-amt, amt)

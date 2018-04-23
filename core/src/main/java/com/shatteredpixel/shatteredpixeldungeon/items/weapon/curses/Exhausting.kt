@@ -33,7 +33,7 @@ class Exhausting : Weapon.Enchantment() {
 
     override fun proc(weapon: Weapon, attacker: Char, defender: Char, damage: Int): Int {
 
-        if (attacker === Dungeon.hero && Random.Int(15) == 0) {
+        if (attacker === Dungeon.hero!! && Random.Int(15) == 0) {
             Buff.affect<Weakness>(attacker, Weakness::class.java, Random.NormalIntRange(5, 20).toFloat())
         }
 

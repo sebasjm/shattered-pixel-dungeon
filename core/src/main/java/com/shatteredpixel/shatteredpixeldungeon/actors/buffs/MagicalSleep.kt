@@ -35,11 +35,11 @@ class MagicalSleep : Buff() {
 
             if (target is Hero)
                 if (target.HP == target.buff<Regeneration>(Regeneration::class.java)!!.regencap()) {
-                    GLog.i(Messages.get(this, "toohealthy"))
+                    GLog.i(Messages.get(this.javaClass, "toohealthy"))
                     detach()
                     return true
                 } else {
-                    GLog.i(Messages.get(this, "fallasleep"))
+                    GLog.i(Messages.get(this.javaClass, "fallasleep"))
                 }
             else if (target is Mob)
                 target.state = target.SLEEPING
@@ -53,15 +53,15 @@ class MagicalSleep : Buff() {
     }
 
     override fun act(): Boolean {
-        if (target is Mob && (target as Mob).state !== (target as Mob).SLEEPING) {
+        if (target!! is Mob && (target!! as Mob).state !== (target!! as Mob).SLEEPING) {
             detach()
             return true
         }
-        if (target is Hero) {
-            target.HP = Math.min(target.HP + 1, target.HT)
-            (target as Hero).resting = true
-            if (target.HP == target.buff<Regeneration>(Regeneration::class.java)!!.regencap()) {
-                GLog.p(Messages.get(this, "wakeup"))
+        if (target!! is Hero) {
+            target!!.HP = Math.min(target!!.HP + 1, target!!.HT)
+            (target!! as Hero).resting = true
+            if (target!!.HP == target!!.buff<Regeneration>(Regeneration::class.java)!!.regencap()) {
+                GLog.p(Messages.get(this.javaClass, "wakeup"))
                 detach()
             }
         }
@@ -70,10 +70,10 @@ class MagicalSleep : Buff() {
     }
 
     override fun detach() {
-        if (target.paralysed > 0)
-            target.paralysed--
-        if (target is Hero)
-            (target as Hero).resting = false
+        if (target!!.paralysed > 0)
+            target!!.paralysed--
+        if (target!! is Hero)
+            (target!! as Hero).resting = false
         super.detach()
     }
 
@@ -82,11 +82,11 @@ class MagicalSleep : Buff() {
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 
     companion object {

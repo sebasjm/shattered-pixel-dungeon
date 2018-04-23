@@ -41,7 +41,6 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-import java.lang.Enum
 
 class Bundle private constructor(private val data: JSONObject?) {
 
@@ -133,9 +132,9 @@ class Bundle private constructor(private val data: JSONObject?) {
         return getBundle(key).get()
     }
 
-    fun <E : kotlin.Enum<E>> getEnum(key: String, enumClass: Class<E>): E {
+    fun <E : Enum<E>> getEnum(key: String, enumClass: Class<E>): E {
         try {
-            return Enum.valueOf(enumClass, data!!.getString(key))
+            return java.lang.Enum.valueOf(enumClass, data!!.getString(key))
         } catch (e: JSONException) {
             Game.reportException(e)
             return enumClass.enumConstants[0]
@@ -331,7 +330,7 @@ class Bundle private constructor(private val data: JSONObject?) {
     fun put(key: String, value: Enum<*>?) {
         if (value != null) {
             try {
-                data!!.put(key, value.name())
+                data!!.put(key, value.name)
             } catch (e: JSONException) {
                 Game.reportException(e)
             }

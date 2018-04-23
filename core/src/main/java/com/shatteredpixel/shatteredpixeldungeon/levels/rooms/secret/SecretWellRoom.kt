@@ -21,13 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfTransmutation
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -60,7 +58,7 @@ class SecretWellRoom : SecretRoom() {
 
         val waterClass = Random.element(WATERS) as Class<out WellWater>
 
-        WellWater.seed<out WellWater>(well.x + level.width() * well.y, 1, waterClass, level)
+        Blob.seed(well.x + level.width() * well.y, 1, waterClass, level)
 
         entrance().set(Room.Door.Type.HIDDEN)
     }

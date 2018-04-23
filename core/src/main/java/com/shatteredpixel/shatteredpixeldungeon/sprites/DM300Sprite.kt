@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class DM300Sprite : MobSprite() {
@@ -30,7 +31,7 @@ class DM300Sprite : MobSprite() {
 
         texture(Assets.DM300)
 
-        val frames = TextureFilm(texture, 22, 20)
+        val frames = TextureFilm(texture!!, 22, 20)
 
         idle = MovieClip.Animation(10, true)
         idle!!.frames(frames, 0, 1)
@@ -44,7 +45,7 @@ class DM300Sprite : MobSprite() {
         die = MovieClip.Animation(20, false)
         die!!.frames(frames, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 8)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun onComplete(anim: MovieClip.Animation) {

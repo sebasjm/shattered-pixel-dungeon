@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.watabou.noosa.ColorBlock
+import com.watabou.noosa.Game
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.particles.Emitter
@@ -57,15 +58,15 @@ class WndAlchemy : Window() {
 
     private val btnCombine: RedButton
 
-    protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+    protected var itemSelector: WndBag.Listener = { item: Item? ->
         synchronized(inputs) {
             if (item != null && inputs[0] != null) {
                 for (i in inputs.indices) {
-                    if (inputs[i].item == null) {
+                    if (inputs[i]!!.item == null) {
                         if (item is Dart) {
-                            inputs[i].item(item.detachAll(Dungeon.hero!!.belongings.backpack))
+                            inputs[i]!!.item(item.detachAll(Dungeon.hero!!.belongings.backpack))
                         } else {
-                            inputs[i].item(item.detach(Dungeon.hero!!.belongings.backpack))
+                            inputs[i]!!.item(item.detach(Dungeon.hero!!.belongings.backpack))
                         }
                         break
                     }
@@ -73,7 +74,7 @@ class WndAlchemy : Window() {
                 updateState()
             }
         }
-    }
+    } as WndBag.Listener
 
     init {
 
@@ -83,14 +84,14 @@ class WndAlchemy : Window() {
 
         val titlebar = IconTitle()
         titlebar.icon(DungeonTerrainTilemap.tile(0, Terrain.ALCHEMY))
-        titlebar.label(Messages.get(this, "title"))
+        titlebar.label(Messages.get(this.javaClass, "title"))
         titlebar.setRect(0f, 0f, w.toFloat(), 0f)
         add(titlebar)
 
         h += (titlebar.height() + 2).toInt()
 
         val desc = PixelScene.renderMultiline(6)
-        desc.text(Messages.get(this, "text"))
+        desc.text(Messages.get(this.javaClass, "text"))
         desc.setPos(0f, h.toFloat())
         desc.maxWidth(w)
         add(desc)
@@ -107,19 +108,19 @@ class WndAlchemy : Window() {
                                 Dungeon.level!!.drop(item, Dungeon.hero!!.pos)
                             }
                             item = null
-                            slot.item(WndBag.Placeholder(ItemSpriteSheet.SOMETHING))
+                            slot!!.item(WndBag.Placeholder(ItemSpriteSheet.SOMETHING))
                         }
                         GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy::class.java, "select"))
                     }
                 }
-                inputs[i].setRect(10f, h.toFloat(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
+                inputs[i]!!.setRect(10f, h.toFloat(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
                 add(inputs[i])
                 h += BTN_SIZE + 2
             }
         }
 
         btnCombine = object : RedButton("") {
-            internal var arrow: Image
+            internal var arrow: Image? = null
 
             override fun createChildren() {
                 super.createChildren()
@@ -130,20 +131,20 @@ class WndAlchemy : Window() {
 
             override fun layout() {
                 super.layout()
-                arrow.x = x + (width - arrow.width) / 2f
-                arrow.y = y + (height - arrow.height) / 2f
-                PixelScene.align(arrow)
+                arrow!!.x = x + (width - arrow!!.width) / 2f
+                arrow!!.y = y + (height - arrow!!.height) / 2f
+                PixelScene.align(arrow!!)
             }
 
             override fun enable(value: Boolean) {
                 super.enable(value)
                 if (value) {
-                    arrow.tint(1f, 1f, 0f, 1f)
-                    arrow.alpha(1f)
+                    arrow!!.tint(1f, 1f, 0f, 1f)
+                    arrow!!.alpha(1f)
                     bg!!.alpha(1f)
                 } else {
-                    arrow.color(0f, 0f, 0f)
-                    arrow.alpha(0.6f)
+                    arrow!!.color(0f, 0f, 0f)
+                    arrow!!.alpha(0.6f)
                     bg!!.alpha(0.6f)
                 }
             }
@@ -154,7 +155,7 @@ class WndAlchemy : Window() {
             }
         }
         btnCombine.enable(false)
-        btnCombine.setRect((w - 30) / 2f, inputs[1].top() + 5, 30f, inputs[1].height() - 10)
+        btnCombine.setRect((w - 30) / 2f, inputs[1]!!.top() + 5, 30f, inputs[1]!!.height() - 10)
         add(btnCombine)
 
         output = object : ItemSlot() {
@@ -165,7 +166,7 @@ class WndAlchemy : Window() {
                 }
             }
         }
-        output.setRect((w - BTN_SIZE - 10).toFloat(), inputs[1].top(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
+        output.setRect((w - BTN_SIZE - 10).toFloat(), inputs[1]!!.top(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
 
         val outputBG = ColorBlock(output.width(), output.height(), -0x666e6c74)
         outputBG.x = output.left()
@@ -188,17 +189,17 @@ class WndAlchemy : Window() {
 
         val btnWidth = (w - 14) / 2f
 
-        val btnRecipes = object : RedButton(Messages.get(this, "recipes_title")) {
+        val btnRecipes = object : RedButton(Messages.get(this.javaClass, "recipes_title")) {
             override fun onClick() {
                 super.onClick()
-                ShatteredPixelDungeon.scene()!!.addToFront(WndMessage(Messages.get(WndAlchemy::class.java, "recipes_text")))
+                Game.scene()!!.addToFront(WndMessage(Messages.get(WndAlchemy::class.java, "recipes_text")))
             }
         }
         btnRecipes.setRect(5f, h.toFloat(), btnWidth, 18f)
         PixelScene.align(btnRecipes)
         add(btnRecipes)
 
-        val btnClose = object : RedButton(Messages.get(this, "close")) {
+        val btnClose = object : RedButton(Messages.get(this.javaClass, "close")) {
             override fun onClick() {
                 super.onClick()
                 onBackPressed()
@@ -216,7 +217,7 @@ class WndAlchemy : Window() {
     private fun <T : Item> filterInput(itemClass: Class<out T>): ArrayList<T> {
         val filtered = ArrayList<T>()
         for (i in inputs.indices) {
-            val item = inputs[i].item
+            val item = inputs[i]!!.item
             if (item != null && itemClass.isInstance(item)) {
                 filtered.add(item as T)
             }
@@ -264,12 +265,12 @@ class WndAlchemy : Window() {
 
             synchronized(inputs) {
                 for (i in inputs.indices) {
-                    if (inputs[i] != null && inputs[i].item != null) {
-                        if (inputs[i].item!!.quantity() <= 0) {
-                            inputs[i].slot.item(WndBag.Placeholder(ItemSpriteSheet.SOMETHING))
-                            inputs[i].item = null
+                    if (inputs[i] != null && inputs[i]!!.item != null) {
+                        if (inputs[i]!!.item!!.quantity() <= 0) {
+                            inputs[i]!!.slot!!.item(WndBag.Placeholder(ItemSpriteSheet.SOMETHING))
+                            inputs[i]!!.item = null
                         } else {
-                            inputs[i].slot.item(inputs[i].item)
+                            inputs[i]!!.slot!!.item(inputs[i]!!.item)
                         }
                     }
                 }
@@ -283,9 +284,9 @@ class WndAlchemy : Window() {
     override fun destroy() {
         synchronized(inputs) {
             for (i in inputs.indices) {
-                if (inputs[i] != null && inputs[i].item != null) {
-                    if (!inputs[i].item!!.collect()) {
-                        Dungeon.level!!.drop(inputs[i].item, Dungeon.hero!!.pos)
+                if (inputs[i] != null && inputs[i]!!.item != null) {
+                    if (!inputs[i]!!.item!!.collect()) {
+                        Dungeon.level!!.drop(inputs[i]!!.item, Dungeon.hero!!.pos)
                     }
                 }
                 inputs[i] = null
@@ -310,7 +311,7 @@ class WndAlchemy : Window() {
                 val items = ArrayList<Item>()
                 for (i in inputs) {
                     if (i != null && i.item != null) {
-                        items.add(i.item)
+                        items.add(i!!.item!!)
                     }
                 }
                 if (!items.isEmpty()) {

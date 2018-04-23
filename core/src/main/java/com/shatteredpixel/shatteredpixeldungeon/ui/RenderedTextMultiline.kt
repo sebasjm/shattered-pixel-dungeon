@@ -35,7 +35,7 @@ class RenderedTextMultiline : Component {
 
     private var text: String? = null
     private var tokens: List<String>? = null
-    private var words: ArrayList<RenderedText>? = ArrayList()
+    private var words: ArrayList<RenderedText?>? = ArrayList()
 
     private var size: Int = 0
     private var zoom: Float = 0.toFloat()

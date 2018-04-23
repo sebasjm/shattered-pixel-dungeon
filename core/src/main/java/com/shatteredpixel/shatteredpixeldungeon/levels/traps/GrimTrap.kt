@@ -66,7 +66,7 @@ class GrimTrap : Trap() {
             val damage: Int
 
             //almost kill the player
-            if (finalTarget === Dungeon.hero && finalTarget.HP.toFloat() / finalTarget.HT >= 0.9f) {
+            if (finalTarget === Dungeon.hero!! && finalTarget.HP.toFloat() / finalTarget.HT >= 0.9f) {
                 damage = finalTarget.HP - 1
                 //kill 'em
             } else {
@@ -88,9 +88,9 @@ class GrimTrap : Trap() {
                             MagicMissile.SHADOW,
                             DungeonTilemap.tileCenterToWorld(pos),
                             finalTarget.sprite!!.center()
-                    ) {
+                    , {
                         finalTarget.damage(finalDmg, trap)
-                        if (finalTarget === Dungeon.hero) {
+                        if (finalTarget === Dungeon.hero!!) {
                             Sample.INSTANCE.play(Assets.SND_CURSED)
                             if (!finalTarget.isAlive) {
                                 Dungeon.fail(GrimTrap::class.java)
@@ -102,7 +102,7 @@ class GrimTrap : Trap() {
                         finalTarget.sprite!!.emitter().burst(ShadowParticle.UP, 10)
                         Actor.remove(toRemove)
                         next()
-                    }
+                    } as Callback)
                     return false
                 }
             })

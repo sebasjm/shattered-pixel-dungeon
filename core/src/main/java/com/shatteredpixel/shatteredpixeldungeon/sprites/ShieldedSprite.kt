@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class ShieldedSprite : MobSprite() {
@@ -29,7 +30,7 @@ class ShieldedSprite : MobSprite() {
 
         texture(Assets.BRUTE)
 
-        val frames = TextureFilm(texture, 12, 16)
+        val frames = TextureFilm(texture!!, 12, 16)
 
         idle = MovieClip.Animation(2, true)
         idle!!.frames(frames, 21, 21, 21, 22, 21, 21, 22, 22)

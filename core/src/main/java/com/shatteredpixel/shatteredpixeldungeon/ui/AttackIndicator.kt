@@ -132,14 +132,14 @@ class AttackIndicator : Tag(DangerIndicator.COLOR) {
             active = true
             sprite!!.idle()
             sprite!!.paused = true
-            add(sprite)
+            add(sprite!!)
 
             sprite!!.x = x + (width - sprite!!.width()) / 2 + 1f
             sprite!!.y = y + (height - sprite!!.height()) / 2
             PixelScene.align(sprite!!)
 
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }
@@ -175,19 +175,19 @@ class AttackIndicator : Tag(DangerIndicator.COLOR) {
 
         private var delay: Float = 0.toFloat()
 
-        private var instance: AttackIndicator
+        private var instance: AttackIndicator? = null
 
         private var lastTarget: Mob? = null
 
         fun target(target: Char) {
             lastTarget = target as Mob
-            instance.updateImage()
+            instance!!.updateImage()
 
-            TargetHealthIndicator.instance.target(target)
+            TargetHealthIndicator.instance!!.target(target)
         }
 
         fun updateState() {
-            instance.checkEnemies()
+            instance!!.checkEnemies()
         }
     }
 }

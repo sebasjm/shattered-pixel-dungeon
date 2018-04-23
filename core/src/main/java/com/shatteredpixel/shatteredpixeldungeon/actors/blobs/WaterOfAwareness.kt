@@ -44,7 +44,7 @@ class WaterOfAwareness : WellWater() {
     override fun affectHero(hero: Hero?): Boolean {
 
         Sample.INSTANCE.play(Assets.SND_DRINK)
-        emitter.parent!!.add(Identification(hero!!.sprite!!.center()))
+        emitter!!.parent!!.add(Identification(hero!!.sprite!!.center()))
 
         hero.belongings.observe()
 
@@ -66,7 +66,7 @@ class WaterOfAwareness : WellWater() {
 
         Dungeon.hero!!.interrupt()
 
-        GLog.p(Messages.get(this, "procced"))
+        GLog.p(Messages.get(this.javaClass, "procced"))
 
         return true
     }
@@ -78,7 +78,7 @@ class WaterOfAwareness : WellWater() {
             item.identify()
             Badges.validateItemLevelAquired(item)
 
-            emitter.parent!!.add(Identification(DungeonTilemap.tileCenterToWorld(pos)))
+            emitter!!.parent!!.add(Identification(DungeonTilemap.tileCenterToWorld(pos)))
 
             return item
         }
@@ -94,6 +94,6 @@ class WaterOfAwareness : WellWater() {
     }
 
     override fun tileDesc(): String? {
-        return Messages.get(this, "desc")
+        return Messages.get(this.javaClass, "desc")
     }
 }

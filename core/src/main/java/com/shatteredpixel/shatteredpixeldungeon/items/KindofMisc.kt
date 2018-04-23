@@ -73,7 +73,7 @@ abstract class KindofMisc : EquipableItem() {
             cursedKnown = true
             if (cursed) {
                 EquipableItem.equipCursed(hero)
-                GLog.n(Messages.get(this, "equip_cursed", this))
+                GLog.n(Messages.get(this.javaClass, "equip_cursed", this))
             }
 
             hero.spendAndNext(TIME_TO_EQUIP)

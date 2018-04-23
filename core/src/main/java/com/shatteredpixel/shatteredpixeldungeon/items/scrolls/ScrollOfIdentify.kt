@@ -45,7 +45,7 @@ class ScrollOfIdentify : InventoryScroll() {
     override fun empoweredRead() {
         val unIDed = ArrayList<Item>()
 
-        for (i in Item.curUser.belongings) {
+        for (i in Item.curUser!!.belongings) {
             if (!i.isIdentified) {
                 unIDed.add(i)
             }
@@ -61,10 +61,10 @@ class ScrollOfIdentify : InventoryScroll() {
 
     override fun onItemSelected(item: Item?) {
 
-        Item.curUser.sprite!!.parent!!.add(Identification(Item.curUser.sprite!!.center().offset(0f, -16f)))
+        Item.curUser!!.sprite!!.parent!!.add(Identification(Item.curUser!!.sprite!!.center().offset(0f, -16f)))
 
         item!!.identify()
-        GLog.i(Messages.get(this, "it_is", item))
+        GLog.i(Messages.get(this.javaClass, "it_is", item))
 
         Badges.validateItemLevelAquired(item)
     }

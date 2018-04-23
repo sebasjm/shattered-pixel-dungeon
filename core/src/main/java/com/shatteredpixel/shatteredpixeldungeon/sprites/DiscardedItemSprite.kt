@@ -41,7 +41,8 @@ class DiscardedItemSprite : ItemSprite() {
         super.update()
 
         scale.set(scale.x * 0.9f)
-        if ((am -= Game.elapsed) <= 0) {
+        am -= Game.elapsed
+        if (am <= 0) {
             remove()
         }
     }

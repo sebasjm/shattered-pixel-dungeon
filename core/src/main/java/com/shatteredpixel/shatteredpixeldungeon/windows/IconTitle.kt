@@ -33,9 +33,9 @@ import com.watabou.noosa.ui.Component
 
 class IconTitle : Component {
 
-    protected var imIcon: Image
-    protected var tfLabel: RenderedTextMultiline
-    protected var health: HealthBar
+    protected var imIcon: Image? = null
+    protected var tfLabel: RenderedTextMultiline? = null
+    protected var health: HealthBar? = null
 
     private var healthLvl = java.lang.Float.NaN
 
@@ -56,62 +56,64 @@ class IconTitle : Component {
 
     override fun createChildren() {
         imIcon = Image()
-        add(imIcon)
+        add(imIcon!!)
 
         tfLabel = PixelScene.renderMultiline(FONT_SIZE.toInt())
-        tfLabel.hardlight(Window.TITLE_COLOR)
-        add(tfLabel)
+        tfLabel!!.hardlight(Window.TITLE_COLOR)
+        add(tfLabel!!)
 
         health = HealthBar()
-        add(health)
+        add(health!!)
     }
 
     override fun layout() {
 
-        health.visible = !java.lang.Float.isNaN(healthLvl)
+        health!!.visible = !java.lang.Float.isNaN(healthLvl)
 
-        imIcon.x = x + Math.max(0f, 8 - imIcon.width() / 2)
-        imIcon.y = y + Math.max(0f, 8 - imIcon.height() / 2)
-        PixelScene.align(imIcon)
+        imIcon!!.x = x + Math.max(0f, 8 - imIcon!!.width() / 2)
+        imIcon!!.y = y + Math.max(0f, 8 - imIcon!!.height() / 2)
+        PixelScene.align(imIcon!!)
 
-        val imWidth = Math.max(imIcon.width(), 16f).toInt()
-        val imHeight = Math.max(imIcon.height(), 16f).toInt()
+        val imWidth = Math.max(imIcon!!.width(), 16f).toInt()
+        val imHeight = Math.max(imIcon!!.height(), 16f).toInt()
 
-        tfLabel.maxWidth((width - (imWidth + GAP)).toInt())
-        tfLabel.setPos(x + imWidth.toFloat() + GAP, if (imHeight > tfLabel.height())
-            y + (imHeight - tfLabel.height()) / 2
+        tfLabel!!.maxWidth((width - (imWidth + GAP)).toInt())
+        tfLabel!!.setPos(x + imWidth.toFloat() + GAP, if (imHeight > tfLabel!!.height())
+            y + (imHeight - tfLabel!!.height()) / 2
         else
             y)
-        PixelScene.align(tfLabel)
+        PixelScene.align(tfLabel!!)
 
-        if (health.visible) {
-            health.setRect(tfLabel.left(), tfLabel.bottom(), tfLabel.maxWidth().toFloat(), 0f)
-            height = Math.max(imHeight.toFloat(), health.bottom())
+        if (health!!.visible) {
+            health!!.setRect(tfLabel!!.left(), tfLabel!!.bottom(), tfLabel!!.maxWidth().toFloat(), 0f)
+            height = Math.max(imHeight.toFloat(), health!!.bottom())
         } else {
-            height = Math.max(imHeight.toFloat(), tfLabel.height())
+            height = Math.max(imHeight.toFloat(), tfLabel!!.height())
         }
     }
 
     fun icon(icon: Image) {
-        remove(imIcon)
-        add(imIcon = icon)
+        remove(imIcon!!)
+        imIcon = icon
+        add(imIcon!!)
     }
 
     fun label(label: String) {
-        tfLabel.text(label)
+        tfLabel!!.text(label)
     }
 
     fun label(label: String, color: Int) {
-        tfLabel.text(label)
-        tfLabel.hardlight(color)
+        tfLabel!!.text(label)
+        tfLabel!!.hardlight(color)
     }
 
     fun color(color: Int) {
-        tfLabel.hardlight(color)
+        tfLabel!!.hardlight(color)
     }
 
     fun health(value: Float) {
-        health.level(healthLvl = value)
+        healthLvl = value
+        health!!.level(healthLvl)
         layout()
     }
 

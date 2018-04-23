@@ -65,7 +65,7 @@ class MirrorImage : NPC() {
         damage = hero.damageRoll()
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return attack
     }
 

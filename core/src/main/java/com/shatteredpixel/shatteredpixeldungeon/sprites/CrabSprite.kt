@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class CrabSprite : MobSprite() {
@@ -29,7 +30,7 @@ class CrabSprite : MobSprite() {
 
         texture(Assets.CRAB)
 
-        val frames = TextureFilm(texture, 16, 16)
+        val frames = TextureFilm(texture!!, 16, 16)
 
         idle = MovieClip.Animation(5, true)
         idle!!.frames(frames, 0, 1, 0, 2)
@@ -43,7 +44,7 @@ class CrabSprite : MobSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 10, 11, 12, 13)
 
-        play(idle)
+        play(idle!!)
     }
 
     override fun blood(): Int {

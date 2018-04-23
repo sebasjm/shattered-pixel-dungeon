@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 
 import java.util.ArrayList
@@ -87,7 +88,7 @@ class Blandfruit : Food() {
 
         if (action == Food.AC_EAT && potionAttrib == null) {
 
-            GLog.w(Messages.get(this, "raw"))
+            GLog.w(Messages.get(this.javaClass, "raw"))
             return
 
         }
@@ -97,16 +98,16 @@ class Blandfruit : Food() {
         if (action == Food.AC_EAT && potionAttrib != null) {
 
             if (potionAttrib is PotionOfFrost) {
-                GLog.i(Messages.get(this, "ice_msg"))
+                GLog.i(Messages.get(this.javaClass, "ice_msg"))
                 FrozenCarpaccio.effect(hero)
             } else if (potionAttrib is PotionOfLiquidFlame) {
-                GLog.i(Messages.get(this, "fire_msg"))
+                GLog.i(Messages.get(this.javaClass, "fire_msg"))
                 Buff.affect<FireImbue>(hero, FireImbue::class.java)!!.set(FireImbue.DURATION)
             } else if (potionAttrib is PotionOfToxicGas) {
-                GLog.i(Messages.get(this, "toxic_msg"))
+                GLog.i(Messages.get(this.javaClass, "toxic_msg"))
                 Buff.affect<ToxicImbue>(hero, ToxicImbue::class.java)!!.set(ToxicImbue.DURATION)
             } else if (potionAttrib is PotionOfParalyticGas) {
-                GLog.i(Messages.get(this, "para_msg"))
+                GLog.i(Messages.get(this.javaClass, "para_msg"))
                 Buff.affect<EarthImbue>(hero, EarthImbue::class.java, EarthImbue.DURATION)
             } else {
                 potionAttrib!!.apply(hero)
@@ -119,7 +120,7 @@ class Blandfruit : Food() {
         return if (potionAttrib == null)
             super.desc()
         else
-            Messages.get(this, "desc_cooked")
+            Messages.get(this.javaClass, "desc_cooked")
     }
 
     override fun price(): Int {
@@ -131,7 +132,7 @@ class Blandfruit : Food() {
         try {
             return imbuePotion(seed.alchemyClass!!.newInstance() as Potion)
         } catch (e: Exception) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
             return null
         }
 
@@ -145,37 +146,37 @@ class Blandfruit : Food() {
         potionAttrib!!.image = ItemSpriteSheet.BLANDFRUIT
 
         if (potionAttrib is PotionOfHealing) {
-            name = Messages.get(this, "sunfruit")
+            name = Messages.get(this.javaClass, "sunfruit")
             potionGlow = ItemSprite.Glowing(0x2EE62E)
         } else if (potionAttrib is PotionOfStrength) {
-            name = Messages.get(this, "rotfruit")
+            name = Messages.get(this.javaClass, "rotfruit")
             potionGlow = ItemSprite.Glowing(0xCC0022)
         } else if (potionAttrib is PotionOfParalyticGas) {
-            name = Messages.get(this, "earthfruit")
+            name = Messages.get(this.javaClass, "earthfruit")
             potionGlow = ItemSprite.Glowing(0x67583D)
         } else if (potionAttrib is PotionOfInvisibility) {
-            name = Messages.get(this, "blindfruit")
+            name = Messages.get(this.javaClass, "blindfruit")
             potionGlow = ItemSprite.Glowing(0xE5D273)
         } else if (potionAttrib is PotionOfLiquidFlame) {
-            name = Messages.get(this, "firefruit")
+            name = Messages.get(this.javaClass, "firefruit")
             potionGlow = ItemSprite.Glowing(0xFF7F00)
         } else if (potionAttrib is PotionOfFrost) {
-            name = Messages.get(this, "icefruit")
+            name = Messages.get(this.javaClass, "icefruit")
             potionGlow = ItemSprite.Glowing(0x66B3FF)
         } else if (potionAttrib is PotionOfMindVision) {
-            name = Messages.get(this, "fadefruit")
+            name = Messages.get(this.javaClass, "fadefruit")
             potionGlow = ItemSprite.Glowing(0xB8E6CF)
         } else if (potionAttrib is PotionOfToxicGas) {
-            name = Messages.get(this, "sorrowfruit")
+            name = Messages.get(this.javaClass, "sorrowfruit")
             potionGlow = ItemSprite.Glowing(0xA15CE5)
         } else if (potionAttrib is PotionOfLevitation) {
-            name = Messages.get(this, "stormfruit")
+            name = Messages.get(this.javaClass, "stormfruit")
             potionGlow = ItemSprite.Glowing(0x1C3A57)
         } else if (potionAttrib is PotionOfPurity) {
-            name = Messages.get(this, "dreamfruit")
+            name = Messages.get(this.javaClass, "dreamfruit")
             potionGlow = ItemSprite.Glowing(0x8E2975)
         } else if (potionAttrib is PotionOfExperience) {
-            name = Messages.get(this, "starfruit")
+            name = Messages.get(this.javaClass, "starfruit")
             potionGlow = ItemSprite.Glowing(0xA79400)
         }
 
@@ -203,7 +204,7 @@ class Blandfruit : Food() {
 
     override fun reset() {
         if (potionAttrib != null)
-            imbuePotion(potionAttrib)
+            imbuePotion(potionAttrib!!)
         else
             super.reset()
     }
@@ -274,8 +275,8 @@ class Blandfruit : Food() {
             return Blandfruit().cook(ingredients[1] as Seed)
         }
 
-        override fun sampleOutput(ingredients: ArrayList<Item>): Item? {
-            return if (!testIngredients(ingredients)) null else Blandfruit().cook(ingredients[1] as Seed)
+        override fun sampleOutput(ingredients: ArrayList<Item>?): Item? {
+            return if (!testIngredients(ingredients!!)) null else Blandfruit().cook(ingredients[1] as Seed)
 
         }
     }

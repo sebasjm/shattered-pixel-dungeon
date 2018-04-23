@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
@@ -164,7 +165,7 @@ class GameScene : PixelScene() {
         SPDSettings.lastClass(Dungeon.hero!!.heroClass.ordinal)
 
         super.create()
-        Camera.main.zoom(GameMath.gate(PixelScene.minZoom, (PixelScene.defaultZoom + SPDSettings.zoom()).toFloat(), PixelScene.maxZoom))
+        Camera.main!!.zoom(GameMath.gate(PixelScene.minZoom, (PixelScene.defaultZoom + SPDSettings.zoom()).toFloat(), PixelScene.maxZoom))
 
         scene = this
 
@@ -174,7 +175,7 @@ class GameScene : PixelScene() {
         water = object : SkinnedBlock(
                 (Dungeon.level!!.width() * DungeonTilemap.SIZE).toFloat(),
                 (Dungeon.level!!.height() * DungeonTilemap.SIZE).toFloat(),
-                Dungeon.level!!.waterTex()) {
+                Dungeon.level!!.waterTex()!!) {
 
             override fun script(): NoosaScript {
                 return NoosaScriptNoLighting.get()
@@ -190,7 +191,7 @@ class GameScene : PixelScene() {
         terrain!!.add(water)
 
         ripples = Group()
-        terrain!!.add(ripples)
+        terrain!!.add(ripples!!)
 
         DungeonTileSheet.setupVariance(Dungeon.level!!.map!!.size, Dungeon.seedCurDepth())
 
@@ -198,23 +199,23 @@ class GameScene : PixelScene() {
         terrain!!.add(tiles)
 
         customTiles = Group()
-        terrain!!.add(customTiles)
+        terrain!!.add(customTiles!!)
 
         for (visual in Dungeon.level!!.customTiles) {
             addCustomTile(visual)
         }
 
         visualGrid = GridTileMap()
-        terrain!!.add(visualGrid)
+        terrain!!.add(visualGrid!!)
 
         terrainFeatures = TerrainFeaturesTilemap(Dungeon.level!!.plants, Dungeon.level!!.traps)
-        terrain!!.add(terrainFeatures)
+        terrain!!.add(terrainFeatures!!)
 
         levelVisuals = Dungeon.level!!.addVisuals()
-        add(levelVisuals)
+        add(levelVisuals!!)
 
         heaps = Group()
-        add(heaps)
+        add(heaps!!)
 
         val size = Dungeon.level!!.heaps.size()
         for (i in 0 until size) {
@@ -227,7 +228,7 @@ class GameScene : PixelScene() {
         emoicons = Group()
 
         mobs = Group()
-        add(mobs)
+        add(mobs!!)
 
         for (mob in Dungeon.level!!.mobs) {
             addMobSprite(mob)
@@ -237,20 +238,20 @@ class GameScene : PixelScene() {
         }
 
         walls = DungeonWallsTilemap()
-        add(walls)
+        add(walls!!)
 
         customWalls = Group()
-        add(customWalls)
+        add(customWalls!!)
 
         for (visual in Dungeon.level!!.customWalls) {
             addCustomWall(visual)
         }
 
         wallBlocking = WallBlockingTilemap()
-        add(wallBlocking)
+        add(wallBlocking!!)
 
-        add(emitters)
-        add(effects)
+        add(emitters!!)
+        add(effects!!)
 
         gases = Group()
         add(gases)
@@ -281,43 +282,44 @@ class GameScene : PixelScene() {
         hero!!.updateArmor()
         mobs!!.add(hero)
 
-        add(cellSelector = CellSelector(tiles))
+        cellSelector = CellSelector(tiles!!)
+        add(cellSelector)
 
         pane = StatusPane()
-        pane!!.camera = PixelScene.uiCamera
-        pane!!.setSize(PixelScene.uiCamera.width.toFloat(), 0f)
+        pane!!.camera = PixelScene.uiCamera!!
+        pane!!.setSize(PixelScene.uiCamera!!.width.toFloat(), 0f)
         add(pane)
 
         toolbar = Toolbar()
-        toolbar!!.camera = PixelScene.uiCamera
-        toolbar!!.setRect(0f, PixelScene.uiCamera.height - toolbar!!.height(), PixelScene.uiCamera.width.toFloat(), toolbar!!.height())
+        toolbar!!.camera = PixelScene.uiCamera!!
+        toolbar!!.setRect(0f, PixelScene.uiCamera!!.height - toolbar!!.height(), PixelScene.uiCamera!!.width.toFloat(), toolbar!!.height())
         add(toolbar)
 
         attack = AttackIndicator()
-        attack!!.camera = PixelScene.uiCamera
+        attack!!.camera = PixelScene.uiCamera!!
         add(attack)
 
         loot = LootIndicator()
-        loot!!.camera = PixelScene.uiCamera
+        loot!!.camera = PixelScene.uiCamera!!
         add(loot)
 
         action = ActionIndicator()
-        action!!.camera = PixelScene.uiCamera
+        action!!.camera = PixelScene.uiCamera!!
         add(action)
 
         resume = ResumeIndicator()
-        resume!!.camera = PixelScene.uiCamera
+        resume!!.camera = PixelScene.uiCamera!!
         add(resume)
 
         log = GameLog()
-        log!!.camera = PixelScene.uiCamera
+        log!!.camera = PixelScene.uiCamera!!
         log!!.newLine()
         add(log)
 
         layoutTags()
 
         busy = BusyIndicator()
-        busy!!.camera = PixelScene.uiCamera
+        busy!!.camera = PixelScene.uiCamera!!
         busy!!.x = 1f
         busy!!.y = pane!!.bottom() + 1
         add(busy)
@@ -325,7 +327,7 @@ class GameScene : PixelScene() {
         when (InterlevelScene.mode) {
             InterlevelScene.Mode.RESURRECT -> {
                 ScrollOfTeleportation.appear(Dungeon.hero!!, Dungeon.level!!.entrance)
-                Flare(8, 32f).color(0xFFFF66, true).show(hero, 2f)
+                Flare(8, 32f).color(0xFFFF66, true).show(hero!!, 2f)
             }
             InterlevelScene.Mode.RETURN -> ScrollOfTeleportation.appear(Dungeon.hero!!, Dungeon.hero!!.pos)
             InterlevelScene.Mode.DESCEND -> {
@@ -359,26 +361,26 @@ class GameScene : PixelScene() {
 
         Dungeon.hero!!.next()
 
-        Camera.main.target = hero
+        Camera.main!!.target = hero
 
         if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
             if (Dungeon.depth == Statistics.deepestFloor && (InterlevelScene.mode == InterlevelScene.Mode.DESCEND || InterlevelScene.mode == InterlevelScene.Mode.FALL)) {
-                GLog.h(Messages.get(this, "descend"), Dungeon.depth)
+                GLog.h(Messages.get(this.javaClass, "descend"), Dungeon.depth)
                 Sample.INSTANCE.play(Assets.SND_DESCEND)
             } else if (InterlevelScene.mode == InterlevelScene.Mode.RESET) {
-                GLog.h(Messages.get(this, "warp"))
+                GLog.h(Messages.get(this.javaClass, "warp"))
             } else {
-                GLog.h(Messages.get(this, "return"), Dungeon.depth)
+                GLog.h(Messages.get(this.javaClass, "return"), Dungeon.depth)
             }
 
             when (Dungeon.level!!.feeling) {
-                Level.Feeling.CHASM -> GLog.w(Messages.get(this, "chasm"))
-                Level.Feeling.WATER -> GLog.w(Messages.get(this, "water"))
-                Level.Feeling.GRASS -> GLog.w(Messages.get(this, "grass"))
-                Level.Feeling.DARK -> GLog.w(Messages.get(this, "dark"))
+                Level.Feeling.CHASM -> GLog.w(Messages.get(this.javaClass, "chasm"))
+                Level.Feeling.WATER -> GLog.w(Messages.get(this.javaClass, "water"))
+                Level.Feeling.GRASS -> GLog.w(Messages.get(this.javaClass, "grass"))
+                Level.Feeling.DARK -> GLog.w(Messages.get(this.javaClass, "dark"))
             }
             if (Dungeon.level is RegularLevel && (Dungeon.level as RegularLevel).secretDoors > Random.IntRange(3, 4)) {
-                GLog.w(Messages.get(this, "secrets"))
+                GLog.w(Messages.get(this.javaClass, "secrets"))
             }
 
             InterlevelScene.mode = InterlevelScene.Mode.NONE
@@ -397,9 +399,9 @@ class GameScene : PixelScene() {
                     actorThread.interrupt()
                 }
                 try {
-                    GameScene::class.java!!.wait(5000)
+                    (GameScene::class.java!! as Object).wait(5000)
                 } catch (e: InterruptedException) {
-                    ShatteredPixelDungeon.reportException(e)
+                    Game.reportException(e)
                 }
 
                 synchronized(actorThread) {
@@ -428,14 +430,14 @@ class GameScene : PixelScene() {
             Badges.saveGlobal()
             Journal.saveGlobal()
         } catch (e: IOException) {
-            ShatteredPixelDungeon.reportException(e)
+            Game.reportException(e)
         }
 
     }
 
     @Synchronized
     override fun update() {
-        if (Dungeon.hero == null || scene == null) {
+        if (Dungeon.hero!! == null || scene == null) {
             return
         }
 
@@ -452,7 +454,7 @@ class GameScene : PixelScene() {
                 actorThread.start()
             } else {
                 synchronized(actorThread) {
-                    actorThread.notify()
+                    (actorThread as Object).notify()
                 }
             }
         }
@@ -506,8 +508,8 @@ class GameScene : PixelScene() {
     private fun addHeapSprite(heap: Heap) {
         heap.sprite = heaps!!.recycle(ItemSprite::class.java) as ItemSprite
         val sprite = heap.sprite
-        sprite.revive()
-        sprite.link(heap)
+        sprite!!.revive()
+        sprite!!.link(heap)
         heaps!!.add(sprite)
     }
 
@@ -554,16 +556,16 @@ class GameScene : PixelScene() {
                     cancel()
                 }
             }
-            prompt!!.camera = PixelScene.uiCamera
-            prompt!!.setPos((PixelScene.uiCamera.width - prompt!!.width()) / 2, (PixelScene.uiCamera.height - 60).toFloat())
+            prompt!!.camera = PixelScene.uiCamera!!
+            prompt!!.setPos((PixelScene.uiCamera!!.width - prompt!!.width()) / 2, (PixelScene.uiCamera!!.height - 60).toFloat())
             add(prompt)
         }
     }
 
     private fun showBanner(banner: Banner) {
-        banner.camera = PixelScene.uiCamera
-        banner.x = PixelScene.align(PixelScene.uiCamera, (PixelScene.uiCamera.width - banner.width) / 2)
-        banner.y = PixelScene.align(PixelScene.uiCamera, (PixelScene.uiCamera.height - banner.height) / 3)
+        banner.camera = PixelScene.uiCamera!!
+        banner.x = PixelScene.align(PixelScene.uiCamera!!, (PixelScene.uiCamera!!.width - banner.width) / 2)
+        banner.y = PixelScene.align(PixelScene.uiCamera!!, (PixelScene.uiCamera!!.height - banner.height) / 3)
         addToFront(banner)
     }
 
@@ -583,12 +585,12 @@ class GameScene : PixelScene() {
 
             if (scene == null) return
 
-            val tagLeft = if (SPDSettings.flipTags()) 0 else PixelScene.uiCamera.width - scene!!.attack!!.width()
+            val tagLeft = if (SPDSettings.flipTags()) 0f else PixelScene.uiCamera!!.width - scene!!.attack!!.width()
 
             if (SPDSettings.flipTags()) {
-                scene!!.log!!.setRect(scene!!.attack!!.width(), scene!!.toolbar!!.top(), PixelScene.uiCamera.width - scene!!.attack!!.width(), 0f)
+                scene!!.log!!.setRect(scene!!.attack!!.width(), scene!!.toolbar!!.top(), PixelScene.uiCamera!!.width - scene!!.attack!!.width(), 0f)
             } else {
-                scene!!.log!!.setRect(0f, scene!!.toolbar!!.top(), PixelScene.uiCamera.width - scene!!.attack!!.width(), 0f)
+                scene!!.log!!.setRect(0f, scene!!.toolbar!!.top(), PixelScene.uiCamera!!.width - scene!!.attack!!.width(), 0f)
             }
 
             var pos = scene!!.toolbar!!.top()
@@ -845,15 +847,15 @@ class GameScene : PixelScene() {
             cancelCellSelector()
 
             val wnd = if (mode == Mode.SEED)
-                WndBag.getBag(VelvetPouch::class.java, listener, mode, title)
+                WndBag.getBag(VelvetPouch::class.java, listener!!, mode, title!!)
             else if (mode == Mode.SCROLL)
-                WndBag.getBag(ScrollHolder::class.java, listener, mode, title)
+                WndBag.getBag(ScrollHolder::class.java, listener!!, mode, title!!)
             else if (mode == Mode.POTION)
-                WndBag.getBag(PotionBandolier::class.java, listener, mode, title)
+                WndBag.getBag(PotionBandolier::class.java, listener!!, mode, title!!)
             else if (mode == Mode.WAND)
-                WndBag.getBag(MagicalHolster::class.java, listener, mode, title)
+                WndBag.getBag(MagicalHolster::class.java, listener!!, mode, title!!)
             else
-                WndBag.lastBag(listener, mode, title)
+                WndBag.lastBag(listener!!, mode, title!!)
 
             if (scene != null) scene!!.addToFront(wnd)
 
@@ -861,7 +863,7 @@ class GameScene : PixelScene() {
         }
 
         internal fun cancel(): Boolean {
-            if (Dungeon.hero != null && (Dungeon.hero!!.curAction != null || Dungeon.hero!!.resting)) {
+            if (Dungeon.hero!! != null && (Dungeon.hero!!.curAction != null || Dungeon.hero!!.resting)) {
 
                 Dungeon.hero!!.curAction = null
                 Dungeon.hero!!.resting = false
@@ -892,7 +894,7 @@ class GameScene : PixelScene() {
             val objects = ArrayList<Any>()
 
             if (cell == Dungeon.hero!!.pos) {
-                objects.add(Dungeon.hero)
+                objects.add(Dungeon.hero!!)
                 names.add(Dungeon.hero!!.className().toUpperCase(Locale.ENGLISH))
             } else {
                 if (Dungeon.level!!.heroFOV[cell]) {
@@ -938,7 +940,7 @@ class GameScene : PixelScene() {
         }
 
         fun examineObject(o: Any) {
-            if (o === Dungeon.hero) {
+            if (o === Dungeon.hero!!) {
                 GameScene.show(WndHero())
             } else if (o is Mob) {
                 GameScene.show(WndInfoMob(o))

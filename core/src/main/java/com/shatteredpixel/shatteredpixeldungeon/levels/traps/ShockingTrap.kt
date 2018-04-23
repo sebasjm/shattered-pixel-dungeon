@@ -42,9 +42,9 @@ class ShockingTrap : Trap() {
             Sample.INSTANCE.play(Assets.SND_LIGHTNING)
         }
 
-        for (i in PathFinder.NEIGHBOURS9) {
+        for (i in PathFinder.NEIGHBOURS9!!) {
             if (!Dungeon.level!!.solid[pos + i]) {
-                GameScene.add(Blob.seed<Electricity>(pos + i, 10, Electricity::class.java))
+                GameScene.add(Blob.seed<Electricity>(pos + i, 10, Electricity::class.java)!!)
             }
         }
     }

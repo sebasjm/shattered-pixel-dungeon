@@ -44,13 +44,13 @@ class Fireball : Component() {
     override fun createChildren() {
 
         sparks = Group()
-        add(sparks)
+        add(sparks!!)
 
         bLight = Image(Assets.FIREBALL)
         bLight!!.frame(BLIGHT)
         bLight!!.origin.set(bLight!!.width / 2)
         bLight!!.angularSpeed = -90f
-        add(bLight)
+        add(bLight!!)
 
         emitter = Emitter()
         emitter!!.pour(object : Emitter.Factory() {
@@ -62,13 +62,13 @@ class Fireball : Component() {
                 p.y = y - p.height / 2
             }
         }, 0.1f)
-        add(emitter)
+        add(emitter!!)
 
         fLight = Image(Assets.FIREBALL)
         fLight!!.frame(FLIGHT)
         fLight!!.origin.set(fLight!!.width / 2)
         fLight!!.angularSpeed = 360f
-        add(fLight)
+        add(fLight!!)
 
         bLight!!.texture!!.filter(Texture.LINEAR, Texture.LINEAR)
     }
@@ -141,7 +141,8 @@ class Fireball : Component() {
                 acc.set(0f, 0f)
             }
 
-            if ((timeLeft -= Game.elapsed) <= 0) {
+            timeLeft -= Game.elapsed
+            if (timeLeft <= 0) {
 
                 kill()
 

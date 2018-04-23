@@ -40,9 +40,9 @@ class PotionOfMindVision : Potion() {
         Dungeon.observe()
 
         if (Dungeon.level!!.mobs.size > 0) {
-            GLog.i(Messages.get(this, "see_mobs"))
+            GLog.i(Messages.get(this.javaClass, "see_mobs"))
         } else {
-            GLog.i(Messages.get(this, "see_none"))
+            GLog.i(Messages.get(this.javaClass, "see_none"))
         }
     }
 

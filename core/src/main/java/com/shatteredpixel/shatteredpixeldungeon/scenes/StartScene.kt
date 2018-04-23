@@ -36,11 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGameInProgress
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame
-import com.watabou.noosa.BitmapText
-import com.watabou.noosa.Camera
-import com.watabou.noosa.Image
-import com.watabou.noosa.NinePatch
-import com.watabou.noosa.RenderedText
+import com.watabou.noosa.*
 import com.watabou.noosa.ui.Button
 
 import java.util.ArrayList
@@ -53,10 +49,10 @@ class StartScene : PixelScene() {
         Badges.loadGlobal()
         Journal.loadGlobal()
 
-        PixelScene.uiCamera.visible = false
+        PixelScene.uiCamera!!.visible = false
 
-        val w = Camera.main.width
-        val h = Camera.main.height
+        val w = Camera.main!!.width
+        val h = Camera.main!!.height
 
         val archs = Archs()
         archs.setSize(w.toFloat(), h.toFloat())
@@ -66,7 +62,7 @@ class StartScene : PixelScene() {
         btnExit.setPos(w - btnExit.width(), 0f)
         add(btnExit)
 
-        val title = PixelScene.renderText(Messages.get(this, "title"), 9)
+        val title = PixelScene.renderText(Messages.get(this.javaClass, "title"), 9)
         title.hardlight(Window.TITLE_COLOR)
         title.x = (w - title.width()) / 2f
         title.y = (16 - title.baseLine()) / 2f
@@ -145,15 +141,15 @@ class StartScene : PixelScene() {
                 name!!.text(Messages.get(StartScene::class.java, "new"))
 
                 if (hero != null) {
-                    remove(hero)
+                    remove(hero!!)
                     hero = null
-                    remove(steps)
+                    remove(steps!!)
                     steps = null
-                    remove(depth)
+                    remove(depth!!)
                     depth = null
-                    remove(classIcon)
+                    remove(classIcon!!)
                     classIcon = null
-                    remove(level)
+                    remove(level!!)
                     level = null
                 }
             } else {
@@ -165,22 +161,22 @@ class StartScene : PixelScene() {
                 }
 
                 if (hero == null) {
-                    hero = Image(info.heroClass!!.spritesheet(), 0, 15 * info.armorTier, 12, 15)
+                    hero = Image(info.heroClass!!.spritesheet()!!, 0, 15 * info.armorTier, 12, 15)
                     add(hero)
 
                     steps = Image(Icons.get(Icons.DEPTH))
                     add(steps)
-                    depth = BitmapText(PixelScene.pixelFont)
+                    depth = BitmapText(PixelScene.pixelFont!!)
                     add(depth)
 
-                    classIcon = Image(Icons.get(info.heroClass!!))
+                    classIcon = Image(Icons.get(info.heroClass!!)!!)
                     add(classIcon)
-                    level = BitmapText(PixelScene.pixelFont)
+                    level = BitmapText(PixelScene.pixelFont!!)
                     add(level)
                 } else {
-                    hero!!.copy(Image(info.heroClass!!.spritesheet(), 0, 15 * info.armorTier, 12, 15))
+                    hero!!.copy(Image(info.heroClass!!.spritesheet()!!, 0, 15 * info.armorTier, 12, 15))
 
-                    classIcon!!.copy(Icons.get(info.heroClass!!))
+                    classIcon!!.copy(Icons.get(info.heroClass!!)!!)
                 }
 
                 depth!!.text(Integer.toString(info.depth))
@@ -245,9 +241,9 @@ class StartScene : PixelScene() {
 
         override fun onClick() {
             if (newGame) {
-                ShatteredPixelDungeon.scene()!!.add(WndStartGame(slot))
+                Game.scene()!!.add(WndStartGame(slot))
             } else {
-                ShatteredPixelDungeon.scene()!!.add(WndGameInProgress(slot))
+                Game.scene()!!.add(WndGameInProgress(slot))
             }
         }
     }

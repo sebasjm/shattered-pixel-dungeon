@@ -48,15 +48,15 @@ class WelcomeScene : PixelScene() {
 
         val previousVersion = SPDSettings.version()
 
-        if (ShatteredPixelDungeon.versionCode == previousVersion) {
+        if (Game.versionCode == previousVersion) {
             ShatteredPixelDungeon.switchNoFade(TitleScene::class.java)
             return
         }
 
-        PixelScene.uiCamera.visible = false
+        PixelScene.uiCamera!!.visible = false
 
-        val w = Camera.main.width
-        val h = Camera.main.height
+        val w = Camera.main!!.width
+        val h = Camera.main!!.height
 
         val title = BannerSprites.get(BannerSprites.Type.PIXEL_DUNGEON)
         title.brightness(0.6f)
@@ -76,7 +76,8 @@ class WelcomeScene : PixelScene() {
             private var time = 0f
             override fun update() {
                 super.update()
-                am = Math.max(0f, Math.sin((time += Game.elapsed).toDouble()).toFloat())
+                time += Game.elapsed
+                am = Math.max(0f, Math.sin(time.toDouble()).toFloat())
                 if (time >= 1.5f * Math.PI) time = 0f
             }
 
@@ -90,25 +91,25 @@ class WelcomeScene : PixelScene() {
         signs.y = title.y
         add(signs)
 
-        val okay = object : DarkRedButton(Messages.get(this, "continue")) {
+        val okay = object : DarkRedButton(Messages.get(this.javaClass, "continue")) {
             override fun onClick() {
                 super.onClick()
                 if (previousVersion == 0) {
-                    SPDSettings.version(ShatteredPixelDungeon.versionCode)
+                    SPDSettings.version(Game.versionCode)
                     this@WelcomeScene.add(WndStartGame(1))
                 } else {
                     updateVersion(previousVersion)
-                    ShatteredPixelDungeon.switchScene(TitleScene::class.java)
+                    Game.switchScene(TitleScene::class.java)
                 }
             }
         }
 
         if (previousVersion != 0) {
-            val changes = object : DarkRedButton(Messages.get(this, "changelist")) {
+            val changes = object : DarkRedButton(Messages.get(this.javaClass, "changelist")) {
                 override fun onClick() {
                     super.onClick()
                     updateVersion(previousVersion)
-                    ShatteredPixelDungeon.switchScene(ChangesScene::class.java)
+                    Game.switchScene(ChangesScene::class.java)
                 }
             }
             okay.setRect(title.x, (h - 20).toFloat(), title.width() / 2 - 2, 16f)
@@ -127,21 +128,21 @@ class WelcomeScene : PixelScene() {
         val text = PixelScene.renderMultiline(6)
         var message: String
         if (previousVersion == 0) {
-            message = Messages.get(this, "welcome_msg")
-        } else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
+            message = Messages.get(this.javaClass, "welcome_msg")
+        } else if (previousVersion <= Game.versionCode) {
             if (previousVersion < LATEST_UPDATE) {
-                message = Messages.get(this, "update_intro")
-                message += "\n\n" + Messages.get(this, "update_msg")
+                message = Messages.get(this.javaClass, "update_intro")
+                message += "\n\n" + Messages.get(this.javaClass, "update_msg")
             } else {
                 //TODO: change the messages here in accordance with the type of patch.
-                message = Messages.get(this, "patch_intro")
-                message += "\n\n" + Messages.get(this, "patch_bugfixes")
-                message += "\n" + Messages.get(this, "patch_translations")
-                message += "\n" + Messages.get(this, "patch_balance")
+                message = Messages.get(this.javaClass, "patch_intro")
+                message += "\n\n" + Messages.get(this.javaClass, "patch_bugfixes")
+                message += "\n" + Messages.get(this.javaClass, "patch_translations")
+                message += "\n" + Messages.get(this.javaClass, "patch_balance")
 
             }
         } else {
-            message = Messages.get(this, "what_msg")
+            message = Messages.get(this.javaClass, "what_msg")
         }
         text.text(message, w - 20)
         val textSpace = h.toFloat() - title.y - (title.height() - 10) - okay.height() - 2f
@@ -173,7 +174,7 @@ class WelcomeScene : PixelScene() {
                 if (FileUtils.fileExists("$name.dat")) {
                     try {
                         var gamedata = FileUtils.bundleFromFile("$name.dat")
-                        FileUtils.bundleToFile(GamesInProgress.gameFile(i), gamedata)
+                        FileUtils.bundleToFile(GamesInProgress.gameFile(i)!!, gamedata)
                         FileUtils.deleteFile("$name.dat")
 
                         //rogue's safe files have a different name
@@ -182,7 +183,7 @@ class WelcomeScene : PixelScene() {
                         var depth = 1
                         while (FileUtils.fileExists("$name$depth.dat")) {
                             gamedata = FileUtils.bundleFromFile("$name$depth.dat")
-                            FileUtils.bundleToFile(GamesInProgress.depthFile(i, depth), gamedata)
+                            FileUtils.bundleToFile(GamesInProgress.depthFile(i, depth)!!, gamedata)
                             FileUtils.deleteFile("$name$depth.dat")
                             depth++
                         }
@@ -203,7 +204,7 @@ class WelcomeScene : PixelScene() {
             Badges.saveGlobal()
         }
 
-        SPDSettings.version(ShatteredPixelDungeon.versionCode)
+        SPDSettings.version(Game.versionCode)
     }
 
     private fun placeTorch(x: Float, y: Float) {

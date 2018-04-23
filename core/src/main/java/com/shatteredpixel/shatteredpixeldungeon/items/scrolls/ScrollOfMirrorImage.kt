@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -44,7 +45,7 @@ class ScrollOfMirrorImage : Scroll() {
     }
 
     override fun doRead() {
-        val spawnedImages = spawnImages(Item.curUser, NIMAGES)
+        val spawnedImages = spawnImages(Item.curUser!!, NIMAGES)
 
         if (spawnedImages > 0) {
             setKnown()
@@ -58,7 +59,7 @@ class ScrollOfMirrorImage : Scroll() {
 
     override fun empoweredRead() {
         //spawns 2 images right away, delays 4 of them, 6 total.
-        DelayedImageSpawner(6 - spawnImages(Item.curUser, 2), 2, 3f).attachTo(Item.curUser)
+        DelayedImageSpawner(6 - spawnImages(Item.curUser!!, 2), 2, 3f).attachTo(Item.curUser!!)
 
         setKnown()
 
@@ -70,7 +71,7 @@ class ScrollOfMirrorImage : Scroll() {
 
     class DelayedImageSpawner @JvmOverloads constructor(private var totImages: Int = NIMAGES, private var imPerRound: Int = NIMAGES, private var delay: Float = 1f) : Buff() {
 
-        override fun attachTo(target: Char?): Boolean {
+        override fun attachTo(target: Char): Boolean {
             if (super.attachTo(target)) {
                 spend(delay)
                 return true
@@ -81,7 +82,7 @@ class ScrollOfMirrorImage : Scroll() {
 
         override fun act(): Boolean {
 
-            val spawned = spawnImages(target as Hero, Math.min(totImages, imPerRound))
+            val spawned = spawnImages(target!! as Hero, Math.min(totImages, imPerRound))
 
             totImages -= spawned
 
@@ -130,8 +131,8 @@ class ScrollOfMirrorImage : Scroll() {
 
             val respawnPoints = ArrayList<Int>()
 
-            for (i in PathFinder.NEIGHBOURS8.indices) {
-                val p = hero!!.pos + PathFinder.NEIGHBOURS8[i]
+            for (i in PathFinder.NEIGHBOURS8!!.indices) {
+                val p = hero!!.pos + PathFinder.NEIGHBOURS8!![i]
                 if (Actor.findChar(p) == null && (Dungeon.level!!.passable[p] || Dungeon.level!!.avoid[p])) {
                     respawnPoints.add(p)
                 }
@@ -142,7 +143,7 @@ class ScrollOfMirrorImage : Scroll() {
                 val index = Random.index(respawnPoints)
 
                 val mob = MirrorImage()
-                mob.duplicate(hero)
+                mob.duplicate(hero!!)
                 GameScene.add(mob)
                 ScrollOfTeleportation.appear(mob, respawnPoints[index])
 

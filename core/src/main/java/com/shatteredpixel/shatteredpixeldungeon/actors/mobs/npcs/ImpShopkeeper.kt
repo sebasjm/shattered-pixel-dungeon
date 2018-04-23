@@ -40,7 +40,7 @@ class ImpShopkeeper : Shopkeeper() {
     override fun act(): Boolean {
 
         if (!seenBefore && Dungeon.level!!.heroFOV[pos]) {
-            yell(Messages.get(this, "greetings", Dungeon.hero!!.givenName()))
+            yell(Messages.get(this.javaClass, "greetings", Dungeon.hero!!.givenName()))
             seenBefore = true
         }
 

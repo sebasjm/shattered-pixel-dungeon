@@ -55,7 +55,7 @@ open class Elemental : Mob() {
         return Random.NormalIntRange(16, 26)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 25
     }
 

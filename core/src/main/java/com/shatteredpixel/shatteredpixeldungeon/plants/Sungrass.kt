@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.plants
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
@@ -45,7 +44,7 @@ class Sungrass : Plant() {
     override fun activate() {
         val ch = Actor.findChar(pos)
 
-        if (ch === Dungeon.hero) {
+        if (ch === Dungeon.hero!!) {
             Buff.affect<Health>(ch!!, Health::class.java)!!.boost(ch.HT)
         }
 
@@ -76,20 +75,20 @@ class Sungrass : Plant() {
         }
 
         override fun act(): Boolean {
-            if (target.pos != pos) {
+            if (target!!.pos != pos) {
                 detach()
             }
 
             //for the hero, full heal takes ~50/93/111/120 turns at levels 1/10/20/30
-            partialHeal += (40 + target.HT) / 150f
+            partialHeal += (40 + target!!.HT) / 150f
 
             if (partialHeal > 1) {
-                target.HP += partialHeal.toInt()
+                target!!.HP += partialHeal.toInt()
                 level -= partialHeal.toInt()
                 partialHeal -= partialHeal.toInt().toFloat()
-                target.sprite!!.emitter().burst(Speck.factory(Speck.HEALING), 1)
+                target!!.sprite!!.emitter().burst(Speck.factory(Speck.HEALING), 1)
 
-                if (target.HP > target.HT) target.HP = target.HT
+                if (target!!.HP > target!!.HT) target!!.HP = target!!.HT
             }
 
             if (level <= 0) {
@@ -103,7 +102,7 @@ class Sungrass : Plant() {
 
         fun boost(amount: Int) {
             level += amount
-            pos = target.pos
+            pos = target!!.pos
         }
 
         override fun icon(): Int {
@@ -111,15 +110,15 @@ class Sungrass : Plant() {
         }
 
         override fun tintIcon(icon: Image) {
-            FlavourBuff.greyIcon(icon, target.HT / 4f, level.toFloat())
+            FlavourBuff.greyIcon(icon, target!!.HT / 4f, level.toFloat())
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc", level)
+            return Messages.get(this.javaClass, "desc", level)
         }
 
         override fun storeInBundle(bundle: Bundle) {

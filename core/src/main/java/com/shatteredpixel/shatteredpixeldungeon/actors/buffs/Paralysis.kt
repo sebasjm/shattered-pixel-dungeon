@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
@@ -46,24 +47,24 @@ class Paralysis : FlavourBuff() {
     }
 
     fun processDamage(damage: Int) {
-        if (target == null) return
-        var resist = target.buff<ParalysisResist>(ParalysisResist::class.java)
+        if (target!! == null) return
+        var resist = target!!.buff<ParalysisResist>(ParalysisResist::class.java)
         if (resist == null) {
-            resist = Buff.affect(target, ParalysisResist::class.java)
+            resist = Buff.affect(target!!, ParalysisResist::class.java)
         }
         resist!!.damage += damage
-        if (Random.NormalIntRange(0, resist!!.damage) >= Random.NormalIntRange(0, target.HP)) {
+        if (Random.NormalIntRange(0, resist!!.damage) >= Random.NormalIntRange(0, target!!.HP)) {
             detach()
-            if (Dungeon.level!!.heroFOV[target.pos]) {
-                GLog.i(Messages.get(this, "out", target.name))
+            if (Dungeon.level!!.heroFOV[target!!.pos]) {
+                GLog.i(Messages.get(this.javaClass, "out", target!!.name))
             }
         }
     }
 
     override fun detach() {
         super.detach()
-        if (target.paralysed > 0)
-            target.paralysed--
+        if (target!!.paralysed > 0)
+            target!!.paralysed--
     }
 
     override fun icon(): Int {
@@ -72,29 +73,29 @@ class Paralysis : FlavourBuff() {
 
     override fun fx(on: Boolean) {
         if (on)
-            target.sprite!!.add(CharSprite.State.PARALYSED)
+            target!!.sprite!!.add(CharSprite.State.PARALYSED)
         else
-            target.sprite!!.remove(CharSprite.State.PARALYSED)
+            target!!.sprite!!.remove(CharSprite.State.PARALYSED)
     }
 
     override fun heroMessage(): String? {
-        return Messages.get(this, "heromsg")
+        return Messages.get(this.javaClass, "heromsg")
     }
 
     override fun toString(): String {
-        return Messages.get(this, "name")
+        return Messages.get(this.javaClass, "name")
     }
 
     override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
+        return Messages.get(this.javaClass, "desc", dispTurns())
     }
 
     class ParalysisResist : Buff() {
 
-        private var damage: Int = 0
+        var damage: Int = 0
 
         override fun act(): Boolean {
-            if (target.buff<Paralysis>(Paralysis::class.java) == null) {
+            if (target!!.buff<Paralysis>(Paralysis::class.java) == null) {
                 damage -= Math.ceil((damage / 10f).toDouble()).toInt()
                 if (damage >= 0) detach()
             }

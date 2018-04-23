@@ -135,15 +135,17 @@ open class SewerLevel : RegularLevel() {
             val p = DungeonTilemap.tileCenterToWorld(pos)
             pos(p.x - 2, p.y + 3, 4f, 0f)
 
-            pour(factory, 0.1f)
+            pour(factory!!, 0.1f)
         }
 
         override fun update() {
-            if (visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]) {
+            visible = pos < Dungeon.level!!.heroFOV.size && Dungeon.level!!.heroFOV[pos]
+            if (visible) {
 
                 super.update()
 
-                if ((rippleDelay -= Game.elapsed) <= 0) {
+                rippleDelay -= Game.elapsed
+                if (rippleDelay <= 0) {
                     val ripple = GameScene.ripple(pos + Dungeon.level!!.width())
                     if (ripple != null) {
                         ripple.y -= (DungeonTilemap.SIZE / 2).toFloat()

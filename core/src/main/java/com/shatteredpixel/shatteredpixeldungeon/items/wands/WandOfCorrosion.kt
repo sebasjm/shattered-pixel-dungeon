@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
@@ -56,7 +57,7 @@ class WandOfCorrosion : Wand() {
         (corrosiveGas as CorrosiveGas).setStrength(level() + 1)
         GameScene.add(corrosiveGas)
 
-        for (i in PathFinder.NEIGHBOURS9) {
+        for (i in PathFinder.NEIGHBOURS9!!) {
             val ch = Actor.findChar(bolt.collisionPos!! + i)
             if (ch != null) {
                 processSoulMark(ch, chargesPerCast())
@@ -70,9 +71,9 @@ class WandOfCorrosion : Wand() {
 
     override fun fx(bolt: Ballistica, callback: Callback) {
         MagicMissile.boltFromChar(
-                Item.curUser.sprite!!.parent!!,
+                Item.curUser!!.sprite!!.parent!!,
                 MagicMissile.CORROSION,
-                Item.curUser.sprite,
+                Item.curUser!!.sprite!!,
                 bolt.collisionPos!!,
                 callback)
         Sample.INSTANCE.play(Assets.SND_ZAP)
@@ -93,7 +94,7 @@ class WandOfCorrosion : Wand() {
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(ColorMath.random(0xAAAAAA, 0xFF8800))
         particle.am = 0.6f
-        particle.setLifespan(1f)
+        particle.lifespan = (1f)
         particle.acc.set(0f, 20f)
         particle.setSize(0.5f, 3f)
         particle.shuffleXY(1f)

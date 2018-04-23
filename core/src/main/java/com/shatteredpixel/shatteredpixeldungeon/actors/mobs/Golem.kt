@@ -48,7 +48,7 @@ class Golem : Mob() {
         return Random.NormalIntRange(25, 40)
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char?): Int {
         return 28
     }
 

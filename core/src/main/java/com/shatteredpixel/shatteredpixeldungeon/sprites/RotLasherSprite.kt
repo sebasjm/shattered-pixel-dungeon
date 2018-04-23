@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class RotLasherSprite : MobSprite() {
@@ -29,7 +30,7 @@ class RotLasherSprite : MobSprite() {
 
         texture(Assets.ROT_LASH)
 
-        val frames = TextureFilm(texture, 12, 16)
+        val frames = TextureFilm(texture!!, 12, 16)
 
         idle = MovieClip.Animation(0, true)
         idle!!.frames(frames, 0)
@@ -43,6 +44,6 @@ class RotLasherSprite : MobSprite() {
         die = MovieClip.Animation(12, false)
         die!!.frames(frames, 3, 4, 5, 6)
 
-        play(idle)
+        play(idle!!)
     }
 }

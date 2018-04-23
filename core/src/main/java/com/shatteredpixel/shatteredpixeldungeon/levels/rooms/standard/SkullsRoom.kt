@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 
 class SkullsRoom : StandardRoom() {
 
@@ -51,7 +52,7 @@ class SkullsRoom : StandardRoom() {
             Painter.fill(level, this, 2, Terrain.EMPTY)
         }
 
-        for (door in connected.values) {
+        for (door in connected.values.filterNotNull()) {
             door.set(Room.Door.Type.REGULAR)
             if (door.x == left || door.x == right) {
                 Painter.drawInside(level, this, door, (width() - 3) / 2, Terrain.EMPTY)

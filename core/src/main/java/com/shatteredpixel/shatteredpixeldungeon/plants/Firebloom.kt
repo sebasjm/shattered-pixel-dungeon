@@ -38,7 +38,7 @@ class Firebloom : Plant() {
 
     override fun activate() {
 
-        GameScene.add(Blob.seed<Fire>(pos, 2, Fire::class.java))
+        GameScene.add(Blob.seed<Fire>(pos, 2, Fire::class.java)!!)
 
         if (Dungeon.level!!.heroFOV[pos]) {
             CellEmitter.get(pos).burst(FlameParticle.FACTORY, 5)

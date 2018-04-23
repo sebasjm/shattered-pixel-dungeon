@@ -236,7 +236,7 @@ class Belongings(private val owner: Hero) : Iterable<Item> {
 
         private val backpackIterator = backpack.iterator()
 
-        private val equipped = arrayOf<Item>(weapon, armor, misc1, misc2)
+        private val equipped = arrayOf<Item?>(weapon, armor, misc1, misc2)
         private val backpackIndex = equipped.size
 
         override fun hasNext(): Boolean {
@@ -262,19 +262,24 @@ class Belongings(private val owner: Hero) : Iterable<Item> {
             return backpackIterator.next()
         }
 
-        override fun remove() {
+        fun remove() {
             when (index) {
-                0 -> weapon = null
-                equipped[0] = weapon
-                    1
-                -> armor = null
-                equipped[1] = armor
-                    2
-                -> misc1 = null
-                equipped[2] = misc1
-                    3
-                -> misc2 = null
-                equipped[3] = misc2
+                0 -> {
+                    weapon = null
+                    equipped[0] = weapon
+                }
+                1 -> {
+                    armor = null
+                    equipped[1] = armor
+                }
+                2 -> {
+                    misc1 = null
+                    equipped[2] = misc1
+                }
+                3 -> {
+                    misc2 = null
+                    equipped[3] = misc2
+                }
                 else -> backpackIterator.remove()
             }
         }

@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
@@ -104,13 +105,13 @@ class WandOfTransfusion : Wand() {
             } else {
 
                 var duration = (5 + level()).toFloat()
-                Buff.affect<Charm>(ch, Charm::class.java, duration).`object` = Item.curUser.id()
+                Buff.affect<Charm>(ch, Charm::class.java, duration).`object` = Item.curUser!!.id()
 
                 duration *= Random.Float(0.75f, 1f)
-                Buff.affect<Charm>(Item.curUser, Charm::class.java, duration).`object` = ch.id()
+                Buff.affect<Charm>(Item.curUser!!, Charm::class.java, duration).`object` = ch.id()
 
                 ch.sprite!!.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5)
-                Item.curUser.sprite!!.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5)
+                Item.curUser!!.sprite!!.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5)
 
             }
 
@@ -139,7 +140,7 @@ class WandOfTransfusion : Wand() {
         } else if (Dungeon.level!!.map!![cell] == Terrain.GRASS) {
 
             //regrow one grass tile, suuuuuper useful...
-            Dungeon.level!!.set(cell, Terrain.HIGH_GRASS)
+            Level.set(cell, Terrain.HIGH_GRASS)
             GameScene.updateMap(cell)
             CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4)
 
@@ -152,7 +153,7 @@ class WandOfTransfusion : Wand() {
                 CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8)
                 GameScene.updateMap(cell)
             } else {
-                Dungeon.level!!.set(cell, Terrain.HIGH_GRASS)
+                Level.set(cell, Terrain.HIGH_GRASS)
                 GameScene.updateMap(cell)
                 CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4)
             }
@@ -170,12 +171,12 @@ class WandOfTransfusion : Wand() {
     //this wand costs health too
     private fun damageHero() {
         // 10% of max hp
-        val damage = Math.ceil((Item.curUser.HT * 0.10f).toDouble()).toInt()
-        Item.curUser.damage(damage, this)
+        val damage = Math.ceil((Item.curUser!!.HT * 0.10f).toDouble()).toInt()
+        Item.curUser!!.damage(damage, this)
 
-        if (!Item.curUser.isAlive) {
+        if (!Item.curUser!!.isAlive) {
             Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "ondeath"))
+            GLog.n(Messages.get(this.javaClass, "ondeath"))
         }
     }
 
@@ -190,21 +191,21 @@ class WandOfTransfusion : Wand() {
         if (Random.Int(level() + 10) >= 9) {
             //grants a free use of the staff
             freeCharge = true
-            GLog.p(Messages.get(this, "charged"))
+            GLog.p(Messages.get(this.javaClass, "charged"))
             attacker.sprite!!.emitter().burst(BloodParticle.BURST, 20)
         }
     }
 
     override fun fx(beam: Ballistica, callback: Callback) {
-        Item.curUser.sprite!!.parent!!.add(
-                Beam.HealthRay(Item.curUser.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos!!)))
+        Item.curUser!!.sprite!!.parent!!.add(
+                Beam.HealthRay(Item.curUser!!.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos!!)))
         callback.call()
     }
 
     override fun staffFx(particle: MagesStaff.StaffParticle) {
         particle.color(0xCC0000)
         particle.am = 0.6f
-        particle.setLifespan(1f)
+        particle.lifespan = (1f)
         particle.speed.polar(Random.Float(PointF.PI2), 2f)
         particle.setSize(1f, 2f)
         particle.radiateXY(0.5f)

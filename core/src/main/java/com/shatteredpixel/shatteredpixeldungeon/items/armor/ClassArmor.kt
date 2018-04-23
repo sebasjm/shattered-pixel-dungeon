@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal
+import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
@@ -71,9 +73,9 @@ abstract class ClassArmor : Armor(6) {
         if (action == AC_SPECIAL) {
 
             if (hero.HP < 3) {
-                GLog.w(Messages.get(this, "low_hp"))
+                GLog.w(Messages.get(this.javaClass, "low_hp"))
             } else if (!isEquipped(hero)) {
-                GLog.w(Messages.get(this, "not_equipped"))
+                GLog.w(Messages.get(this.javaClass, "not_equipped"))
             } else {
                 Item.curUser = hero
                 Invisibility.dispel()

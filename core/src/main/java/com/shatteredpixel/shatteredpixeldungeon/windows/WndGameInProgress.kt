@@ -58,7 +58,7 @@ class WndGameInProgress(slot: Int) : Window() {
 
         val title = IconTitle()
         title.icon(HeroSprite.avatar(info.heroClass!!, info.armorTier))
-        title.label(Messages.get(this, "title", info.level, className).toUpperCase(Locale.ENGLISH))
+        title.label(Messages.get(this.javaClass, "title", info.level, className).toUpperCase(Locale.ENGLISH))
         title.color(Window.SHPX_COLOR)
         title.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(title)
@@ -68,7 +68,7 @@ class WndGameInProgress(slot: Int) : Window() {
         pos = title.bottom() + GAP
 
         if (info.challenges > 0) {
-            val btnChallenges = object : RedButton(Messages.get(this, "challenges")) {
+            val btnChallenges = object : RedButton(Messages.get(this.javaClass, "challenges")) {
                 override fun onClick() {
                     Game.scene()!!.add(WndChallenges(info.challenges, false))
                 }
@@ -82,20 +82,20 @@ class WndGameInProgress(slot: Int) : Window() {
 
         pos += GAP.toFloat()
 
-        statSlot(Messages.get(this, "str"), info.str)
+        statSlot(Messages.get(this.javaClass, "str"), info.str)
         if (info.shld > 0)
-            statSlot(Messages.get(this, "health"), info.hp.toString() + "+" + info.shld + "/" + info.ht)
+            statSlot(Messages.get(this.javaClass, "health"), info.hp.toString() + "+" + info.shld + "/" + info.ht)
         else
-            statSlot(Messages.get(this, "health"), info.hp.toString() + "/" + info.ht)
-        statSlot(Messages.get(this, "exp"), info.exp.toString() + "/" + Hero.maxExp(info.level))
+            statSlot(Messages.get(this.javaClass, "health"), info.hp.toString() + "/" + info.ht)
+        statSlot(Messages.get(this.javaClass, "exp"), info.exp.toString() + "/" + Hero.maxExp(info.level))
 
         pos += GAP.toFloat()
-        statSlot(Messages.get(this, "gold"), info.goldCollected)
-        statSlot(Messages.get(this, "depth"), info.maxDepth)
+        statSlot(Messages.get(this.javaClass, "gold"), info.goldCollected)
+        statSlot(Messages.get(this.javaClass, "depth"), info.maxDepth)
 
         pos += GAP.toFloat()
 
-        val cont = object : RedButton(Messages.get(this, "continue")) {
+        val cont = object : RedButton(Messages.get(this.javaClass, "continue")) {
             override fun onClick() {
                 super.onClick()
 
@@ -103,15 +103,15 @@ class WndGameInProgress(slot: Int) : Window() {
 
                 Dungeon.hero = null
                 InterlevelScene.mode = InterlevelScene.Mode.CONTINUE
-                ShatteredPixelDungeon.switchScene(InterlevelScene::class.java)
+                Game.switchScene(InterlevelScene::class.java)
             }
         }
 
-        val erase = object : RedButton(Messages.get(this, "erase")) {
+        val erase = object : RedButton(Messages.get(this.javaClass, "erase")) {
             override fun onClick() {
                 super.onClick()
 
-                ShatteredPixelDungeon.scene()!!.add(object : WndOptions(
+                Game.scene()!!.add(object : WndOptions(
                         Messages.get(WndGameInProgress::class.java, "erase_warn_title"),
                         Messages.get(WndGameInProgress::class.java, "erase_warn_body"),
                         Messages.get(WndGameInProgress::class.java, "erase_warn_yes"),

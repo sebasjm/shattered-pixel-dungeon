@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.messages
 
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
+import com.watabou.noosa.Game
 import com.watabou.utils.DeviceCompat
+import java.nio.charset.Charset
 
 import java.util.Arrays
 import java.util.Enumeration
@@ -88,9 +90,9 @@ object Messages {
 
                 if (DeviceCompat.usesISO_8859_1()) {
                     try {
-                        value = String(value.toByteArray(charset("ISO-8859-1")), "UTF-8")
+                        value = String(value.toByteArray(charset("ISO-8859-1")), Charset.forName("UTF-8"))
                     } catch (e: Exception) {
-                        ShatteredPixelDungeon.reportException(e)
+                        Game.reportException(e)
                     }
 
                 }
@@ -109,9 +111,9 @@ object Messages {
         return get(null, key, *args)
     }
 
-    operator fun get(o: Any, k: String, vararg args: Any): String {
-        return get(o.javaClass, k, *args)
-    }
+//    operator fun get(o: Any, k: String, vararg args: Any): String {
+//        return get(o.javaClass, k, *args)
+//    }
 
     operator fun get(c: Class<*>?, k: String, vararg args: Any): String {
         var key: String
@@ -123,9 +125,9 @@ object Messages {
 
         return if (strings!!.containsKey(key.toLowerCase(Locale.ENGLISH))) {
             if (args.size > 0)
-                format(strings!![key.toLowerCase(Locale.ENGLISH)], *args)
+                format(strings!![key.toLowerCase(Locale.ENGLISH)]!!, *args)
             else
-                strings!![key.toLowerCase(Locale.ENGLISH)]
+                strings!![key.toLowerCase(Locale.ENGLISH)]!!
         } else {
             //this is so child classes can inherit properties from their parents.
             //in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated

@@ -68,7 +68,8 @@ class Enchanting(item: Item) : ItemSprite(item.image(), null) {
             }
         }
 
-        if ((passed += Game.elapsed) > duration) {
+        passed += Game.elapsed
+        if (passed > duration) {
             when (phase) {
                 Enchanting.Phase.FADE_IN -> {
                     phase = Phase.STATIC

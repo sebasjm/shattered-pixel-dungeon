@@ -91,7 +91,7 @@ class MissileSprite : ItemSprite(), Tweener.Listener {
         angularSpeed = DEFAULT_ANGULAR_SPEED.toFloat()
         for (cls in ANGULAR_SPEEDS.keys) {
             if (cls.isAssignableFrom(item!!.javaClass)) {
-                angularSpeed = ANGULAR_SPEEDS[cls].toFloat()
+                angularSpeed = ANGULAR_SPEEDS[cls]!!.toFloat()
                 break
             }
         }

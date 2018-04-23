@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
@@ -55,7 +56,7 @@ class Viscosity : Glyph() {
             }
             debuff.prolong(damage)
 
-            defender.sprite!!.showStatus(CharSprite.WARNING, Messages.get(this, "deferred", damage))
+            defender.sprite!!.showStatus(CharSprite.WARNING, Messages.get(this.javaClass, "deferred", damage))
 
             return 0
 
@@ -101,18 +102,18 @@ class Viscosity : Glyph() {
         }
 
         override fun toString(): String {
-            return Messages.get(this, "name")
+            return Messages.get(this.javaClass, "name")
         }
 
         override fun act(): Boolean {
-            if (target.isAlive) {
+            if (target!!.isAlive) {
 
                 val damageThisTick = Math.max(1, (damage * 0.1f).toInt())
-                target.damage(damageThisTick, this)
-                if (target === Dungeon.hero && !target.isAlive) {
+                target!!.damage(damageThisTick, this)
+                if (target!! === Dungeon.hero!! && !target!!.isAlive) {
 
                     Dungeon.fail(javaClass)
-                    GLog.n(Messages.get(this, "ondeath"))
+                    GLog.n(Messages.get(this.javaClass, "ondeath"))
 
                     Badges.validateDeathFromGlyph()
                 }
@@ -133,7 +134,7 @@ class Viscosity : Glyph() {
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc", damage)
+            return Messages.get(this.javaClass, "desc", damage)
         }
 
         companion object {

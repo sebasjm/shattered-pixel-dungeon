@@ -67,14 +67,14 @@ class WndHero : WndTabbed() {
         buffs.setRect(0f, 0f, WIDTH.toFloat(), HEIGHT.toFloat())
         buffs.setupList()
 
-        add(object : WndTabbed.LabeledTab(Messages.get(this, "stats")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "stats")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 stats.active = selected
                 stats.visible = stats.active
             }
         })
-        add(object : WndTabbed.LabeledTab(Messages.get(this, "buffs")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "buffs")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 buffs.active = selected
@@ -93,33 +93,33 @@ class WndHero : WndTabbed() {
 
         init {
 
-            val hero = Dungeon.hero
+            val hero = Dungeon.hero!!
 
             val title = IconTitle()
-            title.icon(HeroSprite.avatar(hero!!.heroClass, hero.tier()))
+            title.icon(HeroSprite.avatar(hero.heroClass, hero.tier()))
             if (hero.givenName() == hero.className())
-                title.label(Messages.get(this, "title", hero.lvl, hero.className()).toUpperCase(Locale.ENGLISH))
+                title.label(Messages.get(this.javaClass, "title", hero.lvl, hero.className()).toUpperCase(Locale.ENGLISH))
             else
-                title.label((hero.givenName() + "\n" + Messages.get(this, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
+                title.label((hero.givenName() + "\n" + Messages.get(this.javaClass, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
             title.color(Window.SHPX_COLOR)
             title.setRect(0f, 0f, WIDTH.toFloat(), 0f)
             add(title)
 
-            pos = title.bottom() + 2 * GAP
+            pos = title.bottom() + 2 * BIG_GAP
 
-            statSlot(Messages.get(this, "str"), hero.STR())
+            statSlot(Messages.get(this.javaClass, "str"), hero.STR())
             if (hero.SHLD > 0)
-                statSlot(Messages.get(this, "health"), hero.HP.toString() + "+" + hero.SHLD + "/" + hero.HT)
+                statSlot(Messages.get(this.javaClass, "health"), hero.HP.toString() + "+" + hero.SHLD + "/" + hero.HT)
             else
-                statSlot(Messages.get(this, "health"), hero.HP.toString() + "/" + hero.HT)
-            statSlot(Messages.get(this, "exp"), hero.exp.toString() + "/" + hero.maxExp())
+                statSlot(Messages.get(this.javaClass, "health"), hero.HP.toString() + "/" + hero.HT)
+            statSlot(Messages.get(this.javaClass, "exp"), hero.exp.toString() + "/" + hero.maxExp())
 
-            pos += GAP.toFloat()
+            pos += BIG_GAP.toFloat()
 
-            statSlot(Messages.get(this, "gold"), Statistics.goldCollected)
-            statSlot(Messages.get(this, "depth"), Statistics.deepestFloor)
+            statSlot(Messages.get(this.javaClass, "gold"), Statistics.goldCollected)
+            statSlot(Messages.get(this.javaClass, "depth"), Statistics.deepestFloor)
 
-            pos += GAP.toFloat()
+            pos += BIG_GAP.toFloat()
         }
 
         private fun statSlot(label: String, value: String) {
@@ -134,7 +134,7 @@ class WndHero : WndTabbed() {
             PixelScene.align(txt)
             add(txt)
 
-            pos += GAP + txt.baseLine()
+            pos += BIG_GAP + txt.baseLine()
         }
 
         private fun statSlot(label: String, value: Int) {
@@ -145,10 +145,6 @@ class WndHero : WndTabbed() {
             return pos
         }
 
-        companion object {
-
-            private val GAP = 5
-        }
     }
 
     private inner class BuffsTab : Component() {
@@ -176,7 +172,7 @@ class WndHero : WndTabbed() {
             buffList.setRect(0f, 0f, width, height)
         }
 
-        private fun setupList() {
+        fun setupList() {
             val content = buffList.content()
             for (buff in Dungeon.hero!!.buffs()) {
                 if (buff.icon() != BuffIndicator.NONE) {
@@ -229,14 +225,12 @@ class WndHero : WndTabbed() {
             }
         }
 
-        companion object {
-
-            private val GAP = 2
-        }
     }
 
     companion object {
 
+        private val BIG_GAP = 5
+        private val GAP = 2
         private val WIDTH = 115
         private val HEIGHT = 100
     }

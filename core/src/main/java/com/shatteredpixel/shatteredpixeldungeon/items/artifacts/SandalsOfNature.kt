@@ -49,14 +49,14 @@ class SandalsOfNature : Artifact() {
 
     var seeds = ArrayList<Class<*>>()
 
-    protected var itemSelector: WndBag.Listener = WndBag.Listener { item ->
+    protected var itemSelector: WndBag.Listener = { item: Item? ->
         if (item != null && item is Plant.Seed) {
             if (seeds.contains(item.javaClass)) {
                 GLog.w(Messages.get(SandalsOfNature::class.java, "already_fed"))
             } else {
                 seeds.add(item.javaClass)
 
-                val hero = Dungeon.hero
+                val hero = Dungeon.hero!!
                 hero!!.sprite!!.operate(hero.pos)
                 Sample.INSTANCE.play(Assets.SND_PLANT)
                 hero.busy()
@@ -74,7 +74,7 @@ class SandalsOfNature : Artifact() {
                 item.detach(hero.belongings.backpack)
             }
         }
-    }
+    } as WndBag.Listener
 
     init {
         image = ItemSpriteSheet.ARTIFACT_SANDALS
@@ -100,19 +100,19 @@ class SandalsOfNature : Artifact() {
 
         if (action == AC_FEED) {
 
-            GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"))
+            GameScene.selectItem(itemSelector, mode, Messages.get(this.javaClass, "prompt"))
 
         } else if (action == AC_ROOT && level() > 0) {
 
             if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge == 0)
-                GLog.i(Messages.get(this, "no_charge"))
+                GLog.i(Messages.get(this.javaClass, "no_charge"))
             else {
                 Buff.prolong<Roots>(hero, Roots::class.java, 5f)
                 Buff.affect<Earthroot.Armor>(hero, Earthroot.Armor::class.java)!!.level(charge)
                 CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8)
-                Camera.main.shake(1f, 0.4f)
+                Camera.main!!.shake(1f, 0.4f)
                 charge = 0
                 updateQuickslot()
             }
@@ -124,22 +124,22 @@ class SandalsOfNature : Artifact() {
     }
 
     override fun desc(): String {
-        var desc = Messages.get(this, "desc_" + (level() + 1))
+        var desc = Messages.get(this.javaClass, "desc_" + (level() + 1))
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.hero!!)) {
             desc += "\n\n"
 
             if (!cursed)
-                desc += Messages.get(this, "desc_hint")
+                desc += Messages.get(this.javaClass, "desc_hint")
             else
-                desc += Messages.get(this, "desc_cursed")
+                desc += Messages.get(this.javaClass, "desc_cursed")
 
             if (level() > 0)
-                desc += "\n\n" + Messages.get(this, "desc_ability")
+                desc += "\n\n" + Messages.get(this.javaClass, "desc_ability")
         }
 
         if (!seeds.isEmpty()) {
-            desc += "\n\n" + Messages.get(this, "desc_seeds", seeds.size)
+            desc += "\n\n" + Messages.get(this.javaClass, "desc_seeds", seeds.size)
         }
 
         return desc
@@ -153,7 +153,7 @@ class SandalsOfNature : Artifact() {
         else if (level() == 1)
             image = ItemSpriteSheet.ARTIFACT_BOOTS
         else if (level() >= 2) image = ItemSpriteSheet.ARTIFACT_GREAVES
-        name = Messages.get(this, "name_" + (level() + 1))
+        name = Messages.get(this.javaClass, "name_" + (level() + 1))
         return super.upgrade()
     }
 
@@ -164,9 +164,9 @@ class SandalsOfNature : Artifact() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        if (level() > 0) name = Messages.get(this, "name_" + level())
+        if (level() > 0) name = Messages.get(this.javaClass, "name_" + level())
         if (bundle.contains(SEEDS))
-            Collections.addAll<Class>(seeds, *bundle.getClassArray(SEEDS)!!)
+            Collections.addAll<Class<*>>(seeds, *bundle.getClassArray(SEEDS)!!)
         if (level() == 1)
             image = ItemSpriteSheet.ARTIFACT_SHOES
         else if (level() == 2)
@@ -176,9 +176,9 @@ class SandalsOfNature : Artifact() {
 
     inner class Naturalism : Artifact.ArtifactBuff() {
         fun charge() {
-            if (level() > 0 && charge < target.HT) {
+            if (level() > 0 && charge < target!!.HT) {
                 //gain 1+(1*level)% of the difference between current charge and max HP.
-                charge += Math.round((target.HT - charge) * (.01 + level() * 0.01)).toInt()
+                charge += Math.round((target!!.HT - charge) * (.01 + level() * 0.01)).toInt()
                 updateQuickslot()
             }
         }
