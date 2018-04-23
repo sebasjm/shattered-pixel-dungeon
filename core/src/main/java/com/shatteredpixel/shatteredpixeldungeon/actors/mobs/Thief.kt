@@ -70,7 +70,7 @@ open class Thief : Mob() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        item = bundle.get(ITEM) as Item
+        item = bundle.get(ITEM) as Item?
     }
 
     override fun speed(): Float {

@@ -116,7 +116,7 @@ object Bones {
                 val bundle = FileUtils.bundleFromFile(BONES_FILE)
 
                 depth = bundle.getInt(LEVEL)
-                item = bundle.get(ITEM) as Item
+                item = bundle.get(ITEM) as Item?
 
                 return get()
 

@@ -53,7 +53,7 @@ class PinCushion : Buff() {
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
-        items = ArrayList(bundle.getCollection(ITEMS) as Collection<*> as Collection<MissileWeapon>)
+        items = ArrayList(bundle.getCollection(ITEMS) as Collection<MissileWeapon>)
         super.restoreFromBundle(bundle)
     }
 

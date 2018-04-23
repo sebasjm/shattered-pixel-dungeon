@@ -90,7 +90,7 @@ class PrisonBossLevel : Level() {
 
         //in some states tengu won't be in the world, in others he will be.
         if (state == State.START || state == State.MAZE) {
-            tengu = bundle.get(TENGU) as Tengu
+            tengu = bundle.get(TENGU) as Tengu?
         } else {
             for (mob in mobs) {
                 if (mob is Tengu) {

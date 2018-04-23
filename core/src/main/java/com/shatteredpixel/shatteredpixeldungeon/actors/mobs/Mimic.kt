@@ -62,7 +62,7 @@ class Mimic : Mob() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         if (bundle.contains(ITEMS)) {
-            items = ArrayList(bundle.getCollection(ITEMS) as Collection<*> as Collection<Item>)
+            items = ArrayList(bundle.getCollection(ITEMS) as Collection<Item>)
         }
         adjustStats(bundle.getInt(LEVEL))
         super.restoreFromBundle(bundle)

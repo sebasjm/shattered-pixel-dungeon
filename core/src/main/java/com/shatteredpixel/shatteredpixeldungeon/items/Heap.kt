@@ -375,7 +375,7 @@ class Heap : Bundlable {
         seen = bundle.getBoolean(SEEN)
         type = Type.valueOf(bundle.getString(TYPE))
 
-        items = LinkedList(bundle.getCollection(ITEMS) as Collection<*> as Collection<Item>)
+        items = LinkedList(bundle.getCollection(ITEMS) as Collection<Item>)
         items!!.removeAll(setOf<Any?>(null))
 
         //remove any document pages that either don't exist anymore or that the player already has

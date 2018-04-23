@@ -111,7 +111,7 @@ abstract class Weapon : KindOfWeapon() {
         if (hitsToKnow == 0) {
             hitsToKnow = HITS_TO_KNOW
         }
-        enchantment = bundle.get(ENCHANTMENT) as Enchantment
+        enchantment = bundle.get(ENCHANTMENT) as Enchantment??
         imbue = bundle.getEnum(IMBUE, Imbue::class.java)
     }
 

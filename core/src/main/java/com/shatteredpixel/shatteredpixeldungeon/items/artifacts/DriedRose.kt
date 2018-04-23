@@ -229,8 +229,8 @@ class DriedRose : Artifact() {
         ghostID = bundle.getInt(GHOSTID)
         droppedPetals = bundle.getInt(PETALS)
 
-        if (bundle.contains(WEAPON)) weapon = bundle.get(WEAPON) as MeleeWeapon
-        if (bundle.contains(ARMOR)) armor = bundle.get(ARMOR) as Armor
+        if (bundle.contains(WEAPON)) weapon = bundle.get(WEAPON) as MeleeWeapon?
+        if (bundle.contains(ARMOR)) armor = bundle.get(ARMOR) as Armor?
     }
 
     inner class roseRecharge : Artifact.ArtifactBuff() {

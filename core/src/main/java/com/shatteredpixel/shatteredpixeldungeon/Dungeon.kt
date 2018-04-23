@@ -585,7 +585,7 @@ object Dungeon {
         Notes.restoreFromBundle(bundle)
 
         hero = null
-        hero = bundle.get(HERO) as Hero
+        hero = bundle.get(HERO) as Hero?
 
         WndAlchemy.restoreFromBundle(bundle, hero!!)
 
@@ -616,7 +616,7 @@ object Dungeon {
 
         val bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(save, depth)!!)
 
-        val level = bundle.get(LEVEL) as Level
+        val level = bundle.get(LEVEL) as Level?
 
         return level ?: throw IOException()
     }

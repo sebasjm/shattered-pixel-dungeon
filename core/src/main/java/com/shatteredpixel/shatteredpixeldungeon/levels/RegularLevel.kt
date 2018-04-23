@@ -439,7 +439,7 @@ abstract class RegularLevel : Level() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
 
-        rooms = ArrayList(bundle.getCollection("rooms") as Collection<*> as Collection<Room>)
+        rooms = ArrayList(bundle.getCollection("rooms") as Collection<Room>)
         for (r in rooms!!) {
             r.onLevelLoad(this)
             if (r is EntranceRoom || r.legacyType == "ENTRANCE") {

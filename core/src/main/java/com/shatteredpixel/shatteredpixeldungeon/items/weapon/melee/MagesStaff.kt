@@ -348,7 +348,7 @@ class MagesStaff() : MeleeWeapon() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        wand = bundle.get(WAND) as Wand
+        wand = bundle.get(WAND) as Wand?
         if (wand != null) {
             wand!!.maxCharges = Math.min(wand!!.maxCharges + 1, 10)
             name = Messages.get(wand!!.javaClass, "staff_name")

@@ -97,22 +97,22 @@ class Belongings(private val owner: Hero) : Iterable<Item> {
         backpack.clear()
         backpack.restoreFromBundle(bundle)
 
-        weapon = bundle.get(WEAPON) as KindOfWeapon
+        weapon = bundle.get(WEAPON) as KindOfWeapon?
         if (weapon != null) {
             weapon!!.activate(owner)
         }
 
-        armor = bundle.get(ARMOR) as Armor
+        armor = bundle.get(ARMOR) as Armor?
         if (armor != null) {
             armor!!.activate(owner)
         }
 
-        misc1 = bundle.get(MISC1) as KindofMisc
+        misc1 = bundle.get(MISC1) as KindofMisc?
         if (misc1 != null) {
             misc1!!.activate(owner)
         }
 
-        misc2 = bundle.get(MISC2) as KindofMisc
+        misc2 = bundle.get(MISC2) as KindofMisc?
         if (misc2 != null) {
             misc2!!.activate(owner)
         }
