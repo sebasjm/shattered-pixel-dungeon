@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 import java.util.ArrayList
 
@@ -99,7 +100,7 @@ class Boomerang : MissileWeapon() {
 
     private fun circleBack(from: Int, owner: Hero) {
 
-        (Item.curUser!!.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(from, owner.sprite!!, Item.curItem!!, {} as Callback)
+        (Item.curUser!!.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(from, owner.sprite!!, Item.curItem!!, {} .asCallback())
 
         if (throwEquiped) {
             owner.belongings.weapon = this

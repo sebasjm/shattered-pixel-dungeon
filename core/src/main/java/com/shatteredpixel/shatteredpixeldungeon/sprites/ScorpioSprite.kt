@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 open class ScorpioSprite : MobSprite() {
 
@@ -77,7 +78,7 @@ open class ScorpioSprite : MobSprite() {
         if (anim === zap) {
             idle()
 
-            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cellToAttack, Dart(), { ch!!.onAttackComplete() } as Callback)
+            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cellToAttack, Dart(), { ch!!.onAttackComplete() } .asCallback())
         } else {
             super.onComplete(anim)
         }

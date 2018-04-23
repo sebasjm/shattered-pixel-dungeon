@@ -26,3 +26,10 @@ interface Callback {
     fun call()
 
 }
+fun (() -> Unit).asCallback(): Callback {
+    return object: Callback {
+        override fun call() {
+            this@asCallback()
+        }
+    }
+}

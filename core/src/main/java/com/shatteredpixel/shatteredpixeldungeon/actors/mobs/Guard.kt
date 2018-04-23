@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GuardSprite
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
+import com.watabou.utils.asCallback
 
 class Guard : Mob() {
 
@@ -105,9 +106,9 @@ class Guard : Mob() {
                             Dungeon.observe()
                             GameScene.updateFog()
                         }
-                    } as Callback), -1f)
+                    } .asCallback()), -1f)
                     next()
-                } as Callback))
+                } .asCallback()))
             }
         }
         chainsUsed = true

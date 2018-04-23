@@ -69,6 +69,7 @@ import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
+import com.watabou.utils.asCallback
 
 import java.io.IOException
 import java.util.ArrayList
@@ -110,7 +111,7 @@ object CursedWand {
                     }
                 }
                 wand.wandUsed()
-            } as Callback )
+            } .asCallback() )
 
         //spawns some regrowth
             1 -> cursedFX(user, bolt, {
@@ -123,7 +124,7 @@ object CursedWand {
                     GameScene.add(Blob.seed<Regrowth>(bolt.collisionPos!!, 30, Regrowth::class.java)!!)
                 }
                 wand.wandUsed()
-            } as Callback)
+            } .asCallback())
 
         //random teleportation
             2 -> when (Random.Int(2)) {
@@ -155,7 +156,7 @@ object CursedWand {
                         }
                     }
                     wand.wandUsed()
-                } as Callback )
+                } .asCallback() )
             }
 
         //random gas at location
@@ -166,7 +167,7 @@ object CursedWand {
                     2 -> GameScene.add(Blob.seed<ParalyticGas>(bolt.collisionPos!!, 200, ParalyticGas::class.java)!!)
                 }
                 wand.wandUsed()
-            } as Callback )
+            } .asCallback() )
         }
 
     }
@@ -190,7 +191,7 @@ object CursedWand {
                     Dungeon.level!!.plant(Generator.random(Generator.Category.SEED) as Plant.Seed, pos)
                 }
                 wand.wandUsed()
-            } as Callback )
+            } .asCallback() )
 
         //Health transfer
             1 -> {
@@ -231,7 +232,7 @@ object CursedWand {
             2 -> cursedFX(user, bolt, {
                 Bomb().explode(bolt.collisionPos!!)
                 wand.wandUsed()
-            } as Callback )
+            } .asCallback() )
 
         //shock and recharge
             3 -> {
@@ -268,7 +269,7 @@ object CursedWand {
                     GLog.i(Messages.get(CursedWand::class.java, "nothing"))
                 }
                 wand.wandUsed()
-            } as Callback )
+            } .asCallback() )
 
         //curses!
             1 -> {
@@ -349,7 +350,7 @@ object CursedWand {
                 }
 
                 wand.wandUsed()
-            } as Callback)
+            } .asCallback())
 
         //crashes the game, yes, really.
             2 -> try {

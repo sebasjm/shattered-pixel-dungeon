@@ -40,6 +40,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.ui.Button
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
+import com.watabou.utils.asCallback
 
 class BadgesScene : PixelScene() {
 
@@ -109,7 +110,7 @@ class BadgesScene : PixelScene() {
             if (Game.scene() === this@BadgesScene) {
                 ShatteredPixelDungeon.switchNoFade(BadgesScene::class.java)
             }
-        } as Callback
+        } .asCallback()
     }
 
     override fun destroy() {

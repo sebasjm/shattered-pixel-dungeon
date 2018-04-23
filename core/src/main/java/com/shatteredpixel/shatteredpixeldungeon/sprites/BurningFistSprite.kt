@@ -27,6 +27,7 @@ import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 class BurningFistSprite : MobSprite() {
 
@@ -66,7 +67,7 @@ class BurningFistSprite : MobSprite() {
                     MagicMissile.SHADOW,
                     this,
                     posToShoot,
-                    { ch!!.onAttackComplete() } as Callback
+                    { ch!!.onAttackComplete() } .asCallback()
             )
 
             idle()

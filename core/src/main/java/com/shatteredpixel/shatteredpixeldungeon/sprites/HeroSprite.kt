@@ -32,6 +32,7 @@ import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
 import com.watabou.utils.PointF
+import com.watabou.utils.asCallback
 
 class HeroSprite : CharSprite() {
 
@@ -103,7 +104,7 @@ class HeroSprite : CharSprite() {
         animCallback =  {
             idle()
             ch!!.onOperateComplete()
-        } as Callback
+        } .asCallback()
         play(read)
     }
 

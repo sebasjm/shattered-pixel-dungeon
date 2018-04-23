@@ -47,6 +47,7 @@ import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 import java.util.ArrayList
 import java.util.Collections
@@ -468,7 +469,7 @@ open class Item : Bundlable {
                     this,{
                         this@Item.detach(user.belongings.backpack)!!.onThrow(cell)
                         user.spendAndNext(delay)
-                    } as Callback
+                    } .asCallback()
             )
         } else {
             (user.sprite!!.parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(user.sprite!!,
@@ -476,7 +477,7 @@ open class Item : Bundlable {
                     this,{
                         this@Item.detach(user.belongings.backpack)!!.onThrow(cell)
                         user.spendAndNext(delay)
-                    } as Callback
+                    } .asCallback()
             )
         }
     }

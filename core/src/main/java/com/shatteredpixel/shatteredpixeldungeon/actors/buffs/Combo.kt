@@ -40,10 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
-import com.watabou.utils.Bundle
-import com.watabou.utils.Callback
-import com.watabou.utils.PathFinder
-import com.watabou.utils.Random
+import com.watabou.utils.*
 
 class Combo : Buff(), ActionIndicator.Action {
 
@@ -103,7 +100,7 @@ class Combo : Buff(), ActionIndicator.Action {
                     else
                         type = finisherType.CLOBBER
                     doAttack(enemy)
-                } as Callback)
+                } .asCallback())
             }
         }
 
@@ -199,7 +196,7 @@ class Combo : Buff(), ActionIndicator.Action {
                     count--
                     //fury attacks as many times as you have combo count
                     if (count > 0 && enemy.isAlive) {
-                        target!!.sprite!!.attack(enemy.pos, { doAttack(enemy) } as Callback)
+                        target!!.sprite!!.attack(enemy.pos, { doAttack(enemy) } .asCallback())
                     } else {
                         detach()
                         ActionIndicator.clearAction(this@Combo)

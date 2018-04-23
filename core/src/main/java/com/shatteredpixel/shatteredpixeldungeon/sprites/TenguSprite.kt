@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 class TenguSprite : MobSprite() {
 
@@ -80,7 +81,7 @@ class TenguSprite : MobSprite() {
             (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, Shuriken(),{
                 ch!!.next()
                 if (enemy != null) ch!!.attack(enemy)
-            } as Callback)
+            } .asCallback())
 
             play(cast)
             turnTo(ch!!.pos, cell)

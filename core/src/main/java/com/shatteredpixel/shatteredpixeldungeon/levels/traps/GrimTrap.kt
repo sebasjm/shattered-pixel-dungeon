@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 class GrimTrap : Trap() {
 
@@ -102,7 +103,7 @@ class GrimTrap : Trap() {
                         finalTarget.sprite!!.emitter().burst(ShadowParticle.UP, 10)
                         Actor.remove(toRemove)
                         next()
-                    } as Callback)
+                    } .asCallback())
                     return false
                 }
             })

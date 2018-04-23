@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.noosa.Camera
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
+import com.watabou.utils.asCallback
 
 class WarriorArmor : ClassArmor() {
 
@@ -87,7 +88,7 @@ class WarriorArmor : ClassArmor() {
                         Camera.main!!.shake(2f, 0.5f)
 
                         Item.curUser!!.spendAndNext(LEAP_TIME.toFloat())
-                    } as Callback)
+                    } .asCallback())
                 }
             }
 

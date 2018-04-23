@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Para
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
+import com.watabou.utils.asCallback
 
 class GnollTricksterSprite : MobSprite() {
 
@@ -58,7 +59,7 @@ class GnollTricksterSprite : MobSprite() {
     override fun attack(cell: Int) {
         if (!Dungeon.level!!.adjacent(cell, ch!!.pos)) {
 
-            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, ParalyticDart(), { ch!!.onAttackComplete() } as Callback)
+            (parent!!.recycle(MissileSprite::class.java) as MissileSprite).reset(ch!!.pos, cell, ParalyticDart(), { ch!!.onAttackComplete() } .asCallback())
 
             play(cast)
             turnTo(ch!!.pos, cell)

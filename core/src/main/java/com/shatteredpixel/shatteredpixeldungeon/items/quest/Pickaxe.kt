@@ -40,6 +40,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
+import com.watabou.utils.asCallback
 
 import java.util.ArrayList
 
@@ -115,7 +116,7 @@ class Pickaxe : Weapon() {
                         }
 
                         hero.onOperateComplete()
-                    }as Callback)
+                    }.asCallback())
 
                     return
                 }

@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import com.watabou.utils.asCallback
 
 import java.util.ArrayList
 
@@ -158,12 +159,12 @@ class EtherealChains : Artifact() {
 
         hero!!.busy()
         hero.sprite!!.parent!!.add(Chains(hero.sprite!!.center(), enemy.sprite!!.center(), {
-            Actor.add(Pushing(enemy, enemy.pos, pulledPos, { Dungeon.level!!.press(pulledPos, enemy, true) } as Callback ))
+            Actor.add(Pushing(enemy, enemy.pos, pulledPos, { Dungeon.level!!.press(pulledPos, enemy, true) } .asCallback() ))
             enemy.pos = pulledPos
             Dungeon.observe()
             GameScene.updateFog()
             hero.spendAndNext(1f)
-        } as Callback ))
+        } .asCallback() ))
     }
 
     //pulls the hero along the chain to the collosionPos, if possible.
@@ -201,12 +202,12 @@ class EtherealChains : Artifact() {
 
         hero.busy()
         hero.sprite!!.parent!!.add(Chains(hero.sprite!!.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), {
-            Actor.add(Pushing(hero, hero.pos, newHeroPos, { Dungeon.level!!.press(newHeroPos, hero) } as Callback ))
+            Actor.add(Pushing(hero, hero.pos, newHeroPos, { Dungeon.level!!.press(newHeroPos, hero) } .asCallback() ))
             hero.spendAndNext(1f)
             hero.pos = newHeroPos
             Dungeon.observe()
             GameScene.updateFog()
-        } as Callback ))
+        } .asCallback() ))
     }
 
     override fun passiveBuff(): Artifact.ArtifactBuff? {

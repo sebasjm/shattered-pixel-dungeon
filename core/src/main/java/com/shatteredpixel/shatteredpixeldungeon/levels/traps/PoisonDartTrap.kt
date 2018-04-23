@@ -35,6 +35,7 @@ import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
+import com.watabou.utils.asCallback
 
 class PoisonDartTrap : Trap() {
 
@@ -86,7 +87,7 @@ class PoisonDartTrap : Trap() {
                             finalTarget.sprite!!.flash()
                             Actor.remove(toRemove)
                             next()
-                        } as Callback)
+                        } .asCallback())
                         return false
                     }
                 })
