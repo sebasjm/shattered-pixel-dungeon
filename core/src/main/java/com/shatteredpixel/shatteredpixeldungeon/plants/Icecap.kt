@@ -39,7 +39,7 @@ class Icecap : Plant() {
 
         PathFinder.buildDistanceMap(pos, BArray.not(Dungeon.level!!.losBlocking, null), 1)
 
-        val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire
+        val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire?
 
         for (i in PathFinder.distance!!.indices) {
             if (PathFinder.distance!![i] < Integer.MAX_VALUE) {

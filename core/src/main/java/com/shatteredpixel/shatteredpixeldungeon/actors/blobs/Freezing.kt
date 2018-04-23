@@ -41,7 +41,7 @@ class Freezing : Blob() {
         val water = Dungeon.level!!.water
         var cell: Int
 
-        val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire
+        val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire?
 
         for (i in area.left - 1..area.right) {
             for (j in area.top - 1..area.bottom) {

@@ -41,7 +41,7 @@ class Fire : Blob() {
         var cell: Int
         var fire: Int
 
-        val freeze = Dungeon.level!!.blobs[Freezing::class.java] as Freezing
+        val freeze = Dungeon.level!!.blobs[Freezing::class.java] as Freezing?
 
         var observe = false
 

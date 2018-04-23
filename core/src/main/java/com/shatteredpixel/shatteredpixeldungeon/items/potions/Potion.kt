@@ -231,7 +231,7 @@ open class Potion : Item() {
 
     protected fun splash(cell: Int) {
 
-        val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire
+        val fire = Dungeon.level!!.blobs[Fire::class.java] as Fire?
         fire?.clear(cell)
 
         val color = ItemSprite.pick(image, 8, 10)
