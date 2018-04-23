@@ -1113,7 +1113,7 @@ class Hero : Char() {
         }
 
         val ch: Char?
-        val heap: Heap
+        val heap: Heap?
 
         if (Dungeon.level!!.map!![cell] == Terrain.ALCHEMY && cell != pos) {
 
@@ -1360,7 +1360,7 @@ class Hero : Char() {
 
         } else if (curAction is HeroAction.OpenChest) {
 
-            val heap = Dungeon.level!!.heaps.get((curAction as HeroAction.OpenChest).dst)
+            val heap = Dungeon.level!!.heaps.get((curAction as HeroAction.OpenChest).dst)!!
             if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
                 Sample.INSTANCE.play(Assets.SND_BONES)
             } else if (heap.type == Type.LOCKED_CHEST) {

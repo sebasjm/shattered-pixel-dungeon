@@ -215,7 +215,7 @@ open class Bomb : Item() {
             }
 
             //look for our bomb, remove it from its heap, and blow it up.
-            for (heap in Dungeon.level!!.heaps.values()) {
+            for (heap in Dungeon.level!!.heaps.values().filterNotNull()) {
                 if (heap.items!!.contains(bomb!!)) {
                     heap.items!!.remove(bomb!!)
 

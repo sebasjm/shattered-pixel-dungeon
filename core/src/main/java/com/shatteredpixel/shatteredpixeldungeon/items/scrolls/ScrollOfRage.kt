@@ -50,7 +50,7 @@ class ScrollOfRage : Scroll() {
             }
         }
 
-        for (heap in Dungeon.level!!.heaps.values()) {
+        for (heap in Dungeon.level!!.heaps.values().filterNotNull()) {
             if (heap.type == Heap.Type.MIMIC) {
                 val m = Mimic.spawnAt(heap.pos, heap.items!!)
                 if (m != null) {

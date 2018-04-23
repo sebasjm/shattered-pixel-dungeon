@@ -63,7 +63,7 @@ open class Shopkeeper : NPC() {
     open fun flee() {
         for (heap in Dungeon.level!!.heaps.values()) {
             if (heap.type == Heap.Type.FOR_SALE) {
-                CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4)
+                CellEmitter.get(heap.pos)!!.burst(ElmoParticle.FACTORY, 4)
                 heap.destroy()
             }
         }

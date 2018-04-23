@@ -230,7 +230,7 @@ class PrisonBossLevel : Level() {
     }
 
     private fun clearEntities(safeArea: Room?) {
-        for (heap in heaps.values()) {
+        for (heap in heaps.values().filterNotNull()) {
             if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))) {
                 for (item in heap.items!!)
                     storedItems.add(item)

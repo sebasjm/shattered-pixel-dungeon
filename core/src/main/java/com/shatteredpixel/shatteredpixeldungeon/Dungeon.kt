@@ -698,7 +698,7 @@ object Dungeon {
         }
 
         if (hero!!.buff<Awareness>(Awareness::class.java) != null) {
-            for (h in level!!.heaps.values()) {
+            for (h in level!!.heaps.values().filterNotNull()) {
                 BArray.or(level!!.visited!!, level!!.heroFOV, h.pos - 1 - level!!.width(), 3, level!!.visited)
                 BArray.or(level!!.visited!!, level!!.heroFOV, h.pos - 1, 3, level!!.visited)
                 BArray.or(level!!.visited!!, level!!.heroFOV, h.pos - 1 + level!!.width(), 3, level!!.visited)

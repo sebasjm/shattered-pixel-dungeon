@@ -60,7 +60,7 @@ abstract class WellWater : Blob() {
 
     protected fun affect(pos: Int): Boolean {
 
-        val heap: Heap
+        val heap: Heap?
 
         if (pos == Dungeon.hero!!.pos && affectHero(Dungeon.hero!!)) {
 

@@ -71,7 +71,7 @@ class CellSelector(map: DungeonTilemap) : TouchArea(map) {
                 }
             }
 
-            for (heap in Dungeon.level!!.heaps.values()) {
+            for (heap in Dungeon.level!!.heaps.values().filterNotNull()) {
                 if (heap.sprite != null && heap.sprite!!.overlapsPoint(p.x, p.y)) {
                     select(heap.pos)
                     return

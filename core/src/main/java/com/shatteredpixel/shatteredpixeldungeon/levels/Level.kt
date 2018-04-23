@@ -114,7 +114,7 @@ abstract class Level : Bundlable {
     var locked = false
 
     var mobs: HashSet<Mob> = HashSet()
-    var heaps: SparseArray<Heap> = SparseArray()
+    var heaps: SparseArray<Heap?> = SparseArray()
     var blobs: HashMap<Class<out Blob>, Blob> = HashMap()
     var plants: SparseArray<Plant> = SparseArray()
     var traps: SparseArray<Trap> = SparseArray()
@@ -833,7 +833,7 @@ abstract class Level : Bundlable {
         }
 
         if (c === Dungeon.hero!!) {
-            for (heap in heaps.values())
+            for (heap in heaps.values().filterNotNull())
                 if (!heap.seen && fieldOfView[heap.pos])
                     heap.seen = true
         }
