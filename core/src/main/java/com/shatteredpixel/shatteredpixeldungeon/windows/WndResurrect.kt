@@ -43,7 +43,7 @@ class WndResurrect(ankh: Ankh, causeOfDeath: Any) : Window() {
 
         val titlebar = IconTitle()
         titlebar.icon(ItemSprite(ankh.image(), null))
-        titlebar.label(ankh.name())
+        titlebar.label(ankh.name()!!)
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 

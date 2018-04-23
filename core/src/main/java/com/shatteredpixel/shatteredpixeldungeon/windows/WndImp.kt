@@ -39,7 +39,7 @@ class WndImp(imp: Imp, tokens: DwarfToken) : Window() {
 
         val titlebar = IconTitle()
         titlebar.icon(ItemSprite(tokens.image(), null))
-        titlebar.label(Messages.titleCase(tokens.name()))
+        titlebar.label(Messages.titleCase(tokens.name()!!))
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 

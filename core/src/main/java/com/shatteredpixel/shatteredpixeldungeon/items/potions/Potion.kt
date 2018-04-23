@@ -215,7 +215,7 @@ open class Potion : Item() {
     }
 
     override fun name(): String {
-        return if (isKnown) super.name() else Messages.get(Potion::class.java, color!!)
+        return if (isKnown) super.name()!! else Messages.get(Potion::class.java, color!!)
     }
 
     override fun info(): String {

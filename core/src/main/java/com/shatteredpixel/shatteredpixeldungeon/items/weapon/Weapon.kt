@@ -173,7 +173,7 @@ abstract class Weapon : KindOfWeapon() {
     }
 
     override fun name(): String {
-        return if (enchantment != null && (cursedKnown || !enchantment!!.curse())) enchantment!!.name(super.name()) else super.name()
+        return if (enchantment != null && (cursedKnown || !enchantment!!.curse())) enchantment!!.name(super.name()!!) else super.name()!!
     }
 
     override fun random(): Item {

@@ -54,7 +54,7 @@ open class ItemSlot() : Button() {
         enable(false)
     }
 
-    constructor(item: Item) : this() {
+    constructor(item: Item?) : this() {
         item(item)
     }
 

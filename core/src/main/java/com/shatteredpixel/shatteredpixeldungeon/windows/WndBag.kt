@@ -127,7 +127,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
     protected fun placeTitle(bag: Bag, width: Int) {
 
         val txtTitle = PixelScene.renderText(
-                if (title != null) Messages.titleCase(title) else Messages.titleCase(bag.name()), 9)
+                if (title != null) Messages.titleCase(title) else Messages.titleCase(bag.name()!!), 9)
         txtTitle.hardlight(Window.TITLE_COLOR)
         txtTitle.x = 1f
         txtTitle.y = (TITLE_HEIGHT - txtTitle.baseLine()).toInt() / 2f - 1
@@ -181,7 +181,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         val x = col * (SLOT_WIDTH + SLOT_MARGIN)
         val y = TITLE_HEIGHT + row * (SLOT_HEIGHT + SLOT_MARGIN)
 
-        add(ItemButton(item!!).setPos(x.toFloat(), y.toFloat()))
+        add(ItemButton(item).setPos(x.toFloat(), y.toFloat()))
 
         if (++col >= nCols) {
             col = 0
@@ -273,7 +273,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         }
     }
 
-    private inner class ItemButton(private val item2: Item) : ItemSlot(item2) {
+    private inner class ItemButton(private val item2: Item?) : ItemSlot(item2) {
         private var bg: ColorBlock? = null
 
         init {
@@ -362,7 +362,7 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
         }
 
         override fun onClick() {
-            if (!lastBag!!.contains(item2) && !item2.isEquipped(Dungeon.hero!!)) {
+            if (!lastBag!!.contains(item2) && !item2!!.isEquipped(Dungeon.hero!!)) {
 
                 hide()
 
@@ -373,15 +373,15 @@ class WndBag(bag: Bag, private val listener: Listener?, mode: Mode, private val 
 
             } else {
 
-                GameScene.show(WndItem(this@WndBag, item2))
+                GameScene.show(WndItem(this@WndBag, item2!!))
 
             }
         }
 
         override fun onLongClick(): Boolean {
-            if (listener == null && item2.defaultAction != null) {
+            if (listener == null && item2!!.defaultAction != null) {
                 hide()
-                Dungeon.quickslot.setSlot(0, item2)
+                Dungeon.quickslot.setSlot(0, item2!!)
                 QuickSlotButton.refresh()
                 return true
             } else {

@@ -253,7 +253,7 @@ open class Armor(var tier: Int) : EquipableItem() {
 
 
     override fun name(): String {
-        return if (glyph != null && (cursedKnown || !glyph!!.curse())) glyph!!.name(super.name()) else super.name()
+        return if (glyph != null && (cursedKnown || !glyph!!.curse())) glyph!!.name(super.name()!!) else super.name()!!
     }
 
     override fun info(): String {

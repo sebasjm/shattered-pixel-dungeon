@@ -154,7 +154,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         point(worldToCamera(cell))
     }
 
-    fun showStatus(color: Int, text: String, vararg args: Any) {
+    fun showStatus(color: Int, text: String, vararg args: Any?) {
         var text = text
         if (visible) {
             if (args.size > 0) {

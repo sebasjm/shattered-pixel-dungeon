@@ -107,15 +107,15 @@ object Messages {
      * Resource grabbing methods
      */
 
-    operator fun get(key: String, vararg args: Any): String {
+    operator fun get(key: String, vararg args: Any?): String {
         return get(null, key, *args)
     }
 
-//    operator fun get(o: Any, k: String, vararg args: Any): String {
+//    operator fun get(o: Any, k: String, vararg args: Any?): String {
 //        return get(o.javaClass, k, *args)
 //    }
 
-    operator fun get(c: Class<*>?, k: String, vararg args: Any): String {
+    operator fun get(c: Class<*>?, k: String, vararg args: Any?): String {
         var key: String
         if (c != null) {
             key = c.name/*.replace("\\$.*".toRegex(),"")*/.replace("com.shatteredpixel.shatteredpixeldungeon.", "")
@@ -145,7 +145,7 @@ object Messages {
      * String Utility Methods
      */
 
-    fun format(format: String, vararg args: Any): String {
+    fun format(format: String, vararg args: Any?): String {
         return String.format(Locale.ENGLISH, format, *args)
     }
 

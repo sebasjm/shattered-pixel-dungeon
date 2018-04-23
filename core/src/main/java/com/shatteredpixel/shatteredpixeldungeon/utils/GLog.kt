@@ -37,7 +37,7 @@ object GLog {
 
     var update = Signal<String>()
 
-    fun i(text: String, vararg args: Any) {
+    fun i(text: String, vararg args: Any?) {
         var text = text
 
         if (args.size > 0) {
@@ -48,19 +48,19 @@ object GLog {
         update.dispatch(text)
     }
 
-    fun p(text: String, vararg args: Any) {
+    fun p(text: String, vararg args: Any?) {
         i(POSITIVE + text, *args)
     }
 
-    fun n(text: String, vararg args: Any) {
+    fun n(text: String, vararg args: Any?) {
         i(NEGATIVE + text, *args)
     }
 
-    fun w(text: String, vararg args: Any) {
+    fun w(text: String, vararg args: Any?) {
         i(WARNING + text, *args)
     }
 
-    fun h(text: String, vararg args: Any) {
+    fun h(text: String, vararg args: Any?) {
         i(HIGHLIGHT + text, *args)
     }
 }

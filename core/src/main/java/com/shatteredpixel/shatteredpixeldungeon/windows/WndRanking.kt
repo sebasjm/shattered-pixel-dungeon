@@ -293,7 +293,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
             name!!.y = y + (height - name!!.baseLine()) / 2
             PixelScene.align(name!!)
 
-            var str = Messages.titleCase(item.name())
+            var str = Messages.titleCase(item.name()!!)
             name!!.text(str)
             if (name!!.width() > width - name!!.x) {
                 do {

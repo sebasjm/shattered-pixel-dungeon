@@ -98,7 +98,7 @@ open class Ring : KindofMisc() {
     }
 
     override fun name(): String {
-        return if (isKnown) super.name() else Messages.get(Ring::class.java, gem!!)
+        return if (isKnown) super.name()!! else Messages.get(Ring::class.java, gem!!)
     }
 
     override fun info(): String {

@@ -194,7 +194,7 @@ open class Item : Bundlable {
 
         } else {
 
-            GLog.n(Messages.get(Item::class.java, "pack_full", name()))
+            GLog.n(Messages.get(Item::class.java, "pack_full", name()!!))
             return false
 
         }
@@ -350,17 +350,17 @@ open class Item : Bundlable {
         var name = name()
 
         if (visiblyUpgraded() != 0)
-            name = Messages.format(TXT_TO_STRING_LVL, name, visiblyUpgraded())
+            name = Messages.format(TXT_TO_STRING_LVL, name!!, visiblyUpgraded())
 
         if (quantity > 1)
-            name = Messages.format(TXT_TO_STRING_X, name, quantity)
+            name = Messages.format(TXT_TO_STRING_X, name!!, quantity)
 
-        return name
+        return name!!
 
     }
 
-    open fun name(): String {
-        return name!!
+    open fun name(): String? {
+        return name
     }
 
     fun trueName(): String {

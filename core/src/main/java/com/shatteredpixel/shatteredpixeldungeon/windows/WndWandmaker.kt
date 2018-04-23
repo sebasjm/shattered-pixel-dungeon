@@ -42,7 +42,7 @@ class WndWandmaker(wandmaker: Wandmaker, item: Item) : Window() {
 
         val titlebar = IconTitle()
         titlebar.icon(ItemSprite(item.image(), null))
-        titlebar.label(Messages.titleCase(item.name()))
+        titlebar.label(Messages.titleCase(item.name()!!))
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 
@@ -60,7 +60,7 @@ class WndWandmaker(wandmaker: Wandmaker, item: Item) : Window() {
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnWand1 = object : RedButton(Wandmaker.Quest.wand1!!.name()) {
+        val btnWand1 = object : RedButton(Wandmaker.Quest.wand1!!.name()!!) {
             override fun onClick() {
                 selectReward(wandmaker, item, Wandmaker.Quest.wand1!!)
             }
@@ -68,7 +68,7 @@ class WndWandmaker(wandmaker: Wandmaker, item: Item) : Window() {
         btnWand1.setRect(0f, message.top() + message.height() + GAP, WIDTH.toFloat(), BTN_HEIGHT.toFloat())
         add(btnWand1)
 
-        val btnWand2 = object : RedButton(Wandmaker.Quest.wand2!!.name()) {
+        val btnWand2 = object : RedButton(Wandmaker.Quest.wand2!!.name()!!) {
             override fun onClick() {
                 selectReward(wandmaker, item, Wandmaker.Quest.wand2!!)
             }

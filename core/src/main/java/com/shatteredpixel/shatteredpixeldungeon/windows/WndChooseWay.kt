@@ -36,7 +36,7 @@ class WndChooseWay(tome: TomeOfMastery, way1: HeroSubClass, way2: HeroSubClass) 
 
         val titlebar = IconTitle()
         titlebar.icon(ItemSprite(tome.image(), null))
-        titlebar.label(tome.name())
+        titlebar.label(tome.name()!!)
         titlebar.setRect(0f, 0f, WIDTH.toFloat(), 0f)
         add(titlebar)
 

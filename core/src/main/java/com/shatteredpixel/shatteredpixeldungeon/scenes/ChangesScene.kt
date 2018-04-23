@@ -1737,7 +1737,7 @@ class ChangesScene : PixelScene() {
             layout()
         }
 
-        constructor(item: Item, message: String) : this(ItemSprite(item), item.name(), message) {}
+        constructor(item: Item, message: String) : this(ItemSprite(item), item.name()!!, message) {}
 
         fun onClick() {
             Game.scene()!!.add(ChangesWindow(Image(icon), title, message))
