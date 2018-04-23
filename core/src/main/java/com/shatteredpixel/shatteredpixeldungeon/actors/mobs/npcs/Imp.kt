@@ -170,7 +170,7 @@ class Imp : NPC() {
 
                     given = node.getBoolean(GIVEN)
                     isCompleted = node.getBoolean(COMPLETED)
-                    reward = node.get(REWARD) as Ring
+                    reward = node.get(REWARD) as Ring?
                 }
             }
         }

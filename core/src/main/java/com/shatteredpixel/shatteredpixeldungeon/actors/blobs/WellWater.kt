@@ -126,7 +126,7 @@ abstract class WellWater : Blob() {
             val waters = arrayOf<Class<*>>(WaterOfHealth::class.java, WaterOfAwareness::class.java, WaterOfTransmutation::class.java)
 
             for (waterClass in waters) {
-                val water = Dungeon.level!!.blobs.get(waterClass) as WellWater
+                val water = Dungeon.level!!.blobs.get(waterClass) as WellWater?
                 if (water != null &&
                         water.volume > 0 &&
                         water.cur!![cell] > 0 &&

@@ -166,7 +166,7 @@ enum class Rankings {
 
         Badges.loadLocal(data.getBundle(BADGES))
 
-        Dungeon.hero = data.get(HERO) as Hero
+        Dungeon.hero = data.get(HERO) as Hero?
 
         Statistics.restoreFromBundle(data.getBundle(STATS))
 

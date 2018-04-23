@@ -520,11 +520,11 @@ class GameScene : PixelScene() {
         heaps!!.add(heap.sprite)
     }
 
-    private fun addPlantSprite(plant: Plant) {
+    private fun addPlantSprite(plant: Plant?) {
 
     }
 
-    private fun addTrapSprite(trap: Trap) {
+    private fun addTrapSprite(trap: Trap?) {
 
     }
 
@@ -621,34 +621,34 @@ class GameScene : PixelScene() {
 
         // -------------------------------------------------------
 
-        fun add(plant: Plant) {
+        fun add(plant: Plant?) {
             if (scene != null) {
                 scene!!.addPlantSprite(plant)
             }
         }
 
-        fun add(trap: Trap) {
+        fun add(trap: Trap?) {
             if (scene != null) {
                 scene!!.addTrapSprite(trap)
             }
         }
 
-        fun add(gas: Blob) {
+        fun add(gas: Blob?) {
             Actor.add(gas)
             if (scene != null) {
-                scene!!.addBlobSprite(gas)
+                scene!!.addBlobSprite(gas!!)
             }
         }
 
-        fun add(heap: Heap) {
+        fun add(heap: Heap?) {
             if (scene != null) {
-                scene!!.addHeapSprite(heap)
+                scene!!.addHeapSprite(heap!!)
             }
         }
 
-        fun discard(heap: Heap) {
+        fun discard(heap: Heap??) {
             if (scene != null) {
-                scene!!.addDiscardedSprite(heap)
+                scene!!.addDiscardedSprite(heap!!)
             }
         }
 

@@ -228,7 +228,7 @@ open class Blob : Actor() {
         fun <T : Blob> seed(cell: Int, amount: Int, type: Class<T>, level: Level?): T? {
             try {
 
-                var gas: T? = level!!.blobs[type] as T
+                var gas = level!!.blobs[type]
                 if (gas == null) {
                     gas = type.newInstance()
                     level.blobs[type] = gas
@@ -236,7 +236,7 @@ open class Blob : Actor() {
 
                 gas!!.seed(level, cell, amount)
 
-                return gas
+                return gas as T
 
             } catch (e: Exception) {
                 Game.reportException(e)

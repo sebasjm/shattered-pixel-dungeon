@@ -204,8 +204,8 @@ class Wandmaker : NPC() {
 
                     given = node.getBoolean(GIVEN)
 
-                    wand1 = node.get(WAND1) as Wand
-                    wand2 = node.get(WAND2) as Wand
+                    wand1 = node.get(WAND1) as Wand?
+                    wand2 = node.get(WAND2) as Wand?
 
                     if (type == 2) {
                         CeremonialCandle.ritualPos = node.getInt(RITUALPOS)

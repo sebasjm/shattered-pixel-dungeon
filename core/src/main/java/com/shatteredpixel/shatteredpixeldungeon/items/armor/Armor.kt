@@ -83,8 +83,8 @@ open class Armor(var tier: Int) : EquipableItem() {
         if (hitsToKnow == 0) {
             hitsToKnow = HITS_TO_KNOW
         }
-        inscribe(bundle.get(GLYPH) as Glyph??)
-        seal = bundle.get(SEAL) as BrokenSeal??
+        inscribe(bundle.get(GLYPH) as Glyph?)
+        seal = bundle.get(SEAL) as BrokenSeal?
     }
 
     override fun reset() {

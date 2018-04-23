@@ -376,7 +376,7 @@ object Dungeon {
 
     fun dropToChasm(item: Item) {
         val depth = Dungeon.depth + 1
-        var dropped: ArrayList<Item>? = Dungeon.droppedItems.get(depth) as ArrayList<Item>
+        var dropped: ArrayList<Item>? = Dungeon.droppedItems.get(depth) as ArrayList<Item>?
         if (dropped == null) {
             dropped = ArrayList<Item>()
             Dungeon.droppedItems.put(depth, dropped)

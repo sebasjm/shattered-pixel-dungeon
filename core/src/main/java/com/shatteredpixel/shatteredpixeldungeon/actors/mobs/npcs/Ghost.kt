@@ -237,8 +237,8 @@ class Ghost : NPC() {
 
                 depth = node.getInt(DEPTH)
 
-                weapon = node.get(WEAPON) as Weapon
-                armor = node.get(ARMOR) as Armor
+                weapon = node.get(WEAPON) as Weapon?
+                armor = node.get(ARMOR) as Armor?
             } else {
                 reset()
             }
