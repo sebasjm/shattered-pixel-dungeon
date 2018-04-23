@@ -119,7 +119,7 @@ class Weightstone : Item() {
             var pos = tfMesage.top() + tfMesage.height()
 
             if (weapon.imbue != Weapon.Imbue.LIGHT) {
-                val btnSpeed = object : RedButton(Messages.get(this.javaClass, "light")) {
+                val btnSpeed = object : RedButton(Messages.get(this@Weightstone.javaClass, "light")) {
                     override fun onClick() {
                         hide()
                         this@Weightstone.apply(weapon, true)
@@ -132,7 +132,7 @@ class Weightstone : Item() {
             }
 
             if (weapon.imbue != Weapon.Imbue.HEAVY) {
-                val btnAccuracy = object : RedButton(Messages.get(this.javaClass, "heavy")) {
+                val btnAccuracy = object : RedButton(Messages.get(this@Weightstone.javaClass, "heavy")) {
                     override fun onClick() {
                         hide()
                         this@Weightstone.apply(weapon, false)
@@ -144,7 +144,7 @@ class Weightstone : Item() {
                 pos = btnAccuracy.bottom()
             }
 
-            val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
+            val btnCancel = object : RedButton(Messages.get(this@Weightstone.javaClass, "cancel")) {
                 override fun onClick() {
                     hide()
                 }

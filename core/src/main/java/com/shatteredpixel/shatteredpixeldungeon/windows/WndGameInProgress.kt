@@ -68,7 +68,7 @@ class WndGameInProgress(slot: Int) : Window() {
         pos = title.bottom() + GAP
 
         if (info.challenges > 0) {
-            val btnChallenges = object : RedButton(Messages.get(this.javaClass, "challenges")) {
+            val btnChallenges = object : RedButton(Messages.get(this@WndGameInProgress.javaClass, "challenges")) {
                 override fun onClick() {
                     Game.scene()!!.add(WndChallenges(info.challenges, false))
                 }
@@ -95,7 +95,7 @@ class WndGameInProgress(slot: Int) : Window() {
 
         pos += GAP.toFloat()
 
-        val cont = object : RedButton(Messages.get(this.javaClass, "continue")) {
+        val cont = object : RedButton(Messages.get(this@WndGameInProgress.javaClass, "continue")) {
             override fun onClick() {
                 super.onClick()
 
@@ -107,7 +107,7 @@ class WndGameInProgress(slot: Int) : Window() {
             }
         }
 
-        val erase = object : RedButton(Messages.get(this.javaClass, "erase")) {
+        val erase = object : RedButton(Messages.get(this@WndGameInProgress.javaClass, "erase")) {
             override fun onClick() {
                 super.onClick()
 

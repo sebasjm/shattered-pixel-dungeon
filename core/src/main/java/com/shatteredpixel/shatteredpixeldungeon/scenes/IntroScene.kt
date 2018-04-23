@@ -30,7 +30,7 @@ class IntroScene : PixelScene() {
     override fun create() {
         super.create()
 
-        add(object : WndStory(Messages.get(this.javaClass, "text")) {
+        add(object : WndStory(Messages.get(this@IntroScene.javaClass, "text")) {
             override fun hide() {
                 super.hide()
                 Game.switchScene(InterlevelScene::class.java)

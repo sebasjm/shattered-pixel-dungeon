@@ -52,7 +52,7 @@ class WndResurrect(ankh: Ankh, causeOfDeath: Any) : Window() {
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnYes = object : RedButton(Messages.get(this.javaClass, "yes")) {
+        val btnYes = object : RedButton(Messages.get(this@WndResurrect.javaClass, "yes")) {
             override fun onClick() {
                 hide()
 
@@ -65,7 +65,7 @@ class WndResurrect(ankh: Ankh, causeOfDeath: Any) : Window() {
         btnYes.setRect(0f, message.top() + message.height() + GAP, WIDTH.toFloat(), BTN_HEIGHT.toFloat())
         add(btnYes)
 
-        val btnNo = object : RedButton(Messages.get(this.javaClass, "no")) {
+        val btnNo = object : RedButton(Messages.get(this@WndResurrect.javaClass, "no")) {
             override fun onClick() {
                 hide()
 

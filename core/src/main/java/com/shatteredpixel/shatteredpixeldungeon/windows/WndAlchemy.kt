@@ -191,7 +191,7 @@ class WndAlchemy : Window() {
 
         val btnWidth = (w - 14) / 2f
 
-        val btnRecipes = object : RedButton(Messages.get(this.javaClass, "recipes_title")) {
+        val btnRecipes = object : RedButton(Messages.get(this@WndAlchemy.javaClass, "recipes_title")) {
             override fun onClick() {
                 super.onClick()
                 Game.scene()!!.addToFront(WndMessage(Messages.get(WndAlchemy::class.java, "recipes_text")))
@@ -201,7 +201,7 @@ class WndAlchemy : Window() {
         PixelScene.align(btnRecipes)
         add(btnRecipes)
 
-        val btnClose = object : RedButton(Messages.get(this.javaClass, "close")) {
+        val btnClose = object : RedButton(Messages.get(this@WndAlchemy.javaClass, "close")) {
             override fun onClick() {
                 super.onClick()
                 onBackPressed()

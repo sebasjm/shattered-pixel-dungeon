@@ -133,7 +133,7 @@ class WndLangs : Window() {
             info.setPos(textLeft.toFloat(), title.height() + 2)
             add(info)
 
-            val creditsBtn = object : RedButton(Messages.titleCase(Messages.get(this.javaClass, "credits"))) {
+            val creditsBtn = object : RedButton(Messages.titleCase(Messages.get(this@WndLangs.javaClass, "credits"))) {
                 override fun onClick() {
                     super.onClick()
                     var creds = ""

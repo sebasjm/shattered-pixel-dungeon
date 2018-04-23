@@ -71,7 +71,7 @@ class WndSadGhost(ghost: Ghost, type: Int) : Window() {
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnWeapon = object : RedButton(Messages.get(this.javaClass, "weapon")) {
+        val btnWeapon = object : RedButton(Messages.get(this@WndSadGhost.javaClass, "weapon")) {
             override fun onClick() {
                 selectReward(ghost, Ghost.Quest.weapon)
             }
@@ -80,7 +80,7 @@ class WndSadGhost(ghost: Ghost, type: Int) : Window() {
         add(btnWeapon)
 
         if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
-            val btnArmor = object : RedButton(Messages.get(this.javaClass, "armor")) {
+            val btnArmor = object : RedButton(Messages.get(this@WndSadGhost.javaClass, "armor")) {
                 override fun onClick() {
                     selectReward(ghost, Ghost.Quest.armor)
                 }

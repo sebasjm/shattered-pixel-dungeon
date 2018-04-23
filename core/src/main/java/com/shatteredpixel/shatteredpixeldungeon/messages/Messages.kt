@@ -118,7 +118,7 @@ object Messages {
     operator fun get(c: Class<*>?, k: String, vararg args: Any): String {
         var key: String
         if (c != null) {
-            key = c.name.replace("com.shatteredpixel.shatteredpixeldungeon.", "")
+            key = c.name/*.replace("\\$.*".toRegex(),"")*/.replace("com.shatteredpixel.shatteredpixeldungeon.", "")
             key += ".$k"
         } else
             key = k

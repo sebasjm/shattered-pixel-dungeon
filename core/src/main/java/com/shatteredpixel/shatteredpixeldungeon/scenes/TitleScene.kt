@@ -96,21 +96,21 @@ class TitleScene : PixelScene() {
         signs.y = title.y
         add(signs)
 
-        val btnBadges = object : DashboardItem(Messages.get(this.javaClass, "badges"), 3) {
+        val btnBadges = object : DashboardItem(Messages.get(this@TitleScene.javaClass, "badges"), 3) {
             override fun onClick() {
                 ShatteredPixelDungeon.switchNoFade(BadgesScene::class.java)
             }
         }
         add(btnBadges)
 
-        val btnAbout = object : DashboardItem(Messages.get(this.javaClass, "about"), 1) {
+        val btnAbout = object : DashboardItem(Messages.get(this@TitleScene.javaClass, "about"), 1) {
             override fun onClick() {
                 ShatteredPixelDungeon.switchNoFade(AboutScene::class.java)
             }
         }
         add(btnAbout)
 
-        val btnPlay = object : DashboardItem(Messages.get(this.javaClass, "play"), 0) {
+        val btnPlay = object : DashboardItem(Messages.get(this@TitleScene.javaClass, "play"), 0) {
             override fun onClick() {
                 if (GamesInProgress.checkAll().size == 0) {
                     this@TitleScene.add(WndStartGame(1))
@@ -121,7 +121,7 @@ class TitleScene : PixelScene() {
         }
         add(btnPlay)
 
-        val btnRankings = object : DashboardItem(Messages.get(this.javaClass, "rankings"), 2) {
+        val btnRankings = object : DashboardItem(Messages.get(this@TitleScene.javaClass, "rankings"), 2) {
             override fun onClick() {
                 ShatteredPixelDungeon.switchNoFade(RankingsScene::class.java)
             }

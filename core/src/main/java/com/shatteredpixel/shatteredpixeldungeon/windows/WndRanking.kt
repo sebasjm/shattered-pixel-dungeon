@@ -140,7 +140,7 @@ class WndRanking(rec: Rankings.Record) : WndTabbed() {
             var pos = title.bottom()
 
             if (Dungeon.challenges > 0) {
-                val btnChallenges = object : RedButton(Messages.get(this.javaClass, "challenges")) {
+                val btnChallenges = object : RedButton(Messages.get(this@WndRanking.javaClass, "challenges")) {
                     override fun onClick() {
                         Game.scene()!!.add(WndChallenges(Dungeon.challenges, false))
                     }

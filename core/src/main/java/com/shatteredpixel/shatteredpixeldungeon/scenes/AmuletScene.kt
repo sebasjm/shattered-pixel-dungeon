@@ -54,7 +54,7 @@ class AmuletScene : PixelScene() {
         amulet = Image(Assets.AMULET)
         add(amulet!!)
 
-        val btnExit = object : RedButton(Messages.get(this.javaClass, "exit")) {
+        val btnExit = object : RedButton(Messages.get(this@AmuletScene.javaClass, "exit")) {
             override fun onClick() {
                 Dungeon.win(Amulet::class.java)
                 Dungeon.deleteGame(GamesInProgress.curSlot, true)
@@ -64,7 +64,7 @@ class AmuletScene : PixelScene() {
         btnExit.setSize(WIDTH.toFloat(), BTN_HEIGHT.toFloat())
         add(btnExit)
 
-        val btnStay = object : RedButton(Messages.get(this.javaClass, "stay")) {
+        val btnStay = object : RedButton(Messages.get(this@AmuletScene.javaClass, "stay")) {
             override fun onClick() {
                 onBackPressed()
             }

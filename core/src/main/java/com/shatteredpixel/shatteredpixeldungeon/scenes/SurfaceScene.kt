@@ -146,7 +146,7 @@ class SurfaceScene : PixelScene() {
             frame.hardlight(0xDDEEFF)
         }
 
-        val gameOver = object : RedButton(Messages.get(this.javaClass, "exit")) {
+        val gameOver = object : RedButton(Messages.get(this@SurfaceScene.javaClass, "exit")) {
             override fun onClick() {
                 Game.switchScene(RankingsScene::class.java)
             }

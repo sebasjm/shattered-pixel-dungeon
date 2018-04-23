@@ -160,7 +160,7 @@ open class ItemSlot() : Button() {
             topLeft!!.visible = topRight!!.visible
         }
 
-        topLeft!!.text(item!!.status()!!)
+        topLeft!!.text(item!!.status())
 
         val isArmor = item is Armor
         val isWeapon = item is Weapon

@@ -94,7 +94,7 @@ class WndBlacksmith(troll: Blacksmith, hero: Hero) : Window() {
         btnItem2!!.setRect(btnItem1!!.right() + BTN_GAP, btnItem1!!.top(), BTN_SIZE.toFloat(), BTN_SIZE.toFloat())
         add(btnItem2)
 
-        btnReforge = object : RedButton(Messages.get(this.javaClass, "reforge")) {
+        btnReforge = object : RedButton(Messages.get(this@WndBlacksmith.javaClass, "reforge")) {
             override fun onClick() {
                 Blacksmith.upgrade(btnItem1!!.item!!, btnItem2!!.item!!)
                 hide()

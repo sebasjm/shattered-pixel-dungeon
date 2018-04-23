@@ -62,7 +62,7 @@ class ChaliceOfBlood : Artifact() {
             if (damage > hero.HP * 0.75) {
 
                 GameScene.show(
-                        object : WndOptions(Messages.get(this.javaClass, "name"),
+                        object : WndOptions(Messages.get(this@ChaliceOfBlood.javaClass, "name"),
                                 Messages.get(this.javaClass, "prick_warn"),
                                 Messages.get(this.javaClass, "yes"),
                                 Messages.get(this.javaClass, "no")) {

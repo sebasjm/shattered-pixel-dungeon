@@ -50,7 +50,7 @@ class WndTradeItem : Window {
 
         if (item.quantity() == 1) {
 
-            val btnSell = object : RedButton(Messages.get(this.javaClass, "sell", item.price())) {
+            val btnSell = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "sell", item.price())) {
                 override fun onClick() {
                     sell(item)
                     hide()
@@ -64,7 +64,7 @@ class WndTradeItem : Window {
         } else {
 
             val priceAll = item.price()
-            val btnSell1 = object : RedButton(Messages.get(this.javaClass, "sell_1", priceAll / item.quantity())) {
+            val btnSell1 = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "sell_1", priceAll / item.quantity())) {
                 override fun onClick() {
                     sellOne(item)
                     hide()
@@ -72,7 +72,7 @@ class WndTradeItem : Window {
             }
             btnSell1.setRect(0f, pos + GAP, WIDTH.toFloat(), BTN_HEIGHT.toFloat())
             add(btnSell1)
-            val btnSellAll = object : RedButton(Messages.get(this.javaClass, "sell_all", priceAll)) {
+            val btnSellAll = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "sell_all", priceAll)) {
                 override fun onClick() {
                     sell(item)
                     hide()
@@ -85,7 +85,7 @@ class WndTradeItem : Window {
 
         }
 
-        val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
+        val btnCancel = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "cancel")) {
             override fun onClick() {
                 hide()
             }
@@ -106,7 +106,7 @@ class WndTradeItem : Window {
 
         if (canBuy) {
 
-            val btnBuy = object : RedButton(Messages.get(this.javaClass, "buy", price)) {
+            val btnBuy = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "buy", price)) {
                 override fun onClick() {
                     hide()
                     buy(heap)
@@ -116,7 +116,7 @@ class WndTradeItem : Window {
             btnBuy.enable(price <= Dungeon.gold)
             add(btnBuy)
 
-            val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
+            val btnCancel = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "cancel")) {
                 override fun onClick() {
                     hide()
                 }
@@ -125,7 +125,7 @@ class WndTradeItem : Window {
             val thievery = Dungeon.hero!!.buff<MasterThievesArmband.Thievery>(MasterThievesArmband.Thievery::class.java)
             if (thievery != null) {
                 val chance = thievery.stealChance(price)
-                val btnSteal = object : RedButton(Messages.get(this.javaClass, "steal", Math.min(100, (chance * 100).toInt()))) {
+                val btnSteal = object : RedButton(Messages.get(this@WndTradeItem.javaClass, "steal", Math.min(100, (chance * 100).toInt()))) {
                     override fun onClick() {
                         if (thievery.steal(price)) {
                             val hero = Dungeon.hero!!

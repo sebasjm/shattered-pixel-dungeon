@@ -67,14 +67,14 @@ class WndHero : WndTabbed() {
         buffs.setRect(0f, 0f, WIDTH.toFloat(), HEIGHT.toFloat())
         buffs.setupList()
 
-        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "stats")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this@WndHero.javaClass, "stats")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 stats.active = selected
                 stats.visible = stats.active
             }
         })
-        add(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "buffs")) {
+        add(object : WndTabbed.LabeledTab(Messages.get(this@WndHero.javaClass, "buffs")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 buffs.active = selected

@@ -80,7 +80,7 @@ class WndStartGame(slot: Int) : Window() {
         ava.setRect(20f, separator.y + 2, (WIDTH - 30).toFloat(), 80f)
         add(ava)
 
-        val start = object : RedButton(Messages.get(this.javaClass, "start")) {
+        val start = object : RedButton(Messages.get(this@WndStartGame.javaClass, "start")) {
             override fun onClick() {
                 if (GamesInProgress.selectedClass == null) return
 

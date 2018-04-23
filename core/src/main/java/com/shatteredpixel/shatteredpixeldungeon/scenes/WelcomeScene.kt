@@ -91,7 +91,7 @@ class WelcomeScene : PixelScene() {
         signs.y = title.y
         add(signs)
 
-        val okay = object : DarkRedButton(Messages.get(this.javaClass, "continue")) {
+        val okay = object : DarkRedButton(Messages.get(this@WelcomeScene.javaClass, "continue")) {
             override fun onClick() {
                 super.onClick()
                 if (previousVersion == 0) {
@@ -105,7 +105,7 @@ class WelcomeScene : PixelScene() {
         }
 
         if (previousVersion != 0) {
-            val changes = object : DarkRedButton(Messages.get(this.javaClass, "changelist")) {
+            val changes = object : DarkRedButton(Messages.get(this@WelcomeScene.javaClass, "changelist")) {
                 override fun onClick() {
                     super.onClick()
                     updateVersion(previousVersion)

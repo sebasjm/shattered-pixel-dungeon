@@ -219,7 +219,7 @@ class GameScene : PixelScene() {
 
         val size = Dungeon.level!!.heaps.size()
         for (i in 0 until size) {
-            addHeapSprite(Dungeon.level!!.heaps.valueAt(i))
+            addHeapSprite(Dungeon.level!!.heaps.valueAt(i)!!)
         }
 
         emitters = Group()

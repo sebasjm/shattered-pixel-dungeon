@@ -42,7 +42,7 @@ class WndGame : Window() {
 
     init {
 
-        addButton(object : RedButton(Messages.get(this.javaClass, "settings")) {
+        addButton(object : RedButton(Messages.get(this@WndGame.javaClass, "settings")) {
             override fun onClick() {
                 hide()
                 GameScene.show(WndSettings())
@@ -51,7 +51,7 @@ class WndGame : Window() {
 
         // Challenges window
         if (Dungeon.challenges > 0) {
-            addButton(object : RedButton(Messages.get(this.javaClass, "challenges")) {
+            addButton(object : RedButton(Messages.get(this@WndGame.javaClass, "challenges")) {
                 override fun onClick() {
                     hide()
                     GameScene.show(WndChallenges(Dungeon.challenges, false))
@@ -63,7 +63,7 @@ class WndGame : Window() {
         if (!Dungeon.hero!!.isAlive) {
 
             val btnStart: RedButton
-            btnStart = object : RedButton(Messages.get(this.javaClass, "start")) {
+            btnStart = object : RedButton(Messages.get(this@WndGame.javaClass, "start")) {
                 override fun onClick() {
                     GamesInProgress.selectedClass = Dungeon.hero!!.heroClass
                     InterlevelScene.noStory = true
@@ -73,7 +73,7 @@ class WndGame : Window() {
             addButton(btnStart)
             btnStart.textColor(Window.TITLE_COLOR)
 
-            addButton(object : RedButton(Messages.get(this.javaClass, "rankings")) {
+            addButton(object : RedButton(Messages.get(this@WndGame.javaClass, "rankings")) {
                 override fun onClick() {
                     InterlevelScene.mode = InterlevelScene.Mode.DESCEND
                     Game.switchScene(RankingsScene::class.java)
@@ -83,7 +83,7 @@ class WndGame : Window() {
 
         addButtons(
                 // Main menu
-                object : RedButton(Messages.get(this.javaClass, "menu")) {
+                object : RedButton(Messages.get(this@WndGame.javaClass, "menu")) {
                     override fun onClick() {
                         try {
                             Dungeon.saveAll()
@@ -95,7 +95,7 @@ class WndGame : Window() {
                     }
                 },
                 // Quit
-                object : RedButton(Messages.get(this.javaClass, "exit")) {
+                object : RedButton(Messages.get(this@WndGame.javaClass, "exit")) {
                     override fun onClick() {
                         try {
                             Dungeon.saveAll()
@@ -109,7 +109,7 @@ class WndGame : Window() {
         )
 
         // Cancel
-        addButton(object : RedButton(Messages.get(this.javaClass, "return")) {
+        addButton(object : RedButton(Messages.get(this@WndGame.javaClass, "return")) {
             override fun onClick() {
                 hide()
             }

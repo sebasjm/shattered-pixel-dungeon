@@ -48,7 +48,7 @@ class WndImp(imp: Imp, tokens: DwarfToken) : Window() {
         message.setPos(0f, titlebar.bottom() + GAP)
         add(message)
 
-        val btnReward = object : RedButton(Messages.get(this.javaClass, "reward")) {
+        val btnReward = object : RedButton(Messages.get(this@WndImp.javaClass, "reward")) {
             override fun onClick() {
                 takeReward(imp, tokens, Imp.Quest.reward)
             }

@@ -824,7 +824,7 @@ abstract class Level : Bundlable {
             }
 
             if (c.buff<Awareness>(Awareness::class.java) != null) {
-                for (heap in heaps.values()) {
+                for (heap in heaps.values().filterNotNull()) {
                     val p = heap.pos
                     for (i in PathFinder.NEIGHBOURS9!!)
                         fieldOfView[p + i] = true

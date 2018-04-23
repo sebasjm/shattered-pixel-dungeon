@@ -63,7 +63,7 @@ class WndChooseWay(tome: TomeOfMastery, way1: HeroSubClass, way2: HeroSubClass) 
         btnWay2.setRect(btnWay1.right() + GAP, btnWay1.top(), btnWay1.width(), BTN_HEIGHT.toFloat())
         add(btnWay2)
 
-        val btnCancel = object : RedButton(Messages.get(this.javaClass, "cancel")) {
+        val btnCancel = object : RedButton(Messages.get(this@WndChooseWay.javaClass, "cancel")) {
             override fun onClick() {
                 hide()
             }

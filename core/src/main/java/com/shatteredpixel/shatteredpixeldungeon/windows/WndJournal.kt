@@ -77,21 +77,21 @@ class WndJournal : WndTabbed() {
         catalogTab.setRect(0f, 0f, width.toFloat(), height.toFloat())
         catalogTab.updateList()
 
-        val tabs = arrayOf<WndTabbed.Tab>(object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "guide")) {
+        val tabs = arrayOf<WndTabbed.Tab>(object : WndTabbed.LabeledTab(Messages.get(this@WndJournal.javaClass, "guide")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 guideTab.visible = value
                 guideTab.active = guideTab.visible
                 if (value) last_index = 0
             }
-        }, object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "notes")) {
+        }, object : WndTabbed.LabeledTab(Messages.get(this@WndJournal.javaClass, "notes")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 notesTab.visible = value
                 notesTab.active = notesTab.visible
                 if (value) last_index = 1
             }
-        }, object : WndTabbed.LabeledTab(Messages.get(this.javaClass, "items")) {
+        }, object : WndTabbed.LabeledTab(Messages.get(this@WndJournal.javaClass, "items")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 catalogTab.visible = value

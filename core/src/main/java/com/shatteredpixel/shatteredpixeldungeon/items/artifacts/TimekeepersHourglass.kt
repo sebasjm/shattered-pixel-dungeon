@@ -87,7 +87,7 @@ class TimekeepersHourglass : Artifact() {
                 GLog.i(Messages.get(this.javaClass, "cursed"))
             else
                 GameScene.show(
-                        object : WndOptions(Messages.get(this.javaClass, "name"),
+                        object : WndOptions(Messages.get(this@TimekeepersHourglass.javaClass, "name"),
                                 Messages.get(this.javaClass, "prompt"),
                                 Messages.get(this.javaClass, "stasis"),
                                 Messages.get(this.javaClass, "freeze")) {
