@@ -66,8 +66,8 @@ open class Image() : Visual(0f, 0f, 0f, 0f) {
         frame(RectF(0f, 0f, 1f, 1f))
     }
 
-    open fun frame(frame: RectF) {
-        this.frame = frame
+    open fun frame(frame: RectF?) {
+        this.frame = frame!!
 
         width = frame.width() * texture!!.width
         height = frame.height() * texture!!.height

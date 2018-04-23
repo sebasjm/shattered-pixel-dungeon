@@ -403,7 +403,7 @@ class Bundle private constructor(private val data: JSONObject?) {
 
     }
 
-    fun put(key: String, collection: Collection<Bundlable>) {
+    fun put(key: String, collection: Collection<Bundlable?>) {
         val array = JSONArray()
         for (`object` in collection) {
             //Skip none-static inner classes as they can't be instantiated through bundle restoring

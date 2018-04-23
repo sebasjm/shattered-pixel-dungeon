@@ -161,7 +161,7 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
 
         val length = text!!.length
         for (i in 0 until length) {
-            val rect = font!![text!![i]]
+            val rect = font!![text!![i]]!!
 
             val w = font!!.width(rect)
             val h = font!!.height(rect)
@@ -318,7 +318,7 @@ open class BitmapText @JvmOverloads constructor(protected var text: String? = ""
             lineHeight = baseLine
         }
 
-        operator fun get(ch: Char): RectF {
+        operator fun get(ch: Char): RectF? {
             return if (frames.containsKey(ch)) {
                 super.get(ch)
             } else {

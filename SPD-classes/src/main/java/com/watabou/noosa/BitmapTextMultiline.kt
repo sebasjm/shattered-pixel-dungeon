@@ -41,7 +41,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
     constructor(font: BitmapText.Font) : this("", font) {}
 
     init {
-        spaceSize = font.width(font.get(' '))
+        spaceSize = font.width(font.get(' ')!!)
     }
 
     override fun updateVertices() {
@@ -85,7 +85,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
                 var shift = 0f    // Position in pixels relative to the beginning of the word
 
                 for (k in 0 until length) {
-                    val rect = font!!.get(word[k])
+                    val rect = font!!.get(word[k])!!
 
                     val w = font!!.width(rect)
                     val h = font!!.height(rect)
@@ -143,7 +143,7 @@ class BitmapTextMultiline(text: String, font: BitmapText.Font) : BitmapText(text
         val length = word.length
         for (i in 0 until length) {
 
-            val rect = font!!.get(word[i])
+            val rect = font!!.get(word[i])!!
             w += font!!.width(rect) + if (w > 0) font!!.tracking else 0f
             h = Math.max(h, font!!.height(rect))
         }

@@ -75,7 +75,7 @@ open class TextureFilm {
         texWidth = atlas.texWidth
         texHeight = atlas.texHeight
 
-        val patch = atlas[key]
+        val patch = atlas[key]!!
 
         val uw = width.toFloat() / texWidth
         val vh = height.toFloat() / texHeight
@@ -99,12 +99,12 @@ open class TextureFilm {
         frames[id] = texture!!.uvRect(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
     }
 
-    operator fun get(id: Any): RectF {
-        return frames[id]!!
+    operator fun get(id: Any): RectF? {
+        return frames[id]
     }
 
     fun width(id: Any): Float {
-        return width(get(id))
+        return width(get(id)!!)
     }
 
     fun width(frame: RectF): Float {
@@ -112,7 +112,7 @@ open class TextureFilm {
     }
 
     fun height(id: Any): Float {
-        return height(get(id))
+        return height(get(id)!!)
     }
 
     fun height(frame: RectF): Float {

@@ -66,7 +66,7 @@ open class Tilemap(tx: Any, protected var tileset: TextureFilm) : Visual(0f, 0f,
 
         this.texture = TextureCache.get(tx)
 
-        val r = tileset.get(0)
+        val r = tileset.get(0)!!
         cellW = tileset.width(r)
         cellH = tileset.height(r)
 

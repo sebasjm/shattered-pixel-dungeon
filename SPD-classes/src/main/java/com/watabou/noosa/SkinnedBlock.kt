@@ -41,7 +41,7 @@ open class SkinnedBlock(width: Float, height: Float, tx: Any) : Image(tx) {
         size(width, height)
     }
 
-    override fun frame(frame: RectF) {
+    override fun frame(frame: RectF?) {
         scaleX = 1f
         scaleY = 1f
 
