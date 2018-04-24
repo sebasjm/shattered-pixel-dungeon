@@ -492,7 +492,7 @@ open class Item : Bundlable {
         protected val TXT_TO_STRING_X = "%s x%d"
 
         protected val TIME_TO_THROW = 1.0f
-        @JvmStatic protected val TIME_TO_PICK_UP = 1.0f
+        @JvmStatic val TIME_TO_PICK_UP = 1.0f
         protected val TIME_TO_DROP = 0.5f
 
         val AC_DROP = "DROP"

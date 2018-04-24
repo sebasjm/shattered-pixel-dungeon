@@ -75,6 +75,6 @@ open class Halo() : Image() {
 
         private val CACHE_KEY = Halo::class.java
 
-        @JvmStatic protected val RADIUS = 64
+        @JvmStatic val RADIUS = 64
     }
 }

@@ -559,9 +559,9 @@ abstract class Char : Actor() {
     companion object {
 
         @JvmStatic protected val POS = "pos"
-        @JvmStatic protected val TAG_HP = "HP"
-        @JvmStatic protected val TAG_HT = "HT"
-        @JvmStatic protected val TAG_SHLD = "SHLD"
+        @JvmStatic val TAG_HP = "HP"
+        @JvmStatic val TAG_HT = "HT"
+        @JvmStatic val TAG_SHLD = "SHLD"
         @JvmStatic protected val BUFFS = "buffs"
 
         fun hit(attacker: Char, defender: Char, magic: Boolean): Boolean {
