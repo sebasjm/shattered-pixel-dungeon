@@ -187,9 +187,10 @@ open class Bomb : Item() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        if (bundle.contains(FUSE))
-            fuse = (bundle.get(FUSE) as Fuse?)
+        if (bundle.contains(FUSE)) {
+            fuse = bundle.get(FUSE) as Fuse
             Actor.add(fuse!!.ignite(this))
+        }
     }
 
 

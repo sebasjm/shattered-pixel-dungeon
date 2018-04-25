@@ -175,7 +175,7 @@ abstract class Mob : Char() {
 
         val terror = buff<Terror>(Terror::class.java)
         if (terror != null) {
-            val source = Actor.findById(terror.`object`) as Char
+            val source = Actor.findById(terror.`object`) as Char?
             if (source != null) {
                 return source
             }

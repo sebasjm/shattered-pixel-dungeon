@@ -119,7 +119,7 @@ abstract class Actor : Bundlable {
         @Volatile
         private var current: Actor? = null
 
-        private val ids = SparseArray<Actor>()
+        private val ids = SparseArray<Actor?>()
 
         private var now = 0f
 
@@ -324,7 +324,7 @@ abstract class Actor : Bundlable {
         }
 
         @Synchronized
-        fun findById(id: Int): Actor {
+        fun findById(id: Int): Actor? {
             return ids.get(id)
         }
 

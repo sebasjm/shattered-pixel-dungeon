@@ -898,7 +898,7 @@ class GameScene : PixelScene() {
                 names.add(Dungeon.hero!!.className().toUpperCase(Locale.ENGLISH))
             } else {
                 if (Dungeon.level!!.heroFOV[cell]) {
-                    val mob = Actor.findChar(cell) as Mob
+                    val mob = Actor.findChar(cell) as Mob?
                     if (mob != null) {
                         objects.add(mob)
                         names.add(Messages.titleCase(mob.name))

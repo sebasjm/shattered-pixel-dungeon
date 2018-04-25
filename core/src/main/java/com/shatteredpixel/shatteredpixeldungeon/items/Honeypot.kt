@@ -187,7 +187,7 @@ class Honeypot : Item() {
             if (Dungeon.depth != beeDepth)
                 return
 
-            val bee = Actor.findById(myBee) as Bee
+            val bee = Actor.findById(myBee) as Bee?
             bee?.setPotInfo(cell, holder)
         }
 
