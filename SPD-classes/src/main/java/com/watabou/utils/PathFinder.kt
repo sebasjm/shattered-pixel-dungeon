@@ -26,23 +26,23 @@ import java.util.LinkedList
 
 object PathFinder {
 
-    var distance: IntArray? = null
-    private var maxVal: IntArray? = null
+    var distance: IntArray = IntArray(0)
+    private var maxVal: IntArray = IntArray(0)
 
-    private var goals: BooleanArray? = null
-    private var queue: IntArray? = null
+    private var goals: BooleanArray = BooleanArray(0)
+    private var queue: IntArray = IntArray(0)
 
     private var size = 0
     private var width = 0
 
-    private var dir: IntArray? = null
-    private var dirLR: IntArray? = null
+    private var dir: IntArray = IntArray(0)
+    private var dirLR: IntArray = IntArray(0)
 
     //performance-light shortcuts for some common pathfinder cases
     //they are in array-access order for increased memory performance
-    var NEIGHBOURS4: IntArray? = null
-    var NEIGHBOURS8: IntArray? = null
-    var NEIGHBOURS9: IntArray? = null
+    var NEIGHBOURS4: IntArray = IntArray(0)
+    var NEIGHBOURS8: IntArray = IntArray(0)
+    var NEIGHBOURS9: IntArray = IntArray(0)
 
     //similar to their equivalent neighbour arrays, but the order is clockwise.
     //Useful for some logic functions, but is slower due to lack of array-access order.
