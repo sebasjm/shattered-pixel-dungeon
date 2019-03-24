@@ -33,9 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
-import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton
@@ -43,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
-import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import com.watabou.utils.asCallback
 

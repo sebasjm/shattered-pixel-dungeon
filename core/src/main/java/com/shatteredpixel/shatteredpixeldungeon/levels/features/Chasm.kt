@@ -31,11 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions

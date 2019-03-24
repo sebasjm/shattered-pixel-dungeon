@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
-import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator

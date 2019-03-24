@@ -23,9 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire
@@ -61,7 +59,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions

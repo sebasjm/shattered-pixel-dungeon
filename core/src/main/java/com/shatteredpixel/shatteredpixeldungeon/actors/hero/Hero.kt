@@ -58,9 +58,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ankh
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type
-import com.shatteredpixel.shatteredpixeldungeon.items.Item
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation
@@ -102,8 +99,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene
-import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator

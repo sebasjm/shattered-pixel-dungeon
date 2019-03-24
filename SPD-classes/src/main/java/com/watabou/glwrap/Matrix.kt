@@ -95,7 +95,7 @@ object Matrix {
         m[13] += m[1] * x + m[5] * y
     }
 
-    fun multiply(left: FloatArray, right: FloatArray, result: FloatArray) {
-        android.opengl.Matrix.multiplyMM(result, 0, left, 0, right, 0)
-    }
+//    fun multiply(left: FloatArray, right: FloatArray, result: FloatArray) {
+//        android.opengl.Matrix.multiplyMM(result, 0, left, 0, right, 0)
+//    }
 }

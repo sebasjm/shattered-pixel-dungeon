@@ -33,14 +33,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing
 import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
-import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog
-import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import com.watabou.utils.asCallback

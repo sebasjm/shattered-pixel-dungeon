@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items
 import com.shatteredpixel.shatteredpixeldungeon.Assets
 import com.shatteredpixel.shatteredpixeldungeon.Badges
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo
@@ -35,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages
-import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite
@@ -46,7 +44,6 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
-import com.watabou.utils.Callback
 import com.watabou.utils.asCallback
 
 import java.util.ArrayList

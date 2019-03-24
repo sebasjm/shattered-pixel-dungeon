@@ -22,11 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings
-import com.shatteredpixel.shatteredpixeldungeon.items.Item
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene
 import com.watabou.noosa.Game
 
 class DistortionTrap : Trap() {
